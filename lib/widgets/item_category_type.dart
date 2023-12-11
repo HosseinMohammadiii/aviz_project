@@ -1,0 +1,94 @@
+import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/register_feature_screen.dart';
+import 'package:aviz_project/widgets/appbar_widget.dart';
+import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:flutter/material.dart';
+
+class itemsCategoryType extends StatelessWidget {
+  itemsCategoryType({
+    super.key,
+    required this.txt,
+    required this.color,
+  });
+
+  final String txt;
+  Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[350]!),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(
+            Icons.arrow_back_ios_rounded,
+            color: color,
+          ),
+          const Spacer(),
+          textWidget(
+            txt,
+            Colors.black,
+            16,
+            FontWeight.w500,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ItemSelectCategory extends StatefulWidget {
+  ItemSelectCategory({
+    super.key,
+    required this.txt,
+  });
+  final String txt;
+
+  @override
+  State<ItemSelectCategory> createState() => _ItemSelectCategoryState();
+}
+
+class _ItemSelectCategoryState extends State<ItemSelectCategory> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          flexibleSpace: AppBarWidget(stepScreen: 2),
+        ),
+        body: ListView.builder(
+          itemCount: 3,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterFeatureScreen(),
+                ),
+              );
+            },
+            child: itemsCategoryType(
+              txt: widget.txt,
+              color: CustomColor.red,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
