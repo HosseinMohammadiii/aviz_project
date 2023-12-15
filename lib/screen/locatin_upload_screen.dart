@@ -26,7 +26,7 @@ class _LocatioUploadState extends State<LocatioUpload> {
           flexibleSpace: AppBarWidget(stepScreen: 4),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
               Row(
@@ -62,9 +62,7 @@ class _LocatioUploadState extends State<LocatioUpload> {
               ),
               SwitchBox(
                   switchCheck: false, txt: 'موقعیت دقیق نقشه نمایش داده شود؟'),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 3,
-              ),
+              const Spacer(),
               GestureDetector().textButton(
                 () {
                   Navigator.push(

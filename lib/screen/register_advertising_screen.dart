@@ -42,6 +42,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   hint: 'عنوان آویز را وارد کنید',
                   textInputType: TextInputType.text,
                   countLine: 1,
+                  focusNode: FocusNode(),
                 ),
                 const TextTitleSection(
                     txt: 'توضیحات', img: 'images/clipboard_icon.png'),
@@ -49,6 +50,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   hint: '... توضیحات آویز را وارد کنید',
                   textInputType: TextInputType.text,
                   countLine: 3,
+                  focusNode: FocusNode(),
                 ),
                 SwitchBox(switchCheck: false, txt: 'فعال کردن گفتگو'),
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),

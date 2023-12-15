@@ -4,6 +4,7 @@ import 'package:aviz_project/widgets/item_category_type.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
 import 'package:flutter/material.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:fdottedline_nullsafety/fdottedline__nullsafety.dart';
 
 class InformationAdvertising extends StatefulWidget {
@@ -125,7 +126,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                     itemCount: listText.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.only(left: 18),
+                        padding: const EdgeInsets.only(left: 19),
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
@@ -254,7 +255,8 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 34.4),
                             child: textWidget(
                               listTextTitle[index],
                               Colors.grey[500]!,
@@ -279,12 +281,12 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                 children: [
                   for (var i = 0; i < 3; i++) ...[
                     Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: FDottedLine(
-                        color: Colors.grey[350]!,
-                        height: 80,
-                        strokeWidth: 1.5,
-                        dottedLength: 8,
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: DottedLine(
+                        direction: Axis.vertical,
+                        dashColor: Colors.grey[350]!,
+                        lineThickness: 1.5,
+                        dashLength: 6,
                       ),
                     ),
                   ],
@@ -352,11 +354,10 @@ class PriceInfoWidget extends StatelessWidget {
               ),
             ],
           ),
-          FDottedLine(
-            color: Colors.grey[350]!,
-            width: double.infinity,
-            strokeWidth: 1.5,
-            dottedLength: 8,
+          DottedLine(
+            dashColor: Colors.grey[350]!,
+            lineThickness: 1.5,
+            dashLength: 6,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -431,11 +432,10 @@ class FeatureWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              FDottedLine(
-                color: Colors.grey[350]!,
-                width: double.infinity,
-                strokeWidth: 1.5,
-                dottedLength: 8,
+              DottedLine(
+                dashColor: Colors.grey[350]!,
+                lineThickness: 1.5,
+                dashLength: 6,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -503,11 +503,12 @@ class FeatureWidget extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: FDottedLine(
-                            color: Colors.grey[350]!,
-                            width: double.infinity,
-                            strokeWidth: 1.5,
-                            dottedLength: 8,
+                          child: DottedLine(
+                            dashColor: index == 6
+                                ? Colors.transparent
+                                : Colors.grey[350]!,
+                            lineThickness: 1.5,
+                            dashLength: 6,
                           ),
                         ),
                       ],

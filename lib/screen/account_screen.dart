@@ -20,14 +20,13 @@ class _AccountScreenState extends State<AccountScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('images/my_aviz.png'),
-            Image.asset('images/icon_home_active.png'),
           ],
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: Column(
               children: [
                 Container(
@@ -121,7 +120,7 @@ class _AccountScreenState extends State<AccountScreen> {
 //Widget For display Items Account Button
   Widget itemsAccountButton() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 2.1,
+      height: 390,
       child: ListView.builder(
         itemCount: itemText.length,
         physics: const NeverScrollableScrollPhysics(),

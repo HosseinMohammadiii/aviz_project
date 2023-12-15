@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 
-class TextFieldBox extends StatelessWidget {
+class TextFieldBox extends StatefulWidget {
   TextFieldBox({
     super.key,
     required this.hint,
     required this.textInputType,
     required this.countLine,
+    required this.focusNode,
   });
   String hint;
   TextInputType textInputType;
   int countLine;
+  FocusNode focusNode = FocusNode();
+
+  @override
+  State<TextFieldBox> createState() => _TextFieldBoxState();
+}
+
+class _TextFieldBoxState extends State<TextFieldBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,8 +27,9 @@ class TextFieldBox extends StatelessWidget {
         color: Colors.grey[300],
       ),
       child: TextField(
-        keyboardType: textInputType,
-        maxLines: countLine,
+        keyboardType: widget.textInputType,
+        maxLines: widget.countLine,
+        focusNode: widget.focusNode,
         textAlign: TextAlign.end,
         style: TextStyle(
           fontFamily: 'SN',
@@ -30,13 +39,16 @@ class TextFieldBox extends StatelessWidget {
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          hintText: hint,
+          hintText: widget.hint,
           hintStyle: TextStyle(
             fontFamily: 'SN',
             fontSize: 18,
             color: Colors.grey[500],
           ),
         ),
+        onTapOutside: (event) {
+          widget.focusNode.unfocus();
+        },
       ),
     );
   }

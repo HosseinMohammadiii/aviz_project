@@ -19,6 +19,7 @@ class ConfirmationNumberScreen extends StatefulWidget {
 }
 
 class _ConfirmationNumberScreenState extends State<ConfirmationNumberScreen> {
+  final FocusNode focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -36,80 +37,80 @@ class _ConfirmationNumberScreenState extends State<ConfirmationNumberScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                textWidget(
-                  'تایید شماره موبایل',
-                  Colors.black,
-                  20,
-                  FontWeight.w700,
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                textWidget(
-                  widget.txt1,
-                  Colors.grey[500]!,
-                  15,
-                  FontWeight.w400,
-                ),
-                const SizedBox(
-                  height: 23,
-                ),
-                Pinput(
-                  defaultPinTheme: defaultPinTheme,
-                  submittedPinTheme: defaultPinTheme.copyWith(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.grey[350],
-                    ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              textWidget(
+                'تایید شماره موبایل',
+                Colors.black,
+                20,
+                FontWeight.w700,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              textWidget(
+                widget.txt1,
+                Colors.grey[500]!,
+                15,
+                FontWeight.w400,
+              ),
+              const SizedBox(
+                height: 23,
+              ),
+              Pinput(
+                focusNode: focusNode,
+                onTapOutside: (event) {
+                  focusNode.unfocus();
+                },
+                defaultPinTheme: defaultPinTheme,
+                submittedPinTheme: defaultPinTheme.copyWith(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.grey[350],
                   ),
                 ),
-                const SizedBox(
-                  height: 35,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    textWidget(
-                      ' ارسال مجدد کد',
-                      widget.color1,
-                      15,
-                      FontWeight.w600,
+              ),
+              const SizedBox(
+                height: 35,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  textWidget(
+                    ' ارسال مجدد کد',
+                    widget.color1,
+                    15,
+                    FontWeight.w600,
+                  ),
+                  textWidget(
+                    widget.txt2,
+                    widget.color2,
+                    16,
+                    FontWeight.w700,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              GestureDetector().textButton(
+                () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavigationScreen(),
                     ),
-                    textWidget(
-                      widget.txt2,
-                      widget.color2,
-                      16,
-                      FontWeight.w700,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.70,
-                ),
-                GestureDetector().textButton(
-                  () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const BottomNavigationScreen(),
-                      ),
-                    );
-                  },
-                  'تایید ورود',
-                  CustomColor.red,
-                  CustomColor.grey,
-                  false,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
+                  );
+                },
+                'تایید ورود',
+                CustomColor.red,
+                CustomColor.grey,
+                false,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
           ),
         ),
       ),

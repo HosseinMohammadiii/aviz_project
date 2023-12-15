@@ -14,7 +14,10 @@ class UploadLocation extends StatelessWidget {
       children: [
         Container(
           height: 144,
-          color: Colors.blue[100],
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.blue[100],
+          ),
         ),
         Container(
           width: 185,

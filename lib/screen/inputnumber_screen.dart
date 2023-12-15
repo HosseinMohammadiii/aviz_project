@@ -14,78 +14,75 @@ class InputNumberScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Image.asset('images/textinputnumscreen.png'),
-                const SizedBox(
-                  height: 12,
-                ),
-                textWidget('خوشحالیم که مجددا آویز رو برای آگهی انتخاب کردی!',
-                    Colors.grey[500]!, 15, FontWeight.w400),
-                const SizedBox(
-                  height: 25,
-                ),
-                TextFieldBox(
-                  hint: 'شماره موبایل',
-                  textInputType: TextInputType.number,
-                  countLine: 1,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.57,
-                ),
-                GestureDetector().textButton(
-                  () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ConfirmationNumberScreen(
-                            'کد ورود پیامک شده را وارد کنید',
-                            '00:45',
-                            Colors.grey[500]!,
-                            Colors.black),
-                      ),
-                    );
-                  },
-                  'مرحله بعد',
-                  CustomColor.red,
-                  CustomColor.grey,
-                  true,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
-                          ),
-                        );
-                      },
-                      child: textWidget(
-                        ' ثبت نام',
-                        CustomColor.red,
-                        17,
-                        FontWeight.w600,
-                      ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Image.asset('images/textinputnumscreen.png'),
+              const SizedBox(
+                height: 12,
+              ),
+              textWidget('خوشحالیم که مجددا آویز رو برای آگهی انتخاب کردی!',
+                  Colors.grey[500]!, 15, FontWeight.w400),
+              const SizedBox(
+                height: 25,
+              ),
+              TextFieldBox(
+                hint: 'شماره موبایل',
+                textInputType: TextInputType.number,
+                countLine: 1,
+                focusNode: FocusNode(),
+              ),
+              const Spacer(),
+              GestureDetector().textButton(
+                () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConfirmationNumberScreen(
+                          'کد ورود پیامک شده را وارد کنید',
+                          '00:45',
+                          Colors.grey[500]!,
+                          Colors.black),
                     ),
-                    textWidget(
-                      'تا حالا ثبت نام نکردی؟',
-                      Colors.grey[500]!,
+                  );
+                },
+                'مرحله بعد',
+                CustomColor.red,
+                CustomColor.grey,
+                true,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpScreen(),
+                        ),
+                      );
+                    },
+                    child: textWidget(
+                      ' ثبت نام',
+                      CustomColor.red,
                       17,
-                      FontWeight.w400,
+                      FontWeight.w600,
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  textWidget(
+                    'تا حالا ثبت نام نکردی؟',
+                    Colors.grey[500]!,
+                    17,
+                    FontWeight.w400,
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

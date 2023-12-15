@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 2.2,
+              height: 280,
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 itemCount: 5,
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: double.maxFinite,
         height: 140,
-        margin: const EdgeInsets.symmetric(horizontal: 15),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -178,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
       width: 210,
       height: 240,
       padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         color: Colors.white,

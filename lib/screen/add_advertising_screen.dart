@@ -41,7 +41,7 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
                         );
                       },
                       child: itemsCategoryType(
-                          txt: 'اجاره مسکونی', color: CustomColor.red),
+                          txt: 'فروش مسکونی', color: CustomColor.red),
                     );
                   },
                 ),

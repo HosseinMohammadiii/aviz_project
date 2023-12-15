@@ -45,7 +45,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               label: 'افزودن آویز'),
           BottomNavigationBarItem(
               icon: _selectedItem == 2
-                  ? Image.asset('images/icon_search.png')
+                  ? Image.asset('images/search_normal_icon.png')
                   : Image.asset('images/icon_search.png'),
               label: 'جستوجو'),
           BottomNavigationBarItem(
