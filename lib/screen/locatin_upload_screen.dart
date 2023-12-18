@@ -23,7 +23,10 @@ class _LocatioUploadState extends State<LocatioUpload> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(stepScreen: 4),
+          flexibleSpace: AppBarWidget(
+            stepScreen: 4,
+            screen: RegisterAdvertising(),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),

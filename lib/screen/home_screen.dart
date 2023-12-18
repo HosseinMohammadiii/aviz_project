@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -26,71 +27,79 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                textWidget(
-                  'مشاهده همه',
-                  Colors.grey[400]!,
-                  14,
-                  FontWeight.w400,
-                ),
-                const SizedBox(
-                  width: 130,
-                ),
-                textWidget(
-                  'آویز های داغ',
-                  Colors.black,
-                  16,
-                  FontWeight.w700,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 250,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                reverse: true,
-                itemBuilder: (context, index) {
-                  return hotestAdvertisingBox();
-                },
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      textWidget(
+                        'مشاهده همه',
+                        Colors.grey[400]!,
+                        14,
+                        FontWeight.w400,
+                      ),
+                      const SizedBox(
+                        width: 130,
+                      ),
+                      textWidget(
+                        'آویز های داغ',
+                        Colors.black,
+                        16,
+                        FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.only(right: 15, left: 15),
+                      itemCount: 10,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        return hotestAdvertisingBox();
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                textWidget(
-                  'مشاهده همه',
-                  Colors.grey[400]!,
-                  14,
-                  FontWeight.w400,
-                ),
-                const SizedBox(
-                  width: 130,
-                ),
-                textWidget(
-                  'آویز های اخیر',
-                  Colors.black,
-                  16,
-                  FontWeight.w700,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return recentlyAdvertisingBox();
-                },
+            SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  textWidget(
+                    'مشاهده همه',
+                    Colors.grey[400]!,
+                    14,
+                    FontWeight.w400,
+                  ),
+                  const SizedBox(
+                    width: 130,
+                  ),
+                  textWidget(
+                    'آویز های اخیر',
+                    Colors.black,
+                    16,
+                    FontWeight.w700,
+                  ),
+                ],
               ),
+            ),
+            SliverList.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return recentlyAdvertisingBox();
+              },
             ),
           ],
         ),

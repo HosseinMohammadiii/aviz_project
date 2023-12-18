@@ -1,4 +1,5 @@
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,10 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             automaticallyImplyLeading: false,
-            flexibleSpace: AppBarWidget(stepScreen: 1)),
+            flexibleSpace: AppBarWidget(
+              stepScreen: 1,
+              screen: ItemSelectCategory(),
+            )),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
@@ -28,20 +32,19 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
                 height: MediaQuery.of(context).size.height / 1.3,
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  itemCount: 6,
+                  itemCount: txt1.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ItemSelectCategory(txt: 'فروش آپارتمان'),
+                            builder: (context) => ItemSelectCategory(),
                           ),
                         );
                       },
                       child: itemsCategoryType(
-                          txt: 'فروش مسکونی', color: CustomColor.red),
+                          txt: txt1[index], color: CustomColor.red),
                     );
                   },
                 ),
@@ -52,4 +55,18 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
       ),
     );
   }
+
+  List txt1 = [
+    'اجاره مسکونی',
+    'فروش مسکونی',
+    'فروش دفاتر اداری و تجاری',
+    'اجاره دفاتر اداری و تجاری',
+    'اجاره کوتاه مدت',
+    'پروژه های ساخت و ساز',
+  ];
+  List txt2 = [
+    'فروش آپارتمان',
+    'فروش خانه و ویلا',
+    'فروش زمین و کلنگی',
+  ];
 }

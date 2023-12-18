@@ -1,5 +1,6 @@
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/extension/button.dart';
+import 'package:aviz_project/screen/home_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/switch_box.dart';
@@ -24,7 +25,10 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(stepScreen: 5),
+          flexibleSpace: AppBarWidget(
+            stepScreen: 5,
+            screen: BottomNavigationScreen(),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

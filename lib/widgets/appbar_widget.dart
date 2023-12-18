@@ -6,9 +6,10 @@ class AppBarWidget extends StatefulWidget {
   AppBarWidget({
     super.key,
     required this.stepScreen,
+    required this.screen,
   });
   int stepScreen;
-
+  Widget screen;
   @override
   State<AppBarWidget> createState() => _AppBarWidgetState();
 }
@@ -26,18 +27,28 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(
-                  Icons.close_rounded,
-                  size: 35,
-                ),
-                Image.asset(widget.stepScreen == 5
-                    ? 'images/register_aviz.png'
-                    : 'images/appbar_image_add_dvertising_screen.png'),
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      widget.stepScreen++;
-                    });
+                    widget.stepScreen == 1 ? Null : Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.close_rounded,
+                    size: 35,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Image.asset(widget.stepScreen == 5
+                      ? 'images/register_aviz.png'
+                      : 'images/appbar_image_add_dvertising_screen.png'),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => widget.screen,
+                        ));
                   },
                   child: const Icon(
                     Icons.chevron_right_rounded,

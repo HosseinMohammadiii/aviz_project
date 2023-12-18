@@ -16,6 +16,7 @@ Text textWidget(
     style: TextStyle(
       color: color,
       fontSize: fsize,
+      decoration: TextDecoration.none,
       fontFamily: 'SN',
       fontWeight: fweight,
     ),

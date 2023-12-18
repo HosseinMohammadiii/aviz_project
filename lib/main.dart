@@ -1,4 +1,5 @@
 import 'package:aviz_project/screen/login_screen.dart';
+import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,3 +17,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+//LogInScreen(),

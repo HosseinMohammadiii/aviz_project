@@ -49,11 +49,7 @@ class itemsCategoryType extends StatelessWidget {
 }
 
 class ItemSelectCategory extends StatefulWidget {
-  ItemSelectCategory({
-    super.key,
-    required this.txt,
-  });
-  final String txt;
+  ItemSelectCategory({super.key});
 
   @override
   State<ItemSelectCategory> createState() => _ItemSelectCategoryState();
@@ -68,10 +64,13 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(stepScreen: 2),
+          flexibleSpace: AppBarWidget(
+            stepScreen: 2,
+            screen: const RegisterFeatureScreen(),
+          ),
         ),
         body: ListView.builder(
-          itemCount: 3,
+          itemCount: txt2.length,
           padding: const EdgeInsets.symmetric(horizontal: 15),
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {
@@ -83,7 +82,7 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
               );
             },
             child: itemsCategoryType(
-              txt: widget.txt,
+              txt: txt2[index],
               color: CustomColor.red,
             ),
           ),
@@ -91,4 +90,10 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
       ),
     );
   }
+
+  List txt2 = [
+    'فروش آپارتمان',
+    'فروش خانه و ویلا',
+    'فروش زمین و کلنگی',
+  ];
 }
