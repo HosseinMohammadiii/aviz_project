@@ -1,6 +1,8 @@
+import 'package:aviz_project/List/list_advertising.dart';
+import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
-import 'package:aviz_project/screen/home_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/switch_box.dart';
@@ -17,6 +19,9 @@ class RegisterAdvertising extends StatefulWidget {
 }
 
 class _RegisterAdvertisingState extends State<RegisterAdvertising> {
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
+  TextEditingController controller3 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,7 +32,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
           automaticallyImplyLeading: false,
           flexibleSpace: AppBarWidget(
             stepScreen: 5,
-            screen: BottomNavigationScreen(),
+            screen: const BottomNavigationScreen(),
           ),
         ),
         body: Padding(
@@ -47,6 +52,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   textInputType: TextInputType.text,
                   countLine: 1,
                   focusNode: FocusNode(),
+                  controller: controller1,
                 ),
                 const TextTitleSection(
                     txt: 'توضیحات', img: 'images/clipboard_icon.png'),
@@ -55,16 +61,45 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   textInputType: TextInputType.text,
                   countLine: 3,
                   focusNode: FocusNode(),
+                  controller: controller2,
+                ),
+                const TextTitleSection(
+                    txt: 'قیمت', img: 'images/money_icon.png'),
+                TextFieldBox(
+                  hint: 'قیمت را وارد کنید',
+                  textInputType: TextInputType.number,
+                  countLine: 1,
+                  focusNode: FocusNode(),
+                  controller: controller3,
                 ),
                 SwitchBox(switchCheck: false, txt: 'فعال کردن گفتگو'),
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
                 GestureDetector().textButton(
                   () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavigationScreen(),
-                        ));
+                    if (controller1.text.isEmpty ||
+                        controller2.text.isEmpty ||
+                        controller3.text.isEmpty) {
+                      displayDialog('لطفا تمام مقدار ها را وارد کنید', context);
+                    } else {
+                      try {
+                        String title = controller1.text;
+                        String description = controller2.text;
+                        String price = controller3.text;
+                        advertisingData(
+                          title,
+                          description,
+                          double.parse(price),
+                        );
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const BottomNavigationScreen(),
+                            ));
+                      } catch (e) {
+                        displayDialog('لطفاً مقدار معتبر وارد کنید', context);
+                      }
+                    }
                   },
                   'ثبت آگهی',
                   CustomColor.red,
@@ -77,5 +112,18 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
         ),
       ),
     );
+  }
+
+  void advertisingData(
+    String title,
+    String description,
+    double price,
+  ) {
+    AdvertisingData advertisingData = AdvertisingData(
+      title: title,
+      description: description,
+      price: price,
+    );
+    advertisingBox.add(advertisingData);
   }
 }

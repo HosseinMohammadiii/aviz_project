@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FocusNode focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,48 +30,98 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      textWidget(
-                        'مشاهده همه',
-                        Colors.grey[400]!,
-                        14,
-                        FontWeight.w400,
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 18),
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      const SizedBox(
-                        width: 130,
+                      child: TextField(
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.end,
+                        textDirection: TextDirection.ltr,
+                        textAlignVertical: TextAlignVertical.center,
+                        focusNode: focusNode,
+                        style: TextStyle(
+                          fontFamily: 'SN',
+                          fontSize: 18,
+                          color: Colors.grey[500],
+                        ),
+                        decoration: InputDecoration(
+                          suffixIcon: Image.asset('images/search-normal.png'),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[350]!,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[350]!,
+                            ),
+                          ),
+                          hintText: '...جستوجو',
+                          hintStyle: TextStyle(
+                            fontFamily: 'SN',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        onTapOutside: (event) {
+                          focusNode.unfocus();
+                        },
                       ),
-                      textWidget(
-                        'آویز های داغ',
-                        Colors.black,
-                        16,
-                        FontWeight.w700,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  SizedBox(
-                    height: 250,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.only(right: 15, left: 15),
-                      itemCount: 10,
-                      reverse: true,
-                      itemBuilder: (context, index) {
-                        return hotestAdvertisingBox();
-                      },
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        textWidget(
+                          'مشاهده همه',
+                          Colors.grey[400]!,
+                          14,
+                          FontWeight.w400,
+                        ),
+                        const Spacer(),
+                        textWidget(
+                          'آویز های داغ',
+                          Colors.black,
+                          16,
+                          FontWeight.w700,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 250,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        //padding: const EdgeInsets.only(right: 15, left: 15),
+                        itemCount: 10,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          return hotestAdvertisingBox();
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
             ),
             SliverToBoxAdapter(
@@ -111,12 +162,12 @@ class _HomeScreenState extends State<HomeScreen> {
   GestureDetector recentlyAdvertisingBox() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const InformationAdvertising(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const InformationAdvertising(),
+        //   ),
+        // );
       },
       child: Container(
         width: double.maxFinite,
@@ -187,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
       width: 210,
       height: 240,
       padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 6),
+      margin: const EdgeInsets.only(left: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         color: Colors.white,

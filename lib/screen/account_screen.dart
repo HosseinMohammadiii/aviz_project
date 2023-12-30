@@ -20,82 +20,100 @@ class _AccountScreenState extends State<AccountScreen> {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 18),
-                  height: 45,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    textAlign: TextAlign.end,
-                    textDirection: TextDirection.ltr,
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TextStyle(
-                      fontFamily: 'SN',
-                      fontSize: 18,
-                      color: Colors.grey[500],
-                    ),
-                    decoration: InputDecoration(
-                      suffixIcon: Image.asset('images/search-normal.png'),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey[350]!,
+        child: CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Container(
+                      //   margin: const EdgeInsets.symmetric(vertical: 18),
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextField(
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.end,
+                        textDirection: TextDirection.ltr,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: TextStyle(
+                          fontFamily: 'SN',
+                          fontSize: 18,
+                          color: Colors.grey[500],
+                        ),
+                        decoration: InputDecoration(
+                          suffixIcon: Image.asset('images/search-normal.png'),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[350]!,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[350]!,
+                            ),
+                          ),
+                          hintText: '...جستوجو',
+                          hintStyle: TextStyle(
+                            fontFamily: 'SN',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[500],
+                          ),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey[350]!,
-                        ),
-                      ),
-                      hintText: '...جستوجو',
-                      hintStyle: TextStyle(
-                        fontFamily: 'SN',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[500],
-                      ),
                     ),
-                  ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 18, top: 18),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      textWidget(
-                        'حساب کاربری',
-                        Colors.black,
-                        16,
-                        FontWeight.w700,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Image.asset('images/profile_logo.png'),
-                    ],
-                  ),
-                ),
-                const InfoAccountUser(),
-                const SizedBox(
-                  height: 50,
-                ),
-                itemsAccountButton(),
-              ],
+              ),
             ),
-          ),
+            SliverPadding(
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15, bottom: 20, top: 25),
+              sliver: SliverToBoxAdapter(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    textWidget(
+                      'حساب کاربری',
+                      Colors.black,
+                      16,
+                      FontWeight.w700,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset('images/profile_logo.png'),
+                  ],
+                ),
+              ),
+            ),
+            const SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              sliver: SliverToBoxAdapter(
+                child: InfoAccountUser(),
+              ),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 50,
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              sliver: SliverToBoxAdapter(
+                child: itemsAccountButton(),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   List itemText = [
-    'آگهی های من',
     'پرداخت های من',
     'بازدید های اخیر',
     'ذخیره شده ها',
@@ -104,7 +122,7 @@ class _AccountScreenState extends State<AccountScreen> {
     'درباره آویز',
   ];
   List itemImage = [
-    'images/note-2.png',
+    // 'images/note-2.png',
     'images/card.png',
     'images/eye.png',
     'images/save-2.png',

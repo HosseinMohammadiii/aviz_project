@@ -1,5 +1,6 @@
 import 'package:aviz_project/screen/login_screen.dart';
 import 'package:aviz_project/screen/register_feature_screen.dart';
+import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LogInScreen(),
+      home: BottomNavigationScreen(),
     );
   }
 }

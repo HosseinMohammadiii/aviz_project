@@ -1,3 +1,4 @@
+import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/button_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
@@ -8,7 +9,13 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:fdottedline_nullsafety/fdottedline__nullsafety.dart';
 
 class InformationAdvertising extends StatefulWidget {
-  const InformationAdvertising({super.key});
+  InformationAdvertising({
+    super.key,
+    required this.advertising,
+    required this.advertisingData,
+  });
+  Advertising advertising;
+  AdvertisingData advertisingData;
 
   @override
   State<InformationAdvertising> createState() => _InformationAdvertisingState();
@@ -103,7 +110,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   height: 20,
                 ),
                 textWidget(
-                  'آپارتمان ۵۰۰ متری در صیاد شیرازی',
+                  widget.advertisingData.title ?? 'Null',
                   Colors.black,
                   16,
                   FontWeight.w700,
@@ -168,7 +175,11 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                 const SizedBox(
                   height: 25,
                 ),
-                _changeBoxContainer(indexContainer),
+                _changeBoxContainer(
+                  indexContainer,
+                  widget.advertising,
+                  widget.advertisingData,
+                ),
                 const SizedBox(
                   height: 25,
                 ),
@@ -181,10 +192,16 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
     );
   }
 
-  _changeBoxContainer(int index) {
+  _changeBoxContainer(
+    int index,
+    Advertising advertising,
+    AdvertisingData advertisingData,
+  ) {
     switch (index) {
       case 0:
-        return const SpecificationBox();
+        return SpecificationBox(
+          advertising: advertising,
+        );
 
       case 1:
         return const PriceInfoWidget();
@@ -194,7 +211,9 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
         return const DescriptionWidget();
 
       default:
-        return const SpecificationBox();
+        return SpecificationBox(
+          advertising: advertising,
+        );
     }
   }
 }
@@ -208,7 +227,11 @@ class ContainerInfo {
 }
 
 class SpecificationBox extends StatefulWidget {
-  const SpecificationBox({super.key});
+  SpecificationBox({
+    super.key,
+    required this.advertising,
+  });
+  Advertising advertising;
 
   @override
   State<SpecificationBox> createState() => _SpecificationBoxState();
@@ -221,12 +244,12 @@ class _SpecificationBoxState extends State<SpecificationBox> {
     'طبقه',
     'ساخت',
   ];
-  List listTextInfoTitle = [
-    '500',
-    '6',
-    'دوبلکس',
-    '1402',
-  ];
+  // List listTextInfoTitle = [
+  //   widget.advertising.metr,
+  //   '6',
+  //   'دوبلکس',
+  //   '1402',
+  // ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -242,39 +265,49 @@ class _SpecificationBoxState extends State<SpecificationBox> {
             children: [
               Positioned.fill(
                 top: 8,
-                child: SizedBox(
-                  height: 70,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    reverse: true,
-                    itemCount: listTextTitle.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 34.4),
-                            child: textWidget(
-                              listTextTitle[index],
-                              Colors.grey[500]!,
-                              14,
-                              FontWeight.w400,
-                            ),
-                          ),
-                          textWidget(
-                            listTextInfoTitle[index],
-                            Colors.black,
-                            14,
-                            FontWeight.w400,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                child: Row(
+                  children: [
+                    textWidget(
+                      'txt',
+                      Colors.black,
+                      14,
+                      FontWeight.w400,
+                    ),
+                  ],
                 ),
+                // child: SizedBox(
+                //   height: 70,
+                //   child: ListView.builder(
+                //     scrollDirection: Axis.horizontal,
+                //     physics: const NeverScrollableScrollPhysics(),
+                //     reverse: true,
+                //     itemCount: listTextTitle.length,
+                //     itemBuilder: (context, index) {
+                //       return Column(
+                //         crossAxisAlignment: CrossAxisAlignment.center,
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Padding(
+                //             padding:
+                //                 const EdgeInsets.symmetric(horizontal: 34.4),
+                //             child: textWidget(
+                //               listTextTitle[index],
+                //               Colors.grey[500]!,
+                //               14,
+                //               FontWeight.w400,
+                //             ),
+                //           ),
+                //           textWidget(
+                //             listTextInfoTitle[index],
+                //             Colors.black,
+                //             14,
+                //             FontWeight.w400,
+                //           ),
+                //         ],
+                //       );
+                //     },
+                //   ),
+                // ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

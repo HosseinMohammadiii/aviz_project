@@ -1,4 +1,7 @@
+import 'package:aviz_project/List/list_advertising.dart';
+import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/class/scroll_behavior.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/locatin_upload_screen.dart';
@@ -33,6 +36,8 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
   double metr = 0;
 
   String txtTitle = 'فروش آپارتمان';
+
+  List<Advertising> advertisingBox = [];
 
   @override
   void initState() {
@@ -279,12 +284,36 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
                     () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LocatioUpload(),
-                        ),
-                      );
+                      if (controller1.text.isEmpty ||
+                          controller2.text.isEmpty ||
+                          controller3.text.isEmpty ||
+                          controller4.text.isEmpty) {
+                        displayDialog(
+                            'لطفا تمام ویژگی ها را وارد کنید', context);
+                      } else {
+                        try {
+                          num metr = num.parse(controller1.text);
+                          num countRoom = num.parse(controller2.text);
+                          num floor = num.parse(controller3.text);
+                          num yearBuild = num.parse(controller4.text);
+
+                          addAdvertising(
+                            metr,
+                            countRoom,
+                            floor,
+                            yearBuild,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LocatioUpload(),
+                            ),
+                          );
+                        } catch (e) {
+                          displayDialog(
+                              'لطفاً مقدار عددی معتبر وارد کنید', context);
+                        }
+                      }
                     },
                     'بعدی',
                     CustomColor.red,
@@ -298,6 +327,22 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
         ),
       ),
     );
+  }
+
+//Widget For Add Advertising
+  void addAdvertising(
+    num metr,
+    num countRoom,
+    num floor,
+    num yearBuild,
+  ) {
+    Advertising advertising = Advertising(
+      metr: metr,
+      countRom: countRoom,
+      floor: floor,
+      yearBuild: yearBuild,
+    );
+    // advertisingBox.add(advertising);
   }
 
 //Widget for display switch feature
