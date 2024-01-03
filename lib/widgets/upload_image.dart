@@ -24,7 +24,7 @@ class UploadImage extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           radius: const Radius.circular(4),
           dashPattern: const [8, 4],
-          color: fileImage == null ? CustomColor.grey350 : CustomColor.white,
+          color: fileImage == null ? CustomColor.grey350 : Colors.transparent,
           strokeWidth: 2,
           child: Container(
             height: 144,

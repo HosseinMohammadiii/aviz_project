@@ -3,10 +3,11 @@ import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class UploadLocation extends StatelessWidget {
-  const UploadLocation({
+  UploadLocation({
     super.key,
+    required this.address,
   });
-
+  String address;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -35,7 +36,7 @@ class UploadLocation extends StatelessWidget {
             children: [
               Image.asset('images/location_icon.png'),
               textWidget(
-                'اصفهان، زاینده رو...',
+                address,
                 CustomColor.grey,
                 16,
                 FontWeight.w400,

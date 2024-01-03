@@ -34,6 +34,19 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
 
   int indexContainer = 0;
 
+  txtTitle(String title) {
+    switch (title) {
+      case 'فروش آپارتمان':
+        return 'آپارتمان';
+      case 'فروش ویلا':
+        return 'ویلا';
+      case 'فروش زمین':
+        return 'زمین';
+      default:
+        'آپارتمان';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,7 +106,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textWidget(
-                      '۱۶ دقیقه پیش در گرگان',
+                      '۱۶ دقیقه پیش در ${widget.advertising.address}',
                       CustomColor.grey500,
                       14,
                       FontWeight.w400,
@@ -107,7 +120,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                         color: CustomColor.grey200,
                       ),
                       child: textWidget(
-                        'آپارتمان',
+                        txtTitle(widget.advertising.title!),
                         CustomColor.red,
                         14,
                         FontWeight.w400,
@@ -289,8 +302,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                 children: [
                   for (var i = 0; i < 3; i++) ...[
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, bottom: 10, left: 5.5),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: DottedLine(
                         direction: Axis.vertical,
                         dashColor: CustomColor.grey350,
@@ -325,7 +337,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         const SizedBox(
           height: 20,
         ),
-        const UploadLocation(),
+        UploadLocation(address: widget.advertising.address!),
       ],
     );
   }

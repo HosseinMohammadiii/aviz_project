@@ -9,6 +9,7 @@ import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/switch_box.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
+import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:aviz_project/widgets/upload_image.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,16 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
             galleryFile = File(pickedFile!.path);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Nothing is selected')));
+              SnackBar(
+                backgroundColor: CustomColor.bluegrey,
+                content: textWidget(
+                  'عکسی انتخاب نشد',
+                  CustomColor.grey,
+                  14,
+                  FontWeight.w500,
+                ),
+              ),
+            );
           }
         },
       );
@@ -59,7 +69,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
               children: <Widget>[
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Photo Library'),
+                  title: const Text('گالری'),
                   onTap: () {
                     getImage(ImageSource.gallery);
                     Navigator.of(context).pop();
@@ -67,7 +77,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
+                  title: const Text('دوربین'),
                   onTap: () {
                     getImage(ImageSource.camera);
                     Navigator.of(context).pop();
@@ -140,10 +150,13 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
                 GestureDetector().textButton(
                   () {
-                    if (controller1.text.isEmpty ||
+                    if (galleryFile == null) {
+                      displayDialog(
+                          'لطفا عکس مورد نظر را انتخاب کنید', context);
+                    } else if (controller1.text.isEmpty ||
                         controller2.text.isEmpty ||
                         controller3.text.isEmpty) {
-                      displayDialog('لطفا تمام مقدار ها را وارد کنید', context);
+                      displayDialog('لطفا تمام فیلد ها را کامل کنید', context);
                     } else {
                       try {
                         String title = controller1.text;

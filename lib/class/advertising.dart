@@ -5,12 +5,16 @@ class Advertising {
   num? countRom;
   num? floor;
   num? yearBuild;
+  String? title;
+  String? address;
 
   Advertising({
     this.metr,
     this.countRom,
     this.floor,
     this.yearBuild,
+    this.title,
+    this.address,
   });
 }
 

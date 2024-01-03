@@ -33,9 +33,8 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
 
   OverlayEntry? entry;
 
-  double metr = 0;
-
   String txtTitle = 'فروش آپارتمان';
+  String address = '';
 
   @override
   void initState() {
@@ -63,11 +62,11 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     final size = renderBox.size;
     entry = OverlayEntry(
       builder: (context) => Positioned(
-          width: size.width / 2.6,
+          width: 159,
           child: CompositedTransformFollower(
             link: layerLink,
             showWhenUnlinked: false,
-            offset: Offset(0, size.height / 31),
+            offset: Offset(0, size.height / 35),
             child: SizedBox(
               height: 110,
               child: ScrollConfiguration(
@@ -85,7 +84,8 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                       },
                       child: Container(
                         alignment: Alignment.topRight,
-                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 6),
                         color: CustomColor.grey300,
                         child: textWidget(
                           txt[index],
@@ -120,7 +120,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
           automaticallyImplyLeading: false,
           flexibleSpace: AppBarWidget(
             stepScreen: 3,
-            screen: const LocatioUpload(),
+            screen: LocatioUpload(),
           ),
         ),
         body: Padding(
@@ -168,6 +168,11 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                                 color: CustomColor.grey500,
                               ),
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                address = value;
+                              });
+                            },
                             onTapOutside: (event) {
                               focusNode1.unfocus();
                             },
@@ -298,12 +303,13 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
                     () {
-                      if (controller1.text.isEmpty ||
+                      if (address.isEmpty ||
+                          controller1.text.isEmpty ||
                           controller2.text.isEmpty ||
                           controller3.text.isEmpty ||
                           controller4.text.isEmpty) {
                         displayDialog(
-                            'لطفا تمام ویژگی ها را وارد کنید', context);
+                            'لطفا تمامی فیلد ها را کامل کنید', context);
                       } else {
                         try {
                           num metr = num.parse(controller2.text);
@@ -316,11 +322,15 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                             countRoom,
                             floor,
                             yearBuild,
+                            txtTitle,
+                            address,
                           );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LocatioUpload(),
+                              builder: (context) => LocatioUpload(
+                                address: address,
+                              ),
                             ),
                           );
                         } catch (e) {
@@ -349,12 +359,16 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     num countRoom,
     num floor,
     num yearBuild,
+    String title,
+    String address,
   ) {
     Advertising advertising = Advertising(
       metr: metr,
       countRom: countRoom,
       floor: floor,
       yearBuild: yearBuild,
+      title: title,
+      address: address,
     );
     advertisingBox.add(advertising);
   }

@@ -8,8 +8,11 @@ import 'package:aviz_project/widgets/uploadlocation.dart';
 import 'package:flutter/material.dart';
 
 class LocatioUpload extends StatefulWidget {
-  const LocatioUpload({super.key});
-
+  LocatioUpload({
+    super.key,
+    this.address = '',
+  });
+  String address;
   @override
   State<LocatioUpload> createState() => _LocatioUploadState();
 }
@@ -59,7 +62,9 @@ class _LocatioUploadState extends State<LocatioUpload> {
               const SizedBox(
                 height: 70,
               ),
-              const UploadLocation(),
+              UploadLocation(
+                address: widget.address,
+              ),
               const SizedBox(
                 height: 30,
               ),
