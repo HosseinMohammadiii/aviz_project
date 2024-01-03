@@ -32,6 +32,7 @@ class InputNumberScreen extends StatelessWidget {
                 textInputType: TextInputType.number,
                 countLine: 1,
                 focusNode: FocusNode(),
+                textInputAction: TextInputAction.done,
               ),
               const Spacer(),
               GestureDetector().textButton(

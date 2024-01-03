@@ -1,6 +1,7 @@
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/information_advertising.dart';
+import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,27 +10,33 @@ class AdvertisingWidget extends StatefulWidget {
   AdvertisingWidget({
     super.key,
     required this.advertisingData,
+    required this.advertising,
   });
   AdvertisingData advertisingData;
+  Advertising advertising;
   @override
   State<AdvertisingWidget> createState() => _AdvertisingWidgetState();
 }
 
 class _AdvertisingWidgetState extends State<AdvertisingWidget> {
-  // File? galleryFile;
-  // final picker = ImagePicker();
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'fa-IR', symbol: '');
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const InformationAdvertising(),
-        //   ),
-        // );
+        setState(() {
+          ItemInformation(advertising: widget.advertising);
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InformationAdvertising(
+              advertising: widget.advertising,
+              advertisingData: widget.advertisingData,
+            ),
+          ),
+        );
       },
       child: Container(
         width: double.maxFinite,
@@ -53,9 +60,11 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
+              height: 107,
               width: 111,
-              child: Image.asset(
-                'images/Image_home2.png',
+              child: Image.file(
+                widget.advertisingData.img!,
+                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(
@@ -100,7 +109,6 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          // width: 91,
           height: 26,
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -126,88 +134,3 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
     );
   }
 }
-//  return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Gallery and Camera Access'),
-//         backgroundColor: Colors.green,
-//         actions: const [],
-//       ),
-//       body: Builder(
-//         builder: (BuildContext context) {
-//           return Center(
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 ElevatedButton(
-//                   style: ButtonStyle(
-//                       backgroundColor: MaterialStateProperty.all(Colors.green)),
-//                   child: const Text('Select Image from Gallery and Camera'),
-//                   onPressed: () {
-//                     _showPicker(context: context);
-//                   },
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 SizedBox(
-//                   height: 200.0,
-//                   width: 300.0,
-//                   child: galleryFile == null
-//                       ? const Center(child: Text('Sorry nothing selected!!'))
-//                       : Center(child: Image.file(galleryFile!)),
-//                 ),
-//               ],
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   void _showPicker({
-//     required BuildContext context,
-//   }) {
-//     showModalBottomSheet(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SafeArea(
-//           child: Wrap(
-//             children: <Widget>[
-//               ListTile(
-//                 leading: const Icon(Icons.photo_library),
-//                 title: const Text('Photo Library'),
-//                 onTap: () {
-//                   getImage(ImageSource.gallery);
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 leading: const Icon(Icons.photo_camera),
-//                 title: const Text('Camera'),
-//                 onTap: () {
-//                   getImage(ImageSource.camera);
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   Future getImage(
-//     ImageSource img,
-//   ) async {
-//     final pickedFile = await picker.pickImage(source: img);
-//     XFile? xfilePick = pickedFile;
-//     setState(
-//       () {
-//         if (xfilePick != null) {
-//           galleryFile = File(pickedFile!.path);
-//         } else {
-//           ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-//               const SnackBar(content: Text('Nothing is selected')));
-//         }
-//       },
-//     );
-//   }
-

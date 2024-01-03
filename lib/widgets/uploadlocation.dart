@@ -12,11 +12,15 @@ class UploadLocation extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
+        SizedBox(
           height: 144,
-          decoration: BoxDecoration(
+          width: double.infinity,
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.blue[100],
+            child: Image.asset(
+              'images/map_image.png',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Container(
@@ -31,7 +35,7 @@ class UploadLocation extends StatelessWidget {
             children: [
               Image.asset('images/location_icon.png'),
               textWidget(
-                'گرگان، صیاد شیرا...',
+                'اصفهان، زاینده رو...',
                 CustomColor.grey,
                 16,
                 FontWeight.w400,

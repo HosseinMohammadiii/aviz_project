@@ -5,9 +5,10 @@ class TextfieldFeature extends StatefulWidget {
   TextfieldFeature({
     super.key,
     required this.controller,
+    required this.textInputAction,
   });
   TextEditingController controller = TextEditingController();
-
+  TextInputAction textInputAction;
   @override
   State<TextfieldFeature> createState() => _TextfieldFeatureState();
 }
@@ -70,6 +71,7 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 keyboardType: TextInputType.number,
                 focusNode: focusNode,
                 controller: widget.controller,
+                textInputAction: widget.textInputAction,
                 textAlign: TextAlign.end,
                 style: const TextStyle(
                   fontFamily: 'SN',

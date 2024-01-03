@@ -2,11 +2,13 @@ import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/button_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
+import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fdottedline_nullsafety/fdottedline__nullsafety.dart';
+import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 
 class InformationAdvertising extends StatefulWidget {
   InformationAdvertising({
@@ -41,7 +43,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           flexibleSpace: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: Row(
               children: [
                 Image.asset('images/archive_icon.png'),
@@ -54,9 +56,14 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                 ),
                 Image.asset('images/information_icon.png'),
                 const Spacer(),
-                const Icon(
-                  Icons.chevron_right_rounded,
-                  size: 42,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.chevron_right_rounded,
+                    size: 42,
+                  ),
                 ),
               ],
             ),
@@ -68,17 +75,19 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
+                SizedBox(
                   height: 160,
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(bottom: 30),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
+                  width: double.infinity,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      widget.advertisingData.img!,
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  child: Image.asset(
-                    'images/home_image.png',
-                    fit: BoxFit.fitWidth,
-                  ),
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +125,15 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   FontWeight.w700,
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 25,
+                ),
+                DottedLine(
+                  dashColor: Colors.grey[200]!,
+                  lineThickness: 1.5,
+                  dashLength: 6,
+                ),
+                const SizedBox(
+                  height: 25,
                 ),
                 itemsCategoryType(
                   txt: 'هشدار های قبل از معامله!',
@@ -204,11 +221,16 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
         );
 
       case 1:
-        return const PriceInfoWidget();
+        return PriceInfoWidget(
+          advertisingData: advertisingData,
+          advertising: advertising,
+        );
       case 2:
         return FeatureWidget();
       case 3:
-        return const DescriptionWidget();
+        return DescriptionWidget(
+          advertisingData: advertisingData,
+        );
 
       default:
         return SpecificationBox(
@@ -244,12 +266,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
     'طبقه',
     'ساخت',
   ];
-  // List listTextInfoTitle = [
-  //   widget.advertising.metr,
-  //   '6',
-  //   'دوبلکس',
-  //   '1402',
-  // ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -263,58 +280,14 @@ class _SpecificationBoxState extends State<SpecificationBox> {
           alignment: Alignment.center,
           child: Stack(
             children: [
-              Positioned.fill(
-                top: 8,
-                child: Row(
-                  children: [
-                    textWidget(
-                      'txt',
-                      Colors.black,
-                      14,
-                      FontWeight.w400,
-                    ),
-                  ],
-                ),
-                // child: SizedBox(
-                //   height: 70,
-                //   child: ListView.builder(
-                //     scrollDirection: Axis.horizontal,
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     reverse: true,
-                //     itemCount: listTextTitle.length,
-                //     itemBuilder: (context, index) {
-                //       return Column(
-                //         crossAxisAlignment: CrossAxisAlignment.center,
-                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: [
-                //           Padding(
-                //             padding:
-                //                 const EdgeInsets.symmetric(horizontal: 34.4),
-                //             child: textWidget(
-                //               listTextTitle[index],
-                //               Colors.grey[500]!,
-                //               14,
-                //               FontWeight.w400,
-                //             ),
-                //           ),
-                //           textWidget(
-                //             listTextInfoTitle[index],
-                //             Colors.black,
-                //             14,
-                //             FontWeight.w400,
-                //           ),
-                //         ],
-                //       );
-                //     },
-                //   ),
-                // ),
-              ),
+              ItemInformation(advertising: widget.advertising),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   for (var i = 0; i < 3; i++) ...[
                     Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      padding:
+                          const EdgeInsets.only(top: 10, bottom: 10, left: 5.5),
                       child: DottedLine(
                         direction: Axis.vertical,
                         dashColor: Colors.grey[350]!,
@@ -355,9 +328,22 @@ class _SpecificationBoxState extends State<SpecificationBox> {
   }
 }
 
-class PriceInfoWidget extends StatelessWidget {
-  const PriceInfoWidget({super.key});
+class PriceInfoWidget extends StatefulWidget {
+  PriceInfoWidget({
+    super.key,
+    required this.advertisingData,
+    required this.advertising,
+  });
+  AdvertisingData advertisingData;
+  Advertising advertising;
 
+  @override
+  State<PriceInfoWidget> createState() => _PriceInfoWidgetState();
+}
+
+class _PriceInfoWidgetState extends State<PriceInfoWidget> {
+  NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'fa-IR', symbol: '');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -374,7 +360,7 @@ class PriceInfoWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               textWidget(
-                '۴۶٬۴۶۰٬۰۰۰',
+                priceChanged(widget.advertisingData.price.toString()),
                 Colors.black,
                 16,
                 FontWeight.w700,
@@ -396,7 +382,7 @@ class PriceInfoWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               textWidget(
-                '۲۳٬۲۳۰٬۰۰۰٬۰۰۰',
+                currencyFormat.format(widget.advertisingData.price ?? 'Null'),
                 Colors.black,
                 16,
                 FontWeight.w700,
@@ -413,6 +399,13 @@ class PriceInfoWidget extends StatelessWidget {
       ),
     );
   }
+
+//Function to calculate the price per meter of the house
+  priceChanged(String price) {
+    var priceChange = currencyFormat
+        .format(widget.advertisingData.price! / widget.advertising.metr!);
+    return price = priceChange;
+  }
 }
 
 class FeatureWidget extends StatelessWidget {
@@ -420,6 +413,15 @@ class FeatureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List textFeature = [
+      'آسانسور',
+      'پارکینگ',
+      'انباری',
+      'بالکن',
+      'پنت هاوس',
+      'جنس کف سرامیک',
+      'سرویس بهداشتی ایرانی و فرنگی',
+    ];
     return Column(
       children: [
         Row(
@@ -506,7 +508,6 @@ class FeatureWidget extends StatelessWidget {
           ],
         ),
         Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 15),
           margin: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey[350]!),
@@ -555,27 +556,20 @@ class FeatureWidget extends StatelessWidget {
       ],
     );
   }
-
-  List textFeature = [
-    'آسانسور',
-    'پارکینگ',
-    'انباری',
-    'بالکن',
-    'پنت هاوس',
-    'جنس کف سرامیک',
-    'سرویس بهداشتی ایرانی و فرنگی',
-  ];
 }
 
 class DescriptionWidget extends StatelessWidget {
-  const DescriptionWidget({super.key});
-
+  DescriptionWidget({
+    super.key,
+    required this.advertisingData,
+  });
+  AdvertisingData advertisingData;
   @override
   Widget build(BuildContext context) {
     return Text(
-      'ویلا ۵۰۰ متری در خیابان صیاد شیرازی ویو عالی وسط جنگل قیمت فوق العاده  گذاشتم فروش فوری  خریدار باشی تخفیف پای معامله میدم.',
+      advertisingData.description!,
       textAlign: TextAlign.justify,
-      textDirection: TextDirection.rtl,
+      textDirection: ui.TextDirection.rtl,
       style: TextStyle(
         color: Colors.grey[500],
         fontSize: 16,

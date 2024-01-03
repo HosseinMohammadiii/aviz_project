@@ -4,6 +4,7 @@ import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/add_advertising_screen.dart';
 import 'package:aviz_project/screen/information_advertising.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
+import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -39,32 +40,19 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 400,
-              child: ListView.builder(
-                itemCount: advertisingBox.length,
-                itemBuilder: (context, index) {
-                  var advertising = advertisingBox.toList()[index];
+        body: CustomScrollView(
+          slivers: [
+            SliverList.builder(
+              itemCount: advertisingDataBox.length,
+              itemBuilder: (context, index) {
+                var advertisingData = advertisingDataBox.toList()[index];
+                var advertising = advertisingBox.toList()[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      print('object');
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => InformationAdvertising(
-                      //       advertising: advertising,
-                      //       advertisingData: advertisingData,
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                    child: AdvertisingWidget(advertisingData: advertising),
-                  );
-                },
-              ),
+                return AdvertisingWidget(
+                  advertisingData: advertisingData,
+                  advertising: advertising,
+                );
+              },
             )
           ],
         ),

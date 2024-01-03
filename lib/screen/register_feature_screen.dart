@@ -37,8 +37,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
 
   String txtTitle = 'فروش آپارتمان';
 
-  List<Advertising> advertisingBox = [];
-
   @override
   void initState() {
     super.initState();
@@ -149,6 +147,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                           child: TextField(
                             keyboardType: TextInputType.streetAddress,
                             focusNode: focusNode1,
+                            textInputAction: TextInputAction.done,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               fontFamily: 'SN',
@@ -246,8 +245,14 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextfieldFeature(controller: controller1),
-                        TextfieldFeature(controller: controller2),
+                        TextfieldFeature(
+                          controller: controller1,
+                          textInputAction: TextInputAction.done,
+                        ),
+                        TextfieldFeature(
+                          controller: controller2,
+                          textInputAction: TextInputAction.done,
+                        ),
                       ],
                     ),
                     textCategory(
@@ -257,8 +262,14 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextfieldFeature(controller: controller3),
-                        TextfieldFeature(controller: controller4),
+                        TextfieldFeature(
+                          controller: controller3,
+                          textInputAction: TextInputAction.done,
+                        ),
+                        TextfieldFeature(
+                          controller: controller4,
+                          textInputAction: TextInputAction.done,
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -292,10 +303,10 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                             'لطفا تمام ویژگی ها را وارد کنید', context);
                       } else {
                         try {
-                          num metr = num.parse(controller1.text);
-                          num countRoom = num.parse(controller2.text);
-                          num floor = num.parse(controller3.text);
-                          num yearBuild = num.parse(controller4.text);
+                          num metr = num.parse(controller2.text);
+                          num countRoom = num.parse(controller1.text);
+                          num floor = num.parse(controller4.text);
+                          num yearBuild = num.parse(controller3.text);
 
                           addAdvertising(
                             metr,
@@ -342,7 +353,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
       floor: floor,
       yearBuild: yearBuild,
     );
-    // advertisingBox.add(advertising);
+    advertisingBox.add(advertising);
   }
 
 //Widget for display switch feature

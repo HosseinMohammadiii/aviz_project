@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class Advertising {
   num? metr;
   num? countRom;
@@ -15,11 +17,13 @@ class Advertising {
 class AdvertisingData {
   String? title;
   String? description;
-  double? price;
+  File? img;
+  num? price;
 
   AdvertisingData({
     this.title,
     this.description,
+    this.img,
     this.price,
   });
 }

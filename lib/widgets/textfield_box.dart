@@ -8,12 +8,14 @@ class TextFieldBox extends StatefulWidget {
     required this.countLine,
     required this.focusNode,
     this.controller,
+    required this.textInputAction,
   });
   String hint;
   TextInputType textInputType;
   int countLine;
   FocusNode focusNode = FocusNode();
   TextEditingController? controller;
+  TextInputAction textInputAction;
 
   @override
   State<TextFieldBox> createState() => _TextFieldBoxState();
@@ -30,6 +32,7 @@ class _TextFieldBoxState extends State<TextFieldBox> {
       ),
       child: TextField(
         keyboardType: widget.textInputType,
+        textInputAction: widget.textInputAction,
         maxLines: widget.countLine,
         focusNode: widget.focusNode,
         controller: widget.controller,

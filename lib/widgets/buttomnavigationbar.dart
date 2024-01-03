@@ -3,15 +3,16 @@ import 'package:aviz_project/class/screens.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
-  const BottomNavigationScreen({super.key});
-
+  BottomNavigationScreen({
+    super.key,
+    this.index = 3,
+  });
+  int index;
   @override
   State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int _selectedItem = 3;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,36 +35,36 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         elevation: 0,
         items: [
           BottomNavigationBarItem(
-              icon: _selectedItem == 0
+              icon: widget.index == 0
                   ? Image.asset('images/icon_profile-active.png')
                   : Image.asset('images/icon_profile.png'),
               label: 'آویز من'),
           BottomNavigationBarItem(
-              icon: _selectedItem == 1
+              icon: widget.index == 1
                   ? Image.asset('images/icon_add_active.png')
                   : Image.asset('images/icon_add.png'),
               label: 'افزودن آویز'),
           BottomNavigationBarItem(
-              icon: _selectedItem == 2
+              icon: widget.index == 2
                   ? Image.asset('images/note_red.png')
                   : Image.asset('images/note_grey.png'),
               label: 'آگهی من'),
           BottomNavigationBarItem(
-              icon: _selectedItem == 3
+              icon: widget.index == 3
                   ? Image.asset('images/icon_home_active.png')
                   : Image.asset('images/icon_home.png'),
               label: 'آویز آگهی ها'),
         ],
-        currentIndex: _selectedItem,
+        currentIndex: widget.index,
         selectedItemColor: CustomColor.red,
         onTap: (index) {
           setState(() {
-            _selectedItem = index;
+            widget.index = index;
           });
         },
       ),
       body: Center(
-        child: screen.elementAt(_selectedItem),
+        child: screen.elementAt(widget.index),
       ),
     );
   }

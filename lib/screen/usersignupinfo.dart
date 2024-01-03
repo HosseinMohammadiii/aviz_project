@@ -55,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textInputType: TextInputType.name,
                 countLine: 1,
                 focusNode: FocusNode(),
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(
                 height: 30,
@@ -64,6 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textInputType: TextInputType.number,
                 countLine: 1,
                 focusNode: FocusNode(),
+                textInputAction: TextInputAction.done,
               ),
               const Spacer(),
               GestureDetector().textButton(

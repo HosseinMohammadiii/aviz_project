@@ -28,7 +28,6 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: Column(
                   children: [
                     Container(
-                      //   margin: const EdgeInsets.symmetric(vertical: 18),
                       height: 45,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
@@ -107,32 +106,48 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: itemsAccountButton(),
               ),
             ),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  textWidget(
+                    'نسخه',
+                    Colors.grey[400]!,
+                    14,
+                    FontWeight.w400,
+                  ),
+                  textWidget(
+                    '۱.۵.۹',
+                    Colors.grey[400]!,
+                    14,
+                    FontWeight.w400,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  List itemText = [
-    'پرداخت های من',
-    'بازدید های اخیر',
-    'ذخیره شده ها',
-    'تنظیمات',
-    'پشتیبانی و قوانین',
-    'درباره آویز',
-  ];
-  List itemImage = [
-    // 'images/note-2.png',
-    'images/card.png',
-    'images/eye.png',
-    'images/save-2.png',
-    'images/setting.png',
-    'images/message-question.png',
-    'images/info-circle.png',
-  ];
-
 //Widget For display Items Account Button
   Widget itemsAccountButton() {
+    List itemText = [
+      'پرداخت های من',
+      'بازدید های اخیر',
+      'ذخیره شده ها',
+      'تنظیمات',
+      'پشتیبانی و قوانین',
+      'درباره آویز',
+    ];
+    List itemImage = [
+      'images/card.png',
+      'images/eye.png',
+      'images/save-2.png',
+      'images/setting.png',
+      'images/message-question.png',
+      'images/info-circle.png',
+    ];
     return SizedBox(
       height: 390,
       child: ListView.builder(
