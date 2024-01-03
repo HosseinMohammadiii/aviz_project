@@ -70,14 +70,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const Spacer(),
               GestureDetector().textButton(
                 () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ConfirmationNumberScreen(
                         'کد ثبت نام پیامک شده را وارد کنید',
                         '00:00',
                         CustomColor.black,
-                        CustomColor.grey,
+                        CustomColor.grey500,
                       ),
                     ),
                   );

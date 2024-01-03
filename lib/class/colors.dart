@@ -8,7 +8,7 @@ class CustomColor {
   static Color grey200 = Colors.grey[200]!;
   static Color grey300 = Colors.grey[300]!;
   static Color grey350 = Colors.grey[350]!;
-  static Color grey400 = Colors.grey[400]!;
+  static const Color grey400 = Color(0xffD0D5DD);
   static Color grey500 = Colors.grey[500]!;
 
   static Color bluegrey = Colors.blueGrey;
