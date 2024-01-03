@@ -19,7 +19,7 @@ class _SwitchBoxState extends State<SwitchBox> {
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[350]!),
+        border: Border.all(color: CustomColor.grey350),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -37,7 +37,7 @@ class _SwitchBoxState extends State<SwitchBox> {
           ),
           textWidget(
             widget.txt,
-            Colors.black,
+            CustomColor.black,
             16,
             FontWeight.w400,
           ),

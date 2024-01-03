@@ -60,7 +60,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             StepProgressIndicator(
               totalSteps: 5,
               currentStep: widget.stepScreen,
-              unselectedColor: Colors.white,
+              unselectedColor: CustomColor.white,
               selectedColor: CustomColor.red,
               padding: 0,
               progressDirection: TextDirection.rtl,

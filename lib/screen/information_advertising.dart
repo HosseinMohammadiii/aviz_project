@@ -94,7 +94,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   children: [
                     textWidget(
                       '۱۶ دقیقه پیش در گرگان',
-                      Colors.grey[500]!,
+                      CustomColor.grey500,
                       14,
                       FontWeight.w400,
                     ),
@@ -104,7 +104,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
-                        color: Colors.grey[200]!,
+                        color: CustomColor.grey200,
                       ),
                       child: textWidget(
                         'آپارتمان',
@@ -120,7 +120,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                 ),
                 textWidget(
                   widget.advertisingData.title ?? 'Null',
-                  Colors.black,
+                  CustomColor.black,
                   16,
                   FontWeight.w700,
                 ),
@@ -128,7 +128,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   height: 25,
                 ),
                 DottedLine(
-                  dashColor: Colors.grey[200]!,
+                  dashColor: CustomColor.grey200,
                   lineThickness: 1.5,
                   dashLength: 6,
                 ),
@@ -137,7 +137,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                 ),
                 itemsCategoryType(
                   txt: 'هشدار های قبل از معامله!',
-                  color: Colors.grey[350]!,
+                  color: CustomColor.grey350,
                 ),
                 const SizedBox(
                   height: 20,
@@ -169,11 +169,11 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                               border: Border.all(
                                 color: listText[index].selected
                                     ? Colors.transparent
-                                    : Colors.grey[350]!,
+                                    : CustomColor.grey350,
                               ),
                               color: listText[index].selected
-                                  ? Colors.red
-                                  : Colors.white,
+                                  ? CustomColor.red
+                                  : CustomColor.white,
                             ),
                             child: textWidget(
                               listText[index].text,
@@ -209,6 +209,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
     );
   }
 
+//Function Switch For Display Widgets
   _changeBoxContainer(
     int index,
     Advertising advertising,
@@ -274,7 +275,9 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         Container(
           height: 100,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[350]!),
+            border: Border.all(
+              color: CustomColor.grey350,
+            ),
             borderRadius: BorderRadius.circular(4),
           ),
           alignment: Alignment.center,
@@ -290,7 +293,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                           const EdgeInsets.only(top: 10, bottom: 10, left: 5.5),
                       child: DottedLine(
                         direction: Axis.vertical,
-                        dashColor: Colors.grey[350]!,
+                        dashColor: CustomColor.grey350,
                         lineThickness: 1.5,
                         dashLength: 6,
                       ),
@@ -309,7 +312,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
           children: [
             textWidget(
               'موقعیت مکانی',
-              Colors.black,
+              CustomColor.black,
               16,
               FontWeight.w700,
             ),
@@ -350,7 +353,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
       height: 96,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[350]!),
+        border: Border.all(color: CustomColor.grey350),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Column(
@@ -361,20 +364,20 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
             children: [
               textWidget(
                 priceChanged(widget.advertisingData.price.toString()),
-                Colors.black,
+                CustomColor.black,
                 16,
                 FontWeight.w700,
               ),
               textWidget(
                 'قیمت هر متر:',
-                Colors.black,
+                CustomColor.black,
                 16,
                 FontWeight.w700,
               ),
             ],
           ),
           DottedLine(
-            dashColor: Colors.grey[350]!,
+            dashColor: CustomColor.grey350,
             lineThickness: 1.5,
             dashLength: 6,
           ),
@@ -383,13 +386,13 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
             children: [
               textWidget(
                 currencyFormat.format(widget.advertisingData.price ?? 'Null'),
-                Colors.black,
+                CustomColor.black,
                 16,
                 FontWeight.w700,
               ),
               textWidget(
                 'قیمت کل:',
-                Colors.black,
+                CustomColor.black,
                 16,
                 FontWeight.w700,
               ),
@@ -429,7 +432,7 @@ class FeatureWidget extends StatelessWidget {
           children: [
             textWidget(
               'ویژگی ها',
-              Colors.black,
+              CustomColor.black,
               16,
               FontWeight.w700,
             ),
@@ -444,7 +447,7 @@ class FeatureWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           margin: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[350]!),
+            border: Border.all(color: CustomColor.grey350),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
@@ -455,20 +458,20 @@ class FeatureWidget extends StatelessWidget {
                 children: [
                   textWidget(
                     'تک برگ',
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     16,
                     FontWeight.w700,
                   ),
                   textWidget(
                     'سند',
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     16,
                     FontWeight.w700,
                   ),
                 ],
               ),
               DottedLine(
-                dashColor: Colors.grey[350]!,
+                dashColor: CustomColor.grey350,
                 lineThickness: 1.5,
                 dashLength: 6,
               ),
@@ -477,13 +480,13 @@ class FeatureWidget extends StatelessWidget {
                 children: [
                   textWidget(
                     'شمالی',
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     16,
                     FontWeight.w700,
                   ),
                   textWidget(
                     'جهت ساختمان',
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     16,
                     FontWeight.w700,
                   ),
@@ -497,7 +500,7 @@ class FeatureWidget extends StatelessWidget {
           children: [
             textWidget(
               'امکانات',
-              Colors.black,
+              CustomColor.black,
               16,
               FontWeight.w700,
             ),
@@ -510,7 +513,7 @@ class FeatureWidget extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[350]!),
+            border: Border.all(color: CustomColor.grey350),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
@@ -530,7 +533,7 @@ class FeatureWidget extends StatelessWidget {
                               vertical: 15, horizontal: 15),
                           child: textWidget(
                             textFeature[index],
-                            Colors.grey[500]!,
+                            CustomColor.grey500,
                             16,
                             FontWeight.w400,
                           ),
@@ -540,7 +543,7 @@ class FeatureWidget extends StatelessWidget {
                           child: DottedLine(
                             dashColor: index == 6
                                 ? Colors.transparent
-                                : Colors.grey[350]!,
+                                : CustomColor.grey350,
                             lineThickness: 1.5,
                             dashLength: 6,
                           ),
@@ -571,7 +574,7 @@ class DescriptionWidget extends StatelessWidget {
       textAlign: TextAlign.justify,
       textDirection: ui.TextDirection.rtl,
       style: TextStyle(
-        color: Colors.grey[500],
+        color: CustomColor.grey500,
         fontSize: 16,
         fontWeight: FontWeight.w400,
       ),

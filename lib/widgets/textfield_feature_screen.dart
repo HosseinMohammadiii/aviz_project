@@ -27,7 +27,7 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
         height: 48,
         padding: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
-          color: Colors.grey[350],
+          color: CustomColor.grey350,
           borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
@@ -76,7 +76,7 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 style: const TextStyle(
                   fontFamily: 'SN',
                   fontSize: 16,
-                  color: Colors.black,
+                  color: CustomColor.black,
                   overflow: TextOverflow.ellipsis,
                 ),
                 decoration: const InputDecoration(

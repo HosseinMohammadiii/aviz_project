@@ -24,7 +24,7 @@ class UploadImage extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           radius: const Radius.circular(4),
           dashPattern: const [8, 4],
-          color: fileImage == null ? Colors.grey[350]! : Colors.white,
+          color: fileImage == null ? CustomColor.grey350 : CustomColor.white,
           strokeWidth: 2,
           child: Container(
             height: 144,
@@ -35,7 +35,7 @@ class UploadImage extends StatelessWidget {
                 children: [
                   textWidget(
                     'لطفا تصویر آویز خود را بارگذاری کنید',
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     14,
                     FontWeight.w400,
                   ),

@@ -23,7 +23,7 @@ class InputNumberScreen extends StatelessWidget {
                 height: 12,
               ),
               textWidget('خوشحالیم که مجددا آویز رو برای آگهی انتخاب کردی!',
-                  Colors.grey[500]!, 15, FontWeight.w400),
+                  CustomColor.grey500, 15, FontWeight.w400),
               const SizedBox(
                 height: 25,
               ),
@@ -43,8 +43,8 @@ class InputNumberScreen extends StatelessWidget {
                       builder: (context) => ConfirmationNumberScreen(
                           'کد ورود پیامک شده را وارد کنید',
                           '00:45',
-                          Colors.grey[500]!,
-                          Colors.black),
+                          CustomColor.grey500,
+                          CustomColor.black),
                     ),
                   );
                 },
@@ -77,7 +77,7 @@ class InputNumberScreen extends StatelessWidget {
                   ),
                   textWidget(
                     'تا حالا ثبت نام نکردی؟',
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     17,
                     FontWeight.w400,
                   ),

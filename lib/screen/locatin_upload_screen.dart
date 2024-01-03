@@ -25,7 +25,7 @@ class _LocatioUploadState extends State<LocatioUpload> {
           automaticallyImplyLeading: false,
           flexibleSpace: AppBarWidget(
             stepScreen: 4,
-            screen: RegisterAdvertising(),
+            screen: const RegisterAdvertising(),
           ),
         ),
         body: Padding(
@@ -37,7 +37,7 @@ class _LocatioUploadState extends State<LocatioUpload> {
                 children: [
                   textWidget(
                     'موقعیت مکانی',
-                    Colors.black,
+                    CustomColor.black,
                     16,
                     FontWeight.w700,
                   ),
@@ -52,7 +52,7 @@ class _LocatioUploadState extends State<LocatioUpload> {
               ),
               textWidget(
                 'بعد انتخاب محل دقیق روی نقشه میتوانید نمایش آن را فعال یا غیر فعال کید تا حریم خصوصی شما خفظ شود.',
-                Colors.grey[500]!,
+                CustomColor.grey500,
                 14,
                 FontWeight.w400,
               ),

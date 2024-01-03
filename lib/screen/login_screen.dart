@@ -52,7 +52,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           'در آویز ملک خود را برای فروش،اجاره و رهن آگهی کنید و یا اگر دنبال ملک با مشخصات دلخواه خود هستید آویز ها را ببینید',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.grey[500],
+                            color: CustomColor.grey500,
                             fontSize: 17,
                             fontFamily: 'SN',
                             fontWeight: FontWeight.w400,
@@ -76,7 +76,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   expansionFactor: 4,
                   dotHeight: 7,
                   dotWidth: 5,
-                  dotColor: Colors.grey[500]!,
+                  dotColor: CustomColor.grey500,
                   activeDotColor: CustomColor.red,
                   spacing: 5,
                 ),

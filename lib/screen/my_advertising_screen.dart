@@ -1,10 +1,6 @@
 import 'package:aviz_project/List/list_advertising.dart';
-import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/add_advertising_screen.dart';
-import 'package:aviz_project/screen/information_advertising.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
-import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 

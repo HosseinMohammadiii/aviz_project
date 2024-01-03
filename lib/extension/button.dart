@@ -12,7 +12,6 @@ extension ButtonClick on GestureDetector {
     return GestureDetector(
       onTap: function,
       child: Container(
-        // margin: const EdgeInsets.symmetric(horizontal: 15),
         height: 40,
         alignment: Alignment.center,
         decoration: BoxDecoration(

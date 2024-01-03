@@ -32,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   textWidget(
                     'خوش اومدی به',
-                    Colors.black,
+                    CustomColor.black,
                     16,
                     FontWeight.w700,
                   ),
@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               textWidget(
                 'این فوق العادست که آویزو برای آگهی هات انتخاب کردی!',
-                Colors.grey[500]!,
+                CustomColor.grey500,
                 15,
                 FontWeight.w400,
               ),
@@ -74,10 +74,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ConfirmationNumberScreen(
-                          'کد ثبت نام پیامک شده را وارد کنید',
-                          '00:00',
-                          Colors.black,
-                          Colors.grey),
+                        'کد ثبت نام پیامک شده را وارد کنید',
+                        '00:00',
+                        CustomColor.black,
+                        CustomColor.grey,
+                      ),
                     ),
                   );
                 },
@@ -102,10 +103,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       );
                     },
                     child: textWidget(
-                        '  ورود', CustomColor.red, 17, FontWeight.w600),
+                      '  ورود',
+                      CustomColor.red,
+                      17,
+                      FontWeight.w600,
+                    ),
                   ),
-                  textWidget('قبلا ثبت نام کردی؟', Colors.grey[500]!, 17,
-                      FontWeight.w400),
+                  textWidget(
+                    'قبلا ثبت نام کردی؟',
+                    CustomColor.grey500,
+                    17,
+                    FontWeight.w400,
+                  ),
                 ],
               ),
             ],

@@ -12,7 +12,7 @@ class InfoAccountUser extends StatelessWidget {
     return Container(
       height: 95,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[350]!),
+        border: Border.all(color: CustomColor.grey350),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -30,7 +30,7 @@ class InfoAccountUser extends StatelessWidget {
                       Image.asset('images/edit.png'),
                       textWidget(
                         'حسین محمدی',
-                        Colors.black,
+                        CustomColor.black,
                         16,
                         FontWeight.w700,
                       ),
@@ -44,7 +44,6 @@ class InfoAccountUser extends StatelessWidget {
                         width: 66,
                         margin: const EdgeInsets.symmetric(horizontal: 12),
                         alignment: Alignment.center,
-                        // padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: CustomColor.red,
@@ -58,7 +57,7 @@ class InfoAccountUser extends StatelessWidget {
                       ),
                       textWidget(
                         '..71...0913',
-                        Colors.black,
+                        CustomColor.black,
                         16,
                         FontWeight.w700,
                       ),
@@ -71,7 +70,6 @@ class InfoAccountUser extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: SizedBox(
-              //width: 50,
               height: 60,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),

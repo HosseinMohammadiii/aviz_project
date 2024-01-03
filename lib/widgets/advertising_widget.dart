@@ -46,10 +46,10 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: Colors.white,
+          color: CustomColor.white,
           boxShadow: const [
             BoxShadow(
-              color: Colors.black,
+              color: CustomColor.black,
               blurRadius: 40,
               spreadRadius: -35,
               offset: Offset(0, 8),
@@ -80,13 +80,13 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                   ),
                   textWidget(
                     widget.advertisingData.title ?? 'Null',
-                    Colors.black,
+                    CustomColor.black,
                     14,
                     FontWeight.w700,
                   ),
                   textWidget(
                     widget.advertisingData.description ?? 'Null',
-                    Colors.black,
+                    CustomColor.black,
                     12,
                     FontWeight.w400,
                   ),
@@ -115,7 +115,7 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
-            color: Colors.grey[200],
+            color: CustomColor.grey200,
           ),
           child: textWidget(
             currencyFormat.format(widget.advertisingData.price ?? 'Null'),
@@ -126,7 +126,7 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
         ),
         textWidget(
           'قیمت:',
-          Colors.black,
+          CustomColor.black,
           12,
           FontWeight.w500,
         ),

@@ -6,13 +6,12 @@ import 'package:pinput/pinput.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmationNumberScreen extends StatefulWidget {
+  ConfirmationNumberScreen(this.txt1, this.txt2, this.color1, this.color2,
+      {super.key});
   String txt1;
   String txt2;
   Color color1;
   Color color2;
-  ConfirmationNumberScreen(this.txt1, this.txt2, this.color1, this.color2,
-      {super.key});
-
   @override
   State<ConfirmationNumberScreen> createState() =>
       _ConfirmationNumberScreenState();
@@ -31,7 +30,7 @@ class _ConfirmationNumberScreenState extends State<ConfirmationNumberScreen> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Colors.grey[200],
+        color: CustomColor.grey200,
       ),
     );
     return Scaffold(
@@ -43,7 +42,7 @@ class _ConfirmationNumberScreenState extends State<ConfirmationNumberScreen> {
             children: [
               textWidget(
                 'تایید شماره موبایل',
-                Colors.black,
+                CustomColor.black,
                 20,
                 FontWeight.w700,
               ),
@@ -52,7 +51,7 @@ class _ConfirmationNumberScreenState extends State<ConfirmationNumberScreen> {
               ),
               textWidget(
                 widget.txt1,
-                Colors.grey[500]!,
+                CustomColor.grey500,
                 15,
                 FontWeight.w400,
               ),
@@ -68,7 +67,7 @@ class _ConfirmationNumberScreenState extends State<ConfirmationNumberScreen> {
                 submittedPinTheme: defaultPinTheme.copyWith(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.grey[350],
+                    color: CustomColor.grey350,
                   ),
                 ),
               ),

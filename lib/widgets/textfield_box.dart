@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../class/colors.dart';
+
 class TextFieldBox extends StatefulWidget {
   TextFieldBox({
     super.key,
@@ -28,7 +30,7 @@ class _TextFieldBoxState extends State<TextFieldBox> {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Colors.grey[300],
+        color: CustomColor.grey300,
       ),
       child: TextField(
         keyboardType: widget.textInputType,
@@ -40,7 +42,7 @@ class _TextFieldBoxState extends State<TextFieldBox> {
         style: TextStyle(
           fontFamily: 'SN',
           fontSize: 20,
-          color: Colors.grey[500],
+          color: CustomColor.grey500,
         ),
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
@@ -49,7 +51,7 @@ class _TextFieldBoxState extends State<TextFieldBox> {
           hintStyle: TextStyle(
             fontFamily: 'SN',
             fontSize: 18,
-            color: Colors.grey[500],
+            color: CustomColor.grey500,
           ),
         ),
         onTapOutside: (event) {

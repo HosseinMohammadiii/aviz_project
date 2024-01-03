@@ -1,3 +1,4 @@
+import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/information_user_account.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -40,18 +41,18 @@ class _AccountScreenState extends State<AccountScreen> {
                         style: TextStyle(
                           fontFamily: 'SN',
                           fontSize: 18,
-                          color: Colors.grey[500],
+                          color: CustomColor.grey500,
                         ),
                         decoration: InputDecoration(
                           suffixIcon: Image.asset('images/search-normal.png'),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.grey[350]!,
+                              color: CustomColor.grey350,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.grey[350]!,
+                              color: CustomColor.grey350,
                             ),
                           ),
                           hintText: '...جستوجو',
@@ -59,7 +60,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             fontFamily: 'SN',
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            color: Colors.grey[500],
+                            color: CustomColor.grey500,
                           ),
                         ),
                       ),

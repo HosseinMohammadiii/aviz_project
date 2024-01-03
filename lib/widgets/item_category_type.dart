@@ -22,7 +22,7 @@ class itemsCategoryType extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[350]!),
+        border: Border.all(color: CustomColor.grey350),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -35,7 +35,7 @@ class itemsCategoryType extends StatelessWidget {
           const Spacer(),
           textWidget(
             txt,
-            Colors.black,
+            CustomColor.black,
             16,
             FontWeight.w500,
           ),
@@ -56,6 +56,11 @@ class ItemSelectCategory extends StatefulWidget {
 }
 
 class _ItemSelectCategoryState extends State<ItemSelectCategory> {
+  List txt2 = [
+    'فروش آپارتمان',
+    'فروش خانه و ویلا',
+    'فروش زمین و کلنگی',
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -90,10 +95,4 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
       ),
     );
   }
-
-  List txt2 = [
-    'فروش آپارتمان',
-    'فروش خانه و ویلا',
-    'فروش زمین و کلنگی',
-  ];
 }

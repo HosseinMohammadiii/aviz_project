@@ -27,7 +27,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         unselectedLabelStyle: TextStyle(
           fontFamily: 'SN',
           fontSize: 12,
-          color: Colors.grey[400],
+          color: CustomColor.grey400,
           fontWeight: FontWeight.w500,
         ),
         backgroundColor: CustomColor.grey,

@@ -1,4 +1,5 @@
 import 'package:aviz_project/class/advertising.dart';
+import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class _ItemInformationState extends State<ItemInformation> {
                   padding: const EdgeInsets.symmetric(horizontal: 33.5),
                   child: textWidget(
                     listTextTitle[index],
-                    Colors.grey[500]!,
+                    CustomColor.grey500,
                     14,
                     FontWeight.w400,
                   ),
@@ -52,7 +53,7 @@ class _ItemInformationState extends State<ItemInformation> {
               children: [
                 textWidget(
                   '${widget.advertising.yearBuild}',
-                  Colors.black,
+                  CustomColor.black,
                   15,
                   FontWeight.w400,
                 ),
@@ -60,7 +61,7 @@ class _ItemInformationState extends State<ItemInformation> {
                   padding: const EdgeInsets.only(left: 6),
                   child: textWidget(
                     '${widget.advertising.floor}',
-                    Colors.black,
+                    CustomColor.black,
                     15,
                     FontWeight.w400,
                   ),
@@ -69,14 +70,14 @@ class _ItemInformationState extends State<ItemInformation> {
                   padding: const EdgeInsets.only(left: 10),
                   child: textWidget(
                     '${widget.advertising.countRom}',
-                    Colors.black,
+                    CustomColor.black,
                     15,
                     FontWeight.w400,
                   ),
                 ),
                 textWidget(
                   '${widget.advertising.metr}',
-                  Colors.black,
+                  CustomColor.black,
                   15,
                   FontWeight.w400,
                 ),
@@ -88,19 +89,3 @@ class _ItemInformationState extends State<ItemInformation> {
     );
   }
 }
-//  Container(
-//                   margin: const EdgeInsets.only(right: 4),
-//                   alignment: Alignment.center,
-//                   child: Text(
-//                     '${widget.advertising.metr}',
-//                     overflow: TextOverflow.ellipsis,
-//                     textAlign: TextAlign.justify,
-//                     textDirection: TextDirection.ltr,
-//                     style: const TextStyle(
-//                       color: Colors.black,
-//                       fontFamily: 'SN',
-//                       fontSize: 15,
-//                       fontWeight: FontWeight.w400,
-//                     ),
-//                   ),
-//                ),

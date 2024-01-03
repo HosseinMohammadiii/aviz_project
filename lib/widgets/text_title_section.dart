@@ -1,6 +1,8 @@
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../class/colors.dart';
+
 class TextTitleSection extends StatelessWidget {
   const TextTitleSection({
     super.key,
@@ -20,7 +22,7 @@ class TextTitleSection extends StatelessWidget {
         children: [
           textWidget(
             txt,
-            Colors.black,
+            CustomColor.black,
             16,
             FontWeight.w700,
           ),

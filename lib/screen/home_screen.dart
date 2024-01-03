@@ -1,5 +1,4 @@
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -50,18 +49,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontFamily: 'SN',
                           fontSize: 18,
-                          color: Colors.grey[500],
+                          color: CustomColor.grey500,
                         ),
                         decoration: InputDecoration(
                           suffixIcon: Image.asset('images/search-normal.png'),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.grey[350]!,
+                              color: CustomColor.grey350,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.grey[350]!,
+                              color: CustomColor.grey350,
                             ),
                           ),
                           hintText: '...جستوجو',
@@ -69,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontFamily: 'SN',
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            color: Colors.grey[500],
+                            color: CustomColor.grey500,
                           ),
                         ),
                         onTapOutside: (event) {
@@ -91,14 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         textWidget(
                           'مشاهده همه',
-                          Colors.grey[400]!,
+                          CustomColor.grey400,
                           14,
                           FontWeight.w400,
                         ),
                         const Spacer(),
                         textWidget(
                           'آویز های داغ',
-                          Colors.black,
+                          CustomColor.black,
                           16,
                           FontWeight.w700,
                         ),
@@ -109,7 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 250,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        //padding: const EdgeInsets.only(right: 15, left: 15),
                         itemCount: 10,
                         reverse: true,
                         itemBuilder: (context, index) {
@@ -130,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   textWidget(
                     'مشاهده همه',
-                    Colors.grey[400]!,
+                    CustomColor.grey400,
                     14,
                     FontWeight.w400,
                   ),
@@ -139,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   textWidget(
                     'آویز های اخیر',
-                    Colors.black,
+                    CustomColor.black,
                     16,
                     FontWeight.w700,
                   ),
@@ -159,75 +157,65 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //Widget For display recently Advertising
-  GestureDetector recentlyAdvertisingBox() {
-    return GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const InformationAdvertising(),
-        //   ),
-        // );
-      },
-      child: Container(
-        width: double.maxFinite,
-        height: 140,
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black,
-              blurRadius: 40,
-              spreadRadius: -35,
-              offset: Offset(0, 8),
+  Widget recentlyAdvertisingBox() {
+    return Container(
+      width: double.maxFinite,
+      height: 140,
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: CustomColor.white,
+        boxShadow: const [
+          BoxShadow(
+            color: CustomColor.black,
+            blurRadius: 40,
+            spreadRadius: -35,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 111,
+            child: Image.asset(
+              'images/Image_home2.png',
             ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 111,
-              child: Image.asset(
-                'images/Image_home2.png',
-              ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                textWidget(
+                  'واحد دوبلکس فول امکانات',
+                  CustomColor.black,
+                  14,
+                  FontWeight.w700,
+                ),
+                textWidget(
+                  'سال ساخت ۱۳۹۸، سند تک برگ، دوبلکس تجهیزات کامل',
+                  CustomColor.black,
+                  12,
+                  FontWeight.w400,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                priceText(),
+              ],
             ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  textWidget(
-                    'واحد دوبلکس فول امکانات',
-                    Colors.black,
-                    14,
-                    FontWeight.w700,
-                  ),
-                  textWidget(
-                    'سال ساخت ۱۳۹۸، سند تک برگ، دوبلکس تجهیزات کامل',
-                    Colors.black,
-                    12,
-                    FontWeight.w400,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  priceText(),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -241,10 +229,10 @@ class _HomeScreenState extends State<HomeScreen> {
       margin: const EdgeInsets.only(left: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Colors.white,
+        color: CustomColor.white,
         boxShadow: const [
           BoxShadow(
-            color: Colors.black,
+            color: CustomColor.black,
             blurRadius: 40,
             spreadRadius: -35,
             offset: Offset(0, 8),
@@ -258,13 +246,13 @@ class _HomeScreenState extends State<HomeScreen> {
           Image.asset('images/Image_home.png'),
           textWidget(
             'ویلا ۵۰۰ متری زیر قیمت',
-            Colors.black,
+            CustomColor.black,
             14,
             FontWeight.w700,
           ),
           textWidget(
             'ویو عالی، سند تک برگ، سال ساخت ۱۴۰۲، تحویل فوری',
-            Colors.grey[500]!,
+            CustomColor.grey500,
             12,
             FontWeight.w400,
           ),
@@ -286,12 +274,21 @@ class _HomeScreenState extends State<HomeScreen> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
-            color: Colors.grey[200],
+            color: CustomColor.grey200,
           ),
           child: textWidget(
-              '۲۵٬۶۸۳٬۰۰۰٬۰۰۰', CustomColor.red, 12, FontWeight.w500),
+            '۲۵٬۶۸۳٬۰۰۰٬۰۰۰',
+            CustomColor.red,
+            12,
+            FontWeight.w500,
+          ),
         ),
-        textWidget('قیمت:', Colors.black, 12, FontWeight.w500)
+        textWidget(
+          'قیمت:',
+          CustomColor.black,
+          12,
+          FontWeight.w500,
+        )
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/class/scroll_behavior.dart';
+import 'package:aviz_project/class/switch_classs.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/locatin_upload_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
@@ -19,7 +20,6 @@ class RegisterFeatureScreen extends StatefulWidget {
 }
 
 class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
-  bool _switchBox = false;
   bool changeIcon = false;
 
   final layerLink = LayerLink();
@@ -55,6 +55,8 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     ClassSwitchBox('پارکینگ', true),
     ClassSwitchBox('انباری', false),
   ];
+
+  //Function for display Overlay
   void showOverlay() {
     final overLay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
@@ -84,10 +86,10 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                       child: Container(
                         alignment: Alignment.topRight,
                         padding: const EdgeInsets.symmetric(vertical: 4),
-                        color: Colors.grey[300],
+                        color: CustomColor.grey300,
                         child: textWidget(
                           txt[index],
-                          Colors.black,
+                          CustomColor.black,
                           15,
                           FontWeight.w500,
                         ),
@@ -102,6 +104,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     overLay.insert(entry!);
   }
 
+//Function for hide Ovelay
   void hideOverlay() {
     entry?.remove();
     entry = null;
@@ -140,7 +143,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                           margin: const EdgeInsets.only(right: 43),
                           padding: const EdgeInsets.only(right: 5),
                           decoration: BoxDecoration(
-                            color: Colors.grey[350],
+                            color: CustomColor.grey350,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           alignment: Alignment.center,
@@ -152,7 +155,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                             style: TextStyle(
                               fontFamily: 'SN',
                               fontSize: 16,
-                              color: Colors.grey[500],
+                              color: CustomColor.grey500,
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: InputDecoration(
@@ -162,7 +165,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                               hintStyle: TextStyle(
                                 fontFamily: 'SN',
                                 fontSize: 16,
-                                color: Colors.grey[500],
+                                color: CustomColor.grey500,
                               ),
                             ),
                             onTapOutside: (event) {
@@ -191,7 +194,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                               width: 159,
                               height: 48,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[350]!),
+                                border: Border.all(color: CustomColor.grey350),
                                 borderRadius: BorderRadius.only(
                                   topLeft: const Radius.circular(4),
                                   topRight: const Radius.circular(4),
@@ -218,7 +221,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                                     padding: const EdgeInsets.only(right: 6),
                                     child: textWidget(
                                       txtTitle,
-                                      Colors.black,
+                                      CustomColor.black,
                                       16,
                                       FontWeight.w400,
                                     ),
@@ -363,7 +366,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[350]!),
+        border: Border.all(color: CustomColor.grey350),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -381,7 +384,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
           ),
           textWidget(
             propertiesTxt[index].txt,
-            Colors.black,
+            CustomColor.black,
             16,
             FontWeight.w400,
           ),
@@ -402,7 +405,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
           ),
           textWidget(
             txt1,
-            Colors.grey[500]!,
+            CustomColor.grey500,
             14,
             FontWeight.w600,
           ),
@@ -411,7 +414,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
           ),
           textWidget(
             txt2,
-            Colors.grey[500]!,
+            CustomColor.grey500,
             14,
             FontWeight.w600,
           ),
@@ -419,10 +422,4 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
       ),
     );
   }
-}
-
-class ClassSwitchBox {
-  String txt;
-  bool switchb;
-  ClassSwitchBox(this.txt, this.switchb);
 }
