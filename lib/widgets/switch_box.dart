@@ -27,6 +27,10 @@ class _SwitchBoxState extends State<SwitchBox> {
         children: [
           Switch(
             activeColor: CustomColor.red,
+            activeTrackColor: CustomColor.red,
+            thumbColor: const MaterialStatePropertyAll(CustomColor.grey),
+            trackOutlineColor:
+                const MaterialStatePropertyAll(Colors.transparent),
             value: widget.switchCheck,
             onChanged: (value) {
               setState(() {

@@ -1,4 +1,5 @@
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/class/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -7,9 +8,12 @@ class AppBarWidget extends StatefulWidget {
     super.key,
     required this.stepScreen,
     required this.screen,
+    required this.dialog,
   });
   int stepScreen;
   Widget screen;
+
+  String dialog;
   @override
   State<AppBarWidget> createState() => _AppBarWidgetState();
 }
@@ -19,7 +23,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: AppBar(
-        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
         flexibleSpace: Column(
@@ -44,11 +48,15 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => widget.screen,
-                        ));
+                    if (!widget.dialog.isNotEmpty) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => widget.screen,
+                          ));
+                    } else {
+                      displayDialog(widget.dialog, context);
+                    }
                   },
                   child: const Icon(
                     Icons.chevron_right_rounded,

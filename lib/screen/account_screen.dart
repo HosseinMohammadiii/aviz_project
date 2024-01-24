@@ -15,9 +15,11 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         elevation: 0,
-        title: Image.asset('images/my_aviz.png'),
+        title: Image.asset(
+          'images/my_aviz.png',
+        ),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(

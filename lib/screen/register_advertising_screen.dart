@@ -93,12 +93,13 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          scrolledUnderElevation: 0,
           elevation: 0,
           automaticallyImplyLeading: false,
           flexibleSpace: AppBarWidget(
             stepScreen: 5,
             screen: BottomNavigationScreen(),
+            dialog: '',
           ),
         ),
         body: Padding(

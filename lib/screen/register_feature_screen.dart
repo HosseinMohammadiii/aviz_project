@@ -21,7 +21,7 @@ class RegisterFeatureScreen extends StatefulWidget {
 
 class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
   bool changeIcon = false;
-
+  bool isEmpty = true;
   final layerLink = LayerLink();
 
   FocusNode focusNode1 = FocusNode();
@@ -35,6 +35,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
 
   String txtTitle = 'فروش آپارتمان';
   String address = '';
+  String dialog = '';
 
   @override
   void initState() {
@@ -42,6 +43,16 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
     );
+    if (address.isEmpty ||
+        controller1.text.isEmpty ||
+        controller2.text.isEmpty ||
+        controller3.text.isEmpty ||
+        controller4.text.isEmpty) {
+      setState(() {
+        dialog = 'لطفا تمامی فیلد ها را کامل کنید';
+      });
+      displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+    }
   }
 
   List txt = [
@@ -112,18 +123,19 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(
-            stepScreen: 3,
-            screen: LocatioUpload(),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        flexibleSpace: AppBarWidget(
+          stepScreen: 3,
+          screen: LocatioUpload(),
+          dialog: dialog,
         ),
-        body: Padding(
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: CustomScrollView(
             slivers: [
@@ -308,6 +320,9 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                           controller2.text.isEmpty ||
                           controller3.text.isEmpty ||
                           controller4.text.isEmpty) {
+                        setState(() {
+                          dialog = 'لطفا تمامی فیلد ها را کامل کنید';
+                        });
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
                       } else {
@@ -325,6 +340,9 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                             txtTitle,
                             address,
                           );
+                          setState(() {
+                            isEmpty = false;
+                          });
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -388,11 +406,16 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
         children: [
           Switch(
             activeColor: CustomColor.red,
-            value: propertiesTxt[index].switchb,
+            activeTrackColor: CustomColor.red,
+            thumbColor: const MaterialStatePropertyAll(CustomColor.grey),
+            trackOutlineColor:
+                const MaterialStatePropertyAll(Colors.transparent),
+            value: propertiesTxt[index].switchBool,
             onChanged: (value) {
               setState(() {
-                propertiesTxt[index].switchb = !propertiesTxt[index].switchb;
-                value = propertiesTxt[index].switchb;
+                propertiesTxt[index].switchBool =
+                    !propertiesTxt[index].switchBool;
+                value = propertiesTxt[index].switchBool;
               });
             },
           ),

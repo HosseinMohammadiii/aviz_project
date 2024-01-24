@@ -30,14 +30,8 @@ class _ItemInformationState extends State<ItemInformation> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             informationBoxItem('ساخت', widget.advertising.yearBuild!),
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: informationBoxItem('طبقه', widget.advertising.floor!),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: informationBoxItem('اتاق', widget.advertising.countRom!),
-            ),
+            informationBoxItem('طبقه', widget.advertising.floor!),
+            informationBoxItem('اتاق', widget.advertising.countRom!),
             informationBoxItem('متراژ', widget.advertising.metr!),
           ],
         ),
@@ -59,11 +53,20 @@ class _ItemInformationState extends State<ItemInformation> {
           15,
           FontWeight.w400,
         ),
-        textWidget(
-          advertising.toString(),
-          CustomColor.black,
-          15,
-          FontWeight.w400,
+        Container(
+          width: 40,
+          alignment: Alignment.center,
+          child: Text(
+            advertising.toString(),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'SN',
+              color: CustomColor.black,
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ),
       ],
     );

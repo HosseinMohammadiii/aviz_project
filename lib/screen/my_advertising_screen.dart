@@ -17,7 +17,7 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          scrolledUnderElevation: 0,
           elevation: 0,
           automaticallyImplyLeading: false,
           flexibleSpace: Padding(

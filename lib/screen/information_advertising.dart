@@ -49,40 +49,41 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            child: Row(
-              children: [
-                Image.asset('images/archive_icon.png'),
-                const SizedBox(
-                  width: 20,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: double.maxFinite,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 2),
+          child: Row(
+            children: [
+              Image.asset('images/archive_icon.png'),
+              const SizedBox(
+                width: 20,
+              ),
+              Image.asset('images/share_icon.png'),
+              const SizedBox(
+                width: 20,
+              ),
+              Image.asset('images/information_icon.png'),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.chevron_right_rounded,
+                  size: 42,
                 ),
-                Image.asset('images/share_icon.png'),
-                const SizedBox(
-                  width: 20,
-                ),
-                Image.asset('images/information_icon.png'),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.chevron_right_rounded,
-                    size: 42,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        body: Padding(
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: SingleChildScrollView(
             child: Column(

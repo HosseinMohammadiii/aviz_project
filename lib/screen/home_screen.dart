@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         elevation: 0,
         title: Row(

@@ -20,18 +20,19 @@ class LocatioUpload extends StatefulWidget {
 class _LocatioUploadState extends State<LocatioUpload> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(
-            stepScreen: 4,
-            screen: const RegisterAdvertising(),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        flexibleSpace: AppBarWidget(
+          stepScreen: 4,
+          screen: const RegisterAdvertising(),
+          dialog: '',
         ),
-        body: Padding(
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [

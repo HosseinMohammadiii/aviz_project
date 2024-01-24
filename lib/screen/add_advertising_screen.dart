@@ -1,5 +1,4 @@
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +16,13 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
+            scrolledUnderElevation: 0,
             elevation: 0,
             automaticallyImplyLeading: false,
             flexibleSpace: AppBarWidget(
               stepScreen: 1,
               screen: ItemSelectCategory(),
+              dialog: '',
             )),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),

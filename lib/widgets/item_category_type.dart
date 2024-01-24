@@ -63,18 +63,19 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
   ];
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(
-            stepScreen: 2,
-            screen: const RegisterFeatureScreen(),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        flexibleSpace: AppBarWidget(
+          stepScreen: 2,
+          screen: const RegisterFeatureScreen(),
+          dialog: '.',
         ),
-        body: ListView.builder(
+      ),
+      body: SafeArea(
+        child: ListView.builder(
           itemCount: txt2.length,
           padding: const EdgeInsets.symmetric(horizontal: 15),
           itemBuilder: (context, index) => GestureDetector(

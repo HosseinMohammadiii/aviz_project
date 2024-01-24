@@ -1,5 +1,5 @@
 class ClassSwitchBox {
   String txt;
-  bool switchb;
-  ClassSwitchBox(this.txt, this.switchb);
+  bool switchBool;
+  ClassSwitchBox(this.txt, this.switchBool);
 }
