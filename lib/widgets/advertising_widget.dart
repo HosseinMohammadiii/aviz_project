@@ -62,9 +62,13 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
             SizedBox(
               height: 107,
               width: 111,
-              child: Image.file(
-                widget.advertisingData.img!,
-                fit: BoxFit.fill,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Image.file(
+                    widget.advertisingData.img![index = 0],
+                    fit: BoxFit.fill,
+                  );
+                },
               ),
             ),
             const SizedBox(

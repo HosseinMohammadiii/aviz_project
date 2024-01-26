@@ -13,18 +13,18 @@ class AddAdvertisingScreen extends StatefulWidget {
 class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-            scrolledUnderElevation: 0,
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            flexibleSpace: AppBarWidget(
-              stepScreen: 1,
-              screen: ItemSelectCategory(),
-              dialog: '',
-            )),
-        body: Padding(
+    return Scaffold(
+      appBar: AppBar(
+          scrolledUnderElevation: 0,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          leadingWidth: double.maxFinite,
+          leading: AppBarWidget(
+            stepScreen: 1,
+            screen: ItemSelectCategory(),
+          )),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
@@ -63,10 +63,5 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
     'اجاره دفاتر اداری و تجاری',
     'اجاره کوتاه مدت',
     'پروژه های ساخت و ساز',
-  ];
-  List txt2 = [
-    'فروش آپارتمان',
-    'فروش خانه و ویلا',
-    'فروش زمین و کلنگی',
   ];
 }

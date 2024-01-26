@@ -1,4 +1,5 @@
 import 'package:aviz_project/screen/login_screen.dart';
+import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const LogInScreen(),
+      home: BottomNavigationScreen(),
     );
   }
 }
+// LogInScreen()

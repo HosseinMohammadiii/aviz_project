@@ -8,7 +8,7 @@ class AppBarWidget extends StatefulWidget {
     super.key,
     required this.stepScreen,
     required this.screen,
-    required this.dialog,
+    this.dialog = '',
   });
   int stepScreen;
   Widget screen;
@@ -48,15 +48,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (!widget.dialog.isNotEmpty) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => widget.screen,
-                          ));
-                    } else {
-                      displayDialog(widget.dialog, context);
-                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => widget.screen,
+                        ));
                   },
                   child: const Icon(
                     Icons.chevron_right_rounded,

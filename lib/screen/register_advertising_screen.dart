@@ -26,20 +26,23 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
   TextEditingController controller3 = TextEditingController();
-  File? galleryFile;
+  List<File> galleryFile = [];
   final picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
 //Widget For display Image Selected
     Future getImage(
       ImageSource img,
     ) async {
-      final pickedFile = await picker.pickImage(source: img);
-      XFile? xfilePick = pickedFile;
+      final pickedFile = await picker.pickMultiImage();
+      List<XFile>? xfilePick = pickedFile;
       setState(
         () {
-          if (xfilePick != null) {
-            galleryFile = File(pickedFile!.path);
+          if (xfilePick.isNotEmpty) {
+            for (var i = 0; i < xfilePick.length; i++) {
+              galleryFile.add(File(xfilePick[i].path));
+            }
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -90,19 +93,19 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
       );
     }
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: AppBarWidget(
-            stepScreen: 5,
-            screen: BottomNavigationScreen(),
-            dialog: '',
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        flexibleSpace: AppBarWidget(
+          stepScreen: 5,
+          screen: BottomNavigationScreen(),
+          dialog: '',
         ),
-        body: Padding(
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: SingleChildScrollView(
             child: Wrap(
@@ -151,7 +154,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
                 GestureDetector().textButton(
                   () {
-                    if (galleryFile == null) {
+                    if (galleryFile.isEmpty) {
                       displayDialog(
                           'لطفا عکس مورد نظر را انتخاب کنید', context);
                     } else if (controller1.text.isEmpty ||
@@ -166,7 +169,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         advertisingData(
                           title,
                           description,
-                          galleryFile!,
+                          galleryFile,
                           double.parse(price),
                         );
                         Navigator.pushReplacement(
@@ -196,7 +199,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   void advertisingData(
     String title,
     String description,
-    File img,
+    List<File> img,
     double price,
   ) {
     AdvertisingData advertisingData = AdvertisingData(

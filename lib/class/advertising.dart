@@ -21,7 +21,7 @@ class Advertising {
 class AdvertisingData {
   String? title;
   String? description;
-  File? img;
+  List<File>? img;
   num? price;
 
   AdvertisingData({

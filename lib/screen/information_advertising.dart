@@ -47,6 +47,8 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
     }
   }
 
+  PageController controller =
+      PageController(viewportFraction: 0.9, initialPage: 0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,12 +94,21 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                 SizedBox(
                   height: 160,
                   width: double.infinity,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.file(
-                      widget.advertisingData.img!,
-                      fit: BoxFit.fill,
-                    ),
+                  child: PageView.builder(
+                    itemCount: widget.advertisingData.img!.length,
+                    controller: controller,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            widget.advertisingData.img![index],
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(

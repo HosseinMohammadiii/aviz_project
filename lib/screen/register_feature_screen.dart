@@ -43,16 +43,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
     );
-    if (address.isEmpty ||
-        controller1.text.isEmpty ||
-        controller2.text.isEmpty ||
-        controller3.text.isEmpty ||
-        controller4.text.isEmpty) {
-      setState(() {
-        dialog = 'لطفا تمامی فیلد ها را کامل کنید';
-      });
-      displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
-    }
   }
 
   List txt = [
@@ -131,7 +121,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
         flexibleSpace: AppBarWidget(
           stepScreen: 3,
           screen: LocatioUpload(),
-          dialog: dialog,
         ),
       ),
       body: SafeArea(
@@ -320,9 +309,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                           controller2.text.isEmpty ||
                           controller3.text.isEmpty ||
                           controller4.text.isEmpty) {
-                        setState(() {
-                          dialog = 'لطفا تمامی فیلد ها را کامل کنید';
-                        });
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
                       } else {

@@ -68,10 +68,10 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
         scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
-        flexibleSpace: AppBarWidget(
+        leadingWidth: double.maxFinite,
+        leading: AppBarWidget(
           stepScreen: 2,
           screen: const RegisterFeatureScreen(),
-          dialog: '.',
         ),
       ),
       body: SafeArea(
