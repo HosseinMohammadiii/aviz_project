@@ -7,6 +7,7 @@ class Advertising {
   num? yearBuild;
   String? title;
   String? address;
+  DateTime? time;
 
   Advertising({
     this.metr,
@@ -15,6 +16,7 @@ class Advertising {
     this.yearBuild,
     this.title,
     this.address,
+    this.time,
   });
 }
 

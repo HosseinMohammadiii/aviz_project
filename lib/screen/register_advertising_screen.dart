@@ -166,6 +166,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         String title = controller1.text;
                         String description = controller2.text;
                         String price = controller3.text;
+
                         advertisingData(
                           title,
                           description,
