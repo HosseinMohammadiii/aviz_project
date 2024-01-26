@@ -1,4 +1,5 @@
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -158,64 +159,73 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //Widget For display recently Advertising
   Widget recentlyAdvertisingBox() {
-    return Container(
-      width: double.maxFinite,
-      height: 140,
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: CustomColor.white,
-        boxShadow: const [
-          BoxShadow(
-            color: CustomColor.black,
-            blurRadius: 40,
-            spreadRadius: -35,
-            offset: Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 111,
-            child: Image.asset(
-              'images/Image_home2.png',
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InformationRecentlyAdvertising(),
+            ));
+      },
+      child: Container(
+        width: double.maxFinite,
+        height: 140,
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: CustomColor.white,
+          boxShadow: const [
+            BoxShadow(
+              color: CustomColor.black,
+              blurRadius: 40,
+              spreadRadius: -35,
+              offset: Offset(0, 8),
             ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(
-                  height: 5,
-                ),
-                textWidget(
-                  'واحد دوبلکس فول امکانات',
-                  CustomColor.black,
-                  14,
-                  FontWeight.w700,
-                ),
-                textWidget(
-                  'سال ساخت ۱۳۹۸، سند تک برگ، دوبلکس تجهیزات کامل',
-                  CustomColor.black,
-                  12,
-                  FontWeight.w400,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                priceText(),
-              ],
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 111,
+              child: Image.asset(
+                'images/Image_home2.png',
+              ),
             ),
-          ),
-        ],
+            const SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  textWidget(
+                    'واحد دوبلکس فول امکانات',
+                    CustomColor.black,
+                    14,
+                    FontWeight.w700,
+                  ),
+                  textWidget(
+                    'سال ساخت ۱۳۹۸، سند تک برگ، دوبلکس تجهیزات کامل',
+                    CustomColor.black,
+                    12,
+                    FontWeight.w400,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  priceText(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

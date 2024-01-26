@@ -47,6 +47,9 @@ class _ItemInformationState extends State<ItemInformation> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const SizedBox(
+          height: 14,
+        ),
         textWidget(
           title,
           CustomColor.grey500,
@@ -56,15 +59,18 @@ class _ItemInformationState extends State<ItemInformation> {
         Container(
           width: 40,
           alignment: Alignment.center,
-          child: Text(
-            advertising.toString(),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontFamily: 'SN',
-              color: CustomColor.black,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
+          margin: const EdgeInsets.only(top: 12),
+          child: SizedBox(
+            height: 40,
+            child: Text(
+              advertising.toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'SN',
+                color: CustomColor.black,
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),

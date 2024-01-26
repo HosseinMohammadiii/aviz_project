@@ -114,6 +114,7 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
       children: [
         Container(
           height: 26,
+          width: 95,
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.symmetric(horizontal: 6),
           alignment: Alignment.center,
@@ -121,11 +122,16 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
             borderRadius: BorderRadius.circular(2),
             color: CustomColor.grey200,
           ),
-          child: textWidget(
+          child: Text(
             currencyFormat.format(widget.advertisingData.price ?? 'Null'),
-            CustomColor.red,
-            12,
-            FontWeight.w500,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: CustomColor.red,
+              fontSize: 12,
+              decoration: TextDecoration.none,
+              fontFamily: 'SN',
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         textWidget(

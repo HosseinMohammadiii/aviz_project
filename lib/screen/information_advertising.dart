@@ -386,11 +386,21 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              textWidget(
-                priceChanged(widget.advertisingData.price.toString()),
-                CustomColor.black,
-                16,
-                FontWeight.w700,
+              SizedBox(
+                width: 150,
+                child: Text(
+                  priceChanged(
+                    widget.advertisingData.price.toString(),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: CustomColor.black,
+                    fontSize: 16,
+                    decoration: TextDecoration.none,
+                    fontFamily: 'SN',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
               textWidget(
                 'قیمت هر متر:',
@@ -408,11 +418,19 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              textWidget(
-                currencyFormat.format(widget.advertisingData.price ?? 'Null'),
-                CustomColor.black,
-                16,
-                FontWeight.w700,
+              SizedBox(
+                width: 150,
+                child: Text(
+                  currencyFormat.format(widget.advertisingData.price ?? 'Null'),
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: CustomColor.black,
+                    fontSize: 16,
+                    decoration: TextDecoration.none,
+                    fontFamily: 'SN',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
               textWidget(
                 'قیمت کل:',
