@@ -25,21 +25,29 @@ class UploadLocation extends StatelessWidget {
           ),
         ),
         Container(
-          width: 185,
+          width: 170,
           height: 40,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: CustomColor.red,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('images/location_icon.png'),
-              textWidget(
-                address,
-                CustomColor.grey,
-                16,
-                FontWeight.w400,
+              SizedBox(
+                width: 80,
+                child: Text(
+                  address,
+                  overflow: TextOverflow.ellipsis,
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontFamily: 'SN',
+                      color: CustomColor.grey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
               ),
             ],
           ),

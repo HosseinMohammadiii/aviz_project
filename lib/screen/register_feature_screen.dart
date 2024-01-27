@@ -317,7 +317,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                           num countRoom = num.parse(controller1.text);
                           num floor = num.parse(controller4.text);
                           num yearBuild = num.parse(controller3.text);
-                          DateTime time = DateTime.now();
                           addAdvertising(
                             metr,
                             countRoom,
@@ -325,7 +324,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                             yearBuild,
                             txtTitle,
                             address,
-                            time,
                           );
                           setState(() {
                             isEmpty = false;
@@ -366,7 +364,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
     num yearBuild,
     String title,
     String address,
-    DateTime time,
   ) {
     Advertising advertising = Advertising(
       metr: metr,
@@ -375,7 +372,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
       yearBuild: yearBuild,
       title: title,
       address: address,
-      time: time,
     );
     advertisingBox.add(advertising);
   }

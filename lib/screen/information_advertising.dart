@@ -51,14 +51,6 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
 
   PageController controller =
       PageController(viewportFraction: 0.9, initialPage: 0);
-  Duration time = Duration();
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(const Duration(minutes: 1), (timer) {
-      time = DateTime.now().difference(widget.advertising.time!);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +121,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textWidget(
-                      '${time.inMinutes} دقیقه پیش در ${widget.advertising.address}',
+                      '16 دقیقه پیش در ${widget.advertising.address}',
                       CustomColor.grey500,
                       14,
                       FontWeight.w400,

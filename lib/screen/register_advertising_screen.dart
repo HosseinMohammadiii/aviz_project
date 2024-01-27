@@ -31,39 +31,10 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
 
   @override
   Widget build(BuildContext context) {
-//Widget For display Image Selected
-    Future getImage(
-      ImageSource img,
-    ) async {
-      final pickedFile = await picker.pickMultiImage();
-      List<XFile>? xfilePick = pickedFile;
-      setState(
-        () {
-          if (xfilePick.isNotEmpty) {
-            for (var i = 0; i < xfilePick.length; i++) {
-              galleryFile.add(File(xfilePick[i].path));
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: CustomColor.bluegrey,
-                content: textWidget(
-                  'عکسی انتخاب نشد',
-                  CustomColor.grey,
-                  14,
-                  FontWeight.w500,
-                ),
-              ),
-            );
-          }
-        },
-      );
-    }
-
-//Widget For displat buttomsheet Use Camera or Gallary for Select image
-    void showPicker({
+//Widget For display buttomsheet Use Camera or Gallary for Select image
+    Future showPicker({
       required BuildContext context,
-    }) {
+    }) async {
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -73,17 +44,56 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('گالری'),
-                  onTap: () {
-                    getImage(ImageSource.gallery);
-                    Navigator.of(context).pop();
+                  onTap: () async {
+                    final pickedFileGallery = await picker.pickMultiImage();
+                    List<XFile>? xfilePickGallery = pickedFileGallery;
+                    setState(() {
+                      if (xfilePickGallery.isNotEmpty) {
+                        for (var i = 0; i < xfilePickGallery.length; i++) {
+                          galleryFile.add(File(xfilePickGallery[i].path));
+                        }
+                        Navigator.of(context).pop();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: CustomColor.bluegrey,
+                            content: textWidget(
+                              'عکسی انتخاب نشد',
+                              CustomColor.grey,
+                              14,
+                              FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      }
+                    });
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('دوربین'),
-                  onTap: () {
-                    getImage(ImageSource.camera);
-                    Navigator.of(context).pop();
+                  onTap: () async {
+                    final pickedFileCamera =
+                        await picker.pickImage(source: ImageSource.camera);
+                    XFile? xfilePickCamera = pickedFileCamera;
+                    setState(() {
+                      if (xfilePickCamera != null) {
+                        galleryFile.add(File(xfilePickCamera.path));
+                        Navigator.of(context).pop();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: CustomColor.bluegrey,
+                            content: textWidget(
+                              'عکسی انتخاب نشد',
+                              CustomColor.grey,
+                              14,
+                              FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      }
+                    });
                   },
                 ),
               ],
