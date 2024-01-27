@@ -52,7 +52,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         for (var i = 0; i < xfilePickGallery.length; i++) {
                           galleryFile.add(File(xfilePickGallery[i].path));
                         }
-                        Navigator.of(context).pop();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -66,6 +65,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           ),
                         );
                       }
+                      Navigator.of(context).pop();
                     });
                   },
                 ),
@@ -79,7 +79,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                     setState(() {
                       if (xfilePickCamera != null) {
                         galleryFile.add(File(xfilePickCamera.path));
-                        Navigator.of(context).pop();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -93,6 +92,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           ),
                         );
                       }
+                      Navigator.of(context).pop();
                     });
                   },
                 ),

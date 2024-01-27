@@ -6,7 +6,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class UploadImage extends StatelessWidget {
+class UploadImage extends StatefulWidget {
   UploadImage({
     super.key,
     required this.onChange,
@@ -15,6 +15,11 @@ class UploadImage extends StatelessWidget {
   Function() onChange;
   List<File>? fileImage;
 
+  @override
+  State<UploadImage> createState() => _UploadImageState();
+}
+
+class _UploadImageState extends State<UploadImage> {
   @override
   Widget build(BuildContext context) {
     PageController controller =
@@ -28,13 +33,15 @@ class UploadImage extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           radius: const Radius.circular(4),
           dashPattern: const [8, 4],
-          color: fileImage!.isEmpty ? CustomColor.grey350 : Colors.transparent,
+          color: widget.fileImage!.isEmpty
+              ? CustomColor.grey350
+              : Colors.transparent,
           strokeWidth: 2,
           child: Container(
             height: 144,
           ),
         ),
-        fileImage!.isEmpty
+        widget.fileImage!.isEmpty
             ? Column(
                 children: [
                   textWidget(
@@ -44,7 +51,7 @@ class UploadImage extends StatelessWidget {
                     FontWeight.w400,
                   ),
                   GestureDetector(
-                    onTap: () => onChange(),
+                    onTap: () => widget.onChange(),
                     child: Container(
                       width: 149,
                       height: 50,
@@ -70,11 +77,11 @@ class UploadImage extends StatelessWidget {
                 ],
               )
             : SizedBox(
-                height: 144,
+                height: 150,
                 width: double.infinity,
                 child: PageView.builder(
                   controller: controller,
-                  itemCount: fileImage!.length,
+                  itemCount: widget.fileImage!.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -84,16 +91,29 @@ class UploadImage extends StatelessWidget {
                           fit: StackFit.expand,
                           children: [
                             Image.file(
-                              fileImage![index],
+                              widget.fileImage![index],
                               fit: BoxFit.fill,
                             ),
                             Positioned(
                               top: 10,
                               right: 12,
                               child: GestureDetector(
-                                onTap: () => onChange(),
-                                child: const Icon(
+                                onTap: () => widget.onChange(),
+                                child: Icon(
                                   Icons.add_a_photo,
+                                  color: CustomColor.white,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              left: 12,
+                              child: GestureDetector(
+                                onTap: () {
+                                  widget.fileImage!.remove(index);
+                                },
+                                child: const Icon(
+                                  Icons.delete,
                                   color: CustomColor.red,
                                 ),
                               ),
@@ -108,7 +128,7 @@ class UploadImage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 115),
           child: SmoothPageIndicator(
             controller: controller,
-            count: fileImage!.length,
+            count: widget.fileImage!.length,
             effect: const ExpandingDotsEffect(
               expansionFactor: 5,
               dotHeight: 8,
