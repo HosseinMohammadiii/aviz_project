@@ -92,6 +92,7 @@ class _UploadImageState extends State<UploadImage> {
                           children: [
                             Image.file(
                               widget.fileImage![index],
+                              key: ValueKey(widget.fileImage![index].path),
                               fit: BoxFit.fill,
                             ),
                             Positioned(
@@ -110,7 +111,8 @@ class _UploadImageState extends State<UploadImage> {
                               left: 12,
                               child: GestureDetector(
                                 onTap: () {
-                                  widget.fileImage!.remove(index);
+                                  widget.fileImage!.removeAt(index);
+                                  setState(() {});
                                 },
                                 child: const Icon(
                                   Icons.delete,

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/button_widget.dart';
