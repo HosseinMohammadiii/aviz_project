@@ -10,6 +10,8 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 class InformationAdvertising extends StatefulWidget {
   InformationAdvertising({
     super.key,
@@ -103,9 +105,29 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            widget.advertisingData.img![index],
-                            fit: BoxFit.fill,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              Image.file(
+                                widget.advertisingData.img![index],
+                                fit: BoxFit.fill,
+                              ),
+                              Positioned(
+                                bottom: 12,
+                                child: SmoothPageIndicator(
+                                  controller: controller,
+                                  count: widget.advertisingData.img!.length,
+                                  effect: const ExpandingDotsEffect(
+                                    expansionFactor: 5,
+                                    dotHeight: 8,
+                                    dotWidth: 8,
+                                    dotColor: Colors.white,
+                                    activeDotColor: CustomColor.red,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );

@@ -20,10 +20,10 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
+  PageController controller =
+      PageController(viewportFraction: 0.9, initialPage: 0);
   @override
   Widget build(BuildContext context) {
-    PageController controller =
-        PageController(viewportFraction: 0.9, initialPage: 0);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -126,8 +126,8 @@ class _UploadImageState extends State<UploadImage> {
                     );
                   },
                 )),
-        Padding(
-          padding: const EdgeInsets.only(top: 115),
+        Positioned(
+          bottom: 12,
           child: SmoothPageIndicator(
             controller: controller,
             count: widget.fileImage!.length,
