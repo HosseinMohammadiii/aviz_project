@@ -38,6 +38,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: TextField(
                         keyboardType: TextInputType.text,
                         textAlign: TextAlign.end,
+                        textInputAction: TextInputAction.search,
                         textDirection: TextDirection.ltr,
                         textAlignVertical: TextAlignVertical.center,
                         style: TextStyle(

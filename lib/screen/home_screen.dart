@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TextField(
                         keyboardType: TextInputType.text,
                         textAlign: TextAlign.end,
+                        textInputAction: TextInputAction.search,
                         textDirection: TextDirection.ltr,
                         textAlignVertical: TextAlignVertical.center,
                         focusNode: focusNode,

@@ -309,13 +309,6 @@ class SpecificationBox extends StatefulWidget {
 }
 
 class _SpecificationBoxState extends State<SpecificationBox> {
-  List listTextTitle = [
-    'متراژ',
-    'اتاق',
-    'طبقه',
-    'ساخت',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
