@@ -12,7 +12,10 @@ class InputNumberScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: AppBar(),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),

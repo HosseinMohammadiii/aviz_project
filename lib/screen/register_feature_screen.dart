@@ -137,11 +137,12 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                         img: 'images/category-2.png'),
                     textCategory('محدوده ملک', 'دسته بندی'),
                     Row(
+                      // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                           width: 159,
                           height: 48,
-                          margin: const EdgeInsets.only(right: 43),
+                          //  margin: const EdgeInsets.only(right: 43),
                           padding: const EdgeInsets.only(right: 5),
                           decoration: BoxDecoration(
                             color: CustomColor.grey350,
