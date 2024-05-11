@@ -118,10 +118,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
         scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
-        flexibleSpace: AppBarWidget(
-          stepScreen: 3,
-          screen: LocatioUpload(),
-        ),
       ),
       body: SafeArea(
         child: Padding(

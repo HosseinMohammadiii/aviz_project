@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../class/colors.dart';
 import '../widgets/button_widget.dart';
-import '../widgets/item_category_type.dart';
+import '../widgets/items_category_type.dart';
 import '../widgets/text_widget.dart';
 import '../widgets/uploadlocation.dart';
 import 'dart:ui' as ui;
@@ -168,7 +168,7 @@ class _InformationRecentlyAdvertisingState
                 const SizedBox(
                   height: 25,
                 ),
-                itemsCategoryType(
+                ItemCategoryType(
                   txt: 'هشدار های قبل از معامله!',
                   color: CustomColor.grey350,
                 ),

@@ -1,7 +1,6 @@
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/register_advertising_screen.dart';
-import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/switch_box.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
@@ -25,11 +24,6 @@ class _LocatioUploadState extends State<LocatioUpload> {
         scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
-        flexibleSpace: AppBarWidget(
-          stepScreen: 4,
-          screen: const RegisterAdvertising(),
-          dialog: '',
-        ),
       ),
       body: SafeArea(
         child: Padding(

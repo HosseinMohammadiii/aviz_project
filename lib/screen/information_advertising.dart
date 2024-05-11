@@ -1,7 +1,6 @@
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/button_widget.dart';
-import 'package:aviz_project/widgets/item_category_type.dart';
 import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
@@ -11,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../widgets/items_category_type.dart';
 
 class InformationAdvertising extends StatefulWidget {
   InformationAdvertising({
@@ -183,7 +184,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                 const SizedBox(
                   height: 25,
                 ),
-                itemsCategoryType(
+                ItemCategoryType(
                   txt: 'هشدار های قبل از معامله!',
                   color: CustomColor.grey350,
                 ),

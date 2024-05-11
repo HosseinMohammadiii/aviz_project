@@ -26,7 +26,7 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 textWidget(
-                  ' آگهی های من',
+                  'آگهی های من',
                   CustomColor.red,
                   16,
                   FontWeight.w500,
