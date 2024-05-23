@@ -7,6 +7,9 @@ class PageNumberBloc extends Bloc<PageNumberEvent, PageNumberState> {
   int pageNumber = 1;
   PageNumberBloc() : super(PageNumberState(1)) {
     on<addPageNumber>((event, emit) {
+      if (pageNumber == 5) {
+        return;
+      }
       emit(PageNumberState(++pageNumber));
     });
     on<minusPageNumber>((event, emit) {

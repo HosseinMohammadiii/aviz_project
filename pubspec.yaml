@@ -15,6 +15,7 @@ dependencies:
     sdk: flutter
   smooth_page_indicator: ^1.1.0
   pinput: ^3.0.1
+  dartz: ^0.10.1
   step_progress_indicator: ^1.0.2
   dotted_border: ^2.1.0
   fdottedline_nullsafety: ^2.0.1
@@ -24,14 +25,20 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
   dio: ^5.4.3+1
-  
+  get_it: ^7.7.0
+  hive: ^2.2.3
+  cached_network_image: ^3.3.1
+  zarinpal: ^1.0.5+1
+  url_launcher: ^6.2.6
+  loading_indicator: ^3.1.1
   
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.10
 
   flutter_lints: ^2.0.0
 

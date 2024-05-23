@@ -11,6 +11,10 @@ import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_feature_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../Bloc/bloc_page_number/page_n_bloc.dart';
+import '../Bloc/bloc_page_number/page_n_bloc_event.dart';
 
 class RegisterFeatureScreen extends StatefulWidget {
   const RegisterFeatureScreen({super.key});
@@ -114,11 +118,6 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -325,6 +324,9 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                           setState(() {
                             isEmpty = false;
                           });
+                          BlocProvider.of<PageNumberBloc>(context)
+                              .add(addPageNumber());
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

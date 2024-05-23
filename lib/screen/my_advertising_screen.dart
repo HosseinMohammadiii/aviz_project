@@ -1,8 +1,13 @@
+import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
+import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import '../class/advertising.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
   const MyAdvertisingScreen({super.key});
@@ -49,7 +54,32 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   advertising: advertising,
                 );
               },
-            )
+            ),
+            SliverToBoxAdapter(
+              child: GestureDetector(
+                onTap: () async {
+                  // final Dio dio = Dio();
+
+                  // var response = await dio.get(
+                  //     'https://aviz.chbk.run/api/collections/home_screen/records');
+
+                  // List<AdvertisingHome> dt = response.data['items']
+                  //     .map<AdvertisingHome>(
+                  //         (jsonObject) => AdvertisingHome.fromJson(jsonObject))
+                  //     .toList();
+                  // dt
+                  //     .map(
+                  //       (e) => print(e.images),
+                  //     )
+                  //     .toList();
+                },
+                child: Container(
+                  width: 100,
+                  height: 50,
+                  color: Colors.amber,
+                ),
+              ),
+            ),
           ],
         ),
       ),
