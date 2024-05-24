@@ -7,8 +7,9 @@ final class HomeInitializeState extends HomeState {}
 
 final class HomeRequestSuccessState extends HomeState {
   Either<String, List<AdvertisingHome>> hotAdvertising;
+  Either<String, List<AdvertisingHome>> recentAdvertising;
 
-  HomeRequestSuccessState(this.hotAdvertising);
+  HomeRequestSuccessState(this.hotAdvertising, this.recentAdvertising);
 }
 
 final class HomeLoadingState extends HomeState {}

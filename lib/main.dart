@@ -1,6 +1,7 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
+import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,48 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         useMaterial3: true,
+        textTheme: TextTheme(
+          titleLarge: const TextStyle(
+            color: CustomColor.black,
+            fontSize: 16,
+            fontFamily: 'SN',
+            fontWeight: FontWeight.w700,
+          ),
+          titleMedium: const TextStyle(
+            color: CustomColor.grey400,
+            fontSize: 14,
+            fontFamily: 'SN',
+            fontWeight: FontWeight.w400,
+          ),
+          bodyLarge: const TextStyle(
+            color: CustomColor.black,
+            fontSize: 14,
+            decoration: TextDecoration.none,
+            fontFamily: 'SN',
+            fontWeight: FontWeight.w700,
+          ),
+          bodyMedium: TextStyle(
+            decoration: TextDecoration.none,
+            fontFamily: 'SN',
+            color: CustomColor.grey500,
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+          labelMedium: const TextStyle(
+            overflow: TextOverflow.ellipsis,
+            fontFamily: 'SN',
+            color: CustomColor.black,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          labelSmall: const TextStyle(
+            overflow: TextOverflow.ellipsis,
+            fontFamily: 'SN',
+            color: CustomColor.red,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       builder: (context, child) {
         return MediaQuery(

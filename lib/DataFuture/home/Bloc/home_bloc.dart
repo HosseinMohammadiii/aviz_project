@@ -10,7 +10,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (event, emit) async {
         emit(HomeLoadingState());
         var hotAdvertisingHome = await homeRepository.getHotAdvertising();
-        emit(HomeRequestSuccessState(hotAdvertisingHome));
+        var recentAdvertisingHome = await homeRepository.getRecentAdvertising();
+        emit(
+          HomeRequestSuccessState(
+            hotAdvertisingHome,
+            recentAdvertisingHome,
+          ),
+        );
       },
     );
   }

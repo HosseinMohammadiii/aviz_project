@@ -3,13 +3,14 @@ import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/extension/price_extension.dart';
 import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
+
+import '../widgets/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -117,18 +118,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            textWidget(
+                            Text(
                               'مشاهده همه',
-                              CustomColor.grey400,
-                              14,
-                              FontWeight.w400,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             const Spacer(),
-                            textWidget(
+                            Text(
                               'آویز های داغ',
-                              CustomColor.black,
-                              16,
-                              FontWeight.w700,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
                         ),
@@ -149,9 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    (r) {
+                    (hotAdvertising) {
                       return SliverToBoxAdapter(
-                        child: hotestAdvertisingBox(adHome: r),
+                        child: hotestAdvertisingBox(adHome: hotAdvertising),
                       );
                     },
                   )
@@ -165,30 +162,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      textWidget(
+                      Text(
                         'مشاهده همه',
-                        CustomColor.grey400,
-                        14,
-                        FontWeight.w400,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(
                         width: 130,
                       ),
-                      textWidget(
+                      Text(
                         'آویز های اخیر',
-                        CustomColor.black,
-                        16,
-                        FontWeight.w700,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ],
                   ),
                 ),
-                SliverList.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return recentlyAdvertisingBox();
-                  },
-                ),
+                if (state is HomeRequestSuccessState) ...[
+                  state.recentAdvertising.fold(
+                    (l) {
+                      return SliverToBoxAdapter(
+                        child: Center(
+                          child: textWidget(
+                            l,
+                            CustomColor.black,
+                            16,
+                            FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    },
+                    (recentAdvertising) {
+                      return recentlyAdvertisingBox(adHome: recentAdvertising);
+                    },
+                  )
+                ]
               ],
             ),
           );
@@ -198,75 +204,82 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //Widget For display recently Advertising
-  Widget recentlyAdvertisingBox() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const InformationRecentlyAdvertising(),
-            ));
+  Widget recentlyAdvertisingBox({
+    required List<AdvertisingHome> adHome,
+  }) {
+    return SliverList.builder(
+      itemCount: adHome.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InformationRecentlyAdvertising(),
+                ));
+          },
+          child: Container(
+            width: double.maxFinite,
+            height: 140,
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: CustomColor.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: CustomColor.black,
+                  blurRadius: 40,
+                  spreadRadius: -50,
+                  offset: Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 111,
+                  child: cachedNetworkImage(
+                    advertisingHome: adHome[index],
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      textWidget(
+                        adHome[index].title,
+                        CustomColor.black,
+                        14,
+                        FontWeight.w700,
+                      ),
+                      textWidget(
+                        adHome[index].description,
+                        CustomColor.black,
+                        12,
+                        FontWeight.w400,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      priceText(adHome: adHome[index]),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
-      child: Container(
-        width: double.maxFinite,
-        height: 140,
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: CustomColor.white,
-          boxShadow: const [
-            BoxShadow(
-              color: CustomColor.black,
-              blurRadius: 40,
-              spreadRadius: -50,
-              offset: Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 111,
-              child: Image.asset(
-                'images/Image_home2.png',
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  textWidget(
-                    'واحد دوبلکس فول امکانات',
-                    CustomColor.black,
-                    14,
-                    FontWeight.w700,
-                  ),
-                  textWidget(
-                    'سال ساخت ۱۳۹۸، سند تک برگ، دوبلکس تجهیزات کامل',
-                    CustomColor.black,
-                    12,
-                    FontWeight.w400,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // priceText(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -303,40 +316,18 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // SizedBox(
-                //   height: 50,
-                //   width: 60,
-                //   child: ListView.builder(
-                //     itemCount: adHome[index].images.length,
-                //     itemBuilder: (context, indexx) {
-                //       return CachedNetworkImage(
-                //         height: 110,
-                //         fit: BoxFit.cover,
-                //         imageUrl: adHome[indexx].images[indexx = 0],
-                //       );
-                //     },
-                //   ),
-                // ),
-                CachedNetworkImage(
-                  height: 110,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  imageUrl: adHome[index].images,
+                cachedNetworkImage(
+                  advertisingHome: adHome[index],
                 ),
-                //Image.asset('images/Image_home.png'),
-                textWidget(
+                Text(
                   adHome[index].title,
-                  CustomColor.black,
-                  14,
-                  FontWeight.w700,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                textWidget(
+                Text(
                   adHome[index].description,
-                  CustomColor.grey500,
-                  12,
-                  FontWeight.w400,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                priceText(price: adHome[index].price),
+                priceText(adHome: adHome[index]),
               ],
             ),
           );
@@ -347,10 +338,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //Widget For display Price Advertising
   Row priceText({
-    required int price,
+    required AdvertisingHome adHome,
   }) {
-    NumberFormat currencyFormat =
-        NumberFormat.currency(locale: 'fa-IR', symbol: '');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -365,23 +354,14 @@ class _HomeScreenState extends State<HomeScreen> {
             color: CustomColor.grey200,
           ),
           child: Text(
-            currencyFormat.format(price),
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: CustomColor.red,
-              fontSize: 12,
-              decoration: TextDecoration.none,
-              fontFamily: 'SN',
-              fontWeight: FontWeight.w500,
-            ),
+            adHome.price.formatter(),
+            style: Theme.of(context).textTheme.labelSmall,
           ),
         ),
-        textWidget(
-          'قیمت:',
-          CustomColor.black,
-          12,
-          FontWeight.w500,
-        )
+        Text(
+          ':قیمت',
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
       ],
     );
   }

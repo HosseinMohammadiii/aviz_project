@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 abstract class IHomeDataSoure {
   Future<List<AdvertisingHome>> getHotAdvertising();
+  Future<List<AdvertisingHome>> getRecentAdvertising();
 }
 
 class HomeRemoteDataSource extends IHomeDataSoure {
@@ -13,6 +14,27 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   Future<List<AdvertisingHome>> getHotAdvertising() async {
     try {
       Map<String, dynamic> query = {'filter': 'is_hot=true'};
+      var response = await dio.get(
+        'collections/home_screen/records',
+        queryParameters: query,
+      );
+      return response.data['items']
+          .map<AdvertisingHome>(
+            (jsonObject) => AdvertisingHome.fromJson(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<AdvertisingHome>> getRecentAdvertising() async {
+    try {
+      Map<String, dynamic> query = {'filter': 'is_hot=false'};
       var response = await dio.get(
         'collections/home_screen/records',
         queryParameters: query,

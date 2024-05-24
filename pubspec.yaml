@@ -31,6 +31,7 @@ dependencies:
   zarinpal: ^1.0.5+1
   url_launcher: ^6.2.6
   loading_indicator: ^3.1.1
+  shimmer: ^3.0.0
   
   cupertino_icons: ^1.0.2
 
