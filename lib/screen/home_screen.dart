@@ -355,7 +355,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Text(
             adHome.price.formatter(),
-            style: Theme.of(context).textTheme.labelSmall,
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                  color: CustomColor.red,
+                ),
           ),
         ),
         Text(

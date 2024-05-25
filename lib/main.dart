@@ -76,13 +76,6 @@ class MyApp extends StatelessWidget {
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
-          labelSmall: const TextStyle(
-            overflow: TextOverflow.ellipsis,
-            fontFamily: 'SN',
-            color: CustomColor.red,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
         ),
       ),
       builder: (context, child) {
