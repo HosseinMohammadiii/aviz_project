@@ -2,15 +2,19 @@ import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
+
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
+import 'package:aviz_project/widgets/advertising_box.dart';
+import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:ui' as ui;
 
 import '../widgets/cached_network_image.dart';
+import '../widgets/container_search.dart';
+import '../widgets/price_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,9 +24,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  get ui => null;
+
   FocusNode focusNode = FocusNode();
 
-  get ui => null;
+  final TextEditingController textEditingController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -53,53 +59,48 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   sliver: SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 18),
-                          height: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ContainerSearch(
+                                textEditingController: textEditingController,
+                                focusNode: focusNode,
+                              ),
+                            ));
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.only(bottom: 18),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        height: 45,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            color: CustomColor.grey350,
                           ),
-                          child: TextField(
-                            keyboardType: TextInputType.text,
-                            textAlign: TextAlign.end,
-                            textInputAction: TextInputAction.search,
-                            textDirection: ui?.TextDirection.ltr,
-                            textAlignVertical: TextAlignVertical.center,
-                            focusNode: focusNode,
-                            style: TextStyle(
-                              fontFamily: 'SN',
-                              fontSize: 18,
-                              color: CustomColor.grey500,
-                            ),
-                            decoration: InputDecoration(
-                              suffixIcon:
-                                  Image.asset('images/search-normal.png'),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: CustomColor.grey350,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: CustomColor.grey350,
-                                ),
-                              ),
-                              hintText: '...جستوجو',
-                              hintStyle: TextStyle(
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              textDirection: TextDirection.rtl,
+                              'جستوجو...',
+                              style: TextStyle(
                                 fontFamily: 'SN',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 color: CustomColor.grey500,
                               ),
                             ),
-                            onTapOutside: (event) {
-                              focusNode.unfocus();
-                            },
-                          ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Image.asset('images/search-normal.png'),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -271,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      priceText(adHome: adHome[index]),
+                      PriceWidget(context: context, adHome: adHome[index]),
                     ],
                   ),
                 ),
@@ -327,44 +328,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   adHome[index].description,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                priceText(adHome: adHome[index]),
+                PriceWidget(context: context, adHome: adHome[index]),
               ],
             ),
           );
         },
       ),
-    );
-  }
-
-//Widget For display Price Advertising
-  Row priceText({
-    required AdvertisingHome adHome,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: 91,
-          height: 26,
-          margin: const EdgeInsets.only(bottom: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(2),
-            color: CustomColor.grey200,
-          ),
-          child: Text(
-            adHome.price.formatter(),
-            style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                  color: CustomColor.red,
-                ),
-          ),
-        ),
-        Text(
-          ':قیمت',
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-      ],
     );
   }
 }

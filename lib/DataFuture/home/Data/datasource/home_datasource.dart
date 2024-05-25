@@ -3,6 +3,7 @@ import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dio/dio.dart';
 
 abstract class IHomeDataSoure {
+  Future<List<AdvertisingHome>> getAdvertising();
   Future<List<AdvertisingHome>> getHotAdvertising();
   Future<List<AdvertisingHome>> getRecentAdvertising();
 }
@@ -38,6 +39,25 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       var response = await dio.get(
         'collections/home_screen/records',
         queryParameters: query,
+      );
+      return response.data['items']
+          .map<AdvertisingHome>(
+            (jsonObject) => AdvertisingHome.fromJson(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<AdvertisingHome>> getAdvertising() async {
+    try {
+      var response = await dio.get(
+        'collections/home_screen/records',
       );
       return response.data['items']
           .map<AdvertisingHome>(

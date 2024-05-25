@@ -27,8 +27,3 @@ class AdvertisingHome {
     );
   }
 }
-// List<String> image = List<String>.from(jsonObject['home_image'] ?? []);
-//  image
-//           .map((json) =>
-//               '${BaseUrl.baseUrl}files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['home_image']}')
-//           .toList(),

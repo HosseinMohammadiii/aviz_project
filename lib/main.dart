@@ -1,6 +1,7 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
+import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,11 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => HomeBloc(
+            locator.get(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SearchBloc(
             locator.get(),
           ),
         ),
