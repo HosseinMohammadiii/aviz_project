@@ -24,9 +24,10 @@ class cachedNetworkImage extends StatelessWidget {
         child: Shimmer.fromColors(
           baseColor: const Color(0xffE1E1E1),
           highlightColor: const Color(0xffF3F3F2),
-          child: const SizedBox(
+          child: Container(
             height: 110,
             width: double.infinity,
+            color: Colors.blue,
           ),
         ),
       ),
