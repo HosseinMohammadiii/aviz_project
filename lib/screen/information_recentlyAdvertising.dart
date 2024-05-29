@@ -1,9 +1,11 @@
+import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
+import 'package:aviz_project/extension/price_extension.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../class/colors.dart';
+import '../widgets/advertisig_gallery_imaes_widget.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/items_category_type.dart';
 import '../widgets/text_widget.dart';
@@ -11,8 +13,11 @@ import '../widgets/uploadlocation.dart';
 import 'dart:ui' as ui;
 
 class InformationRecentlyAdvertising extends StatefulWidget {
-  const InformationRecentlyAdvertising({super.key});
-
+  InformationRecentlyAdvertising({
+    super.key,
+    required this.advertisingHome,
+  });
+  AdvertisingHome advertisingHome;
   @override
   State<InformationRecentlyAdvertising> createState() =>
       _InformationRecentlyAdvertisingState();
@@ -38,6 +43,19 @@ class _InformationRecentlyAdvertisingState
   PageController controller =
       PageController(viewportFraction: 0.9, initialPage: 0);
   @override
+  void initState() {
+    super.initState();
+  }
+
+  // String CreateADTime(DateTime time) {
+  //   switch (time.hour) {
+  //     case < 24:
+  //       return '${widget.advertisingHome.created}';
+  //     default:
+  //   }
+  // }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +67,10 @@ class _InformationRecentlyAdvertisingState
           padding: const EdgeInsets.only(left: 15, right: 2),
           child: Row(
             children: [
-              Image.asset('images/archive_icon.png'),
+              GestureDetector(
+                onTap: () {},
+                child: Image.asset('images/archive_icon.png'),
+              ),
               const SizedBox(
                 width: 20,
               ),
@@ -79,45 +100,9 @@ class _InformationRecentlyAdvertisingState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(
-                  height: 160,
-                  width: double.infinity,
-                  child: PageView.builder(
-                    itemCount: 2,
-                    controller: controller,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              Image.asset(
-                                'images/Image_home.png',
-                                fit: BoxFit.fill,
-                              ),
-                              Positioned(
-                                bottom: 12,
-                                child: SmoothPageIndicator(
-                                  controller: controller,
-                                  count: images.length,
-                                  effect: const ExpandingDotsEffect(
-                                    expansionFactor: 5,
-                                    dotHeight: 8,
-                                    dotWidth: 8,
-                                    dotColor: Colors.white,
-                                    activeDotColor: CustomColor.red,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                AdvertisingGalleryImages(
+                  advertisingHome: widget.advertisingHome,
+                  controller: controller,
                 ),
                 const SizedBox(
                   height: 30,
@@ -152,7 +137,7 @@ class _InformationRecentlyAdvertisingState
                   height: 20,
                 ),
                 textWidget(
-                  'آپارتمان ۵۰۰ متری در اصفهان',
+                  widget.advertisingHome.title,
                   CustomColor.black,
                   16,
                   FontWeight.w700,
@@ -227,6 +212,7 @@ class _InformationRecentlyAdvertisingState
                 ),
                 _changeBoxContainer(
                   indexContainer,
+                  widget.advertisingHome,
                 ),
                 const SizedBox(
                   height: 25,
@@ -244,20 +230,21 @@ class _InformationRecentlyAdvertisingState
 //Function Switch For Display Widgets
 _changeBoxContainer(
   int index,
+  AdvertisingHome adHome,
 ) {
   switch (index) {
     case 0:
-      return const SpecificationBox();
+      return SpecificationBox(advertisingHome: adHome);
 
     case 1:
-      return const PriceInfoWidget();
+      return PriceInfoWidget(advertisingHome: adHome);
     case 2:
       return const FeatureWidget();
     case 3:
-      return const DescriptionWidget();
+      return DescriptionWidget(advertisingHome: adHome);
 
     default:
-      return const SpecificationBox();
+      return SpecificationBox(advertisingHome: adHome);
   }
 }
 
@@ -270,10 +257,11 @@ class ContainerInfo {
 }
 
 class SpecificationBox extends StatefulWidget {
-  const SpecificationBox({
+  SpecificationBox({
     super.key,
+    required this.advertisingHome,
   });
-
+  AdvertisingHome advertisingHome;
   @override
   State<SpecificationBox> createState() => _SpecificationBoxState();
 }
@@ -306,10 +294,10 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    informationBoxItem('ساخت', 1402),
-                    informationBoxItem('طبقه', 2),
-                    informationBoxItem('اتاق', 6),
-                    informationBoxItem('متراژ', 500),
+                    informationBoxItem('ساخت', widget.advertisingHome.yerbuild),
+                    informationBoxItem('طبقه', widget.advertisingHome.floor),
+                    informationBoxItem('اتاق', widget.advertisingHome.room),
+                    informationBoxItem('متراژ', widget.advertisingHome.metr),
                   ],
                 ),
               ),
@@ -399,17 +387,16 @@ class _SpecificationBoxState extends State<SpecificationBox> {
 }
 
 class PriceInfoWidget extends StatefulWidget {
-  const PriceInfoWidget({
+  PriceInfoWidget({
     super.key,
+    required this.advertisingHome,
   });
-
+  AdvertisingHome advertisingHome;
   @override
   State<PriceInfoWidget> createState() => _PriceInfoWidgetState();
 }
 
 class _PriceInfoWidgetState extends State<PriceInfoWidget> {
-  NumberFormat currencyFormat =
-      NumberFormat.currency(locale: 'fa-IR', symbol: '');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -425,12 +412,12 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 100,
                 child: Text(
-                  '46,460,000',
+                  priceChanged(widget.advertisingHome),
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: CustomColor.black,
                     fontSize: 16,
                     decoration: TextDecoration.none,
@@ -455,12 +442,12 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 150,
                 child: Text(
-                  '23,230,000,000',
+                  widget.advertisingHome.price.formatter(),
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: CustomColor.black,
                     fontSize: 16,
                     decoration: TextDecoration.none,
@@ -480,6 +467,14 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
         ],
       ),
     );
+  }
+
+  //Function to calculate the price per meter of the house
+  priceChanged(AdvertisingHome adHome) {
+    NumberFormat currencyFormat =
+        NumberFormat.currency(locale: 'fa-IR', symbol: '');
+    var priceChange = currencyFormat.format(adHome.price / adHome.metr);
+    return priceChange;
   }
 }
 
@@ -634,14 +629,15 @@ class FeatureWidget extends StatelessWidget {
 }
 
 class DescriptionWidget extends StatelessWidget {
-  const DescriptionWidget({
+  DescriptionWidget({
     super.key,
+    required this.advertisingHome,
   });
-
+  AdvertisingHome advertisingHome;
   @override
   Widget build(BuildContext context) {
     return Text(
-      'ویلا ۵۰۰ متری در خیابان صیاد شیرازی ویو عالی وسط جنگل قیمت فوق العاده  گذاشتم فروش فوری  خریدار باشی تخفیف پای معامله میدم.',
+      advertisingHome.description,
       textAlign: TextAlign.justify,
       textDirection: ui.TextDirection.rtl,
       style: TextStyle(

@@ -34,8 +34,14 @@ class HomeRemoteDataSource extends IHomeDataSoure {
 
   @override
   Future<List<AdvertisingHome>> getRecentAdvertising() async {
+    String date() {
+      DateTime dt = DateTime.now();
+
+      return '"${dt.year}-${dt.month < 10 ? '0' : ''}${dt.month}-${dt.day < 10 ? '0' : ''}${dt.day}"';
+    }
+
     try {
-      Map<String, dynamic> query = {'filter': 'is_hot=false'};
+      Map<String, dynamic> query = {'filter': 'created<${date()}'};
       var response = await dio.get(
         'collections/home_screen/records',
         queryParameters: query,

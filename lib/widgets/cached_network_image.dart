@@ -2,21 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../DataFuture/home/Data/model/advertising.dart';
-
 class cachedNetworkImage extends StatelessWidget {
-  cachedNetworkImage({
+  const cachedNetworkImage({
     super.key,
-    required this.advertisingHome,
+    required this.imgUrl,
   });
-  final AdvertisingHome advertisingHome;
+  final String imgUrl;
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       height: 110,
       width: double.infinity,
       fit: BoxFit.cover,
-      imageUrl: advertisingHome.images,
+      imageUrl: imgUrl,
       errorWidget: (context, url, error) => const Center(
         child: CircularProgressIndicator(),
       ),

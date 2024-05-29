@@ -5,6 +5,8 @@ abstract class HomeState {}
 
 final class HomeInitializeState extends HomeState {}
 
+final class HomeLoadingState extends HomeState {}
+
 final class HomeRequestSuccessState extends HomeState {
   Either<String, List<AdvertisingHome>> getAdvertising;
   Either<String, List<AdvertisingHome>> hotAdvertising;
@@ -16,5 +18,3 @@ final class HomeRequestSuccessState extends HomeState {
     this.recentAdvertising,
   );
 }
-
-final class HomeLoadingState extends HomeState {}

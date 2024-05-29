@@ -4,10 +4,8 @@ import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/extension/price_extension.dart';
 import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
-import 'package:aviz_project/widgets/advertising_box.dart';
-import 'package:aviz_project/widgets/advertising_widget.dart';
+
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -195,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return recentlyAdvertisingBox(adHome: recentAdvertising);
                     },
                   )
-                ]
+                ],
               ],
             ),
           );
@@ -216,7 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const InformationRecentlyAdvertising(),
+                  builder: (context) => InformationRecentlyAdvertising(
+                    advertisingHome: adHome[index],
+                  ),
                 ));
           },
           child: Container(
@@ -243,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: 111,
                   child: cachedNetworkImage(
-                    advertisingHome: adHome[index],
+                    imgUrl: adHome[index].images[0],
                   ),
                 ),
                 const SizedBox(
@@ -318,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 cachedNetworkImage(
-                  advertisingHome: adHome[index],
+                  imgUrl: adHome[index].images[0],
                 ),
                 Text(
                   adHome[index].title,

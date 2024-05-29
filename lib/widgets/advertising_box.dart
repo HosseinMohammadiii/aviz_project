@@ -4,7 +4,6 @@ import 'package:aviz_project/widgets/price_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../class/colors.dart';
-import '../screen/information_recentlyAdvertising.dart';
 import 'text_widget.dart';
 
 class AdvertisingSearchWidget extends StatelessWidget {
@@ -18,11 +17,11 @@ class AdvertisingSearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const InformationRecentlyAdvertising(),
-            ));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => const InformationRecentlyAdvertising(),
+        //     ));
       },
       child: Container(
         width: double.maxFinite,
@@ -48,7 +47,7 @@ class AdvertisingSearchWidget extends StatelessWidget {
             SizedBox(
               width: 111,
               child: cachedNetworkImage(
-                advertisingHome: advertisingHome,
+                imgUrl: advertisingHome.images[0],
               ),
             ),
             const SizedBox(
