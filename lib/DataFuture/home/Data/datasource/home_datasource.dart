@@ -34,14 +34,14 @@ class HomeRemoteDataSource extends IHomeDataSoure {
 
   @override
   Future<List<AdvertisingHome>> getRecentAdvertising() async {
-    String date() {
+    //This function returns the current time in ISO 8601 format, which includes the exact date and time.
+    String currentDateTime() {
       DateTime dt = DateTime.now();
-
-      return '"${dt.year}-${dt.month < 10 ? '0' : ''}${dt.month}-${dt.day < 10 ? '0' : ''}${dt.day}"';
+      return '${dt.toIso8601String()}';
     }
 
     try {
-      Map<String, dynamic> query = {'filter': 'created<${date()}'};
+      Map<String, dynamic> query = {'filter': 'created<"${currentDateTime()}"'};
       var response = await dio.get(
         'collections/home_screen/records',
         queryParameters: query,

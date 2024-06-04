@@ -32,28 +32,33 @@ class _InformationRecentlyAdvertisingState
     ContainerInfo('ویژگی ها و امکانات', false, 2),
     ContainerInfo('توضیحات', false, 3),
   ];
-  List<Image> images = [
-    Image.asset('images/Image_home.png'),
-    Image.asset(
-      'images/Image_home2.png',
-    ),
-  ];
 
   int indexContainer = 0;
+
   PageController controller =
       PageController(viewportFraction: 0.9, initialPage: 0);
-  @override
-  void initState() {
-    super.initState();
-  }
 
-  // String CreateADTime(DateTime time) {
-  //   switch (time.hour) {
-  //     case < 24:
-  //       return '${widget.advertisingHome.created}';
-  //     default:
-  //   }
-  // }
+//Function to display the difference between the time of the created ad and the current time
+  String _createADTime(DateTime time) {
+    DateTime dt = DateTime.parse(widget.advertisingHome.created);
+    Duration dr = DateTime.now().difference(dt);
+    if (dr.inSeconds < 60) {
+      return ' چند لحظه پیش';
+    } else if (dr.inMinutes < 60) {
+      return '${dr.inMinutes} دقیقه پیش';
+    } else if (dr.inHours < 24) {
+      return '${dr.inHours} ساعت پیش';
+    } else if (dr.inDays < 7) {
+      return '${dr.inDays} روز پیش';
+    } else if (dr.inDays < 30) {
+      return '${dr.inDays ~/ 7} هفته پیش';
+    } else if (dr.inDays < 365) {
+      return '${dr.inDays ~/ 30} ماه پیش';
+    } else {
+      int years = dr.inDays ~/ 365;
+      return '$years سال پیش';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,22 +101,26 @@ class _InformationRecentlyAdvertisingState
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                AdvertisingGalleryImages(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: AdvertisingGalleryImages(
                   advertisingHome: widget.advertisingHome,
                   controller: controller,
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 30,
                 ),
-                Row(
+              ),
+              SliverToBoxAdapter(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textWidget(
-                      '16 دقیقه پیش در اصفهان',
+                      _createADTime(
+                          DateTime.parse(widget.advertisingHome.created)),
                       CustomColor.grey500,
                       14,
                       FontWeight.w400,
@@ -133,34 +142,50 @@ class _InformationRecentlyAdvertisingState
                     ),
                   ],
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 20,
                 ),
-                textWidget(
+              ),
+              SliverToBoxAdapter(
+                child: textWidget(
                   widget.advertisingHome.title,
                   CustomColor.black,
                   16,
                   FontWeight.w700,
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 25,
                 ),
-                DottedLine(
+              ),
+              SliverToBoxAdapter(
+                child: DottedLine(
                   dashColor: CustomColor.grey200,
                   lineThickness: 1.5,
                   dashLength: 6,
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 25,
                 ),
-                ItemCategoryType(
+              ),
+              SliverToBoxAdapter(
+                child: ItemCategoryType(
                   txt: 'هشدار های قبل از معامله!',
                   color: CustomColor.grey350,
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 20,
                 ),
-                SizedBox(
+              ),
+              SliverToBoxAdapter(
+                child: SizedBox(
                   height: 30,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -207,19 +232,27 @@ class _InformationRecentlyAdvertisingState
                     },
                   ),
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 25,
                 ),
-                _changeBoxContainer(
+              ),
+              SliverToBoxAdapter(
+                child: _changeBoxContainer(
                   indexContainer,
                   widget.advertisingHome,
                 ),
-                const SizedBox(
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
                   height: 25,
                 ),
-                const ButtonWidget(),
-              ],
-            ),
+              ),
+              const SliverToBoxAdapter(
+                child: ButtonWidget(),
+              ),
+            ],
           ),
         ),
       ),
@@ -234,7 +267,13 @@ _changeBoxContainer(
 ) {
   switch (index) {
     case 0:
-      return SpecificationBox(advertisingHome: adHome);
+      return GestureDetector(
+        onTap: () {
+          DateTime dt = DateTime.parse(adHome.created);
+          print(DateTime.now().difference(dt).inHours);
+        },
+        child: SpecificationBox(advertisingHome: adHome),
+      );
 
     case 1:
       return PriceInfoWidget(advertisingHome: adHome);
