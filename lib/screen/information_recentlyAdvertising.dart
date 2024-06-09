@@ -1,11 +1,15 @@
+import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../DataFuture/home/Bloc/home_bloc.dart';
 import '../class/colors.dart';
 import '../widgets/advertisig_gallery_imaes_widget.dart';
+import '../widgets/advertising_detail_features.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/items_category_type.dart';
 import '../widgets/text_widget.dart';
@@ -101,158 +105,181 @@ class _InformationRecentlyAdvertisingState
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: AdvertisingGalleryImages(
-                  advertisingHome: widget.advertisingHome,
-                  controller: controller,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 30,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    textWidget(
-                      _createADTime(
-                          DateTime.parse(widget.advertisingHome.created)),
-                      CustomColor.grey500,
-                      14,
-                      FontWeight.w400,
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: AdvertisingGalleryImages(
+                      advertisingHome: widget.advertisingHome,
+                      controller: controller,
                     ),
-                    Container(
-                      height: 29,
-                      width: 59,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: CustomColor.grey200,
-                      ),
-                      child: textWidget(
-                        'آپارتمان',
-                        CustomColor.red,
-                        14,
-                        FontWeight.w400,
-                      ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 30,
                     ),
-                  ],
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 20,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: textWidget(
-                  widget.advertisingHome.title,
-                  CustomColor.black,
-                  16,
-                  FontWeight.w700,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 25,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: DottedLine(
-                  dashColor: CustomColor.grey200,
-                  lineThickness: 1.5,
-                  dashLength: 6,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 25,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: ItemCategoryType(
-                  txt: 'هشدار های قبل از معامله!',
-                  color: CustomColor.grey350,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 20,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 30,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    reverse: true,
-                    itemCount: listText.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 19),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              for (int i = 0; i < listText.length; i++) {
-                                listText[i].selected = (i == index);
-                                indexContainer = index;
-                              }
-                            });
-                          },
-                          child: Container(
-                            height: 29,
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: listText[index].selected
-                                    ? Colors.transparent
-                                    : CustomColor.grey350,
-                              ),
-                              color: listText[index].selected
-                                  ? CustomColor.red
-                                  : CustomColor.white,
-                            ),
-                            child: textWidget(
-                              listText[index].text,
-                              listText[index].selected
-                                  ? CustomColor.grey
-                                  : CustomColor.red,
-                              14,
-                              FontWeight.w400,
-                            ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textWidget(
+                          _createADTime(
+                              DateTime.parse(widget.advertisingHome.created)),
+                          CustomColor.grey500,
+                          14,
+                          FontWeight.w400,
+                        ),
+                        Container(
+                          height: 29,
+                          width: 59,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: CustomColor.grey200,
+                          ),
+                          child: textWidget(
+                            'آپارتمان',
+                            CustomColor.red,
+                            14,
+                            FontWeight.w400,
                           ),
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 25,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: _changeBoxContainer(
-                  indexContainer,
-                  widget.advertisingHome,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 25,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: ButtonWidget(),
-              ),
-            ],
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 20,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: textWidget(
+                      widget.advertisingHome.title,
+                      CustomColor.black,
+                      16,
+                      FontWeight.w700,
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 25,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: DottedLine(
+                      dashColor: CustomColor.grey200,
+                      lineThickness: 1.5,
+                      dashLength: 6,
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 25,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ItemCategoryType(
+                      txt: 'هشدار های قبل از معامله!',
+                      color: CustomColor.grey350,
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 20,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 30,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        reverse: true,
+                        itemCount: listText.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 19),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  for (int i = 0; i < listText.length; i++) {
+                                    listText[i].selected = (i == index);
+                                    indexContainer = index;
+                                  }
+                                });
+                              },
+                              child: Container(
+                                height: 29,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: listText[index].selected
+                                        ? Colors.transparent
+                                        : CustomColor.grey350,
+                                  ),
+                                  color: listText[index].selected
+                                      ? CustomColor.red
+                                      : CustomColor.white,
+                                ),
+                                child: textWidget(
+                                  listText[index].text,
+                                  listText[index].selected
+                                      ? CustomColor.grey
+                                      : CustomColor.red,
+                                  14,
+                                  FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 25,
+                    ),
+                  ),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.advertisingdetails.fold(
+                      (l) {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: textWidget(
+                              l,
+                              CustomColor.black,
+                              16,
+                              FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      },
+                      (r) {
+                        return SliverToBoxAdapter(
+                          child: _changeBoxContainer(
+                            indexContainer,
+                            widget.advertisingHome,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 25,
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: ButtonWidget(),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -267,18 +294,14 @@ _changeBoxContainer(
 ) {
   switch (index) {
     case 0:
-      return GestureDetector(
-        onTap: () {
-          DateTime dt = DateTime.parse(adHome.created);
-          print(DateTime.now().difference(dt).inHours);
-        },
-        child: SpecificationBox(advertisingHome: adHome),
-      );
+      return SpecificationBox(advertisingHome: adHome);
 
     case 1:
       return PriceInfoWidget(advertisingHome: adHome);
     case 2:
-      return const FeatureWidget();
+      return AdvertisindFeaturesWidget(
+        ad: adHome,
+      );
     case 3:
       return DescriptionWidget(advertisingHome: adHome);
 
@@ -514,156 +537,6 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
         NumberFormat.currency(locale: 'fa-IR', symbol: '');
     var priceChange = currencyFormat.format(adHome.price / adHome.metr);
     return priceChange;
-  }
-}
-
-class FeatureWidget extends StatelessWidget {
-  const FeatureWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    List textFeature = [
-      'آسانسور',
-      'پارکینگ',
-      'انباری',
-      'بالکن',
-      'پنت هاوس',
-      'جنس کف سرامیک',
-      'سرویس بهداشتی ایرانی و فرنگی',
-    ];
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            textWidget(
-              'ویژگی ها',
-              CustomColor.black,
-              16,
-              FontWeight.w700,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset('images/clipboard.png'),
-          ],
-        ),
-        Container(
-          height: 112,
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          margin: const EdgeInsets.symmetric(vertical: 20),
-          decoration: BoxDecoration(
-            border: Border.all(color: CustomColor.grey350),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  textWidget(
-                    'تک برگ',
-                    CustomColor.grey500,
-                    16,
-                    FontWeight.w700,
-                  ),
-                  textWidget(
-                    'سند',
-                    CustomColor.grey500,
-                    16,
-                    FontWeight.w700,
-                  ),
-                ],
-              ),
-              DottedLine(
-                dashColor: CustomColor.grey350,
-                lineThickness: 1.5,
-                dashLength: 6,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  textWidget(
-                    'شمالی',
-                    CustomColor.grey500,
-                    16,
-                    FontWeight.w700,
-                  ),
-                  textWidget(
-                    'جهت ساختمان',
-                    CustomColor.grey500,
-                    16,
-                    FontWeight.w700,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            textWidget(
-              'امکانات',
-              CustomColor.black,
-              16,
-              FontWeight.w700,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset('images/magicpen.png'),
-          ],
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 20),
-          decoration: BoxDecoration(
-            border: Border.all(color: CustomColor.grey350),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 392,
-                child: ListView.builder(
-                  itemCount: textFeature.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 15),
-                          child: textWidget(
-                            textFeature[index],
-                            CustomColor.grey500,
-                            16,
-                            FontWeight.w400,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: DottedLine(
-                            dashColor: index == 6
-                                ? Colors.transparent
-                                : CustomColor.grey350,
-                            lineThickness: 1.5,
-                            dashLength: 6,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 }
 

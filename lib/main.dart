@@ -7,6 +7,7 @@ import 'package:aviz_project/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'screen/add_advertising_screen.dart';
 import 'widgets/buttomnavigationbar.dart';
 
@@ -28,6 +29,11 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => SearchBloc(
+            locator.get(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AdFeaturesBloc(
             locator.get(),
           ),
         ),

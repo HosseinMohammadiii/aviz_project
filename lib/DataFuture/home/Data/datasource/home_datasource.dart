@@ -1,4 +1,5 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
+import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_detail.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dio/dio.dart';
 
@@ -6,6 +7,7 @@ abstract class IHomeDataSoure {
   Future<List<AdvertisingHome>> getAdvertising();
   Future<List<AdvertisingHome>> getHotAdvertising();
   Future<List<AdvertisingHome>> getRecentAdvertising();
+  Future<List<AdvertisingFeatures>> getAdvertisinFeatures();
 }
 
 class HomeRemoteDataSource extends IHomeDataSoure {
@@ -37,7 +39,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
     //This function returns the current time in ISO 8601 format, which includes the exact date and time.
     String currentDateTime() {
       DateTime dt = DateTime.now();
-      return '${dt.toIso8601String()}';
+      return dt.toIso8601String();
     }
 
     try {
@@ -68,6 +70,29 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       return response.data['items']
           .map<AdvertisingHome>(
             (jsonObject) => AdvertisingHome.fromJson(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<AdvertisingFeatures>> getAdvertisinFeatures() async {
+    try {
+      Map<String, dynamic> query = {
+        'filter': 'id_advertising="afz1mzmvoxqjk9v"'
+      };
+      var response = await dio.get(
+        'collections/features/records',
+        queryParameters: query,
+      );
+      return response.data['items']
+          .map<AdvertisingFeatures>(
+            (jsonObject) => AdvertisingFeatures.fromJson(jsonObject),
           )
           .toList();
     } on DioException catch (ex) {

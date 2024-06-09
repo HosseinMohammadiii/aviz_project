@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     (recentAdvertising) {
                       return recentlyAdvertisingBox(adHome: recentAdvertising);
                     },
-                  )
+                  ),
                 ],
               ],
             ),
