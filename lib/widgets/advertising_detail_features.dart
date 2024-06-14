@@ -1,7 +1,6 @@
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_state.dart';
-import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_facilities.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -127,19 +126,14 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                 Image.asset('images/magicpen.png'),
               ],
             ),
-            // if (state is AdDetailRequestSuccessState) ...[
-            //   state.advertisingFacilities.fold(
-            //     (error) => Center(
-            //       child: textWidget(
-            //         error,
-            //         CustomColor.black,
-            //         16,
-            //         FontWeight.w500,
-            //       ),
-            //     ),
-            //     (facilities) => adTrueFacilities(facilities),
-            //   ),
-            // ],
+            if (state is AdDetailLoadingState) ...[
+              const SizedBox(
+                height: 112,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
             if (state is AdDetailRequestSuccessState) ...[
               state.advertisingFacilities.fold(
                 (error) => Center(
@@ -152,7 +146,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                 ),
                 (facilities) => CustomScrollView(
                   physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true, // Add this line
+                  shrinkWrap: true,
                   slivers: [
                     SliverList.builder(
                       itemCount: facilities.length,
@@ -168,16 +162,6 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
             ],
           ],
         );
-      },
-    );
-  }
-
-  Widget adTrueFacilities(List<AdvertisingFacilities> adFacilities) {
-    return SliverList.builder(
-      //physics: const NeverScrollableScrollPhysics(),
-      itemCount: adFacilities.length,
-      itemBuilder: (context, index) {
-        return AdvertisingFacilitiesWidget(adFacilities: adFacilities[index]);
       },
     );
   }
