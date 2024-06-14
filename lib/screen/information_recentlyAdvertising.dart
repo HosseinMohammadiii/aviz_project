@@ -245,30 +245,10 @@ class _InformationRecentlyAdvertisingState
                       height: 25,
                     ),
                   ),
-                  if (state is HomeRequestSuccessState) ...[
-                    state.advertisingdetails.fold(
-                      (l) {
-                        return SliverToBoxAdapter(
-                          child: Center(
-                            child: textWidget(
-                              l,
-                              CustomColor.black,
-                              16,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      },
-                      (r) {
-                        return SliverToBoxAdapter(
-                          child: _changeBoxContainer(
-                            indexContainer,
-                            widget.advertisingHome,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                  _changeBoxContainer(
+                    indexContainer,
+                    widget.advertisingHome,
+                  ),
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 25,
@@ -294,19 +274,25 @@ _changeBoxContainer(
 ) {
   switch (index) {
     case 0:
-      return SpecificationBox(advertisingHome: adHome);
+      return SliverToBoxAdapter(
+          child: SpecificationBox(advertisingHome: adHome));
 
     case 1:
-      return PriceInfoWidget(advertisingHome: adHome);
+      return SliverToBoxAdapter(
+          child: PriceInfoWidget(advertisingHome: adHome));
     case 2:
-      return AdvertisindFeaturesWidget(
-        ad: adHome,
+      return SliverToBoxAdapter(
+        child: AdvertisindFeaturesWidget(
+          ad: adHome,
+        ),
       );
     case 3:
-      return DescriptionWidget(advertisingHome: adHome);
+      return SliverToBoxAdapter(
+          child: DescriptionWidget(advertisingHome: adHome));
 
     default:
-      return SpecificationBox(advertisingHome: adHome);
+      return SliverToBoxAdapter(
+          child: SpecificationBox(advertisingHome: adHome));
   }
 }
 

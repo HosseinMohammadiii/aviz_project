@@ -1,6 +1,7 @@
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_state.dart';
+import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_facilities.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../DataFuture/ad_details/Data/model/ad_detail.dart';
 import '../DataFuture/home/Data/model/advertising.dart';
 import '../class/colors.dart';
+import 'advertising_facilities.dart';
 import 'text_widget.dart';
 
 class AdvertisindFeaturesWidget extends StatefulWidget {
@@ -32,15 +34,6 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List textFeature = [
-      'آسانسور',
-      'پارکینگ',
-      'انباری',
-      'بالکن',
-      'پنت هاوس',
-      'جنس کف سرامیک',
-      'سرویس بهداشتی ایرانی و فرنگی',
-    ];
     return BlocBuilder<AdFeaturesBloc, AdFeaturesState>(
       builder: (context, state) {
         return Column(
@@ -134,55 +127,57 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                 Image.asset('images/magicpen.png'),
               ],
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                border: Border.all(color: CustomColor.grey350),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 392,
-                    child: ListView.builder(
-                      itemCount: textFeature.length,
-                      physics: const NeverScrollableScrollPhysics(),
+            // if (state is AdDetailRequestSuccessState) ...[
+            //   state.advertisingFacilities.fold(
+            //     (error) => Center(
+            //       child: textWidget(
+            //         error,
+            //         CustomColor.black,
+            //         16,
+            //         FontWeight.w500,
+            //       ),
+            //     ),
+            //     (facilities) => adTrueFacilities(facilities),
+            //   ),
+            // ],
+            if (state is AdDetailRequestSuccessState) ...[
+              state.advertisingFacilities.fold(
+                (error) => Center(
+                  child: textWidget(
+                    error,
+                    CustomColor.black,
+                    16,
+                    FontWeight.w500,
+                  ),
+                ),
+                (facilities) => CustomScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true, // Add this line
+                  slivers: [
+                    SliverList.builder(
+                      itemCount: facilities.length,
                       itemBuilder: (context, index) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: textWidget(
-                                textFeature[index],
-                                CustomColor.grey500,
-                                16,
-                                FontWeight.w400,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
-                              child: DottedLine(
-                                dashColor: index == 6
-                                    ? Colors.transparent
-                                    : CustomColor.grey350,
-                                lineThickness: 1.5,
-                                dashLength: 6,
-                              ),
-                            ),
-                          ],
+                        return AdvertisingFacilitiesWidget(
+                          adFacilities: facilities[index],
                         );
                       },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
         );
+      },
+    );
+  }
+
+  Widget adTrueFacilities(List<AdvertisingFacilities> adFacilities) {
+    return SliverList.builder(
+      //physics: const NeverScrollableScrollPhysics(),
+      itemCount: adFacilities.length,
+      itemBuilder: (context, index) {
+        return AdvertisingFacilitiesWidget(adFacilities: adFacilities[index]);
       },
     );
   }
@@ -191,6 +186,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
     return SizedBox(
       height: 25,
       child: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: ad.length,
         itemBuilder: (context, index) {
           return Row(
@@ -220,6 +216,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
     return SizedBox(
       height: 20,
       child: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: ad.length,
         itemBuilder: (context, index) {
           return Row(
