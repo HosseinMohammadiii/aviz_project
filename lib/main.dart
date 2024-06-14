@@ -1,5 +1,6 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_Bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -34,6 +35,11 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => AdFeaturesBloc(
+            locator.get(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AddAdvertisingBloc(
             locator.get(),
           ),
         ),
