@@ -1,5 +1,7 @@
 abstract class PageNumberEvent {}
 
-class addPageNumber extends PageNumberEvent {}
+class AddPageNumber extends PageNumberEvent {}
 
-class minusPageNumber extends PageNumberEvent {}
+class MinusPageNumber extends PageNumberEvent {}
+
+class PageNumber extends PageNumberEvent {}

@@ -2,6 +2,7 @@ import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
@@ -67,6 +68,22 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   //       (e) => print(e.images),
                   //     )
                   //     .toList();
+
+                  // final Dio _dio = Dio();
+                  // final response = await _dio.post(
+                  //   'https://aviz.chbk.run/api/collections/home_screen/records',
+                  //   data: {
+                  //     'home_name': 'خانه در شهید کشوری',
+                  //     'home_description': 'یک خانه 120 متری در شهرک شهید کشوری',
+                  //     'home_price': 12345678910,
+                  //     'is_hot': true,
+                  //     'metr': 120,
+                  //     'room': 2,
+                  //     'floor': 2,
+                  //     'year_build': 1320,
+                  //   },
+                  // );
+                  // print(response.data);
                 },
                 child: Container(
                   width: 100,

@@ -1,3 +1,5 @@
+import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
+import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -6,24 +8,24 @@ import 'package:aviz_project/class/scroll_behavior.dart';
 import 'package:aviz_project/class/switch_classs.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/locatin_upload_screen.dart';
-import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_feature_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Bloc/bloc_page_number/page_n_bloc.dart';
-import '../Bloc/bloc_page_number/page_n_bloc_event.dart';
-
-class RegisterFeatureScreen extends StatefulWidget {
-  const RegisterFeatureScreen({super.key});
-
+class RegisterHomeFeatureScreen extends StatefulWidget {
+  RegisterHomeFeatureScreen({
+    super.key,
+    required this.title,
+  });
+  final String title;
   @override
-  State<RegisterFeatureScreen> createState() => _RegisterFeatureScreenState();
+  State<RegisterHomeFeatureScreen> createState() =>
+      _RegisterHomeFeatureScreenState();
 }
 
-class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
+class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   bool changeIcon = false;
   bool isEmpty = true;
   final layerLink = LayerLink();
@@ -37,23 +39,18 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
 
   OverlayEntry? entry;
 
-  String txtTitle = 'فروش آپارتمان';
   String address = '';
   String dialog = '';
-
+  String? txtTitle;
   @override
   void initState() {
+    txtTitle = '${widget.title} آپارتمان';
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
     );
   }
 
-  List txt = [
-    'فروش آپارتمان',
-    'فروش ویلا',
-    'فروش زمین',
-  ];
   List<ClassSwitchBox> propertiesTxt = [
     ClassSwitchBox('آسانسور', false),
     ClassSwitchBox('پارکینگ', true),
@@ -62,6 +59,11 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
 
   //Function for display Overlay
   void showOverlay() {
+    List txt = [
+      '${widget.title} آپارتمان',
+      '${widget.title} ویلا',
+      '${widget.title} زمین  ',
+    ];
     final overLay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
@@ -132,12 +134,10 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                         img: 'images/category-2.png'),
                     textCategory('محدوده ملک', 'دسته بندی'),
                     Row(
-                      // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                           width: 159,
                           height: 48,
-                          //  margin: const EdgeInsets.only(right: 43),
                           padding: const EdgeInsets.only(right: 5),
                           decoration: BoxDecoration(
                             color: CustomColor.grey350,
@@ -222,7 +222,7 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(right: 6),
                                     child: textWidget(
-                                      txtTitle,
+                                      txtTitle!,
                                       CustomColor.black,
                                       16,
                                       FontWeight.w400,
@@ -318,23 +318,15 @@ class _RegisterFeatureScreenState extends State<RegisterFeatureScreen> {
                             countRoom,
                             floor,
                             yearBuild,
-                            txtTitle,
+                            txtTitle!,
                             address,
                           );
                           setState(() {
                             isEmpty = false;
                           });
-                          BlocProvider.of<PageNumberBloc>(context)
-                              .add(addPageNumber());
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LocatioUpload(
-                                address: address,
-                              ),
-                            ),
-                          );
+                          BlocProvider.of<NavigationPage>(context)
+                              .getNavItems(ViewPage.registerHomeLocation);
                         } catch (e) {
                           displayDialog(
                               'لطفاً مقدار عددی معتبر وارد کنید', context);

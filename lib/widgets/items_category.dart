@@ -1,4 +1,4 @@
-import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_event.dart';
+import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,20 +7,24 @@ import '../class/colors.dart';
 import 'text_widget.dart';
 
 class ItemSelectCategory extends StatefulWidget {
-  ItemSelectCategory({super.key});
+  ItemSelectCategory({
+    super.key,
+    required this.title,
+  });
 
+  final String title;
   @override
   State<ItemSelectCategory> createState() => _ItemSelectCategoryState();
 }
 
 class _ItemSelectCategoryState extends State<ItemSelectCategory> {
-  List txt2 = [
-    'فروش آپارتمان',
-    'فروش خانه و ویلا',
-    'فروش زمین و کلنگی',
-  ];
   @override
   Widget build(BuildContext context) {
+    List txt2 = [
+      '${widget.title} آپارتمان',
+      '${widget.title} خانه و ویلا',
+      '${widget.title} زمین و کلنگی',
+    ];
     return Scaffold(
       body: SafeArea(
         child: ListView.builder(
@@ -29,7 +33,13 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                BlocProvider.of<PageNumberBloc>(context).add(addPageNumber());
+                if (widget.title == 'فروش') {
+                  BlocProvider.of<NavigationPage>(context)
+                      .getNavItems(ViewPage.registerDetialsBuyHomeAdvertising);
+                } else {
+                  BlocProvider.of<NavigationPage>(context)
+                      .getNavItems(ViewPage.registerDetialsRentHomeAdvertising);
+                }
               },
               child: Container(
                 height: 40,

@@ -3,6 +3,7 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
+import 'package:aviz_project/widgets/register_details_business.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,18 +29,44 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
         leadingWidth: double.maxFinite,
         leading: AppBarWidget(),
       ),
-      body: BlocBuilder<PageNumberBloc, PageNumberState>(
+      body: BlocBuilder<NavigationPage, NavigationState>(
         builder: (context, state) {
-          switch (state.pageNumber) {
-            case 1:
+          switch (state.viewPage) {
+            case ViewPage.category:
               return const itemsCategoryType();
-            case 2:
-              return ItemSelectCategory();
-            case 3:
-              return const RegisterFeatureScreen();
-            case 4:
+
+            case ViewPage.itemsRentHome:
+              return ItemSelectCategory(title: 'اجاره');
+
+            case ViewPage.itemsRentBusinessPlace:
+              return RegisterDetailsBusiness(
+                title: 'اجاره',
+              );
+
+            case ViewPage.itemsBuyHome:
+              return ItemSelectCategory(title: 'فروش');
+
+            case ViewPage.itemsBuyBusinessPlace:
+              return RegisterDetailsBusiness(title: 'فروش');
+
+            case ViewPage.registerDetialsRentHomeAdvertising:
+              return RegisterHomeFeatureScreen(
+                title: 'اجاره',
+              );
+
+            case ViewPage.registerDetialsBuyHomeAdvertising:
+              return RegisterHomeFeatureScreen(
+                title: 'فروش',
+              );
+
+            case ViewPage.registerHomeLocation:
               return LocatioUpload();
-            case 5:
+
+            case ViewPage.registerBusinessLocation:
+              return RegisterDetailsBusiness(title: 'موقعیت مکانی');
+
+            case ViewPage.registerHomeAdvertising:
+            case ViewPage.registerBusinessAdvertising:
               return const RegisterAdvertising();
 
             default:
