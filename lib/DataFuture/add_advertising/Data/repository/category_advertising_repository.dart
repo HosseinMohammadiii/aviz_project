@@ -6,6 +6,7 @@ import '../../../NetworkUtil/api_exeption.dart';
 
 abstract class ICategoryAdvertisingRepository {
   Future<Either<String, List<CategoryAdvertising>>> getCategoryAdvertising();
+  Future<Either<String, void>> postCategoryAdvertising(String ctName);
 }
 
 class CategoryAdvertisingRepository extends ICategoryAdvertisingRepository {
@@ -16,6 +17,16 @@ class CategoryAdvertisingRepository extends ICategoryAdvertisingRepository {
       getCategoryAdvertising() async {
     try {
       var response = await datasource.getCategory();
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, void>> postCategoryAdvertising(String ctName) async {
+    try {
+      var response = await datasource.postCategory(ctName);
       return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

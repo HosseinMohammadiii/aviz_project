@@ -16,7 +16,7 @@ class TextfieldFeature extends StatefulWidget {
 class _TextfieldFeatureState extends State<TextfieldFeature> {
   FocusNode focusNode = FocusNode();
 
-  num valu = 0;
+  num value = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,8 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      valu++;
-                      widget.controller.text = valu.toString();
+                      value++;
+                      widget.controller.text = value.toString();
                     });
                   },
                   child: const Icon(
@@ -49,14 +49,11 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (valu.toDouble() <= 0 || valu.toInt() <= 0) {
-                      valu = 0;
-                    } else {
-                      setState(() {
-                        valu--;
-                        widget.controller.text = valu.toString();
-                      });
-                    }
+                    setState(() {
+                      value--;
+                      widget.controller.text =
+                          value == 0 ? '' : value.toString();
+                    });
                   },
                   child: const Icon(
                     Icons.arrow_drop_down_rounded,
@@ -86,14 +83,14 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 onTapOutside: (event) {
                   focusNode.unfocus();
                 },
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
+                onChanged: (val) {
+                  if (val.isNotEmpty) {
                     setState(() {
-                      valu = num.tryParse(value) ?? 0;
-                      widget.controller.text = valu.toString();
+                      value = num.tryParse(val) ?? 0;
+                      widget.controller.text = value.toString();
                     });
                   } else {
-                    value = '';
+                    val = '';
                   }
                 },
               ),

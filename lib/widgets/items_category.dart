@@ -20,15 +20,21 @@ class ItemSelectCategory extends StatefulWidget {
 class _ItemSelectCategoryState extends State<ItemSelectCategory> {
   @override
   Widget build(BuildContext context) {
-    List txt2 = [
+    List<String> txtRent = [
       '${widget.title} آپارتمان',
-      '${widget.title} خانه و ویلا',
-      '${widget.title} زمین و کلنگی',
+      '${widget.title} خانه',
+      '${widget.title} ویلا',
+    ];
+    List<String> txtBuy = [
+      '${widget.title} آپارتمان',
+      '${widget.title} خانه',
+      '${widget.title} ویلا',
+      '${widget.title} زمین',
     ];
     return Scaffold(
       body: SafeArea(
         child: ListView.builder(
-          itemCount: txt2.length,
+          itemCount: widget.title == 'فروش' ? txtBuy.length : txtRent.length,
           padding: const EdgeInsets.symmetric(horizontal: 15),
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -36,9 +42,32 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
                 if (widget.title == 'فروش') {
                   BlocProvider.of<NavigationPage>(context)
                       .getNavItems(ViewPage.registerDetialsBuyHomeAdvertising);
+                  if (index == 0) {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.apartment);
+                  } else if (index == 1) {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.home);
+                  } else if (index == 2) {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.villa);
+                  } else {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.buyLand);
+                  }
                 } else {
                   BlocProvider.of<NavigationPage>(context)
                       .getNavItems(ViewPage.registerDetialsRentHomeAdvertising);
+                  if (index == 0) {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.apartment);
+                  } else if (index == 1) {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.home);
+                  } else {
+                    BlocProvider.of<StatusModeBloc>(context)
+                        .getStatusMode(StatusMode.villa);
+                  }
                 }
               },
               child: Container(
@@ -59,7 +88,7 @@ class _ItemSelectCategoryState extends State<ItemSelectCategory> {
                     ),
                     const Spacer(),
                     textWidget(
-                      txt2[index],
+                      widget.title == 'فروش' ? txtBuy[index] : txtRent[index],
                       CustomColor.black,
                       16,
                       FontWeight.w500,

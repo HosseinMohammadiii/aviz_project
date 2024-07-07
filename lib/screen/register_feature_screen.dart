@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/List/list_advertising.dart';
@@ -7,19 +9,24 @@ import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/class/scroll_behavior.dart';
 import 'package:aviz_project/class/switch_classs.dart';
 import 'package:aviz_project/extension/button.dart';
-import 'package:aviz_project/screen/locatin_upload_screen.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_feature_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
+import '../DataFuture/ad_details/Bloc/detail_ad_state.dart';
+import '../widgets/advertising_facilities.dart';
+
 class RegisterHomeFeatureScreen extends StatefulWidget {
   RegisterHomeFeatureScreen({
     super.key,
     required this.title,
+    this.index = 0,
   });
   final String title;
+  final int index;
   @override
   State<RegisterHomeFeatureScreen> createState() =>
       _RegisterHomeFeatureScreenState();
@@ -44,7 +51,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   String? txtTitle;
   @override
   void initState() {
-    txtTitle = '${widget.title} آپارتمان';
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
@@ -53,16 +59,18 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   List<ClassSwitchBox> propertiesTxt = [
     ClassSwitchBox('آسانسور', false),
-    ClassSwitchBox('پارکینگ', true),
+    ClassSwitchBox('پارکینگ', false),
     ClassSwitchBox('انباری', false),
+    ClassSwitchBox('بالکن', false),
+    ClassSwitchBox('پنت هاوس', false),
   ];
 
   //Function for display Overlay
   void showOverlay() {
     List txt = [
       '${widget.title} آپارتمان',
+      '${widget.title} خانه',
       '${widget.title} ویلا',
-      '${widget.title} زمین  ',
     ];
     final overLay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
@@ -83,8 +91,17 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
+                        if (index == 0) {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.apartment);
+                        } else if (index == 1) {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.home);
+                        } else {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.villa);
+                        }
                         setState(() {
-                          txtTitle = txt[index];
                           hideOverlay();
                           changeIcon = false;
                         });
@@ -176,62 +193,83 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           ),
                         ),
                         const Spacer(),
-                        CompositedTransformTarget(
-                          link: layerLink,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                changeIcon == true
-                                    ? changeIcon = false
-                                    : changeIcon = true;
+                        BlocBuilder<StatusModeBloc, StatusModeState>(
+                          builder: (context, state) {
+                            switch (state.statusMode) {
+                              case StatusMode.apartment:
+                                txtTitle = '${widget.title} آپارتمان';
+                                break;
+                              case StatusMode.home:
+                                txtTitle = '${widget.title} خانه';
+                                break;
+                              case StatusMode.villa:
+                                txtTitle = '${widget.title} ویلا';
+                                break;
+                              default:
+                                txtTitle = '${widget.title} آپارتمان';
+                                break;
+                            }
+                            return CompositedTransformTarget(
+                              link: layerLink,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    changeIcon == true
+                                        ? changeIcon = false
+                                        : changeIcon = true;
 
-                                if (changeIcon == true) {
-                                  showOverlay();
-                                } else {
-                                  hideOverlay();
-                                }
-                              });
-                            },
-                            child: Container(
-                              width: 159,
-                              height: 48,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: CustomColor.grey350),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(4),
-                                  topRight: const Radius.circular(4),
-                                  bottomLeft: changeIcon == false
-                                      ? const Radius.circular(4)
-                                      : const Radius.circular(0),
-                                  bottomRight: changeIcon == false
-                                      ? const Radius.circular(4)
-                                      : const Radius.circular(0),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    changeIcon == false
-                                        ? Icons.keyboard_arrow_down_rounded
-                                        : Icons.keyboard_arrow_up_rounded,
-                                    size: 34,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 6),
-                                    child: textWidget(
-                                      txtTitle!,
-                                      CustomColor.black,
-                                      16,
-                                      FontWeight.w400,
+                                    if (changeIcon == true) {
+                                      showOverlay();
+                                    } else {
+                                      hideOverlay();
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  width: 159,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: CustomColor.grey350),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: const Radius.circular(4),
+                                      topRight: const Radius.circular(4),
+                                      bottomLeft: changeIcon == false
+                                          ? const Radius.circular(4)
+                                          : const Radius.circular(0),
+                                      bottomRight: changeIcon == false
+                                          ? const Radius.circular(4)
+                                          : const Radius.circular(0),
                                     ),
                                   ),
-                                ],
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        changeIcon == false
+                                            ? Icons.keyboard_arrow_down_rounded
+                                            : Icons.keyboard_arrow_up_rounded,
+                                        size: 34,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 6),
+                                        child: textWidget(
+                                          txtTitle ?? '',
+                                          CustomColor.black,
+                                          16,
+                                          FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -291,6 +329,39 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   ],
                 ),
               ),
+              // SliverToBoxAdapter(
+              //   child: BlocBuilder<AdFeaturesBloc, AdFeaturesState>(
+              //     builder: (context, state) {
+              //       return CustomScrollView(
+              //         shrinkWrap: true,
+              //         slivers: [
+              //           if (state is AdDetailRequestSuccessState) ...[
+              //             state.advertisingFacilitiesList.fold(
+              //               (error) => SliverToBoxAdapter(
+              //                 child: Center(
+              //                   child: textWidget(
+              //                     error,
+              //                     CustomColor.black,
+              //                     16,
+              //                     FontWeight.w500,
+              //                   ),
+              //                 ),
+              //               ),
+              //               (facilities) => SliverList.builder(
+              //                 itemCount: facilities.length,
+              //                 itemBuilder: (context, index) {
+              //                   return AdvertisingFacilitiesWidget(
+              //                     adFacilities: facilities[index],
+              //                   );
+              //                 },
+              //               ),
+              //             ),
+              //           ],
+              //         ],
+              //       );
+              //     },
+              //   ),
+              // ),
               SliverList.builder(
                 itemCount: propertiesTxt.length,
                 itemBuilder: (context, index) => switchBox(index),
@@ -368,7 +439,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   }
 
 //Widget for display switch feature
-  Widget switchBox(int index) {
+  Widget switchBox(
+    int index,
+  ) {
     return Container(
       height: 40,
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -389,9 +462,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
             value: propertiesTxt[index].switchBool,
             onChanged: (value) {
               setState(() {
-                propertiesTxt[index].switchBool =
-                    !propertiesTxt[index].switchBool;
-                value = propertiesTxt[index].switchBool;
+                propertiesTxt[index].switchBool = value;
               });
             },
           ),

@@ -10,6 +10,8 @@ abstract class IAddDetailFuturesRepository {
       String adId);
   Future<Either<String, List<AdvertisingFacilities>>> getAdvertisinFacilities(
       String adId);
+  Future<Either<String, List<AdvertisingFacilities>>>
+      getAdvertisinFacilitiesList();
 }
 
 class AdDetailRepository extends IAddDetailFuturesRepository {
@@ -31,6 +33,17 @@ class AdDetailRepository extends IAddDetailFuturesRepository {
       String adId) async {
     try {
       var response = await dataSoure.getAdvertisinFacilities(adId);
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<AdvertisingFacilities>>>
+      getAdvertisinFacilitiesList() async {
+    try {
+      var response = await dataSoure.getAdvertisinFacilitiesList();
       return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

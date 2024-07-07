@@ -1,6 +1,8 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/dio_provider.dart';
 import 'package:aviz_project/DataFuture/ad_details/Data/datasource/ad_detail_datasource.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/datasource/info_register_ad_datasource.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/category_advertising_repository.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/repository/info_register_ad_repository.dart';
 import 'package:aviz_project/DataFuture/home/Data/datasource/home_datasource.dart';
 import 'package:aviz_project/DataFuture/home/Data/repository/home_repository.dart';
 import 'package:aviz_project/DataFuture/search/Data/dataSource/search_datasource.dart';
@@ -38,6 +40,12 @@ Future<void> getInInit() async {
     ),
   );
 
+  locator.registerFactory<IInfoRegisterAdDatasource>(
+    () => InfoRegisterAdDatasourceRemmot(
+      locator.get(),
+    ),
+  );
+
   //locator Repository
   locator.registerFactory<IHomeRepository>(
     () => HomeRepository(
@@ -56,6 +64,11 @@ Future<void> getInInit() async {
   );
   locator.registerFactory<ICategoryAdvertisingRepository>(
     () => CategoryAdvertisingRepository(
+      locator.get(),
+    ),
+  );
+  locator.registerFactory<IInfoRegisterAdRepository>(
+    () => InfoRegisterAdRepository(
       locator.get(),
     ),
   );

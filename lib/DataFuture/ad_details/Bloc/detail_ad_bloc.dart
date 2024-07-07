@@ -12,9 +12,12 @@ class AdFeaturesBloc extends Bloc<AdFeaturesEvent, AdFeaturesState> {
         emit(AdDetailLoadingState());
         var adFeatures = await repository.getAdvertisinFeatures(event.adId);
         var adFacilities = await repository.getAdvertisinFacilities(event.adId);
+        var adFacilitiesList =
+            await repository.getAdvertisinFacilities(event.adId);
         emit(AdDetailRequestSuccessState(
           adFeatures,
           adFacilities,
+          adFacilitiesList,
         ));
       },
     );

@@ -21,7 +21,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => PageNumberBloc(),
+          create: (context) => StatusModeBloc(),
         ),
         BlocProvider(
           create: (context) => NavigationPage(),
@@ -43,6 +43,7 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => AddAdvertisingBloc(
+            locator.get(),
             locator.get(),
           ),
         ),

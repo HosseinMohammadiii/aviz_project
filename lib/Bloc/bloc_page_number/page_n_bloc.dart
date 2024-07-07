@@ -1,4 +1,3 @@
-import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_event.dart';
 import 'package:bloc/bloc.dart';
 
 import 'page_n_bloc_state.dart';
@@ -40,10 +39,6 @@ class NavigationPage extends Cubit<NavigationState> {
         emit(NavigationState(ViewPage.registerDetialsRentHomeAdvertising));
         break;
 
-      // case ViewPage.registerDetialsRentBusinessAdvertising:
-      //   emit(NavigationState(ViewPage.registerDetialsRentBusinessAdvertising));
-      //   break;
-
       case ViewPage.registerHomeAdvertising:
         emit(NavigationState(ViewPage.registerHomeAdvertising));
         break;
@@ -67,20 +62,38 @@ class NavigationPage extends Cubit<NavigationState> {
   }
 }
 
-class PageNumberBloc extends Bloc<PageNumberEvent, PageNumberState> {
-  int pageNumber = 1;
-  PageNumberBloc() : super(PageNumberState(1)) {
-    on<AddPageNumber>((event, emit) {
-      if (pageNumber == 5) {
-        return;
-      }
-      emit(PageNumberState(++pageNumber));
-    });
-    on<MinusPageNumber>((event, emit) {
-      if (pageNumber == 1) {
-        return;
-      }
-      emit(PageNumberState(--pageNumber));
-    });
+class StatusModeBloc extends Cubit<StatusModeState> {
+  StatusModeBloc() : super(StatusModeState(StatusMode.apartment));
+
+  void getStatusMode(StatusMode status) {
+    switch (status) {
+      case StatusMode.apartment:
+        emit(StatusModeState(StatusMode.apartment));
+        break;
+
+      case StatusMode.home:
+        emit(StatusModeState(StatusMode.home));
+        break;
+
+      case StatusMode.villa:
+        emit(StatusModeState(StatusMode.villa));
+        break;
+
+      case StatusMode.buyLand:
+        emit(StatusModeState(StatusMode.buyLand));
+        break;
+
+      case StatusMode.rentBusinessPlace:
+        emit(StatusModeState(StatusMode.rentBusinessPlace));
+        break;
+
+      case StatusMode.buyBusinessPlace:
+        emit(StatusModeState(StatusMode.buyBusinessPlace));
+        break;
+
+      default:
+        emit(StatusModeState(StatusMode.apartment));
+        break;
+    }
   }
 }

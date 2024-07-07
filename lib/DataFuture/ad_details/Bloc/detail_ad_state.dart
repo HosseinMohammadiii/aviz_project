@@ -12,8 +12,10 @@ final class AdDetailLoadingState extends AdFeaturesState {}
 final class AdDetailRequestSuccessState extends AdFeaturesState {
   Either<String, List<AdvertisingFeatures>> advertisingdetails;
   Either<String, List<AdvertisingFacilities>> advertisingFacilities;
+  Either<String, List<AdvertisingFacilities>> advertisingFacilitiesList;
   AdDetailRequestSuccessState(
     this.advertisingdetails,
     this.advertisingFacilities,
+    this.advertisingFacilitiesList,
   );
 }

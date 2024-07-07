@@ -7,6 +7,7 @@ import '../model/ad_facilities.dart';
 abstract class IAdvertisingFeaturesDataSoure {
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures(String adId);
   Future<List<AdvertisingFacilities>> getAdvertisinFacilities(String adId);
+  Future<List<AdvertisingFacilities>> getAdvertisinFacilitiesList();
 }
 
 class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
@@ -40,6 +41,24 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
       var response = await dio.get(
         'collections/facilities/records',
         queryParameters: query,
+      );
+      return response.data['items']
+          .map<AdvertisingFacilities>(
+              (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<AdvertisingFacilities>> getAdvertisinFacilitiesList() async {
+    try {
+      var response = await dio.get(
+        'collections/facilities/records',
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
