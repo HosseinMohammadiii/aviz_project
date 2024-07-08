@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:ffi';
-
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/List/list_advertising.dart';
@@ -14,13 +11,9 @@ import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_feature_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:shamsi_date/shamsi_date.dart';
-
-import '../DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
-import '../DataFuture/ad_details/Bloc/detail_ad_state.dart';
-import '../widgets/advertising_facilities.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
   RegisterHomeFeatureScreen({
@@ -320,95 +313,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: 20,
-                                    color: CustomColor.red,
-                                  ),
-                                  SizedBox(
-                                    height: 150,
-                                    child: ListWheelScrollView.useDelegate(
-                                      controller: _scrollController,
-                                      itemExtent: 60,
-                                      renderChildrenOutsideViewport: false,
-                                      squeeze: 0.7,
-                                      onSelectedItemChanged: (index) {
-                                        //    value = currentYear.year + value;
-                                        int selectedYear =
-                                            currentYear.year + index;
-                                        setState(() {
-                                          controller3.text =
-                                              selectedYear.toString();
-                                          _scrollController =
-                                              FixedExtentScrollController(
-                                                  initialItem: index);
-                                        });
-                                      },
-                                      childDelegate:
-                                          ListWheelChildBuilderDelegate(
-                                        childCount: itemYear.length,
-                                        builder: (context, index) {
-                                          int year = currentYear.year + index;
-
-                                          return GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                controller3.text =
-                                                    year.toString();
-                                                _scrollController =
-                                                    FixedExtentScrollController(
-                                                        initialItem: index);
-                                                Navigator.pop(context);
-                                              });
-                                            },
-                                            child: Container(
-                                              width: 100,
-                                              color: CustomColor.white,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                '$year',
-                                                style: TextStyle(
-                                                  color: CustomColor.bluegrey,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    height: 20,
-                                    color: CustomColor.red,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              TextfieldFeature(
-                                controller: controller3,
-                                textInputAction: TextInputAction.done,
-                              ),
-                              Container(
-                                width: 159,
-                                height: 48,
-                                color: Colors.transparent,
-                              ),
-                            ],
-                          ),
-                        ),
+                        widgetListWheelSelectYear(context),
                         TextfieldFeature(
                           controller: controller4,
                           textInputAction: TextInputAction.done,
@@ -514,6 +419,102 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+//Widget For Display List Years to Select Build Year
+  Widget widgetListWheelSelectYear(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 150,
+                width: 270,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: CustomColor.grey350,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: ListWheelScrollView.useDelegate(
+                  controller: _scrollController,
+                  itemExtent: 50,
+                  squeeze: 0.7,
+                  renderChildrenOutsideViewport: false,
+                  onSelectedItemChanged: (index) {
+                    int selectYear = currentYear.year + index;
+
+                    setState(() {
+                      controller3.text = selectYear.toString();
+
+                      //Display Scroll Item last Value selected
+                      _scrollController =
+                          FixedExtentScrollController(initialItem: index);
+                    });
+                  },
+                  childDelegate: ListWheelChildBuilderDelegate(
+                    childCount: itemYear.length,
+                    builder: (context, index) {
+                      int year = currentYear.year + index;
+
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            controller3.text = year.toString();
+
+                            //Display Scroll Item last Value selected
+                            _scrollController =
+                                FixedExtentScrollController(initialItem: index);
+
+                            //Navigator Pop For When Selected Item
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: CustomColor.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '$year'.toPersianDigit(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .apply(
+                                  fontSizeDelta: 10,
+                                  bodyColor: CustomColor.bluegrey,
+                                )
+                                .titleMedium,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          TextfieldFeature(
+            controller: controller3,
+            textInputAction: TextInputAction.done,
+          ),
+          Container(
+            width: 159,
+            height: 48,
+            color: Colors.transparent,
+          ),
+        ],
       ),
     );
   }
