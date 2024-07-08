@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
@@ -13,7 +14,9 @@ import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_feature_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
 import '../DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import '../DataFuture/ad_details/Bloc/detail_ad_state.dart';
@@ -23,10 +26,8 @@ class RegisterHomeFeatureScreen extends StatefulWidget {
   RegisterHomeFeatureScreen({
     super.key,
     required this.title,
-    this.index = 0,
   });
   final String title;
-  final int index;
   @override
   State<RegisterHomeFeatureScreen> createState() =>
       _RegisterHomeFeatureScreenState();
@@ -35,6 +36,9 @@ class RegisterHomeFeatureScreen extends StatefulWidget {
 class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   bool changeIcon = false;
   bool isEmpty = true;
+
+  int selectedIndex = 0;
+
   final layerLink = LayerLink();
 
   FocusNode focusNode1 = FocusNode();
@@ -49,8 +53,19 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   String address = '';
   String dialog = '';
   String? txtTitle;
+
+  Jalali currentYear = Jalali(1340);
+  Jalali endYear = Jalali.now();
+  int yearLength = 0;
+  List itemYear = [];
+
+  var _scrollController = FixedExtentScrollController();
+
   @override
   void initState() {
+    yearLength = endYear.year - currentYear.year + 1;
+    itemYear = List.generate(yearLength, (index) {});
+
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
@@ -305,9 +320,94 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextfieldFeature(
-                          controller: controller3,
-                          textInputAction: TextInputAction.done,
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: 20,
+                                    color: CustomColor.red,
+                                  ),
+                                  SizedBox(
+                                    height: 150,
+                                    child: ListWheelScrollView.useDelegate(
+                                      controller: _scrollController,
+                                      itemExtent: 60,
+                                      renderChildrenOutsideViewport: false,
+                                      squeeze: 0.7,
+                                      onSelectedItemChanged: (index) {
+                                        //    value = currentYear.year + value;
+                                        int selectedYear =
+                                            currentYear.year + index;
+                                        setState(() {
+                                          controller3.text =
+                                              selectedYear.toString();
+                                          _scrollController =
+                                              FixedExtentScrollController(
+                                                  initialItem: index);
+                                        });
+                                      },
+                                      childDelegate:
+                                          ListWheelChildBuilderDelegate(
+                                        childCount: itemYear.length,
+                                        builder: (context, index) {
+                                          int year = currentYear.year + index;
+
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                controller3.text =
+                                                    year.toString();
+                                                _scrollController =
+                                                    FixedExtentScrollController(
+                                                        initialItem: index);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 100,
+                                              color: CustomColor.white,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '$year',
+                                                style: TextStyle(
+                                                  color: CustomColor.bluegrey,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 20,
+                                    color: CustomColor.red,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              TextfieldFeature(
+                                controller: controller3,
+                                textInputAction: TextInputAction.done,
+                              ),
+                              Container(
+                                width: 159,
+                                height: 48,
+                                color: Colors.transparent,
+                              ),
+                            ],
+                          ),
                         ),
                         TextfieldFeature(
                           controller: controller4,

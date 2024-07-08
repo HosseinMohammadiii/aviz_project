@@ -4,6 +4,7 @@ import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/login_screen.dart';
+import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,7 +109,9 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: BottomNavigationScreen(),
+      home: RegisterHomeFeatureScreen(
+        title: '',
+      ),
     );
   }
 }
