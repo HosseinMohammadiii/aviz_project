@@ -6,17 +6,17 @@ class TextfieldFeature extends StatefulWidget {
     super.key,
     required this.controller,
     required this.textInputAction,
+    required this.value,
   });
   TextEditingController controller = TextEditingController();
   TextInputAction textInputAction;
+  num value = 0;
   @override
   State<TextfieldFeature> createState() => _TextfieldFeatureState();
 }
 
 class _TextfieldFeatureState extends State<TextfieldFeature> {
   FocusNode focusNode = FocusNode();
-
-  num value = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,8 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      value++;
-                      widget.controller.text = value.toString();
+                      widget.value++;
+                      widget.controller.text = widget.value.toString();
                     });
                   },
                   child: const Icon(
@@ -49,10 +49,13 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    if (widget.value <= 0 || widget.controller.text == '') {
+                      return;
+                    }
                     setState(() {
-                      value--;
+                      widget.value--;
                       widget.controller.text =
-                          value == 0 ? '' : value.toString();
+                          widget.value == 0 ? '' : widget.value.toString();
                     });
                   },
                   child: const Icon(
@@ -62,6 +65,7 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 ),
               ],
             ),
+            const Spacer(),
             SizedBox(
               width: 110,
               child: TextField(
@@ -86,11 +90,12 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 onChanged: (val) {
                   if (val.isNotEmpty) {
                     setState(() {
-                      value = num.tryParse(val) ?? 0;
-                      widget.controller.text = value.toString();
+                      widget.value = num.tryParse(val) ?? 0;
+                      widget.controller.text = widget.value.toString();
                     });
                   } else {
                     val = '';
+                    widget.value = 0;
                   }
                 },
               ),

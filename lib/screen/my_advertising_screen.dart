@@ -4,12 +4,10 @@ import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
   const MyAdvertisingScreen({super.key});
@@ -19,17 +17,7 @@ class MyAdvertisingScreen extends StatefulWidget {
 }
 
 class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
-  Jalali currentYear = Jalali(1340);
-  Jalali endYear = Jalali.now();
-  int yearLength = 0;
-  List itemYear = [];
-
-  @override
-  void initState() {
-    yearLength = endYear.year - currentYear.year + 1;
-    itemYear = List.generate(yearLength, (index) {});
-    super.initState();
-  }
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -137,31 +125,7 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
             ),
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 300,
-                child: ListWheelScrollView.useDelegate(
-                  itemExtent: 80,
-                  childDelegate: ListWheelChildBuilderDelegate(
-                    childCount: itemYear.length,
-                    builder: (context, index) {
-                      int year = currentYear.year + index;
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 100,
-                          color: CustomColor.white,
-                          alignment: Alignment.center,
-                          child: Text(
-                            '$year',
-                            style: TextStyle(
-                              color: CustomColor.bluegrey,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                height: 50,
               ),
             ),
           ],

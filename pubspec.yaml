@@ -34,11 +34,8 @@ dependencies:
   shimmer: ^3.0.0
   persian_number_utility: ^1.1.4
   cupertino_icons: ^1.0.2
-  # import 'package:shamsi_date/shamsi_date.dart';
   shamsi_date: ^1.0.2
-  # import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
-  # import 'package:clickable_list_wheel_view/measure_size.dart';
-  clickable_list_wheel_view: ^0.2.0
+ 
 
 
 dev_dependencies:

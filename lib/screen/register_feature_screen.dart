@@ -28,9 +28,6 @@ class RegisterHomeFeatureScreen extends StatefulWidget {
 
 class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   bool changeIcon = false;
-  bool isEmpty = true;
-
-  int selectedIndex = 0;
 
   final layerLink = LayerLink();
 
@@ -44,12 +41,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   OverlayEntry? entry;
 
   String address = '';
-  String dialog = '';
   String? txtTitle;
 
   Jalali currentYear = Jalali(1340);
   Jalali endYear = Jalali.now();
+
+  int _currentSliderPrimaryValue = 0;
   int yearLength = 0;
+
   List itemYear = [];
 
   var _scrollController = FixedExtentScrollController();
@@ -58,7 +57,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   void initState() {
     yearLength = endYear.year - currentYear.year + 1;
     itemYear = List.generate(yearLength, (index) {});
-
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
@@ -298,11 +296,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                       children: [
                         TextfieldFeature(
                           controller: controller1,
+                          value: num.tryParse(controller1.text) ?? 0,
                           textInputAction: TextInputAction.done,
                         ),
-                        TextfieldFeature(
-                          controller: controller2,
-                          textInputAction: TextInputAction.done,
+                        widgetBoxFeatures(
+                          context,
+                          widgetSliderMeterFeature(),
+                          controller2,
+                          'متراژ را وارد کنید',
                         ),
                       ],
                     ),
@@ -313,9 +314,15 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        widgetListWheelSelectYear(context),
+                        widgetBoxFeatures(
+                          context,
+                          _boxListWheelYears(),
+                          controller3,
+                          'سال ساخت را انتخاب کنید',
+                        ),
                         TextfieldFeature(
                           controller: controller4,
+                          value: num.tryParse(controller4.text) ?? 0,
                           textInputAction: TextInputAction.done,
                         ),
                       ],
@@ -334,39 +341,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   ],
                 ),
               ),
-              // SliverToBoxAdapter(
-              //   child: BlocBuilder<AdFeaturesBloc, AdFeaturesState>(
-              //     builder: (context, state) {
-              //       return CustomScrollView(
-              //         shrinkWrap: true,
-              //         slivers: [
-              //           if (state is AdDetailRequestSuccessState) ...[
-              //             state.advertisingFacilitiesList.fold(
-              //               (error) => SliverToBoxAdapter(
-              //                 child: Center(
-              //                   child: textWidget(
-              //                     error,
-              //                     CustomColor.black,
-              //                     16,
-              //                     FontWeight.w500,
-              //                   ),
-              //                 ),
-              //               ),
-              //               (facilities) => SliverList.builder(
-              //                 itemCount: facilities.length,
-              //                 itemBuilder: (context, index) {
-              //                   return AdvertisingFacilitiesWidget(
-              //                     adFacilities: facilities[index],
-              //                   );
-              //                 },
-              //               ),
-              //             ),
-              //           ],
-              //         ],
-              //       );
-              //     },
-              //   ),
-              // ),
               SliverList.builder(
                 itemCount: propertiesTxt.length,
                 itemBuilder: (context, index) => switchBox(index),
@@ -397,9 +371,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             txtTitle!,
                             address,
                           );
-                          setState(() {
-                            isEmpty = false;
-                          });
 
                           BlocProvider.of<NavigationPage>(context)
                               .getNavItems(ViewPage.registerHomeLocation);
@@ -423,98 +394,144 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     );
   }
 
-//Widget For Display List Years to Select Build Year
-  Widget widgetListWheelSelectYear(BuildContext context) {
+//Function For Start Number TextfieldFeature Stateful Widget
+  num numberBuild(String title, TextEditingController controller) {
+    if (title == 'سال ساخت را انتخاب کنید') {
+      return num.tryParse(controller.text) ?? 1339;
+    } else {
+      return num.tryParse(controller.text) ?? 0;
+    }
+  }
+
+//Widget For Display Slider Input Meter Number
+  Widget widgetSliderMeterFeature() {
+    return StatefulBuilder(
+      builder: (context, setState) => Slider(
+        value: _currentSliderPrimaryValue.toDouble(),
+        min: 0,
+        max: 1000,
+        divisions: 1000,
+        label: _currentSliderPrimaryValue.toString(),
+        onChanged: (value) {
+          if (value > 0) {
+            setState(() {
+              _currentSliderPrimaryValue = value.toInt();
+
+              controller2.text = _currentSliderPrimaryValue.toString();
+            });
+          } else {
+            controller2.text = '';
+          }
+        },
+      ),
+    );
+  }
+
+//Widget For Display Widgets ListWheel Years Build And Slider Input Number
+  Widget widgetBoxFeatures(
+    BuildContext context,
+    Widget widget,
+    TextEditingController controller,
+    String title,
+  ) {
     return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 150,
-                width: 270,
+      onTap: () async {
+        await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                backgroundColor: CustomColor.grey350,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: CustomColor.grey350,
-                  borderRadius: BorderRadius.circular(8),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: CustomColor.bluegrey,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    widget,
+                  ],
                 ),
-                child: ListWheelScrollView.useDelegate(
-                  controller: _scrollController,
-                  itemExtent: 50,
-                  squeeze: 0.7,
-                  renderChildrenOutsideViewport: false,
-                  onSelectedItemChanged: (index) {
-                    int selectYear = currentYear.year + index;
-
-                    setState(() {
-                      controller3.text = selectYear.toString();
-
-                      //Display Scroll Item last Value selected
-                      _scrollController =
-                          FixedExtentScrollController(initialItem: index);
-                    });
-                  },
-                  childDelegate: ListWheelChildBuilderDelegate(
-                    childCount: itemYear.length,
-                    builder: (context, index) {
-                      int year = currentYear.year + index;
-
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            controller3.text = year.toString();
-
-                            //Display Scroll Item last Value selected
-                            _scrollController =
-                                FixedExtentScrollController(initialItem: index);
-
-                            //Navigator Pop For When Selected Item
-                            Navigator.pop(context);
-                          });
-                        },
-                        child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: CustomColor.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '$year'.toPersianDigit(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .apply(
-                                  fontSizeDelta: 10,
-                                  bodyColor: CustomColor.bluegrey,
-                                )
-                                .titleMedium,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+              );
+            });
+        setState(() {});
       },
       child: Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.centerRight,
         children: [
           TextfieldFeature(
-            controller: controller3,
+            controller: controller,
+            value: numberBuild(title, controller),
             textInputAction: TextInputAction.done,
           ),
           Container(
-            width: 159,
+            width: 140,
             height: 48,
             color: Colors.transparent,
           ),
         ],
+      ),
+    );
+  }
+
+//Widget For Display ListWheel Years Build
+  Widget _boxListWheelYears() {
+    return SizedBox(
+      height: 150,
+      child: ListWheelScrollView.useDelegate(
+        controller: _scrollController,
+        itemExtent: 50,
+        squeeze: 0.7,
+        childDelegate: ListWheelChildBuilderDelegate(
+          childCount: itemYear.length,
+          builder: (context, index) {
+            int year = currentYear.year + index;
+
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  controller3.text = year.toString();
+
+                  //Display Scroll Item last Value selected
+                  _scrollController =
+                      FixedExtentScrollController(initialItem: index);
+
+                  //Navigator Pop For When Selected Item
+                  Navigator.pop(context);
+                });
+              },
+              child: Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  color: controller3.text == year.toString()
+                      ? CustomColor.red
+                      : CustomColor.white,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '$year'.toPersianDigit(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .apply(
+                        fontSizeDelta: 10,
+                        bodyColor: controller3.text == year.toString()
+                            ? CustomColor.white
+                            : CustomColor.bluegrey,
+                      )
+                      .titleMedium,
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
