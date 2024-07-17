@@ -109,9 +109,7 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: RegisterHomeFeatureScreen(
-        title: '',
-      ),
+      home: BottomNavigationScreen(),
     );
   }
 }

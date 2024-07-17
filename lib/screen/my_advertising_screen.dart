@@ -92,15 +92,15 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                       //   },
                       // );
                       // print(response.data);
-                      BlocProvider.of<AddAdvertisingBloc>(context)
-                          .add(AddInfoAdvertising(
-                        '4m44z8mrvvmqmrb',
-                        'location',
-                        [],
-                        'titlehome',
-                        'description',
-                        1200000000,
-                      ));
+                      // BlocProvider.of<AddAdvertisingBloc>(context)
+                      //     .add(AddInfoAdvertising(
+                      //   '4m44z8mrvvmqmrb',
+                      //   'location',
+                      //   [],
+                      //   'titlehome',
+                      //   'description',
+                      //   1200000000,
+                      // ));
                       if (state is AddInfoAdvertisingStateResponse) {
                         Text widgett = Text('');
                         state.registerInfoAdvertising.fold(

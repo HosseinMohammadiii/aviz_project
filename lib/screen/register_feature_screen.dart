@@ -1,5 +1,7 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -73,10 +75,16 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   //Function for display Overlay
   void showOverlay() {
-    List txt = [
+    List txtRent = [
       '${widget.title} آپارتمان',
       '${widget.title} خانه',
       '${widget.title} ویلا',
+    ];
+    List txtBuy = [
+      '${widget.title} آپارتمان',
+      '${widget.title} خانه',
+      '${widget.title} ویلا',
+      '${widget.title} زمین',
     ];
     final overLay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
@@ -93,7 +101,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
               child: ScrollConfiguration(
                 behavior: MyBehavior(),
                 child: ListView.builder(
-                  itemCount: txt.length,
+                  itemCount:
+                      widget.title == 'اجاره' ? txtRent.length : txtBuy.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
@@ -103,9 +112,12 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         } else if (index == 1) {
                           BlocProvider.of<StatusModeBloc>(context)
                               .getStatusMode(StatusMode.home);
-                        } else {
+                        } else if (index == 2) {
                           BlocProvider.of<StatusModeBloc>(context)
                               .getStatusMode(StatusMode.villa);
+                        } else {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.buyLand);
                         }
                         setState(() {
                           hideOverlay();
@@ -118,7 +130,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             vertical: 4, horizontal: 6),
                         color: CustomColor.grey300,
                         child: textWidget(
-                          txt[index],
+                          widget.title == 'اجاره'
+                              ? txtRent[index]
+                              : txtBuy[index],
                           CustomColor.black,
                           15,
                           FontWeight.w500,
@@ -204,12 +218,16 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             switch (state.statusMode) {
                               case StatusMode.apartment:
                                 txtTitle = '${widget.title} آپارتمان';
+
                                 break;
                               case StatusMode.home:
                                 txtTitle = '${widget.title} خانه';
                                 break;
                               case StatusMode.villa:
                                 txtTitle = '${widget.title} ویلا';
+                                break;
+                              case StatusMode.buyLand:
+                                txtTitle = '${widget.title} زمین';
                                 break;
                               default:
                                 txtTitle = '${widget.title} آپارتمان';
@@ -350,6 +368,31 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
                     () {
+                      //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
+                      String idCt() {
+                        String idCt = '';
+
+                        if (txtTitle == 'اجاره آپارتمان') {
+                          idCt = '4m44z8mrvvmqmrb';
+                        } else if (txtTitle == 'اجاره خانه') {
+                          idCt = 'awbiuhrki02leje';
+                        } else if (txtTitle == 'اجاره ویلا') {
+                          idCt = '04lqfn5b7bpiwdm';
+                        }
+
+                        if (txtTitle == 'فروش آپارتمان') {
+                          idCt = 'daxmo7fipbo5xnc';
+                        } else if (txtTitle == 'فروش خانه') {
+                          idCt = 'zlbqbrywl9f0b92';
+                        } else if (txtTitle == 'فروش ویلا') {
+                          idCt = 'egylfeay2tn1hxn';
+                        } else if (txtTitle == 'فروش زمین') {
+                          idCt = '7ost8r7msw8lt0c';
+                        }
+
+                        return idCt;
+                      }
+
                       if (address.isEmpty ||
                           controller1.text.isEmpty ||
                           controller2.text.isEmpty ||
@@ -357,27 +400,38 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           controller4.text.isEmpty) {
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
-                      } else {
-                        try {
-                          num metr = num.parse(controller2.text);
-                          num countRoom = num.parse(controller1.text);
-                          num floor = num.parse(controller4.text);
-                          num yearBuild = num.parse(controller3.text);
-                          addAdvertising(
-                            metr,
-                            countRoom,
-                            floor,
-                            yearBuild,
-                            txtTitle!,
-                            address,
-                          );
+                      }
 
-                          BlocProvider.of<NavigationPage>(context)
-                              .getNavItems(ViewPage.registerHomeLocation);
-                        } catch (e) {
-                          displayDialog(
-                              'لطفاً مقدار عددی معتبر وارد کنید', context);
-                        }
+                      try {
+                        num metr = num.parse(controller2.text);
+                        num countRoom = num.parse(controller1.text);
+                        num floor = num.parse(controller4.text);
+                        num yearBuild = num.parse(controller3.text);
+
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                          AddInfoAdvertising(
+                            idCt(),
+                            address,
+                            metr.toInt(),
+                            countRoom.toInt(),
+                            floor.toInt(),
+                            yearBuild.toInt(),
+                          ),
+                        );
+                        // addAdvertising(
+                        //   metr,
+                        //   countRoom,
+                        //   floor,
+                        //   yearBuild,
+                        //   txtTitle!,
+                        //   address,
+                        // );
+
+                        BlocProvider.of<NavigationPage>(context)
+                            .getNavItems(ViewPage.registerHomeLocation);
+                      } catch (e) {
+                        displayDialog(
+                            'لطفاً مقدار عددی معتبر وارد کنید', context);
                       }
                     },
                     'بعدی',
@@ -407,7 +461,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   Widget widgetSliderMeterFeature() {
     return StatefulBuilder(
       builder: (context, setState) => Slider(
-        value: _currentSliderPrimaryValue.toDouble(),
+        value: double.tryParse(controller2.text) ?? 0.0,
         min: 0,
         max: 1000,
         divisions: 1000,

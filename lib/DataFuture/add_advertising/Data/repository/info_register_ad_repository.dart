@@ -9,10 +9,10 @@ abstract class IInfoRegisterAdRepository {
   Future<Either<String, String>> postRegisterAd(
     String idCT,
     String location,
-    List<String> images,
-    String titlehome,
-    String description,
-    int homeprice,
+    int metr,
+    int countRoom,
+    int floor,
+    int yearBuild,
   );
 }
 
@@ -34,19 +34,19 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   Future<Either<String, String>> postRegisterAd(
     String idCT,
     String location,
-    List<String> images,
-    String titlehome,
-    String description,
-    int homeprice,
+    int metr,
+    int countRoom,
+    int floor,
+    int yearBuild,
   ) async {
     try {
       var response = await datasource.postRegisterAd(
         idCT,
         location,
-        images,
-        titlehome,
-        description,
-        homeprice,
+        metr,
+        countRoom,
+        floor,
+        yearBuild,
       );
       if (response.isNotEmpty) {
         return right('شما وارد شده اید');

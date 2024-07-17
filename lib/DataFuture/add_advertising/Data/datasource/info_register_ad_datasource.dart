@@ -8,10 +8,10 @@ abstract class IInfoRegisterAdDatasource {
   Future<String> postRegisterAd(
     String idCT,
     String location,
-    List<String> images,
-    String titlehome,
-    String description,
-    int homeprice,
+    int metr,
+    int countRoom,
+    int floor,
+    int yearBuild,
   );
 }
 
@@ -42,20 +42,20 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
   Future<String> postRegisterAd(
     String idCT,
     String location,
-    List<String> images,
-    String titlehome,
-    String description,
-    int homeprice,
+    int metr,
+    int countRoom,
+    int floor,
+    int yearBuild,
   ) async {
     try {
       var response =
           await dio.post('collections/inforegisteredhomes/records', data: {
         'category_name': idCT,
         'location': location,
-        'images': images,
-        'title_home': titlehome,
-        'description': description,
-        'home_price': homeprice,
+        'metr': metr,
+        'count_room': countRoom,
+        'floor': floor,
+        'year_build': yearBuild,
       });
       if (response.statusCode == 200) {
         return response.data['items'];

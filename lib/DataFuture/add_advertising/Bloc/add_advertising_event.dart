@@ -5,17 +5,18 @@ class AddAdvertisingGetInitializeData extends AddAdvertisingEvent {}
 class AddInfoAdvertising extends AddAdvertisingEvent {
   String idCt;
   String location;
-  List<String> images;
-  String titlehome;
-  String description;
-  int homeprice;
+
+  int metr;
+  int countRoom;
+  int floor;
+  int yearBuild;
 
   AddInfoAdvertising(
     this.idCt,
     this.location,
-    this.images,
-    this.titlehome,
-    this.description,
-    this.homeprice,
+    this.metr,
+    this.countRoom,
+    this.floor,
+    this.yearBuild,
   );
 }

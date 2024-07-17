@@ -26,10 +26,10 @@ class AddAdvertisingBloc
         var registerInfo = await infoRepository.postRegisterAd(
           event.idCt,
           event.location,
-          event.images,
-          event.titlehome,
-          event.description,
-          event.homeprice,
+          event.metr,
+          event.countRoom,
+          event.floor,
+          event.yearBuild,
         );
         emit(AddInfoAdvertisingStateResponse(
           displayInfoRegister,
