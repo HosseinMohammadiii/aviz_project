@@ -49,7 +49,7 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (widget.value <= 0 || widget.controller.text == '') {
+                    if (widget.value <= 0 || widget.controller.text == '1340') {
                       return;
                     }
                     setState(() {
