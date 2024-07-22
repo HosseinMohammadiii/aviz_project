@@ -3,10 +3,13 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_futu
 import 'package:dartz/dartz.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
+import '../../../ad_details/Data/model/ad_facilities.dart';
 
 abstract class IInfoRegisterAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDiplayAd(String idCt);
+
   Future<Either<String, String>> postRegisterAd(
+    String idInforegister,
     String idCT,
     String location,
     int metr,
@@ -14,6 +17,16 @@ abstract class IInfoRegisterAdRepository {
     int floor,
     int yearBuild,
   );
+
+  Future<Either<String, String>> postRegisterFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+  );
+  Future<Either<String, AdvertisingFacilities>> getFacilitiesAd();
+  Future<Either<String, AdvertisingFacilities>> getFacilitiesAdvertising();
 }
 
 final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
@@ -32,6 +45,7 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
 
   @override
   Future<Either<String, String>> postRegisterAd(
+    String idInforegister,
     String idCT,
     String location,
     int metr,
@@ -41,6 +55,7 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   ) async {
     try {
       var response = await datasource.postRegisterAd(
+        idInforegister,
         idCT,
         location,
         metr,
@@ -54,6 +69,54 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
         return left('خطایی در ورود پیش آمده! ');
       }
       // return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> postRegisterFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+  ) async {
+    try {
+      var response = await datasource.postRegisterFacilities(
+        elevator,
+        parking,
+        storeroom,
+        balcony,
+        penthouse,
+      );
+      if (response.isNotEmpty) {
+        return right('شما وارد شده اید');
+      } else {
+        return left('خطایی در ورود پیش آمده! ');
+      }
+      // return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, AdvertisingFacilities>> getFacilitiesAd() async {
+    try {
+      var response = await datasource.getFacilitiesAdvertising();
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, AdvertisingFacilities>>
+      getFacilitiesAdvertising() async {
+    try {
+      var response = await datasource.getFacilitiesAdvertisingList();
+      return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }

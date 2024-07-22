@@ -9,6 +9,7 @@ import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/class/scroll_behavior.dart';
 import 'package:aviz_project/class/switch_classs.dart';
 import 'package:aviz_project/extension/button.dart';
+import 'package:aviz_project/widgets/items_switchbox.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_feature_screen.dart';
@@ -16,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+
+import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
   RegisterHomeFeatureScreen({
@@ -60,6 +63,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     yearLength = endYear.year - currentYear.year + 1;
     itemYear = List.generate(yearLength, (index) {});
     super.initState();
+    BlocProvider.of<AddAdvertisingBloc>(context)
+        .add(AddAdvertisingGetInitializeData());
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
     );
@@ -359,15 +364,30 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   ],
                 ),
               ),
-              SliverList.builder(
-                itemCount: propertiesTxt.length,
-                itemBuilder: (context, index) => switchBox(index),
-              ),
+              // SliverList.builder(
+              //   itemCount: propertiesTxt.length,
+              //   itemBuilder: (context, index) => switchBox(index),
+              // ),
+
+              ItemsSwitchbox(),
+
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
                     () {
+                      final boolState = context.read<BoolStateCubit>().state;
+
+                      BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        AddFacilitiesAdvertising(
+                          boolState.elevator,
+                          boolState.parking,
+                          boolState.storeroom,
+                          boolState.balcony,
+                          boolState.penthouse,
+                        ),
+                      );
+
                       //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
                       String idCt() {
                         String idCt = '';
@@ -408,16 +428,28 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         num floor = num.parse(controller4.text);
                         num yearBuild = num.parse(controller3.text);
 
-                        BlocProvider.of<AddAdvertisingBloc>(context).add(
-                          AddInfoAdvertising(
-                            idCt(),
-                            address,
-                            metr.toInt(),
-                            countRoom.toInt(),
-                            floor.toInt(),
-                            yearBuild.toInt(),
-                          ),
-                        );
+                        // BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        //   AddInfoAdvertising(
+                        //   '55df5dg5hh44',
+                        //     idCt(),
+                        //     address,
+                        //     metr.toInt(),
+                        //     countRoom.toInt(),
+                        //     floor.toInt(),
+                        //     yearBuild.toInt(),
+                        //   ),
+                        // );
+
+                        // BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        //   AddFacilitiesAdvertising(
+                        //     idAdvertising,
+                        //     elevator,
+                        //     parking,
+                        //     storeroom,
+                        //     balcony,
+                        //     penthouse,
+                        //   ),
+                        // );
                         // addAdvertising(
                         //   metr,
                         //   countRoom,
@@ -613,6 +645,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 //Widget for display switch feature
   Widget switchBox(
     int index,
+    AdvertisingFacilities advertisingFacilities,
   ) {
     return Container(
       height: 40,
@@ -628,9 +661,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
           Switch(
             activeColor: CustomColor.red,
             activeTrackColor: CustomColor.red,
-            thumbColor: const MaterialStatePropertyAll(CustomColor.grey),
-            trackOutlineColor:
-                const MaterialStatePropertyAll(Colors.transparent),
+            thumbColor: const WidgetStatePropertyAll(CustomColor.grey),
+            trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
             value: propertiesTxt[index].switchBool,
             onChanged: (value) {
               setState(() {

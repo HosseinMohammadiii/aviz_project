@@ -25,6 +25,9 @@ void main() async {
           create: (context) => StatusModeBloc(),
         ),
         BlocProvider(
+          create: (context) => BoolStateCubit(),
+        ),
+        BlocProvider(
           create: (context) => NavigationPage(),
         ),
         BlocProvider(

@@ -2,10 +2,12 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_futu
 import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
+import '../../../ad_details/Data/model/ad_facilities.dart';
 
 abstract class IInfoRegisterAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAd(String idCt);
   Future<String> postRegisterAd(
+    String idInforegister,
     String idCT,
     String location,
     int metr,
@@ -13,6 +15,15 @@ abstract class IInfoRegisterAdDatasource {
     int floor,
     int yearBuild,
   );
+  Future<String> postRegisterFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+  );
+  Future<AdvertisingFacilities> getFacilitiesAdvertising();
+  Future<AdvertisingFacilities> getFacilitiesAdvertisingList();
 }
 
 final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
@@ -40,6 +51,7 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
 
   @override
   Future<String> postRegisterAd(
+    String idInforegister,
     String idCT,
     String location,
     int metr,
@@ -50,6 +62,7 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
     try {
       var response =
           await dio.post('collections/inforegisteredhomes/records', data: {
+        'id_inforegister': idInforegister,
         'category_name': idCT,
         'location': location,
         'metr': metr,
@@ -67,5 +80,71 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
       throw ApiExeption(0, 'Unknown');
     }
     return '';
+  }
+
+  @override
+  Future<String> postRegisterFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+  ) async {
+    try {
+      var response = await dio.post('collections/facilities/records', data: {
+        'elevator': elevator,
+        'parking': parking,
+        'storeroom': storeroom,
+        'balcony': balcony,
+        'penthouse': penthouse,
+      });
+      if (response.statusCode == 200) {
+        return response.data['items'];
+      }
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+    return '';
+  }
+
+  @override
+  Future<AdvertisingFacilities> getFacilitiesAdvertising() async {
+    try {
+      var response = await dio.get(
+        'collections/facilities/records',
+      );
+      return response.data['items']
+          .map<AdvertisingFacilities>(
+            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<AdvertisingFacilities> getFacilitiesAdvertisingList() async {
+    try {
+      var response = await dio.get(
+        'collections/facilities/records',
+      );
+      return response.data['items']
+          .map<AdvertisingFacilities>(
+            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
   }
 }
