@@ -24,7 +24,6 @@ class AddAdvertisingBloc
       (event, emit) async {
         var displayInfoRegister = await infoRepository.getDiplayAd(event.idCt);
         var registerInfo = await infoRepository.postRegisterAd(
-          event.idInforegister,
           event.idCt,
           event.location,
           event.metr,
@@ -47,10 +46,13 @@ class AddAdvertisingBloc
           event.balcony,
           event.penthouse,
         );
-        var facilities = await infoRepository.getFacilitiesAd();
         var facilitiesAd = await infoRepository.getFacilitiesAdvertising();
-        emit(RegisterFacilitiesInfoAdvertising(
-            registerFacilities, facilities, facilitiesAd));
+        emit(
+          RegisterFacilitiesInfoAdvertising(
+            registerFacilities,
+            facilitiesAd,
+          ),
+        );
       },
     );
   }
@@ -84,5 +86,48 @@ class BoolStateCubit extends Cubit<BoolState> {
         emit(state.copyWith(penthouse: value));
         break;
     }
+  }
+
+  void reset() {
+    emit(BoolState(
+      elevator: false,
+      parking: false,
+      storeroom: false,
+      balcony: false,
+      penthouse: false,
+    ));
+  }
+}
+
+class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
+  RegisterInfoAdCubit()
+      : super(
+          RegisterInfoAd(
+            metr: 0,
+            countRoom: 0,
+            floor: 0,
+            yearBuild: 0,
+            //id: '',
+            idCt: '',
+            address: '',
+          ),
+        );
+
+  void setParametrInfoAd({
+    required final num metr,
+    required final num countRoom,
+    required final num floor,
+    required final num yearBuild,
+    //required final String id,
+    required final String idCt,
+    required final String address,
+  }) {
+    emit(state.copyWith(metr: metr));
+    emit(state.copyWith(countRoom: countRoom));
+    emit(state.copyWith(floor: floor));
+    emit(state.copyWith(yearBuild: yearBuild));
+    // emit(state.copyWith(id: id));
+    emit(state.copyWith(idCt: idCt));
+    emit(state.copyWith(address: address));
   }
 }

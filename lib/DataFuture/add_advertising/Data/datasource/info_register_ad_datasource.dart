@@ -7,7 +7,6 @@ import '../../../ad_details/Data/model/ad_facilities.dart';
 abstract class IInfoRegisterAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAd(String idCt);
   Future<String> postRegisterAd(
-    String idInforegister,
     String idCT,
     String location,
     int metr,
@@ -51,7 +50,6 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
 
   @override
   Future<String> postRegisterAd(
-    String idInforegister,
     String idCT,
     String location,
     int metr,
@@ -60,16 +58,31 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
     int yearBuild,
   ) async {
     try {
-      var response =
-          await dio.post('collections/inforegisteredhomes/records', data: {
-        'id_inforegister': idInforegister,
-        'category_name': idCT,
-        'location': location,
-        'metr': metr,
-        'count_room': countRoom,
-        'floor': floor,
-        'year_build': yearBuild,
-      });
+      //This Variable is For Receiving the Facilities Records
+      var responsee = await dio.get('collections/facilities/records');
+
+      List<AdvertisingFacilities> adf = responsee.data['items']
+          .map<AdvertisingFacilities>(
+            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
+          )
+          .toList();
+
+      //This variable is For Take the last Id From Facilities Collections
+      var id = adf.last.id;
+
+      var response = await dio.post(
+        'collections/inforegisteredhomes/records',
+        data: {
+          'category_name': idCT,
+          'id_facilities': id,
+          'location': location,
+          'metr': metr,
+          'count_room': countRoom,
+          'floor': floor,
+          'year_build': yearBuild,
+        },
+      );
+
       if (response.statusCode == 200) {
         return response.data['items'];
       }

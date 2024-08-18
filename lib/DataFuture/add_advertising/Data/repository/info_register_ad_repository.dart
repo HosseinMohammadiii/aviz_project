@@ -9,8 +9,8 @@ abstract class IInfoRegisterAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDiplayAd(String idCt);
 
   Future<Either<String, String>> postRegisterAd(
-    String idInforegister,
     String idCT,
+    //String idFacilities,
     String location,
     int metr,
     int countRoom,
@@ -45,8 +45,8 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
 
   @override
   Future<Either<String, String>> postRegisterAd(
-    String idInforegister,
     String idCT,
+    //String idFacilities,
     String location,
     int metr,
     int countRoom,
@@ -55,8 +55,8 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   ) async {
     try {
       var response = await datasource.postRegisterAd(
-        idInforegister,
         idCT,
+        //idFacilities,
         location,
         metr,
         countRoom,

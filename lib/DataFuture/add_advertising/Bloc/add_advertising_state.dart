@@ -29,11 +29,9 @@ final class AddInfoAdvertisingStateResponse extends AddAdvertisingState {
 
 final class RegisterFacilitiesInfoAdvertising extends AddAdvertisingState {
   Either<String, String> registerFacilitiesInfoAdvertising;
-  Either<String, AdvertisingFacilities> registerFacilitiesAdvertising;
   Either<String, AdvertisingFacilities> registerFacilitiesAd;
   RegisterFacilitiesInfoAdvertising(
     this.registerFacilitiesInfoAdvertising,
-    this.registerFacilitiesAdvertising,
     this.registerFacilitiesAd,
   );
 }
@@ -66,6 +64,41 @@ class BoolState {
       storeroom: storeroom ?? this.storeroom,
       balcony: balcony ?? this.balcony,
       penthouse: penthouse ?? this.penthouse,
+    );
+  }
+}
+
+class RegisterInfoAd {
+  final num metr;
+  final num countRoom;
+  final num floor;
+  final num yearBuild;
+  final String idCt;
+  final String address;
+
+  RegisterInfoAd({
+    required this.metr,
+    required this.countRoom,
+    required this.floor,
+    required this.yearBuild,
+    required this.idCt,
+    required this.address,
+  });
+  RegisterInfoAd copyWith({
+    final num? metr,
+    final num? countRoom,
+    final num? floor,
+    final num? yearBuild,
+    final String? idCt,
+    final String? address,
+  }) {
+    return RegisterInfoAd(
+      metr: metr ?? this.metr,
+      countRoom: countRoom ?? this.countRoom,
+      floor: floor ?? this.floor,
+      yearBuild: yearBuild ?? this.yearBuild,
+      idCt: idCt ?? this.idCt,
+      address: address ?? this.address,
     );
   }
 }

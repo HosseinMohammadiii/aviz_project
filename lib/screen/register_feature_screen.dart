@@ -364,29 +364,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   ],
                 ),
               ),
-              // SliverList.builder(
-              //   itemCount: propertiesTxt.length,
-              //   itemBuilder: (context, index) => switchBox(index),
-              // ),
-
-              ItemsSwitchbox(),
-
+              const ItemsSwitchbox(),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
                     () {
                       final boolState = context.read<BoolStateCubit>().state;
-
-                      BlocProvider.of<AddAdvertisingBloc>(context).add(
-                        AddFacilitiesAdvertising(
-                          boolState.elevator,
-                          boolState.parking,
-                          boolState.storeroom,
-                          boolState.balcony,
-                          boolState.penthouse,
-                        ),
-                      );
+                      final stateAd = context.read<RegisterInfoAdCubit>().state;
 
                       //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
                       String idCt() {
@@ -420,36 +405,45 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           controller4.text.isEmpty) {
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
+                        return;
                       }
-
                       try {
                         num metr = num.parse(controller2.text);
                         num countRoom = num.parse(controller1.text);
                         num floor = num.parse(controller4.text);
                         num yearBuild = num.parse(controller3.text);
 
-                        // BlocProvider.of<AddAdvertisingBloc>(context).add(
-                        //   AddInfoAdvertising(
-                        //   '55df5dg5hh44',
-                        //     idCt(),
-                        //     address,
-                        //     metr.toInt(),
-                        //     countRoom.toInt(),
-                        //     floor.toInt(),
-                        //     yearBuild.toInt(),
-                        //   ),
-                        // );
+                        context.read<RegisterInfoAdCubit>().setParametrInfoAd(
+                              metr: metr,
+                              countRoom: countRoom,
+                              floor: floor,
+                              yearBuild: yearBuild,
+                              idCt: idCt(),
+                              address: address,
+                            );
 
-                        // BlocProvider.of<AddAdvertisingBloc>(context).add(
-                        //   AddFacilitiesAdvertising(
-                        //     idAdvertising,
-                        //     elevator,
-                        //     parking,
-                        //     storeroom,
-                        //     balcony,
-                        //     penthouse,
-                        //   ),
-                        // );
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                          AddInfoAdvertising(
+                            idCt(),
+                            stateAd.address,
+                            stateAd.metr.toInt(),
+                            stateAd.countRoom.toInt(),
+                            stateAd.floor.toInt(),
+                            stateAd.yearBuild.toInt(),
+                          ),
+                        );
+
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                          AddFacilitiesAdvertising(
+                            boolState.elevator,
+                            boolState.parking,
+                            boolState.storeroom,
+                            boolState.balcony,
+                            boolState.penthouse,
+                          ),
+                        );
+                        context.read<BoolStateCubit>().reset();
+
                         // addAdvertising(
                         //   metr,
                         //   countRoom,
@@ -458,7 +452,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         //   txtTitle!,
                         //   address,
                         // );
-
                         BlocProvider.of<NavigationPage>(context)
                             .getNavItems(ViewPage.registerHomeLocation);
                       } catch (e) {

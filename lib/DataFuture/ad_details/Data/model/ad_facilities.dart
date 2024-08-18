@@ -1,6 +1,5 @@
 class AdvertisingFacilities {
   String id;
-  String idadvertising;
   bool elevator;
   bool parking;
   bool storeroom;
@@ -10,7 +9,6 @@ class AdvertisingFacilities {
   String wc;
   AdvertisingFacilities({
     required this.id,
-    required this.idadvertising,
     required this.elevator,
     required this.parking,
     required this.storeroom,
@@ -22,7 +20,6 @@ class AdvertisingFacilities {
   factory AdvertisingFacilities.fromJson(Map<String, dynamic> jsonObject) {
     return AdvertisingFacilities(
       id: jsonObject['id'],
-      idadvertising: jsonObject['id_advertising'],
       elevator: jsonObject['elevator'],
       parking: jsonObject['parking'],
       storeroom: jsonObject['storeroom'],

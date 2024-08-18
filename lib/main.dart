@@ -28,6 +28,9 @@ void main() async {
           create: (context) => BoolStateCubit(),
         ),
         BlocProvider(
+          create: (context) => RegisterInfoAdCubit(),
+        ),
+        BlocProvider(
           create: (context) => NavigationPage(),
         ),
         BlocProvider(

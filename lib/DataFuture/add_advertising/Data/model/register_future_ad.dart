@@ -3,6 +3,7 @@ import '../../../NetworkUtil/base_url.dart';
 class RegisterFutureAd {
   String id;
   String categoryId;
+  String idFacilities;
   String collectionId;
   String location;
   List<String> images;
@@ -12,6 +13,7 @@ class RegisterFutureAd {
   RegisterFutureAd({
     required this.id,
     required this.categoryId,
+    required this.idFacilities,
     required this.collectionId,
     required this.location,
     required this.images,
@@ -27,6 +29,7 @@ class RegisterFutureAd {
     return RegisterFutureAd(
       id: jsonObject['id'],
       categoryId: jsonObject['category_name'],
+      idFacilities: jsonObject['id_facilities'],
       collectionId: jsonObject['collectionId'],
       location: jsonObject['location'],
       images: images,
