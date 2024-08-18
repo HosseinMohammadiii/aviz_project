@@ -63,7 +63,20 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
               builder: (context, state) {
                 return SliverToBoxAdapter(
                   child: GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      // final stateAd = context.read<RegisterInfoAdCubit>().state;
+
+                      // BlocProvider.of<AddAdvertisingBloc>(context).add(
+                      //   AddInfoAdvertising(
+                      //     stateAd.idCt,
+                      //     stateAd.address,
+                      //     stateAd.metr.toInt(),
+                      //     stateAd.countRoom.toInt(),
+                      //     stateAd.floor.toInt(),
+                      //     stateAd.yearBuild.toInt(),
+                      //   ),
+                      // );
+                    },
                     child: Container(
                       width: 100,
                       height: 50,

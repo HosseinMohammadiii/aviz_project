@@ -107,7 +107,6 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             countRoom: 0,
             floor: 0,
             yearBuild: 0,
-            //id: '',
             idCt: '',
             address: '',
           ),
@@ -118,16 +117,16 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     required final num countRoom,
     required final num floor,
     required final num yearBuild,
-    //required final String id,
     required final String idCt,
     required final String address,
   }) {
-    emit(state.copyWith(metr: metr));
-    emit(state.copyWith(countRoom: countRoom));
-    emit(state.copyWith(floor: floor));
-    emit(state.copyWith(yearBuild: yearBuild));
-    // emit(state.copyWith(id: id));
-    emit(state.copyWith(idCt: idCt));
-    emit(state.copyWith(address: address));
+    emit(state.copyWith(
+      metr: metr,
+      countRoom: countRoom,
+      floor: floor,
+      yearBuild: yearBuild,
+      idCt: idCt,
+      address: address,
+    ));
   }
 }

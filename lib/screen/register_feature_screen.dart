@@ -371,7 +371,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   child: GestureDetector().textButton(
                     () {
                       final boolState = context.read<BoolStateCubit>().state;
-                      final stateAd = context.read<RegisterInfoAdCubit>().state;
 
                       //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
                       String idCt() {
@@ -421,17 +420,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               idCt: idCt(),
                               address: address,
                             );
-
-                        BlocProvider.of<AddAdvertisingBloc>(context).add(
-                          AddInfoAdvertising(
-                            idCt(),
-                            stateAd.address,
-                            stateAd.metr.toInt(),
-                            stateAd.countRoom.toInt(),
-                            stateAd.floor.toInt(),
-                            stateAd.yearBuild.toInt(),
-                          ),
-                        );
 
                         BlocProvider.of<AddAdvertisingBloc>(context).add(
                           AddFacilitiesAdvertising(
