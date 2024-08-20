@@ -23,7 +23,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
-        flexibleSpace: BlocBuilder<NavigationPage, NavigationState>(
+        leadingWidth: double.maxFinite,
+        leading: BlocBuilder<NavigationPage, NavigationState>(
           builder: (context, state) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -90,89 +91,22 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                       },
                       child: state.viewPage == ViewPage.category
                           ? const SizedBox()
-                          : Image.asset(
-                              'images/close-square.png',
-                              scale: 0.7,
+                          : const Icon(
+                              Icons.close_rounded,
+                              size: 35,
                             ),
                     ),
                     const Spacer(),
-                    Center(
-                      child: SizedBox(
-                        height: 32,
-                        child: Image.asset(state.viewPage ==
-                                ViewPage.itemsBuyBusinessPlace
+                    SizedBox(
+                      height: 35,
+                      child: Image.asset(
+                        state.viewPage == ViewPage.itemsBuyBusinessPlace
                             ? 'images/register_aviz.png'
-                            : 'images/appbar_image_add_dvertising_screen.png'),
+                            : 'images/appbar_image_add_dvertising_screen.png',
                       ),
                     ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        switch (state.viewPage) {
-                          //Switching the status when we are on the items category.
-                          case ViewPage.category:
-                            break;
-
-                          //Switching the status when we are on the items Rent and Buy Home page to a registerDetialsRent and Buy Home Advertising step.
-                          case ViewPage.itemsRentHome:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage
-                                    .registerDetialsRentHomeAdvertising);
-                            break;
-
-                          case ViewPage.itemsBuyHome:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(
-                                    ViewPage.registerDetialsBuyHomeAdvertising);
-                            break;
-
-                          //Switching the status when we are on the register Detials Rent and Buy Home Advertising to a register Home Location step.
-                          case ViewPage.registerDetialsRentHomeAdvertising:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage.registerHomeLocation);
-                            break;
-
-                          case ViewPage.registerDetialsBuyHomeAdvertising:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage.registerHomeLocation);
-                            break;
-
-                          //Switching the status when we are on the items Rent and Buy Business Place to a register Business Location step.
-                          case ViewPage.itemsRentBusinessPlace:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage.registerBusinessLocation);
-                            break;
-
-                          case ViewPage.itemsBuyBusinessPlace:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage.registerBusinessLocation);
-                            break;
-
-                          //Switching the status when we are on the register Home and Business Location to a register Home and Business Advertising step.
-                          case ViewPage.registerHomeLocation:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage.registerHomeAdvertising);
-                            break;
-
-                          case ViewPage.registerBusinessLocation:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(
-                                    ViewPage.registerBusinessAdvertising);
-                            break;
-
-                          //Switching the status when we are not in a stage.
-                          default:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(ViewPage.category);
-                            break;
-                        }
-                      },
-                      child: state.viewPage == ViewPage.category
-                          ? const SizedBox()
-                          : Image.asset(
-                              'images/arrow-right.png',
-                              scale: 0.7,
-                            ),
+                    const SizedBox(
+                      width: 105,
                     ),
                   ],
                 ),

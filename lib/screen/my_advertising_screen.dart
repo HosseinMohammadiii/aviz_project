@@ -96,10 +96,4 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
 }

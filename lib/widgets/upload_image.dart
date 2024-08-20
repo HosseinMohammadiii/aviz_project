@@ -143,10 +143,4 @@ class _UploadImageState extends State<UploadImage> {
       ],
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
 }

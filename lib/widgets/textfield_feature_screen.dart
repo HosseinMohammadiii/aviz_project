@@ -105,10 +105,4 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.controller.dispose();
-  }
 }

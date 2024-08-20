@@ -128,10 +128,4 @@ class _ContainerSearchState extends State<ContainerSearch> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.textEditingController.dispose();
-  }
 }

@@ -265,12 +265,6 @@ class _InformationRecentlyAdvertisingState
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
 }
 
 //Function Switch For Display Widgets

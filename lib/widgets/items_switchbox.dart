@@ -312,11 +312,4 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    pageControllerFM.dispose();
-    pageControllerWC.dispose();
-  }
 }

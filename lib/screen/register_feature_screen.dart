@@ -38,10 +38,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   FocusNode focusNode1 = FocusNode();
 
-  TextEditingController controller1 = TextEditingController();
-  TextEditingController controller2 = TextEditingController();
-  TextEditingController controller3 = TextEditingController();
-  TextEditingController controller4 = TextEditingController();
+  final TextEditingController controller1 = TextEditingController();
+  final TextEditingController controller2 = TextEditingController();
+  final TextEditingController controller3 = TextEditingController();
+  final TextEditingController controller4 = TextEditingController();
 
   OverlayEntry? entry;
 
@@ -443,6 +443,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         //   txtTitle!,
                         //   address,
                         // );
+
                         BlocProvider.of<NavigationPage>(context)
                             .getNavItems(ViewPage.registerHomeLocation);
                       } catch (e) {
@@ -693,15 +694,5 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller1.dispose();
-    controller2.dispose();
-    controller3.dispose();
-    controller4.dispose();
-    _scrollController.dispose();
   }
 }
