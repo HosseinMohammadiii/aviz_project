@@ -64,18 +64,18 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                 return SliverToBoxAdapter(
                   child: GestureDetector(
                     onTap: () {
-                      // final stateAd = context.read<RegisterInfoAdCubit>().state;
+                      final stateAd = context.read<RegisterInfoAdCubit>().state;
 
-                      // BlocProvider.of<AddAdvertisingBloc>(context).add(
-                      //   AddInfoAdvertising(
-                      //     stateAd.idCt,
-                      //     stateAd.address,
-                      //     stateAd.metr.toInt(),
-                      //     stateAd.countRoom.toInt(),
-                      //     stateAd.floor.toInt(),
-                      //     stateAd.yearBuild.toInt(),
-                      //   ),
-                      // );
+                      BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        AddInfoAdvertising(
+                          stateAd.idCt,
+                          stateAd.address,
+                          stateAd.metr.toInt(),
+                          stateAd.countRoom.toInt(),
+                          stateAd.floor.toInt(),
+                          stateAd.yearBuild.toInt(),
+                        ),
+                      );
                     },
                     child: Container(
                       width: 100,
@@ -95,5 +95,11 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 }

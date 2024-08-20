@@ -24,6 +24,9 @@ abstract class IInfoRegisterAdRepository {
     bool storeroom,
     bool balcony,
     bool penthouse,
+    bool duplex,
+    String floorMaterial,
+    String wc,
   );
   Future<Either<String, AdvertisingFacilities>> getFacilitiesAd();
   Future<Either<String, AdvertisingFacilities>> getFacilitiesAdvertising();
@@ -81,6 +84,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
     bool storeroom,
     bool balcony,
     bool penthouse,
+    bool duplex,
+    String floorMaterial,
+    String wc,
   ) async {
     try {
       var response = await datasource.postRegisterFacilities(
@@ -89,6 +95,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
         storeroom,
         balcony,
         penthouse,
+        duplex,
+        floorMaterial,
+        wc,
       );
       if (response.isNotEmpty) {
         return right('شما وارد شده اید');

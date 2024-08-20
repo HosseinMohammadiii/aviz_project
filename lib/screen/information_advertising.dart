@@ -288,6 +288,12 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
         );
     }
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 }
 
 //Class for insert information horizontal list category

@@ -26,6 +26,9 @@ final class AddFacilitiesAdvertising extends AddAdvertisingEvent {
   bool storeroom;
   bool balcony;
   bool penthouse;
+  bool duplex;
+  String floorMaterial;
+  String wc;
 
   AddFacilitiesAdvertising(
     this.elevator,
@@ -33,5 +36,8 @@ final class AddFacilitiesAdvertising extends AddAdvertisingEvent {
     this.storeroom,
     this.balcony,
     this.penthouse,
+    this.duplex,
+    this.floorMaterial,
+    this.wc,
   );
 }

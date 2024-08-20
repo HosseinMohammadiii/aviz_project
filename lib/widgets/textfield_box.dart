@@ -60,4 +60,10 @@ class _TextFieldBoxState extends State<TextFieldBox> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.controller?.dispose();
+  }
 }

@@ -428,6 +428,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             boolState.storeroom,
                             boolState.balcony,
                             boolState.penthouse,
+                            boolState.duplex,
+                            boolState.floorMaterial,
+                            boolState.wc,
                           ),
                         );
                         context.read<BoolStateCubit>().reset();
@@ -690,5 +693,15 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller1.dispose();
+    controller2.dispose();
+    controller3.dispose();
+    controller4.dispose();
+    _scrollController.dispose();
   }
 }

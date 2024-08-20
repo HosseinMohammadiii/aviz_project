@@ -42,6 +42,9 @@ class BoolState {
   final bool storeroom;
   final bool balcony;
   final bool penthouse;
+  final bool duplex;
+  final String floorMaterial;
+  final String wc;
 
   BoolState({
     required this.elevator,
@@ -49,6 +52,9 @@ class BoolState {
     required this.storeroom,
     required this.balcony,
     required this.penthouse,
+    required this.duplex,
+    required this.floorMaterial,
+    required this.wc,
   });
 
   BoolState copyWith({
@@ -57,6 +63,9 @@ class BoolState {
     bool? storeroom,
     bool? balcony,
     bool? penthouse,
+    bool? duplex,
+    String? floorMaterial,
+    String? wc,
   }) {
     return BoolState(
       elevator: elevator ?? this.elevator,
@@ -64,6 +73,9 @@ class BoolState {
       storeroom: storeroom ?? this.storeroom,
       balcony: balcony ?? this.balcony,
       penthouse: penthouse ?? this.penthouse,
+      duplex: duplex ?? this.duplex,
+      floorMaterial: floorMaterial ?? this.floorMaterial,
+      wc: wc ?? this.wc,
     );
   }
 }

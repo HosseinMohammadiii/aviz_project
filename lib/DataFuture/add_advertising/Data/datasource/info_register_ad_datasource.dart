@@ -20,6 +20,9 @@ abstract class IInfoRegisterAdDatasource {
     bool storeroom,
     bool balcony,
     bool penthouse,
+    bool duplex,
+    String floorMaterial,
+    String wc,
   );
   Future<AdvertisingFacilities> getFacilitiesAdvertising();
   Future<AdvertisingFacilities> getFacilitiesAdvertisingList();
@@ -102,6 +105,9 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
     bool storeroom,
     bool balcony,
     bool penthouse,
+    bool duplex,
+    String floorMaterial,
+    String wc,
   ) async {
     try {
       var response = await dio.post('collections/facilities/records', data: {
@@ -110,6 +116,9 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
         'storeroom': storeroom,
         'balcony': balcony,
         'penthouse': penthouse,
+        'duplex': duplex,
+        'floor_material': floorMaterial,
+        'wc': wc,
       });
       if (response.statusCode == 200) {
         return response.data['items'];

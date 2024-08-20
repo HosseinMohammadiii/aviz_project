@@ -45,6 +45,9 @@ class AddAdvertisingBloc
           event.storeroom,
           event.balcony,
           event.penthouse,
+          event.duplex,
+          event.floorMaterial,
+          event.wc,
         );
         var facilitiesAd = await infoRepository.getFacilitiesAdvertising();
         emit(
@@ -66,7 +69,38 @@ class BoolStateCubit extends Cubit<BoolState> {
           storeroom: false,
           balcony: false,
           penthouse: false,
+          duplex: false,
+          floorMaterial: 'موزائیک',
+          wc: 'فرنگی',
         ));
+
+  void updateTextWC(int index) {
+    switch (index) {
+      case 0:
+        emit(state.copyWith(wc: 'ایرانی'));
+        break;
+      case 1:
+        emit(state.copyWith(wc: 'فرنگی'));
+        break;
+      case 2:
+        emit(state.copyWith(wc: 'ایرانی و فرنگی'));
+        break;
+    }
+  }
+
+  void updateTextFM(int index) {
+    switch (index) {
+      case 0:
+        emit(state.copyWith(floorMaterial: 'سرامیک'));
+        break;
+      case 1:
+        emit(state.copyWith(floorMaterial: 'موزائیک'));
+        break;
+      case 2:
+        emit(state.copyWith(floorMaterial: 'پارکت'));
+        break;
+    }
+  }
 
   void updateBool(String type, bool value) {
     switch (type) {
@@ -85,6 +119,9 @@ class BoolStateCubit extends Cubit<BoolState> {
       case 'پنت هاوس':
         emit(state.copyWith(penthouse: value));
         break;
+      case 'دوبلکس':
+        emit(state.copyWith(duplex: value));
+        break;
     }
   }
 
@@ -95,6 +132,9 @@ class BoolStateCubit extends Cubit<BoolState> {
       storeroom: false,
       balcony: false,
       penthouse: false,
+      duplex: false,
+      floorMaterial: 'موزائیک',
+      wc: 'فرنگی',
     ));
   }
 }
