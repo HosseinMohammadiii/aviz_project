@@ -47,6 +47,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   String address = '';
   String? txtTitle;
+  String title = '';
 
   Jalali currentYear = Jalali(1340);
   Jalali endYear = Jalali.now();
@@ -111,19 +112,25 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        if (index == 0) {
-                          BlocProvider.of<StatusModeBloc>(context)
-                              .getStatusMode(StatusMode.apartment);
-                        } else if (index == 1) {
-                          BlocProvider.of<StatusModeBloc>(context)
-                              .getStatusMode(StatusMode.home);
-                        } else if (index == 2) {
-                          BlocProvider.of<StatusModeBloc>(context)
-                              .getStatusMode(StatusMode.villa);
-                        } else {
-                          BlocProvider.of<StatusModeBloc>(context)
-                              .getStatusMode(StatusMode.buyLand);
-                        }
+                        setState(() {
+                          if (index == 0) {
+                            BlocProvider.of<StatusModeBloc>(context)
+                                .getStatusMode(StatusMode.apartment);
+                            title = '${widget.title} آپارتمان';
+                          } else if (index == 1) {
+                            BlocProvider.of<StatusModeBloc>(context)
+                                .getStatusMode(StatusMode.home);
+                            title = '${widget.title} خانه';
+                          } else if (index == 2) {
+                            BlocProvider.of<StatusModeBloc>(context)
+                                .getStatusMode(StatusMode.villa);
+                            title = '${widget.title} ویلا';
+                          } else {
+                            BlocProvider.of<StatusModeBloc>(context)
+                                .getStatusMode(StatusMode.buyLand);
+                            title = '${widget.title} زمین';
+                          }
+                        });
                         setState(() {
                           hideOverlay();
                           changeIcon = false;
@@ -223,7 +230,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             switch (state.statusMode) {
                               case StatusMode.apartment:
                                 txtTitle = '${widget.title} آپارتمان';
-
                                 break;
                               case StatusMode.home:
                                 txtTitle = '${widget.title} خانه';
@@ -364,14 +370,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                   ],
                 ),
               ),
-              const ItemsSwitchbox(),
+              ItemsSwitchbox(
+                title: title,
+              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
                     () {
-                      final boolState = context.read<BoolStateCubit>().state;
-
                       //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
                       String idCt() {
                         String idCt = '';
@@ -420,20 +426,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               idCt: idCt(),
                               address: address,
                             );
-
-                        BlocProvider.of<AddAdvertisingBloc>(context).add(
-                          AddFacilitiesAdvertising(
-                            boolState.elevator,
-                            boolState.parking,
-                            boolState.storeroom,
-                            boolState.balcony,
-                            boolState.penthouse,
-                            boolState.duplex,
-                            boolState.floorMaterial,
-                            boolState.wc,
-                          ),
-                        );
-                        context.read<BoolStateCubit>().reset();
 
                         // addAdvertising(
                         //   metr,

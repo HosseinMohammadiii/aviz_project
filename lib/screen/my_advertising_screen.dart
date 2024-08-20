@@ -59,32 +59,45 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                 );
               },
             ),
-            BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
-              builder: (context, state) {
-                return SliverToBoxAdapter(
-                  child: GestureDetector(
-                    onTap: () {
-                      final stateAd = context.read<RegisterInfoAdCubit>().state;
+            SliverToBoxAdapter(
+              child: GestureDetector(
+                onTap: () {
+                  final stateAd = context.read<RegisterInfoAdCubit>().state;
+                  final boolState = context.read<BoolStateCubit>().state;
 
-                      BlocProvider.of<AddAdvertisingBloc>(context).add(
-                        AddInfoAdvertising(
-                          stateAd.idCt,
-                          stateAd.address,
-                          stateAd.metr.toInt(),
-                          stateAd.countRoom.toInt(),
-                          stateAd.floor.toInt(),
-                          stateAd.yearBuild.toInt(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: 100,
-                      height: 50,
-                      color: Colors.amber,
+                  BlocProvider.of<AddAdvertisingBloc>(context).add(
+                    AddInfoAdvertising(
+                      stateAd.idCt,
+                      stateAd.address,
+                      stateAd.metr.toInt(),
+                      stateAd.countRoom.toInt(),
+                      stateAd.floor.toInt(),
+                      stateAd.yearBuild.toInt(),
                     ),
-                  ),
-                );
-              },
+                  );
+                  BlocProvider.of<AddAdvertisingBloc>(context).add(
+                    AddFacilitiesAdvertising(
+                      boolState.elevator,
+                      boolState.parking,
+                      boolState.storeroom,
+                      boolState.balcony,
+                      boolState.penthouse,
+                      boolState.duplex,
+                      boolState.water,
+                      boolState.electricity,
+                      boolState.gas,
+                      boolState.floorMaterial,
+                      boolState.wc,
+                    ),
+                  );
+                  context.read<BoolStateCubit>().reset();
+                },
+                child: Container(
+                  width: 100,
+                  height: 50,
+                  color: Colors.amber,
+                ),
+              ),
             ),
             const SliverToBoxAdapter(
               child: SizedBox(

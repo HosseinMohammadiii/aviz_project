@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
+import '../model/category_advertising.dart';
 
 abstract class IInfoRegisterAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAd(String idCt);
@@ -21,6 +22,9 @@ abstract class IInfoRegisterAdDatasource {
     bool balcony,
     bool penthouse,
     bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
     String floorMaterial,
     String wc,
   );
@@ -34,7 +38,7 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
   @override
   Future<List<RegisterFutureAd>> getDiplayAd(String idCt) async {
     try {
-      Map<String, dynamic> query = {'filter': 'category_name="$idCt"'};
+      Map<String, dynamic> query = {'filter': 'id_category="$idCt"'};
       var response = await dio.get(
         'collections/inforegisteredhomes/records',
         queryParameters: query,
@@ -76,7 +80,7 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
         data: {
-          'category_name': idCT,
+          'id_category': idCT,
           'id_facilities': id,
           'location': location,
           'metr': metr,
@@ -106,6 +110,9 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
     bool balcony,
     bool penthouse,
     bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
     String floorMaterial,
     String wc,
   ) async {
@@ -117,9 +124,13 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
         'balcony': balcony,
         'penthouse': penthouse,
         'duplex': duplex,
+        'water': water,
+        'electricity': electricity,
+        'gas': gas,
         'floor_material': floorMaterial,
         'wc': wc,
       });
+
       if (response.statusCode == 200) {
         return response.data['items'];
       }

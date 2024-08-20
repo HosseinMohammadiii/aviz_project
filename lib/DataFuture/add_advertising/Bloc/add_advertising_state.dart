@@ -43,6 +43,9 @@ class BoolState {
   final bool balcony;
   final bool penthouse;
   final bool duplex;
+  final bool water;
+  final bool electricity;
+  final bool gas;
   final String floorMaterial;
   final String wc;
 
@@ -53,6 +56,9 @@ class BoolState {
     required this.balcony,
     required this.penthouse,
     required this.duplex,
+    required this.water,
+    required this.electricity,
+    required this.gas,
     required this.floorMaterial,
     required this.wc,
   });
@@ -64,6 +70,9 @@ class BoolState {
     bool? balcony,
     bool? penthouse,
     bool? duplex,
+    bool? water,
+    bool? electricity,
+    bool? gas,
     String? floorMaterial,
     String? wc,
   }) {
@@ -74,6 +83,9 @@ class BoolState {
       balcony: balcony ?? this.balcony,
       penthouse: penthouse ?? this.penthouse,
       duplex: duplex ?? this.duplex,
+      water: water ?? this.water,
+      electricity: electricity ?? this.electricity,
+      gas: gas ?? this.gas,
       floorMaterial: floorMaterial ?? this.floorMaterial,
       wc: wc ?? this.wc,
     );

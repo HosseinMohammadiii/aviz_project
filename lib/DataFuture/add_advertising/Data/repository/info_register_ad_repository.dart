@@ -10,7 +10,6 @@ abstract class IInfoRegisterAdRepository {
 
   Future<Either<String, String>> postRegisterAd(
     String idCT,
-    //String idFacilities,
     String location,
     int metr,
     int countRoom,
@@ -25,6 +24,9 @@ abstract class IInfoRegisterAdRepository {
     bool balcony,
     bool penthouse,
     bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
     String floorMaterial,
     String wc,
   );
@@ -49,7 +51,6 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   @override
   Future<Either<String, String>> postRegisterAd(
     String idCT,
-    //String idFacilities,
     String location,
     int metr,
     int countRoom,
@@ -59,7 +60,6 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
     try {
       var response = await datasource.postRegisterAd(
         idCT,
-        //idFacilities,
         location,
         metr,
         countRoom,
@@ -85,6 +85,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
     bool balcony,
     bool penthouse,
     bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
     String floorMaterial,
     String wc,
   ) async {
@@ -96,6 +99,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
         balcony,
         penthouse,
         duplex,
+        water,
+        electricity,
+        gas,
         floorMaterial,
         wc,
       );
@@ -104,7 +110,6 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
       } else {
         return left('خطایی در ورود پیش آمده! ');
       }
-      // return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }

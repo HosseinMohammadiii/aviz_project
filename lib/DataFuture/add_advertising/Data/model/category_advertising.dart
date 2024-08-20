@@ -9,7 +9,7 @@ class CategoryAdvertising {
   factory CategoryAdvertising.fromJson(Map<String, dynamic> jsonObject) {
     return CategoryAdvertising(
       id: jsonObject['id'],
-      categoryname: jsonObject['category_name'],
+      categoryname: jsonObject['id_category'],
     );
   }
 }

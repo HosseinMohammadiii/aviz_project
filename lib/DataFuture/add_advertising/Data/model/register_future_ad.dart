@@ -28,7 +28,7 @@ class RegisterFutureAd {
     }).toList();
     return RegisterFutureAd(
       id: jsonObject['id'],
-      categoryId: jsonObject['category_name'],
+      categoryId: jsonObject['id_category'],
       idFacilities: jsonObject['id_facilities'],
       collectionId: jsonObject['collectionId'],
       location: jsonObject['location'],

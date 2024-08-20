@@ -6,6 +6,9 @@ class AdvertisingFacilities {
   bool balcony;
   bool penthouse;
   bool duplex;
+  bool water;
+  bool electricity;
+  bool gas;
   String floormaterial;
   String wc;
   AdvertisingFacilities({
@@ -16,6 +19,9 @@ class AdvertisingFacilities {
     required this.balcony,
     required this.penthouse,
     required this.duplex,
+    required this.water,
+    required this.electricity,
+    required this.gas,
     required this.floormaterial,
     required this.wc,
   });
@@ -28,6 +34,9 @@ class AdvertisingFacilities {
       balcony: jsonObject['balcony'],
       penthouse: jsonObject['penthouse'],
       duplex: jsonObject['duplex'],
+      water: jsonObject['water'],
+      electricity: jsonObject['electricity'],
+      gas: jsonObject['gas'],
       floormaterial: jsonObject['floor_material'],
       wc: jsonObject['wc'],
     );

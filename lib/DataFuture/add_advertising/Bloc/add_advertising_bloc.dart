@@ -46,6 +46,9 @@ class AddAdvertisingBloc
           event.balcony,
           event.penthouse,
           event.duplex,
+          event.water,
+          event.electricity,
+          event.gas,
           event.floorMaterial,
           event.wc,
         );
@@ -70,8 +73,11 @@ class BoolStateCubit extends Cubit<BoolState> {
           balcony: false,
           penthouse: false,
           duplex: false,
-          floorMaterial: 'موزائیک',
-          wc: 'فرنگی',
+          water: false,
+          electricity: false,
+          gas: false,
+          floorMaterial: '',
+          wc: '',
         ));
 
   void updateTextWC(int index) {
@@ -122,6 +128,15 @@ class BoolStateCubit extends Cubit<BoolState> {
       case 'دوبلکس':
         emit(state.copyWith(duplex: value));
         break;
+      case 'آب':
+        emit(state.copyWith(water: value, floorMaterial: '', wc: ''));
+        break;
+      case 'برق':
+        emit(state.copyWith(electricity: value, floorMaterial: '', wc: ''));
+        break;
+      case 'گاز':
+        emit(state.copyWith(gas: value, floorMaterial: '', wc: ''));
+        break;
     }
   }
 
@@ -133,8 +148,11 @@ class BoolStateCubit extends Cubit<BoolState> {
       balcony: false,
       penthouse: false,
       duplex: false,
-      floorMaterial: 'موزائیک',
-      wc: 'فرنگی',
+      water: false,
+      electricity: false,
+      gas: false,
+      floorMaterial: '',
+      wc: '',
     ));
   }
 }
