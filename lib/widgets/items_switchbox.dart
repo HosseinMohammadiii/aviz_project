@@ -58,7 +58,7 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     setState(() {
-                      if (widget.title == 'فروش زمین') {
+                      if (widget.title != 'فروش زمین') {
                         propertiesTxt[index].switchBool =
                             !propertiesTxt[index].switchBool;
                         context.read<BoolStateCubit>().updateBool(

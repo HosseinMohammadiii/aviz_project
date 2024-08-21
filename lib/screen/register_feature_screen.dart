@@ -17,7 +17,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
-  RegisterHomeFeatureScreen({
+  const RegisterHomeFeatureScreen({
     super.key,
     required this.title,
   });
@@ -444,20 +444,24 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         return idCt;
                       }
 
-                      if (address.isEmpty ||
-                          controller1.text.isEmpty ||
-                          controller2.text.isEmpty ||
-                          controller3.text.isEmpty ||
-                          controller4.text.isEmpty) {
+                      if (title != 'فروش زمین'
+                          ? address.isEmpty ||
+                              controller1.text.isEmpty ||
+                              controller2.text.isEmpty ||
+                              controller3.text.isEmpty ||
+                              controller4.text.isEmpty
+                          : address.isEmpty ||
+                              controller2.text.isEmpty ||
+                              controller3.text.isEmpty) {
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
                         return;
                       }
                       try {
-                        num metr = num.parse(controller2.text);
-                        num countRoom = num.parse(controller1.text);
-                        num floor = num.parse(controller4.text);
-                        num yearBuild = num.parse(controller3.text);
+                        num metr = num.tryParse(controller2.text) ?? 0;
+                        num countRoom = num.tryParse(controller1.text) ?? 0;
+                        num floor = num.tryParse(controller4.text) ?? 0;
+                        num yearBuild = num.tryParse(controller3.text) ?? 0;
 
                         context.read<RegisterInfoAdCubit>().setParametrInfoAd(
                               metr: metr,
@@ -500,7 +504,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
 //Function For Start Number TextfieldFeature Stateful Widget
   num numberBuild(String title, TextEditingController controller) {
-    if (title == 'سال ساخت را انتخاب کنید') {
+    if (title == 'سال ساخت را انتخاب کنید' ||
+        title == 'سال خرید را انتخاب کنید') {
       return num.tryParse(controller.text) ?? 1341;
     } else {
       return num.tryParse(controller.text) ?? 0;

@@ -74,13 +74,13 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
           .toList();
 
       //This variable is For Take the last Id From Facilities Collections
-      var id = adf.last.id;
+      var idf = adf.last.id;
 
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
         data: {
           'id_category': idCT,
-          'id_facilities': id,
+          'id_facilities': idf,
           'location': location,
           'metr': metr,
           'count_room': countRoom,
