@@ -181,12 +181,13 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
             slivers: [
               SliverToBoxAdapter(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     const TextTitleSection(
                         txt: 'انتخاب دسته بندی آویز',
                         img: 'images/category-2.png'),
-                    textCategory('محدوده ملک', 'دسته بندی'),
+                    textCategory(
+                        title == 'فروش زمین' ? 'محدوده زمین' : 'محدوده ملک',
+                        'دسته بندی'),
                     Row(
                       children: [
                         Container(
@@ -326,42 +327,76 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     ),
                     const TextTitleSection(
                         txt: 'ویژگی ها', img: 'images/clipboard.png'),
-                    textCategory('تعداد اتاق', 'متراژ'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextfieldFeature(
-                          controller: controller1,
-                          value: num.tryParse(controller1.text) ?? 0,
-                          textInputAction: TextInputAction.done,
-                        ),
-                        widgetBoxFeatures(
-                          context,
-                          widgetSliderMeterFeature(),
-                          controller2,
-                          'متراژ را وارد کنید',
-                        ),
-                      ],
-                    ),
-                    textCategory(
-                      'سال ساخت',
-                      'طبقه',
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        widgetBoxFeatures(
-                          context,
-                          _boxListWheelYears(),
-                          controller3,
-                          'سال ساخت را انتخاب کنید',
-                        ),
-                        TextfieldFeature(
-                          controller: controller4,
-                          value: num.tryParse(controller4.text) ?? 0,
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ],
+                    Visibility(
+                      visible: title == 'فروش زمین',
+                      replacement: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          textCategory('تعداد اتاق', 'متراژ'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextfieldFeature(
+                                controller: controller1,
+                                value: num.tryParse(controller1.text) ?? 0,
+                                textInputAction: TextInputAction.done,
+                              ),
+                              widgetBoxFeatures(
+                                context,
+                                widgetSliderMeterFeature(),
+                                controller2,
+                                'متراژ را وارد کنید',
+                              ),
+                            ],
+                          ),
+                          textCategory(
+                            'سال ساخت',
+                            'طبقه',
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              widgetBoxFeatures(
+                                context,
+                                _boxListWheelYears(),
+                                controller3,
+                                'سال ساخت را انتخاب کنید',
+                              ),
+                              TextfieldFeature(
+                                controller: controller4,
+                                value: num.tryParse(controller4.text) ?? 0,
+                                textInputAction: TextInputAction.done,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          textCategory(
+                            'سال خرید',
+                            'متراژ',
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              widgetBoxFeatures(
+                                context,
+                                _boxListWheelYears(),
+                                controller3,
+                                'سال خرید را انتخاب کنید',
+                              ),
+                              widgetBoxFeatures(
+                                context,
+                                widgetSliderMeterFeature(),
+                                controller2,
+                                'متراژ را وارد کنید',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
