@@ -6,6 +6,7 @@ import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class LocatioUpload extends StatefulWidget {
   LocatioUpload({
     super.key,

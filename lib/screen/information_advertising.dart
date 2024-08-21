@@ -13,6 +13,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/items_category_type.dart';
 
+// ignore: must_be_immutable
 class InformationAdvertising extends StatefulWidget {
   InformationAdvertising({
     super.key,
@@ -298,6 +299,7 @@ class ContainerInfo {
   ContainerInfo(this.text, this.selected, this.index);
 }
 
+// ignore: must_be_immutable
 class SpecificationBox extends StatefulWidget {
   SpecificationBox({
     super.key,
@@ -372,6 +374,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
   }
 }
 
+// ignore: must_be_immutable
 class PriceInfoWidget extends StatefulWidget {
   PriceInfoWidget({
     super.key,
@@ -620,6 +623,7 @@ class FeatureWidget extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class DescriptionWidget extends StatelessWidget {
   DescriptionWidget({
     super.key,

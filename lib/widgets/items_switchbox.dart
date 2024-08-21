@@ -7,6 +7,7 @@ import '../class/colors.dart';
 import '../class/switch_classs.dart';
 import 'text_widget.dart';
 
+// ignore: must_be_immutable
 class ItemsSwitchbox extends StatefulWidget {
   ItemsSwitchbox({
     super.key,

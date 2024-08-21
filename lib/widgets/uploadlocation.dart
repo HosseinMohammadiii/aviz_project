@@ -1,6 +1,7 @@
 import 'package:aviz_project/class/colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class UploadLocation extends StatelessWidget {
   UploadLocation({
     super.key,

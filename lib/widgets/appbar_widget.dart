@@ -7,9 +7,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../Bloc/bloc_page_number/page_n_bloc_state.dart';
 
 class AppBarWidget extends StatefulWidget {
-  AppBarWidget({
-    super.key,
-  });
+  const AppBarWidget({super.key});
 
   @override
   State<AppBarWidget> createState() => _AppBarWidgetState();

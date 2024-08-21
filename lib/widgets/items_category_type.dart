@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../class/colors.dart';
 import 'text_widget.dart';
 
+// ignore: must_be_immutable
 class ItemCategoryType extends StatelessWidget {
   ItemCategoryType({
     super.key,

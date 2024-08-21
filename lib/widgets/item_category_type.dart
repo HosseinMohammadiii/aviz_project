@@ -10,16 +10,16 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../class/colors.dart';
 import 'text_widget.dart';
 
-class itemsCategoryType extends StatefulWidget {
-  const itemsCategoryType({
+class ItemsCategoryType extends StatefulWidget {
+  const ItemsCategoryType({
     super.key,
   });
 
   @override
-  State<itemsCategoryType> createState() => _itemsCategoryTypeState();
+  State<ItemsCategoryType> createState() => _ItemsCategoryTypeState();
 }
 
-class _itemsCategoryTypeState extends State<itemsCategoryType> {
+class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
   @override
   void initState() {
     super.initState();
@@ -32,8 +32,8 @@ class _itemsCategoryTypeState extends State<itemsCategoryType> {
     List txt1 = [
       'اجاره مسکونی',
       'فروش مسکونی',
-      'اجاره دفاتر اداری و تجاری',
-      'فروش دفاتر اداری و تجاری',
+      // 'اجاره دفاتر اداری و تجاری',
+      // 'فروش دفاتر اداری و تجاری',
     ];
     return BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
       builder: (context, state) {
@@ -53,14 +53,14 @@ class _itemsCategoryTypeState extends State<itemsCategoryType> {
                       } else if (index == 1) {
                         BlocProvider.of<NavigationPage>(context)
                             .getNavItems(ViewPage.itemsBuyHome);
-                      } else if (index == 2) {
-                        //Should Changed viewpage***************************
-                        BlocProvider.of<NavigationPage>(context)
-                            .getNavItems(ViewPage.itemsRentBusinessPlace);
-                      } else if (index == 3) {
-                        //Should Changed viewpage***************************
-                        BlocProvider.of<NavigationPage>(context)
-                            .getNavItems(ViewPage.itemsBuyBusinessPlace);
+                        // } else if (index == 2) {
+                        //   //Should Changed viewpage***************************
+                        //   BlocProvider.of<NavigationPage>(context)
+                        //       .getNavItems(ViewPage.itemsRentBusinessPlace);
+                        // } else if (index == 3) {
+                        //   //Should Changed viewpage***************************
+                        //   BlocProvider.of<NavigationPage>(context)
+                        //       .getNavItems(ViewPage.itemsBuyBusinessPlace);
                       }
                     },
                     child: Container(

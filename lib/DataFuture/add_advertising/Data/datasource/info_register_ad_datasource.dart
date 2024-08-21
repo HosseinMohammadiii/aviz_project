@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
-import '../model/category_advertising.dart';
 
 abstract class IInfoRegisterAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAd(String idCt);

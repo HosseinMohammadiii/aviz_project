@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../class/colors.dart';
 
+// ignore: must_be_immutable
 class TextFieldBox extends StatefulWidget {
   TextFieldBox({
     super.key,

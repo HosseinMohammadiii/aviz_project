@@ -5,6 +5,7 @@ import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ConfirmationNumberScreen extends StatefulWidget {
   ConfirmationNumberScreen(this.txt1, this.txt2, this.color1, this.color2,
       {super.key});

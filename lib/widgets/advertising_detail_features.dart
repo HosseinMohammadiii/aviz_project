@@ -11,6 +11,7 @@ import '../class/colors.dart';
 import 'advertising_facilities.dart';
 import 'text_widget.dart';
 
+// ignore: must_be_immutable
 class AdvertisindFeaturesWidget extends StatefulWidget {
   AdvertisindFeaturesWidget({
     super.key,

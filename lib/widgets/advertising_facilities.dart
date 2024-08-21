@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../class/colors.dart';
 import 'text_widget.dart';
 
+// ignore: must_be_immutable
 class AdvertisingFacilitiesWidget extends StatelessWidget {
   AdvertisingFacilitiesWidget({
     super.key,

@@ -11,14 +11,16 @@ import '../widgets/items_category.dart';
 import 'locatin_upload_screen.dart';
 import 'register_advertising_screen.dart';
 
-class AddAdvertisingScreen extends StatefulWidget {
-  const AddAdvertisingScreen({super.key});
+class ManagementAddAdvertisingScreen extends StatefulWidget {
+  const ManagementAddAdvertisingScreen({super.key});
 
   @override
-  State<AddAdvertisingScreen> createState() => _AddAdvertisingScreenState();
+  State<ManagementAddAdvertisingScreen> createState() =>
+      _ManagementAddAdvertisingScreenState();
 }
 
-class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
+class _ManagementAddAdvertisingScreenState
+    extends State<ManagementAddAdvertisingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +35,7 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
         builder: (context, state) {
           switch (state.viewPage) {
             case ViewPage.category:
-              return const itemsCategoryType();
+              return const ItemsCategoryType();
 
             case ViewPage.itemsRentHome:
               return ItemSelectCategory(title: 'اجاره');
@@ -70,7 +72,7 @@ class _AddAdvertisingScreenState extends State<AddAdvertisingScreen> {
               return const RegisterAdvertising();
 
             default:
-              return const itemsCategoryType();
+              return const ItemsCategoryType();
           }
         },
       ),

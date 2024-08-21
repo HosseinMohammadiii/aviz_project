@@ -3,6 +3,7 @@ import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ItemInformation extends StatefulWidget {
   ItemInformation({
     super.key,

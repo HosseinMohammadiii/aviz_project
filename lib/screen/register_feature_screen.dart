@@ -6,7 +6,6 @@ import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
-import 'package:aviz_project/class/scroll_behavior.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/widgets/items_switchbox.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';

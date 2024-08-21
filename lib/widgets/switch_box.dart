@@ -2,6 +2,7 @@ import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SwitchBox extends StatefulWidget {
   SwitchBox({super.key, required this.switchCheck, required this.txt});
   bool switchCheck;
@@ -29,8 +30,7 @@ class _SwitchBoxState extends State<SwitchBox> {
             activeColor: CustomColor.red,
             activeTrackColor: CustomColor.red,
             thumbColor: const MaterialStatePropertyAll(CustomColor.grey),
-            trackOutlineColor:
-                const MaterialStatePropertyAll(Colors.transparent),
+            trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
             value: widget.switchCheck,
             onChanged: (value) {
               setState(() {

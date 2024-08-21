@@ -16,6 +16,7 @@ import '../widgets/text_widget.dart';
 import '../widgets/uploadlocation.dart';
 import 'dart:ui' as ui;
 
+// ignore: must_be_immutable
 class InformationRecentlyAdvertising extends StatefulWidget {
   InformationRecentlyAdvertising({
     super.key,
@@ -304,6 +305,7 @@ class ContainerInfo {
   ContainerInfo(this.text, this.selected, this.index);
 }
 
+// ignore: must_be_immutable
 class SpecificationBox extends StatefulWidget {
   SpecificationBox({
     super.key,
@@ -434,6 +436,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
   }
 }
 
+// ignore: must_be_immutable
 class PriceInfoWidget extends StatefulWidget {
   PriceInfoWidget({
     super.key,
@@ -526,6 +529,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class DescriptionWidget extends StatelessWidget {
   DescriptionWidget({
     super.key,
