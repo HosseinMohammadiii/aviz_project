@@ -7,7 +7,6 @@ import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/class/scroll_behavior.dart';
-import 'package:aviz_project/class/switch_classs.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/widgets/items_switchbox.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
@@ -17,8 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:shamsi_date/shamsi_date.dart';
-
-import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
   RegisterHomeFeatureScreen({
@@ -36,7 +33,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   final layerLink = LayerLink();
 
-  FocusNode focusNode1 = FocusNode();
+  final FocusNode focusNode1 = FocusNode();
 
   final TextEditingController controller1 = TextEditingController();
   final TextEditingController controller2 = TextEditingController();
@@ -61,6 +58,24 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   void initState() {
+    var state = context.read<StatusModeBloc>().state;
+    switch (state.statusMode) {
+      case StatusMode.apartment:
+        title = '${widget.title} آپارتمان';
+        break;
+      case StatusMode.home:
+        title = '${widget.title} خانه';
+        break;
+      case StatusMode.villa:
+        title = '${widget.title} ویلا';
+        break;
+      case StatusMode.buyLand:
+        title = '${widget.title} زمین';
+        break;
+      default:
+        txtTitle = '${widget.title} آپارتمان';
+        break;
+    }
     yearLength = endYear.year - currentYear.year + 1;
     itemYear = List.generate(yearLength, (index) {});
     super.initState();
@@ -70,14 +85,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
       (_) => hideOverlay(),
     );
   }
-
-  List<ClassSwitchBox> propertiesTxt = [
-    ClassSwitchBox('آسانسور', false),
-    ClassSwitchBox('پارکینگ', false),
-    ClassSwitchBox('انباری', false),
-    ClassSwitchBox('بالکن', false),
-    ClassSwitchBox('پنت هاوس', false),
-  ];
 
   //Function for display Overlay
   void showOverlay() {
@@ -101,58 +108,56 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
           child: CompositedTransformFollower(
             link: layerLink,
             showWhenUnlinked: false,
-            offset: Offset(0, size.height / 35),
+            offset: Offset(0, size.height / 32),
             child: SizedBox(
-              height: 110,
-              child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: ListView.builder(
-                  itemCount:
-                      widget.title == 'اجاره' ? txtRent.length : txtBuy.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (index == 0) {
-                            BlocProvider.of<StatusModeBloc>(context)
-                                .getStatusMode(StatusMode.apartment);
-                            title = '${widget.title} آپارتمان';
-                          } else if (index == 1) {
-                            BlocProvider.of<StatusModeBloc>(context)
-                                .getStatusMode(StatusMode.home);
-                            title = '${widget.title} خانه';
-                          } else if (index == 2) {
-                            BlocProvider.of<StatusModeBloc>(context)
-                                .getStatusMode(StatusMode.villa);
-                            title = '${widget.title} ویلا';
-                          } else {
-                            BlocProvider.of<StatusModeBloc>(context)
-                                .getStatusMode(StatusMode.buyLand);
-                            title = '${widget.title} زمین';
-                          }
-                        });
-                        setState(() {
-                          hideOverlay();
-                          changeIcon = false;
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.topRight,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 6),
-                        color: CustomColor.grey300,
-                        child: textWidget(
-                          widget.title == 'اجاره'
-                              ? txtRent[index]
-                              : txtBuy[index],
-                          CustomColor.black,
-                          15,
-                          FontWeight.w500,
-                        ),
+              height: 140,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount:
+                    widget.title == 'اجاره' ? txtRent.length : txtBuy.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (index == 0) {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.apartment);
+                          title = '${widget.title} آپارتمان';
+                        } else if (index == 1) {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.home);
+                          title = '${widget.title} خانه';
+                        } else if (index == 2) {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.villa);
+                          title = '${widget.title} ویلا';
+                        } else {
+                          BlocProvider.of<StatusModeBloc>(context)
+                              .getStatusMode(StatusMode.buyLand);
+                          title = '${widget.title} زمین';
+                        }
+                      });
+                      setState(() {
+                        hideOverlay();
+                        changeIcon = false;
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 6),
+                      color: CustomColor.grey300,
+                      child: textWidget(
+                        widget.title == 'اجاره'
+                            ? txtRent[index]
+                            : txtBuy[index],
+                        CustomColor.black,
+                        15,
+                        FontWeight.w500,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           )),
@@ -230,36 +235,38 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             switch (state.statusMode) {
                               case StatusMode.apartment:
                                 txtTitle = '${widget.title} آپارتمان';
+                                title = '${widget.title} آپارتمان';
                                 break;
                               case StatusMode.home:
                                 txtTitle = '${widget.title} خانه';
+                                title = '${widget.title} خانه';
                                 break;
                               case StatusMode.villa:
                                 txtTitle = '${widget.title} ویلا';
+                                title = '${widget.title} ویلا';
                                 break;
                               case StatusMode.buyLand:
                                 txtTitle = '${widget.title} زمین';
+                                title = '${widget.title} زمین';
                                 break;
                               default:
                                 txtTitle = '${widget.title} آپارتمان';
                                 break;
                             }
-                            return CompositedTransformTarget(
-                              link: layerLink,
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    changeIcon == true
-                                        ? changeIcon = false
-                                        : changeIcon = true;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  changeIcon = !changeIcon;
 
-                                    if (changeIcon == true) {
-                                      showOverlay();
-                                    } else {
-                                      hideOverlay();
-                                    }
-                                  });
-                                },
+                                  if (changeIcon) {
+                                    showOverlay();
+                                  } else {
+                                    hideOverlay();
+                                  }
+                                });
+                              },
+                              child: CompositedTransformTarget(
+                                link: layerLink,
                                 child: Container(
                                   width: 159,
                                   height: 48,
@@ -460,7 +467,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 //Function For Start Number TextfieldFeature Stateful Widget
   num numberBuild(String title, TextEditingController controller) {
     if (title == 'سال ساخت را انتخاب کنید') {
-      return num.tryParse(controller.text) ?? 1339;
+      return num.tryParse(controller.text) ?? 1341;
     } else {
       return num.tryParse(controller.text) ?? 0;
     }
@@ -474,6 +481,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         min: 0,
         max: 1000,
         divisions: 1000,
+        thumbColor: CustomColor.red,
+        activeColor: CustomColor.pink,
         label: _currentSliderPrimaryValue.toString(),
         onChanged: (value) {
           if (value > 0) {
@@ -524,7 +533,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                 ),
               );
             });
-        setState(() {});
+        // setState(() {
+        // });
       },
       child: Stack(
         alignment: Alignment.centerRight,
@@ -617,45 +627,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
       address: address,
     );
     advertisingBox.add(advertising);
-  }
-
-//Widget for display switch feature
-  Widget switchBox(
-    int index,
-    AdvertisingFacilities advertisingFacilities,
-  ) {
-    return Container(
-      height: 40,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: CustomColor.grey350),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Switch(
-            activeColor: CustomColor.red,
-            activeTrackColor: CustomColor.red,
-            thumbColor: const WidgetStatePropertyAll(CustomColor.grey),
-            trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
-            value: propertiesTxt[index].switchBool,
-            onChanged: (value) {
-              setState(() {
-                propertiesTxt[index].switchBool = value;
-              });
-            },
-          ),
-          textWidget(
-            propertiesTxt[index].txt,
-            CustomColor.black,
-            16,
-            FontWeight.w400,
-          ),
-        ],
-      ),
-    );
   }
 
 //Widget for display title category top box

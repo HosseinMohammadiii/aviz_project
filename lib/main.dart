@@ -115,7 +115,9 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: BottomNavigationScreen(),
+      home: RegisterHomeFeatureScreen(
+        title: 'فروش',
+      ),
     );
   }
 }
