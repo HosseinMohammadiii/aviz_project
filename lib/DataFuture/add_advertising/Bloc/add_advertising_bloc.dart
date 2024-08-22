@@ -174,6 +174,19 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
           ),
         );
 
+  void resetInfoAdSet() {
+    emit(
+      RegisterInfoAd(
+        metr: null,
+        countRoom: null,
+        floor: null,
+        yearBuild: null,
+        idCt: '',
+        address: '',
+      ),
+    );
+  }
+
   void setParametrInfoAd({
     required final num metr,
     required final num countRoom,

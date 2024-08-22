@@ -1,3 +1,4 @@
+import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/List/list_advertising.dart';
@@ -65,33 +66,34 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   final stateAd = context.read<RegisterInfoAdCubit>().state;
                   final boolState = context.read<BoolStateCubit>().state;
 
-                  // BlocProvider.of<AddAdvertisingBloc>(context).add(
-                  //   AddInfoAdvertising(
-                  //     stateAd.idCt,
-                  //     stateAd.address,
-                  //     stateAd.metr!.toInt(),
-                  //     stateAd.countRoom!.toInt(),
-                  //     stateAd.floor!.toInt(),
-                  //     stateAd.yearBuild!.toInt(),
-                  //   ),
-                  // );
-                  // BlocProvider.of<AddAdvertisingBloc>(context).add(
-                  //   AddFacilitiesAdvertising(
-                  //     boolState.elevator,
-                  //     boolState.parking,
-                  //     boolState.storeroom,
-                  //     boolState.balcony,
-                  //     boolState.penthouse,
-                  //     boolState.duplex,
-                  //     boolState.water,
-                  //     boolState.electricity,
-                  //     boolState.gas,
-                  //     boolState.floorMaterial,
-                  //     boolState.wc,
-                  //   ),
-                  // );
-                  print(boolState.fIndex);
+                  BlocProvider.of<AddAdvertisingBloc>(context).add(
+                    AddInfoAdvertising(
+                      stateAd.idCt,
+                      stateAd.address,
+                      stateAd.metr!.toInt(),
+                      stateAd.countRoom!.toInt(),
+                      stateAd.floor!.toInt(),
+                      stateAd.yearBuild!.toInt(),
+                    ),
+                  );
+                  BlocProvider.of<AddAdvertisingBloc>(context).add(
+                    AddFacilitiesAdvertising(
+                      boolState.elevator,
+                      boolState.parking,
+                      boolState.storeroom,
+                      boolState.balcony,
+                      boolState.penthouse,
+                      boolState.duplex,
+                      boolState.water,
+                      boolState.electricity,
+                      boolState.gas,
+                      boolState.floorMaterial,
+                      boolState.wc,
+                    ),
+                  );
+                  context.read<RegisterInfoAdCubit>().resetInfoAdSet();
                   context.read<BoolStateCubit>().reset();
+                  context.read<NavigationPage>().backFirstPAge();
                 },
                 child: Container(
                   width: 100,

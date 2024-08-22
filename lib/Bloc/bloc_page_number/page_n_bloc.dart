@@ -5,6 +5,10 @@ import 'page_n_bloc_state.dart';
 class NavigationPage extends Cubit<NavigationState> {
   NavigationPage() : super(NavigationState(ViewPage.category));
 
+  void backFirstPAge() {
+    emit(NavigationState(ViewPage.category));
+  }
+
   void getNavItems(ViewPage item) {
     switch (item) {
       case ViewPage.category:
