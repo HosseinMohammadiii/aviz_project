@@ -47,7 +47,9 @@ class BoolState {
   final bool electricity;
   final bool gas;
   final String floorMaterial;
+  int fIndex;
   final String wc;
+  int wIndex;
 
   BoolState({
     required this.elevator,
@@ -60,22 +62,25 @@ class BoolState {
     required this.electricity,
     required this.gas,
     required this.floorMaterial,
+    required this.fIndex,
     required this.wc,
+    required this.wIndex,
   });
 
-  BoolState copyWith({
-    bool? elevator,
-    bool? parking,
-    bool? storeroom,
-    bool? balcony,
-    bool? penthouse,
-    bool? duplex,
-    bool? water,
-    bool? electricity,
-    bool? gas,
-    String? floorMaterial,
-    String? wc,
-  }) {
+  BoolState copyWith(
+      {bool? elevator,
+      bool? parking,
+      bool? storeroom,
+      bool? balcony,
+      bool? penthouse,
+      bool? duplex,
+      bool? water,
+      bool? electricity,
+      bool? gas,
+      String? floorMaterial,
+      int? fIndex,
+      String? wc,
+      int? wIndex}) {
     return BoolState(
       elevator: elevator ?? this.elevator,
       parking: parking ?? this.parking,
@@ -87,7 +92,9 @@ class BoolState {
       electricity: electricity ?? this.electricity,
       gas: gas ?? this.gas,
       floorMaterial: floorMaterial ?? this.floorMaterial,
+      fIndex: fIndex ?? this.fIndex,
       wc: wc ?? this.wc,
+      wIndex: wIndex ?? this.wIndex,
     );
   }
 }

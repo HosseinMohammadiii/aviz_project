@@ -22,12 +22,6 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
   PageController pageControllerWC = PageController(initialPage: 1);
   PageController pageControllerFM = PageController(initialPage: 1);
 
-  int pageIndexFM = 1;
-  int pageIndexWC = 1;
-
-  String titleFM = '';
-  String titleWC = '';
-
   List<ClassSwitchBox> propertiesTxt = [
     ClassSwitchBox('آسانسور', false),
     ClassSwitchBox('پارکینگ', false),
@@ -41,16 +35,27 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
     ClassSwitchBox('برق', false),
     ClassSwitchBox('گاز', false),
   ];
+
+  List<String> fm = ['سرامیک', 'موزائیک', 'پارکت'];
+  List<String> wc = ['ایرانی', 'فرنگی', 'ایرانی و فرنگی'];
   @override
   void initState() {
     final state = context.read<BoolStateCubit>().state;
+    propertiesTxt = [
+      ClassSwitchBox('آسانسور', state.elevator),
+      ClassSwitchBox('پارکینگ', state.parking),
+      ClassSwitchBox('انباری', state.storeroom),
+      ClassSwitchBox('بالکن', state.balcony),
+      ClassSwitchBox('پنت هاوس', state.penthouse),
+      ClassSwitchBox('دوبلکس', state.duplex),
+    ];
 
-    ClassSwitchBox('آسانسور', state.elevator);
-    ClassSwitchBox('پارکینگ', state.parking);
-    ClassSwitchBox('انباری', state.storeroom);
-    ClassSwitchBox('بالکن', state.balcony);
-    ClassSwitchBox('پنت هاوس', state.penthouse);
-    ClassSwitchBox('دوبلکس', state.duplex);
+    propertiesLandTxt = [
+      ClassSwitchBox('آب', state.water),
+      ClassSwitchBox('برق', state.electricity),
+      ClassSwitchBox('گاز', state.gas),
+    ];
+
     super.initState();
   }
 
@@ -68,12 +73,6 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                     ? propertiesLandTxt.length
                     : propertiesTxt.length,
                 itemBuilder: (context, index) {
-                  ClassSwitchBox('آسانسور', state.elevator);
-                  ClassSwitchBox('پارکینگ', state.parking);
-                  ClassSwitchBox('انباری', state.storeroom);
-                  ClassSwitchBox('بالکن', state.balcony);
-                  ClassSwitchBox('پنت هاوس', state.penthouse);
-                  ClassSwitchBox('دوبلکس', state.duplex);
                   return GestureDetector(
                     onTap: () {
                       setState(() {
@@ -158,15 +157,15 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Visibility(
-                          visible: pageIndexFM != 0,
+                          visible: state.fIndex != 0,
                           replacement: const SizedBox(
                             width: 20,
                           ),
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (pageIndexFM > 0) {
-                                  pageIndexFM--;
+                                if (state.fIndex > 0) {
+                                  context.read<BoolStateCubit>().state.fIndex--;
                                 } else {
                                   return;
                                 }
@@ -184,22 +183,16 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                           width: 60,
                           child: PageView.builder(
                             controller: pageControllerFM,
-                            itemCount: 3,
+                            itemCount: fm.length,
                             physics: const NeverScrollableScrollPhysics(),
-                            onPageChanged: (int page) {
-                              setState(() {
-                                pageIndexFM = page;
-                              });
-                            },
                             itemBuilder: (context, index) {
-                              List<String> ttl = ['سرامیک', 'موزائیک', 'پارکت'];
                               context
                                   .read<BoolStateCubit>()
-                                  .updateTextFM(pageIndexFM);
+                                  .updateTextFM(state.fIndex);
 
                               return Center(
                                 child: Text(
-                                  ttl[pageIndexFM],
+                                  fm[state.fIndex],
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -210,12 +203,12 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                           ),
                         ),
                         Visibility(
-                          visible: pageIndexFM != 2,
+                          visible: state.fIndex != 2,
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (pageIndexFM < 2) {
-                                  pageIndexFM++;
+                                if (state.fIndex < 2) {
+                                  context.read<BoolStateCubit>().state.fIndex++;
                                 } else {
                                   return;
                                 }
@@ -255,15 +248,15 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Visibility(
-                          visible: pageIndexWC != 0,
+                          visible: state.wIndex != 0,
                           replacement: const SizedBox(
                             width: 20,
                           ),
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (pageIndexWC > 0) {
-                                  pageIndexWC--;
+                                if (state.wIndex > 0) {
+                                  context.read<BoolStateCubit>().state.wIndex--;
                                 } else {
                                   return;
                                 }
@@ -278,29 +271,19 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                         ),
                         SizedBox(
                           height: 30,
-                          width: pageIndexWC == 2 ? 85 : 60,
+                          width: state.wIndex == 2 ? 85 : 60,
                           child: PageView.builder(
                             controller: pageControllerWC,
-                            itemCount: 3,
+                            itemCount: wc.length,
                             physics: const NeverScrollableScrollPhysics(),
-                            onPageChanged: (int page) {
-                              setState(() {
-                                pageIndexWC = page;
-                              });
-                            },
                             itemBuilder: (context, index) {
-                              List<String> ttl = [
-                                'ایرانی',
-                                'فرنگی',
-                                'ایرانی و فرنگی'
-                              ];
                               context
                                   .read<BoolStateCubit>()
-                                  .updateTextWC(pageIndexWC);
+                                  .updateTextWC(state.wIndex);
 
                               return Center(
                                 child: Text(
-                                  ttl[pageIndexWC],
+                                  wc[state.wIndex],
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -311,12 +294,12 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                           ),
                         ),
                         Visibility(
-                          visible: pageIndexWC != 2,
+                          visible: state.wIndex != 2,
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (pageIndexWC < 2) {
-                                  pageIndexWC++;
+                                if (state.wIndex < 2) {
+                                  context.read<BoolStateCubit>().state.wIndex++;
                                 } else {
                                   return;
                                 }

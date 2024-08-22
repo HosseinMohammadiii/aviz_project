@@ -77,7 +77,9 @@ class BoolStateCubit extends Cubit<BoolState> {
           electricity: false,
           gas: false,
           floorMaterial: '',
+          fIndex: 1,
           wc: '',
+          wIndex: 1,
         ));
 
   void updateTextWC(int index) {
@@ -152,7 +154,9 @@ class BoolStateCubit extends Cubit<BoolState> {
       electricity: false,
       gas: false,
       floorMaterial: '',
+      fIndex: 1,
       wc: '',
+      wIndex: 1,
     ));
   }
 }
