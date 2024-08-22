@@ -15,37 +15,46 @@ class SwitchBox extends StatefulWidget {
 class _SwitchBoxState extends State<SwitchBox> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: CustomColor.grey350),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Switch(
-            activeColor: CustomColor.red,
-            activeTrackColor: CustomColor.red,
-            thumbColor: const MaterialStatePropertyAll(CustomColor.grey),
-            trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
-            value: widget.switchCheck,
-            onChanged: (value) {
-              setState(() {
-                widget.switchCheck = !widget.switchCheck;
-                value = widget.switchCheck;
-              });
-            },
-          ),
-          textWidget(
-            widget.txt,
-            CustomColor.black,
-            16,
-            FontWeight.w400,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          widget.switchCheck = !widget.switchCheck;
+        });
+      },
+      child: Container(
+        height: 40,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: CustomColor.grey350),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Switch(
+              activeColor: CustomColor.red,
+              activeTrackColor: CustomColor.red,
+              thumbColor: const WidgetStatePropertyAll(CustomColor.grey),
+              trackOutlineColor:
+                  const WidgetStatePropertyAll(Colors.transparent),
+              value: widget.switchCheck,
+              onChanged: (value) {
+                setState(() {
+                  widget.switchCheck = !widget.switchCheck;
+
+                  value = widget.switchCheck;
+                });
+              },
+            ),
+            textWidget(
+              widget.txt,
+              CustomColor.black,
+              16,
+              FontWeight.w400,
+            ),
+          ],
+        ),
       ),
     );
   }

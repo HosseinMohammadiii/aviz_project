@@ -7,6 +7,7 @@ import 'package:aviz_project/widgets/register_details_business.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../widgets/items_category.dart';
 import 'locatin_upload_screen.dart';
 import 'register_advertising_screen.dart';
@@ -29,10 +30,12 @@ class _ManagementAddAdvertisingScreenState
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: double.maxFinite,
-        leading: AppBarWidget(),
+        leading: const AppBarWidget(),
       ),
       body: BlocBuilder<NavigationPage, NavigationState>(
         builder: (context, state) {
+          final stateAd = context.read<RegisterInfoAdCubit>().state;
+
           switch (state.viewPage) {
             case ViewPage.category:
               return const ItemsCategoryType();
@@ -52,17 +55,19 @@ class _ManagementAddAdvertisingScreenState
               return RegisterDetailsBusiness(title: 'فروش');
 
             case ViewPage.registerDetialsRentHomeAdvertising:
-              return RegisterHomeFeatureScreen(
+              return const RegisterHomeFeatureScreen(
                 title: 'اجاره',
               );
 
             case ViewPage.registerDetialsBuyHomeAdvertising:
-              return RegisterHomeFeatureScreen(
+              return const RegisterHomeFeatureScreen(
                 title: 'فروش',
               );
 
             case ViewPage.registerHomeLocation:
-              return LocatioUpload();
+              return LocatioUpload(
+                address: stateAd.address,
+              );
 
             case ViewPage.registerBusinessLocation:
               return RegisterDetailsBusiness(title: 'موقعیت مکانی');

@@ -34,14 +34,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   final FocusNode focusNode1 = FocusNode();
 
-  final TextEditingController controller1 = TextEditingController();
-  final TextEditingController controller2 = TextEditingController();
-  final TextEditingController controller3 = TextEditingController();
-  final TextEditingController controller4 = TextEditingController();
+  final TextEditingController controllerCounRoom = TextEditingController();
+  final TextEditingController controllerMetr = TextEditingController();
+  final TextEditingController controllerYearBuild = TextEditingController();
+  final TextEditingController controllerFloor = TextEditingController();
+  final TextEditingController controllerAddress = TextEditingController();
 
   OverlayEntry? entry;
 
-  String address = '';
   String? txtTitle;
   String title = '';
 
@@ -77,6 +77,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     }
     yearLength = endYear.year - currentYear.year + 1;
     itemYear = List.generate(yearLength, (index) {});
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
+
+    controllerAddress.text = stateAd.address;
+    controllerCounRoom.text = stateAd.countRoom.toString();
+    controllerMetr.text = stateAd.metr.toString();
+    controllerYearBuild.text = stateAd.yearBuild.toString();
+    controllerFloor.text = stateAd.floor.toString();
+
     super.initState();
     BlocProvider.of<AddAdvertisingBloc>(context)
         .add(AddAdvertisingGetInitializeData());
@@ -199,6 +207,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           ),
                           alignment: Alignment.center,
                           child: TextField(
+                            controller: controllerAddress,
                             keyboardType: TextInputType.streetAddress,
                             focusNode: focusNode1,
                             textInputAction: TextInputAction.done,
@@ -221,7 +230,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             ),
                             onChanged: (value) {
                               setState(() {
-                                address = value;
+                                controllerAddress.text = value;
                               });
                             },
                             onTapOutside: (event) {
@@ -336,14 +345,15 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextfieldFeature(
-                                controller: controller1,
-                                value: num.tryParse(controller1.text) ?? 0,
+                                controller: controllerCounRoom,
+                                value:
+                                    num.tryParse(controllerCounRoom.text) ?? 0,
                                 textInputAction: TextInputAction.done,
                               ),
-                              widgetBoxFeatures(
+                              widgetBoxMetrFeature(
                                 context,
                                 widgetSliderMeterFeature(),
-                                controller2,
+                                controllerMetr,
                                 'متراژ را وارد کنید',
                               ),
                             ],
@@ -355,15 +365,15 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              widgetBoxFeatures(
+                              widgetBoxYearBuildFeature(
                                 context,
                                 _boxListWheelYears(),
-                                controller3,
+                                controllerYearBuild,
                                 'سال ساخت را انتخاب کنید',
                               ),
                               TextfieldFeature(
-                                controller: controller4,
-                                value: num.tryParse(controller4.text) ?? 0,
+                                controller: controllerFloor,
+                                value: num.tryParse(controllerFloor.text) ?? 0,
                                 textInputAction: TextInputAction.done,
                               ),
                             ],
@@ -380,16 +390,16 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              widgetBoxFeatures(
+                              widgetBoxYearBuildFeature(
                                 context,
                                 _boxListWheelYears(),
-                                controller3,
+                                controllerYearBuild,
                                 'سال خرید را انتخاب کنید',
                               ),
-                              widgetBoxFeatures(
+                              widgetBoxMetrFeature(
                                 context,
                                 widgetSliderMeterFeature(),
-                                controller2,
+                                controllerMetr,
                                 'متراژ را وارد کنید',
                               ),
                             ],
@@ -445,23 +455,25 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                       }
 
                       if (title != 'فروش زمین'
-                          ? address.isEmpty ||
-                              controller1.text.isEmpty ||
-                              controller2.text.isEmpty ||
-                              controller3.text.isEmpty ||
-                              controller4.text.isEmpty
-                          : address.isEmpty ||
-                              controller2.text.isEmpty ||
-                              controller3.text.isEmpty) {
+                          ? controllerAddress.text.isEmpty ||
+                              controllerCounRoom.text.isEmpty ||
+                              controllerMetr.text.isEmpty ||
+                              controllerYearBuild.text.isEmpty ||
+                              controllerFloor.text.isEmpty
+                          : controllerAddress.text.isEmpty ||
+                              controllerMetr.text.isEmpty ||
+                              controllerYearBuild.text.isEmpty) {
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
                         return;
                       }
                       try {
-                        num metr = num.tryParse(controller2.text) ?? 0;
-                        num countRoom = num.tryParse(controller1.text) ?? 0;
-                        num floor = num.tryParse(controller4.text) ?? 0;
-                        num yearBuild = num.tryParse(controller3.text) ?? 0;
+                        num metr = num.tryParse(controllerMetr.text) ?? 0;
+                        num countRoom =
+                            num.tryParse(controllerCounRoom.text) ?? 0;
+                        num floor = num.tryParse(controllerFloor.text) ?? 0;
+                        num yearBuild =
+                            num.tryParse(controllerYearBuild.text) ?? 0;
 
                         context.read<RegisterInfoAdCubit>().setParametrInfoAd(
                               metr: metr,
@@ -469,7 +481,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               floor: floor,
                               yearBuild: yearBuild,
                               idCt: idCt(),
-                              address: address,
+                              address: controllerAddress.text,
                             );
 
                         // addAdvertising(
@@ -502,49 +514,44 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     );
   }
 
-//Function For Start Number TextfieldFeature Stateful Widget
-  num numberBuild(String title, TextEditingController controller) {
-    if (title == 'سال ساخت را انتخاب کنید' ||
-        title == 'سال خرید را انتخاب کنید') {
-      return num.tryParse(controller.text) ?? 1341;
-    } else {
-      return num.tryParse(controller.text) ?? 0;
-    }
-  }
-
 //Widget For Display Slider Input Meter Number
   Widget widgetSliderMeterFeature() {
     return StatefulBuilder(
       builder: (context, setState) => Slider(
-        value: double.tryParse(controller2.text) ?? 0.0,
+        value: double.tryParse(controllerMetr.text) ?? 0.0,
         min: 0,
         max: 1000,
         divisions: 1000,
         thumbColor: CustomColor.red,
         activeColor: CustomColor.pink,
-        label: _currentSliderPrimaryValue.toString(),
+        label: controllerMetr.text,
         onChanged: (value) {
           if (value > 0) {
             setState(() {
               _currentSliderPrimaryValue = value.toInt();
 
-              controller2.text = _currentSliderPrimaryValue.toString();
+              controllerMetr.text = _currentSliderPrimaryValue.toString();
             });
           } else {
-            controller2.text = '';
+            controllerMetr.text = '';
           }
         },
       ),
     );
   }
 
-//Widget For Display Widgets ListWheel Years Build And Slider Input Number
-  Widget widgetBoxFeatures(
+//Widget For Display Widget widgetSliderMeterFeature And Change Number
+  Widget widgetBoxMetrFeature(
     BuildContext context,
     Widget widget,
     TextEditingController controller,
     String title,
   ) {
+    int metr = int.tryParse(controllerMetr.text) ?? 0;
+    if (controllerMetr.text == 'null') {
+      controllerMetr.text = '';
+    }
+
     return GestureDetector(
       onTap: () async {
         await showDialog(
@@ -572,16 +579,227 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                 ),
               );
             });
-        // setState(() {
-        // });
+        setState(() {});
       },
       child: Stack(
         alignment: Alignment.centerRight,
         children: [
-          TextfieldFeature(
-            controller: controller,
-            value: numberBuild(title, controller),
-            textInputAction: TextInputAction.done,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              width: 159,
+              height: 48,
+              padding: const EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: CustomColor.grey350,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (metr >= 1000) {
+                              return;
+                            }
+                            metr++;
+                            controllerMetr.text = metr.toString();
+                          });
+                        },
+                        child: const Icon(
+                          Icons.arrow_drop_up_rounded,
+                          color: CustomColor.red,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (metr <= 0) {
+                            return;
+                          }
+                          setState(() {
+                            metr--;
+
+                            controllerMetr.text = metr.toString();
+                          });
+                        },
+                        child: const Icon(
+                          Icons.arrow_drop_down_rounded,
+                          color: CustomColor.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 110,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: controllerMetr,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontFamily: 'SN',
+                        fontSize: 16,
+                        color: CustomColor.black,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      decoration: const InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                      onChanged: (val) {
+                        if (val.isNotEmpty) {
+                          setState(() {
+                            metr = int.parse(val);
+                            controllerMetr.text = val;
+                          });
+                        } else {
+                          val = '';
+                          metr = 0;
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: 140,
+            height: 48,
+            color: Colors.transparent,
+          ),
+        ],
+      ),
+    );
+  }
+
+//Widget For Display Widget widgetBoxYearBuildFeature And Change Number Year
+  Widget widgetBoxYearBuildFeature(
+    BuildContext context,
+    Widget widget,
+    TextEditingController controller,
+    String title,
+  ) {
+    int year = int.tryParse(controllerYearBuild.text) ?? 1340;
+    if (controllerYearBuild.text == 'null') {
+      controllerYearBuild.text = '';
+    }
+
+    return GestureDetector(
+      onTap: () async {
+        await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                backgroundColor: CustomColor.grey350,
+                alignment: Alignment.center,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: CustomColor.bluegrey,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    widget,
+                  ],
+                ),
+              );
+            });
+      },
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              width: 159,
+              height: 48,
+              padding: const EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: CustomColor.grey350,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (year == Jalali.now().year) {
+                              return;
+                            }
+                            year++;
+                            controllerYearBuild.text = year.toString();
+                          });
+                        },
+                        child: const Icon(
+                          Icons.arrow_drop_up_rounded,
+                          color: CustomColor.red,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (year <= 1340) {
+                            return;
+                          }
+                          setState(() {
+                            year--;
+
+                            controllerYearBuild.text = year.toString();
+                          });
+                        },
+                        child: const Icon(
+                          Icons.arrow_drop_down_rounded,
+                          color: CustomColor.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 110,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: controllerYearBuild,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontFamily: 'SN',
+                        fontSize: 16,
+                        color: CustomColor.black,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      decoration: const InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                      onChanged: (val) {
+                        if (val.isNotEmpty) {
+                          setState(() {
+                            year = int.parse(val);
+                            controllerYearBuild.text = val;
+                          });
+                        } else {
+                          val = '';
+                          year = 0;
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Container(
             width: 140,
@@ -609,7 +827,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
             return GestureDetector(
               onTap: () {
                 setState(() {
-                  controller3.text = year.toString();
+                  controllerYearBuild.text = year.toString();
 
                   //Display Scroll Item last Value selected
                   _scrollController =
@@ -622,7 +840,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
               child: Container(
                 width: 100,
                 decoration: BoxDecoration(
-                  color: controller3.text == year.toString()
+                  color: controllerYearBuild.text == year.toString()
                       ? CustomColor.red
                       : CustomColor.white,
                   borderRadius: BorderRadius.circular(5),
@@ -634,7 +852,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                       .textTheme
                       .apply(
                         fontSizeDelta: 10,
-                        bodyColor: controller3.text == year.toString()
+                        bodyColor: controllerYearBuild.text == year.toString()
                             ? CustomColor.white
                             : CustomColor.bluegrey,
                       )

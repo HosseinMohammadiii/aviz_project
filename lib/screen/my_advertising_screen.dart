@@ -69,10 +69,10 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                     AddInfoAdvertising(
                       stateAd.idCt,
                       stateAd.address,
-                      stateAd.metr.toInt(),
-                      stateAd.countRoom.toInt(),
-                      stateAd.floor.toInt(),
-                      stateAd.yearBuild.toInt(),
+                      stateAd.metr!.toInt(),
+                      stateAd.countRoom!.toInt(),
+                      stateAd.floor!.toInt(),
+                      stateAd.yearBuild!.toInt(),
                     ),
                   );
                   BlocProvider.of<AddAdvertisingBloc>(context).add(

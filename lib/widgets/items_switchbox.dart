@@ -41,6 +41,18 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
     ClassSwitchBox('برق', false),
     ClassSwitchBox('گاز', false),
   ];
+  @override
+  void initState() {
+    final state = context.read<BoolStateCubit>().state;
+
+    ClassSwitchBox('آسانسور', state.elevator);
+    ClassSwitchBox('پارکینگ', state.parking);
+    ClassSwitchBox('انباری', state.storeroom);
+    ClassSwitchBox('بالکن', state.balcony);
+    ClassSwitchBox('پنت هاوس', state.penthouse);
+    ClassSwitchBox('دوبلکس', state.duplex);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,73 +67,81 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                 itemCount: widget.title == 'فروش زمین'
                     ? propertiesLandTxt.length
                     : propertiesTxt.length,
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (widget.title != 'فروش زمین') {
-                        propertiesTxt[index].switchBool =
-                            !propertiesTxt[index].switchBool;
-                        context.read<BoolStateCubit>().updateBool(
-                            propertiesTxt[index].txt,
-                            propertiesTxt[index].switchBool);
-                      } else {
-                        propertiesLandTxt[index].switchBool =
-                            !propertiesLandTxt[index].switchBool;
-                        context.read<BoolStateCubit>().updateBool(
-                            propertiesLandTxt[index].txt,
-                            propertiesLandTxt[index].switchBool);
-                      }
-                    });
-                  },
-                  child: Container(
-                    height: 40,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: CustomColor.grey350),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Switch(
-                          activeColor: CustomColor.red,
-                          activeTrackColor: CustomColor.red,
-                          thumbColor:
-                              const WidgetStatePropertyAll(CustomColor.grey),
-                          trackOutlineColor:
-                              const WidgetStatePropertyAll(Colors.transparent),
-                          value: widget.title == 'فروش زمین'
-                              ? propertiesLandTxt[index].switchBool
-                              : propertiesTxt[index].switchBool,
-                          onChanged: (value) {
-                            setState(() {
-                              if (widget.title == 'فروش زمین') {
-                                propertiesLandTxt[index].switchBool = value;
+                itemBuilder: (context, index) {
+                  ClassSwitchBox('آسانسور', state.elevator);
+                  ClassSwitchBox('پارکینگ', state.parking);
+                  ClassSwitchBox('انباری', state.storeroom);
+                  ClassSwitchBox('بالکن', state.balcony);
+                  ClassSwitchBox('پنت هاوس', state.penthouse);
+                  ClassSwitchBox('دوبلکس', state.duplex);
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (widget.title != 'فروش زمین') {
+                          propertiesTxt[index].switchBool =
+                              !propertiesTxt[index].switchBool;
+                          context.read<BoolStateCubit>().updateBool(
+                              propertiesTxt[index].txt,
+                              propertiesTxt[index].switchBool);
+                        } else {
+                          propertiesLandTxt[index].switchBool =
+                              !propertiesLandTxt[index].switchBool;
+                          context.read<BoolStateCubit>().updateBool(
+                              propertiesLandTxt[index].txt,
+                              propertiesLandTxt[index].switchBool);
+                        }
+                      });
+                    },
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: CustomColor.grey350),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Switch(
+                            activeColor: CustomColor.red,
+                            activeTrackColor: CustomColor.red,
+                            thumbColor:
+                                const WidgetStatePropertyAll(CustomColor.grey),
+                            trackOutlineColor: const WidgetStatePropertyAll(
+                                Colors.transparent),
+                            value: widget.title == 'فروش زمین'
+                                ? propertiesLandTxt[index].switchBool
+                                : propertiesTxt[index].switchBool,
+                            onChanged: (value) {
+                              setState(() {
+                                if (widget.title == 'فروش زمین') {
+                                  propertiesLandTxt[index].switchBool = value;
 
-                                context.read<BoolStateCubit>().updateBool(
-                                    propertiesLandTxt[index].txt, value);
-                              } else {
-                                propertiesTxt[index].switchBool = value;
+                                  context.read<BoolStateCubit>().updateBool(
+                                      propertiesLandTxt[index].txt, value);
+                                } else {
+                                  propertiesTxt[index].switchBool = value;
 
-                                context.read<BoolStateCubit>().updateBool(
-                                    propertiesTxt[index].txt, value);
-                              }
-                            });
-                          },
-                        ),
-                        textWidget(
-                          widget.title == 'فروش زمین'
-                              ? propertiesLandTxt[index].txt
-                              : propertiesTxt[index].txt,
-                          CustomColor.black,
-                          16,
-                          FontWeight.w400,
-                        ),
-                      ],
+                                  context.read<BoolStateCubit>().updateBool(
+                                      propertiesTxt[index].txt, value);
+                                }
+                              });
+                            },
+                          ),
+                          textWidget(
+                            widget.title == 'فروش زمین'
+                                ? propertiesLandTxt[index].txt
+                                : propertiesTxt[index].txt,
+                            CustomColor.black,
+                            16,
+                            FontWeight.w400,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               if (widget.title != 'فروش زمین') ...[
                 SliverToBoxAdapter(

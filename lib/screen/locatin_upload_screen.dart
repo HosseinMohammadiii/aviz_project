@@ -5,6 +5,10 @@ import 'package:aviz_project/widgets/switch_box.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../Bloc/bloc_page_number/page_n_bloc.dart';
+import '../Bloc/bloc_page_number/page_n_bloc_state.dart';
 
 // ignore: must_be_immutable
 class LocatioUpload extends StatefulWidget {
@@ -64,12 +68,8 @@ class _LocatioUploadState extends State<LocatioUpload> {
               const Spacer(),
               GestureDetector().textButton(
                 () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterAdvertising(),
-                    ),
-                  );
+                  BlocProvider.of<NavigationPage>(context)
+                      .getNavItems(ViewPage.registerHomeAdvertising);
                 },
                 'بعدی',
                 CustomColor.red,

@@ -161,10 +161,10 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
   RegisterInfoAdCubit()
       : super(
           RegisterInfoAd(
-            metr: 0,
-            countRoom: 0,
-            floor: 0,
-            yearBuild: 0,
+            metr: null,
+            countRoom: null,
+            floor: null,
+            yearBuild: null,
             idCt: '',
             address: '',
           ),

@@ -93,10 +93,10 @@ class BoolState {
 }
 
 class RegisterInfoAd {
-  final num metr;
-  final num countRoom;
-  final num floor;
-  final num yearBuild;
+  final num? metr;
+  final num? countRoom;
+  final num? floor;
+  final num? yearBuild;
   final String idCt;
   final String address;
 
