@@ -10,6 +10,13 @@ class AddImagesToGallery extends AddAdvertisingEvent {
   AddImagesToGallery(this.images);
 }
 
+class InitializedDisplayAdvertising extends AddAdvertisingEvent {}
+
+class InitializedDisplayAdvertisingFacilities extends AddAdvertisingEvent {
+  String id;
+  InitializedDisplayAdvertisingFacilities(this.id);
+}
+
 class AddInfoAdvertising extends AddAdvertisingEvent {
   String idCt;
   String location;

@@ -35,6 +35,7 @@ dependencies:
   persian_number_utility: ^1.1.4
   cupertino_icons: ^1.0.2
   shamsi_date: ^1.0.2
+  
 
 
 dev_dependencies:

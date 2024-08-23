@@ -1,16 +1,19 @@
-import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/button_widget.dart';
 import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/uploadlocation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'dart:ui' as ui;
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
+import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../widgets/items_category_type.dart';
 
 // ignore: must_be_immutable
@@ -20,8 +23,8 @@ class InformationAdvertising extends StatefulWidget {
     required this.advertising,
     required this.advertisingData,
   });
-  Advertising advertising;
-  AdvertisingData advertisingData;
+  RegisterFutureAd advertising;
+  RegisterFutureAdGallery advertisingData;
 
   @override
   State<InformationAdvertising> createState() => _InformationAdvertisingState();
@@ -100,7 +103,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   height: 160,
                   width: double.infinity,
                   child: PageView.builder(
-                    itemCount: widget.advertisingData.img!.length,
+                    itemCount: widget.advertisingData.images.length,
                     controller: controller,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -111,15 +114,32 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                             fit: StackFit.expand,
                             alignment: Alignment.bottomCenter,
                             children: [
-                              Image.file(
-                                widget.advertisingData.img![index],
-                                fit: BoxFit.fill,
+                              CachedNetworkImage(
+                                imageUrl: widget.advertisingData.images[index],
+                                height: 110,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) =>
+                                    const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                placeholder: (context, url) => Center(
+                                  child: Shimmer.fromColors(
+                                    baseColor: const Color(0xffE1E1E1),
+                                    highlightColor: const Color(0xffF3F3F2),
+                                    child: Container(
+                                      height: 110,
+                                      width: double.infinity,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ),
                               ),
                               Positioned(
                                 bottom: 12,
                                 child: SmoothPageIndicator(
                                   controller: controller,
-                                  count: widget.advertisingData.img!.length,
+                                  count: widget.advertisingData.images.length,
                                   effect: const ExpandingDotsEffect(
                                     expansionFactor: 5,
                                     dotHeight: 8,
@@ -143,7 +163,7 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textWidget(
-                      '16 دقیقه پیش در ${widget.advertising.address}',
+                      '16 دقیقه پیش در ${widget.advertising.location}',
                       CustomColor.grey500,
                       14,
                       FontWeight.w400,
@@ -156,24 +176,24 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
                         borderRadius: BorderRadius.circular(4),
                         color: CustomColor.grey200,
                       ),
-                      child: textWidget(
-                        txtTitle(widget.advertising.title!),
-                        CustomColor.red,
-                        14,
-                        FontWeight.w400,
-                      ),
+                      //     child: textWidget(
+                      //  //     txtTitle(widget.advertising.titlehome),
+                      //       CustomColor.red,
+                      //       14,
+                      //       FontWeight.w400,
+                      //     ),
                     ),
                   ],
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                textWidget(
-                  widget.advertisingData.title ?? 'Null',
-                  CustomColor.black,
-                  16,
-                  FontWeight.w700,
-                ),
+                // textWidget(
+                //   widget.advertisingData. ?? 'Null',
+                //   CustomColor.black,
+                //   16,
+                //   FontWeight.w700,
+                // ),
                 const SizedBox(
                   height: 25,
                 ),
@@ -262,8 +282,8 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
 //Function Switch For Display Widgets
   _changeBoxContainer(
     int index,
-    Advertising advertising,
-    AdvertisingData advertisingData,
+    RegisterFutureAd advertising,
+    RegisterFutureAdGallery advertisingData,
   ) {
     switch (index) {
       case 0:
@@ -273,14 +293,13 @@ class _InformationAdvertisingState extends State<InformationAdvertising> {
 
       case 1:
         return PriceInfoWidget(
-          advertisingData: advertisingData,
           advertising: advertising,
         );
       case 2:
         return FeatureWidget();
       case 3:
         return DescriptionWidget(
-          advertisingData: advertisingData,
+          advertisingData: advertising,
         );
 
       default:
@@ -305,7 +324,7 @@ class SpecificationBox extends StatefulWidget {
     super.key,
     required this.advertising,
   });
-  Advertising advertising;
+  RegisterFutureAd advertising;
 
   @override
   State<SpecificationBox> createState() => _SpecificationBoxState();
@@ -368,7 +387,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         const SizedBox(
           height: 20,
         ),
-        UploadLocation(address: widget.advertising.address!),
+        UploadLocation(address: widget.advertising.location),
       ],
     );
   }
@@ -378,11 +397,9 @@ class _SpecificationBoxState extends State<SpecificationBox> {
 class PriceInfoWidget extends StatefulWidget {
   PriceInfoWidget({
     super.key,
-    required this.advertisingData,
     required this.advertising,
   });
-  AdvertisingData advertisingData;
-  Advertising advertising;
+  RegisterFutureAd advertising;
 
   @override
   State<PriceInfoWidget> createState() => _PriceInfoWidgetState();
@@ -410,7 +427,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
                 width: 100,
                 child: Text(
                   priceChanged(
-                    widget.advertisingData.price.toString(),
+                    widget.advertising.homeprice.toString(),
                   ),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -441,7 +458,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
               SizedBox(
                 width: 150,
                 child: Text(
-                  currencyFormat.format(widget.advertisingData.price ?? 'Null'),
+                  currencyFormat.format(widget.advertising.homeprice),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: CustomColor.black,
@@ -468,7 +485,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
 //Function to calculate the price per meter of the house
   priceChanged(String price) {
     var priceChange = currencyFormat
-        .format(widget.advertisingData.price! / widget.advertising.metr!);
+        .format(widget.advertising.homeprice / widget.advertising.metr);
     return price = priceChange;
   }
 }
@@ -629,11 +646,11 @@ class DescriptionWidget extends StatelessWidget {
     super.key,
     required this.advertisingData,
   });
-  AdvertisingData advertisingData;
+  RegisterFutureAd advertisingData;
   @override
   Widget build(BuildContext context) {
     return Text(
-      advertisingData.description!,
+      advertisingData.description,
       textAlign: TextAlign.justify,
       textDirection: ui.TextDirection.rtl,
       style: TextStyle(

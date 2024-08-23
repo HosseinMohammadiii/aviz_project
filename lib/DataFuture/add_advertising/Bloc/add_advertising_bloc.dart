@@ -22,9 +22,36 @@ class AddAdvertisingBloc
         ));
       },
     );
+    on<InitializedDisplayAdvertisingFacilities>(
+      (event, emit) async {
+        var displayAdvertisingFacilities =
+            await infoRepository.getDiplayAdvertisingFacilitiesItems(event.id);
+
+        emit(
+          DisplayInfoAdvertisingFacilitiesStateResponse(
+            displayAdvertisingFacilities,
+          ),
+        );
+      },
+    );
+    on<InitializedDisplayAdvertising>(
+      (event, emit) async {
+        var displayAdvertising = await infoRepository.getDiplayAdvertising();
+        var displayImages = await infoRepository.getImagesAdvertising();
+        var d = await infoRepository.getDiplayAdvertisingFacilities();
+        emit(
+          DisplayInfoAdvertisingStateResponse(
+            displayAdvertising,
+            displayImages,
+            d,
+          ),
+        );
+      },
+    );
     on<AddInfoAdvertising>(
       (event, emit) async {
         var displayInfoRegister = await infoRepository.getDiplayAd(event.idCt);
+
         var registerInfo = await infoRepository.postRegisterAd(
           event.idCt,
           event.location,

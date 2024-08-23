@@ -4,6 +4,7 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/model/category_adve
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
+import '../Data/model/ad_gallery.dart';
 import '../Data/model/register_future_ad.dart';
 
 abstract class AddAdvertisingState {}
@@ -23,9 +24,30 @@ final class AddAdvertisingResponse extends AddAdvertisingState {
 final class AddInfoAdvertisingStateResponse extends AddAdvertisingState {
   Either<String, String> registerInfoAdvertising;
   Either<String, List<RegisterFutureAd>> registerAdvertising;
+
   AddInfoAdvertisingStateResponse(
     this.registerAdvertising,
     this.registerInfoAdvertising,
+  );
+}
+
+final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
+  Either<String, List<RegisterFutureAd>> displayAdvertising;
+  Either<String, List<RegisterFutureAdGallery>> displayImagesAdvertising;
+  Either<String, List<AdvertisingFacilities>> displayAdvertisingFacilities;
+
+  DisplayInfoAdvertisingStateResponse(
+    this.displayAdvertising,
+    this.displayImagesAdvertising,
+    this.displayAdvertisingFacilities,
+  );
+}
+
+final class DisplayInfoAdvertisingFacilitiesStateResponse
+    extends AddAdvertisingState {
+  Either<String, List<AdvertisingFacilities>> displayAdvertisingFacilities;
+  DisplayInfoAdvertisingFacilitiesStateResponse(
+    this.displayAdvertisingFacilities,
   );
 }
 

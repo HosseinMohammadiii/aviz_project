@@ -1,20 +1,27 @@
-import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/information_advertising.dart';
 import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
+import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
+import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
+import '../screen/info_myad.dart';
 
 // ignore: must_be_immutable
 class AdvertisingWidget extends StatefulWidget {
   AdvertisingWidget({
     super.key,
-    required this.advertisingData,
     required this.advertising,
+    required this.advertisingImages,
+    required this.advertisingFacilities,
   });
-  AdvertisingData advertisingData;
-  Advertising advertising;
+  RegisterFutureAd advertising;
+  RegisterFutureAdGallery advertisingImages;
+  AdvertisingFacilities advertisingFacilities;
   @override
   State<AdvertisingWidget> createState() => _AdvertisingWidgetState();
 }
@@ -32,9 +39,10 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InformationAdvertising(
-              advertising: widget.advertising,
-              advertisingData: widget.advertisingData,
+            builder: (context) => InformatioMyAdvertising(
+              advertisingHome: widget.advertising,
+              registerFutureAdGallery: widget.advertisingImages,
+              advertisingFacilities: widget.advertisingFacilities,
             ),
           ),
         );
@@ -65,9 +73,25 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
               width: 111,
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  return Image.file(
-                    widget.advertisingData.img![index = 0],
-                    fit: BoxFit.fill,
+                  return CachedNetworkImage(
+                    imageUrl: widget.advertisingImages.images[index = 0],
+                    height: 110,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    placeholder: (context, url) => Center(
+                      child: Shimmer.fromColors(
+                        baseColor: const Color(0xffE1E1E1),
+                        highlightColor: const Color(0xffF3F3F2),
+                        child: Container(
+                          height: 110,
+                          width: double.infinity,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -84,13 +108,13 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                     height: 5,
                   ),
                   textWidget(
-                    widget.advertisingData.title ?? 'Null',
+                    widget.advertising.titlehome,
                     CustomColor.black,
                     14,
                     FontWeight.w700,
                   ),
                   textWidget(
-                    widget.advertisingData.description ?? 'Null',
+                    widget.advertising.description,
                     CustomColor.black,
                     12,
                     FontWeight.w400,
@@ -118,14 +142,15 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
           width: 95,
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.symmetric(horizontal: 6),
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
             color: CustomColor.grey200,
           ),
           child: Text(
-            currencyFormat.format(widget.advertisingData.price ?? 'Null'),
+            currencyFormat.format(widget.advertising.homeprice),
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.left,
             style: const TextStyle(
               color: CustomColor.red,
               fontSize: 12,

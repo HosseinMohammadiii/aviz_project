@@ -6,9 +6,16 @@ import 'package:dartz/dartz.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
+import '../model/ad_gallery.dart';
 
 abstract class IInfoRegisterAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDiplayAd(String idCt);
+  Future<Either<String, List<RegisterFutureAd>>> getDiplayAdvertising();
+  Future<Either<String, List<RegisterFutureAdGallery>>> getImagesAdvertising();
+  Future<Either<String, List<AdvertisingFacilities>>>
+      getDiplayAdvertisingFacilitiesItems(String id);
+  Future<Either<String, List<AdvertisingFacilities>>>
+      getDiplayAdvertisingFacilities();
 
   Future<Either<String, String>> postRegisterAd(
     String idCT,
@@ -163,6 +170,49 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
       } else {
         return left('خطایی در ارسال تصاویر پیش آمده! ');
       }
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<RegisterFutureAdGallery>>>
+      getImagesAdvertising() async {
+    try {
+      var response = await datasource.getDiplayImagesAd();
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<RegisterFutureAd>>> getDiplayAdvertising() async {
+    try {
+      var response = await datasource.getDiplayAdvertising();
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<AdvertisingFacilities>>>
+      getDiplayAdvertisingFacilitiesItems(String id) async {
+    try {
+      var response = await datasource.getDiplayAdvertisingFacilitiesItems(id);
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<AdvertisingFacilities>>>
+      getDiplayAdvertisingFacilities() async {
+    try {
+      var response = await datasource.getDiplayAdvertisingFacilities();
+      return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }

@@ -15,97 +15,136 @@ class AdvertisingFacilitiesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        border: Border.all(color: CustomColor.grey350),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (adFacilities.elevator) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: textWidget(
-                'آسانسور',
-                CustomColor.grey500,
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            _dottedLineWidget(),
-          ],
-          if (adFacilities.parking) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: textWidget(
-                'پارکینگ',
-                CustomColor.grey500,
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            _dottedLineWidget(),
-          ],
-          if (adFacilities.storeroom) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: textWidget(
-                'انباری',
-                CustomColor.grey500,
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            _dottedLineWidget(),
-          ],
-          if (adFacilities.balcony) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: textWidget(
-                'بالکن',
-                CustomColor.grey500,
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            _dottedLineWidget(),
-          ],
-          if (adFacilities.penthouse) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: textWidget(
-                'پنت هاوس',
-                CustomColor.grey500,
-                16,
-                FontWeight.w400,
-              ),
-            ),
-            _dottedLineWidget(),
-          ],
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: textWidget(
-              'جنس کف ${adFacilities.floormaterial}',
-              CustomColor.grey500,
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            textWidget(
+              'امکانات',
+              CustomColor.black,
               16,
-              FontWeight.w400,
+              FontWeight.w700,
             ),
-          ),
-          _dottedLineWidget(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: textWidget(
-              'سرویس بهداشتی ${adFacilities.wc}',
-              CustomColor.grey500,
-              16,
-              FontWeight.w400,
+            const SizedBox(
+              width: 10,
             ),
+            Image.asset('images/magicpen.png'),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          decoration: BoxDecoration(
+            border: Border.all(color: CustomColor.grey350),
+            borderRadius: BorderRadius.circular(4),
           ),
-        ],
-      ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (adFacilities.elevator) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'آسانسور',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+              ],
+              if (adFacilities.parking) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'پارکینگ',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+              ],
+              if (adFacilities.storeroom) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'انباری',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+              ],
+              if (adFacilities.balcony) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'بالکن',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+              ],
+              if (adFacilities.penthouse) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'پنت هاوس',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+              ],
+              if (adFacilities.duplex) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'دوبلکس',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+              ],
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                child: textWidget(
+                  'جنس کف: ${adFacilities.floormaterial}',
+                  CustomColor.grey500,
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+              _dottedLineWidget(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                child: textWidget(
+                  'سرویس بهداشتی: ${adFacilities.wc}',
+                  CustomColor.grey500,
+                  16,
+                  FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
