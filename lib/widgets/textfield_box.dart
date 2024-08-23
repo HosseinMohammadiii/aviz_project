@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../class/colors.dart';
 
 // ignore: must_be_immutable
@@ -58,7 +60,31 @@ class _TextFieldBoxState extends State<TextFieldBox> {
         onTapOutside: (event) {
           widget.focusNode.unfocus();
         },
+        onChanged: (value) {
+          final stateAd = context.read<RegisterInfoAdCubit>().state;
+
+          setState(() {
+            switch (widget.hint) {
+              case 'عنوان آویز را وارد کنید':
+                stateAd.title = value;
+                break;
+              case '... توضیحات آویز را وارد کنید':
+                stateAd.description = value;
+                break;
+              case 'قیمت را وارد کنید':
+                stateAd.price = num.tryParse(value);
+                break;
+            }
+          });
+        },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    widget.focusNode.dispose();
+    widget.controller?.dispose();
+    super.dispose();
   }
 }

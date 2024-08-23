@@ -13,6 +13,9 @@ class AddImagesToGallery extends AddAdvertisingEvent {
 class AddInfoAdvertising extends AddAdvertisingEvent {
   String idCt;
   String location;
+  String title;
+  String description;
+  num price;
   int metr;
   int countRoom;
   int floor;
@@ -21,6 +24,9 @@ class AddInfoAdvertising extends AddAdvertisingEvent {
   AddInfoAdvertising(
     this.idCt,
     this.location,
+    this.title,
+    this.description,
+    this.price,
     this.metr,
     this.countRoom,
     this.floor,

@@ -1,16 +1,8 @@
-import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
-import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
   const MyAdvertisingScreen({super.key});
@@ -62,39 +54,7 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
             ),
             SliverToBoxAdapter(
               child: GestureDetector(
-                onTap: () {
-                  final stateAd = context.read<RegisterInfoAdCubit>().state;
-                  final boolState = context.read<BoolStateCubit>().state;
-
-                  BlocProvider.of<AddAdvertisingBloc>(context).add(
-                    AddInfoAdvertising(
-                      stateAd.idCt,
-                      stateAd.address,
-                      stateAd.metr!.toInt(),
-                      stateAd.countRoom!.toInt(),
-                      stateAd.floor!.toInt(),
-                      stateAd.yearBuild!.toInt(),
-                    ),
-                  );
-                  BlocProvider.of<AddAdvertisingBloc>(context).add(
-                    AddFacilitiesAdvertising(
-                      boolState.elevator,
-                      boolState.parking,
-                      boolState.storeroom,
-                      boolState.balcony,
-                      boolState.penthouse,
-                      boolState.duplex,
-                      boolState.water,
-                      boolState.electricity,
-                      boolState.gas,
-                      boolState.floorMaterial,
-                      boolState.wc,
-                    ),
-                  );
-                  context.read<RegisterInfoAdCubit>().resetInfoAdSet();
-                  context.read<BoolStateCubit>().reset();
-                  context.read<NavigationPage>().backFirstPAge();
-                },
+                onTap: () {},
                 child: Container(
                   width: 100,
                   height: 50,

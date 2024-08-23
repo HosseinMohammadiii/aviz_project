@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/category_advertising.dart';
 import 'package:dartz/dartz.dart';
 
@@ -111,6 +113,10 @@ class RegisterInfoAd {
   final num? yearBuild;
   final String idCt;
   final String address;
+  String title;
+  String description;
+  num? price;
+  final List<File>? images;
 
   RegisterInfoAd({
     required this.metr,
@@ -119,6 +125,10 @@ class RegisterInfoAd {
     required this.yearBuild,
     required this.idCt,
     required this.address,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.images,
   });
   RegisterInfoAd copyWith({
     final num? metr,
@@ -127,6 +137,10 @@ class RegisterInfoAd {
     final num? yearBuild,
     final String? idCt,
     final String? address,
+    final String? title,
+    final String? description,
+    final num? price,
+    final List<File>? images,
   }) {
     return RegisterInfoAd(
       metr: metr ?? this.metr,
@@ -135,6 +149,10 @@ class RegisterInfoAd {
       yearBuild: yearBuild ?? this.yearBuild,
       idCt: idCt ?? this.idCt,
       address: address ?? this.address,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      images: images ?? this.images,
     );
   }
 }

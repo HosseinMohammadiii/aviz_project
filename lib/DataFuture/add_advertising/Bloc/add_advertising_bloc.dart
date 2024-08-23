@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/category_advertising_repository.dart';
@@ -26,6 +28,9 @@ class AddAdvertisingBloc
         var registerInfo = await infoRepository.postRegisterAd(
           event.idCt,
           event.location,
+          event.title,
+          event.description,
+          event.price,
           event.metr,
           event.countRoom,
           event.floor,
@@ -178,16 +183,24 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             yearBuild: null,
             idCt: '',
             address: '',
+            title: '',
+            description: '',
+            price: null,
+            images: [],
           ),
         );
 
   void setParametrInfoAd({
-    required final num metr,
-    required final num countRoom,
-    required final num floor,
-    required final num yearBuild,
-    required final String idCt,
-    required final String address,
+    final num? metr,
+    final num? countRoom,
+    final num? floor,
+    final num? yearBuild,
+    final String? idCt,
+    final String? address,
+    final String? title,
+    final String? description,
+    final num? price,
+    final List<File>? images,
   }) {
     emit(state.copyWith(
       metr: metr,
@@ -196,6 +209,10 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       yearBuild: yearBuild,
       idCt: idCt,
       address: address,
+      title: title,
+      description: description,
+      price: price,
+      images: images,
     ));
   }
 
@@ -208,6 +225,10 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         yearBuild: null,
         idCt: '',
         address: '',
+        title: '',
+        description: '',
+        price: null,
+        images: [],
       ),
     );
   }

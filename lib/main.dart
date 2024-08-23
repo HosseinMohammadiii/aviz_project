@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import 'screen/manegement_add_advertising_screen.dart';
-import 'screen/register_advertising_screen.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {
@@ -116,7 +115,7 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: RegisterAdvertising(),
+      home: BottomNavigationScreen(),
     );
   }
 }

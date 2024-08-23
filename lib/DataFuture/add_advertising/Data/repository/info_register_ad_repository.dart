@@ -13,6 +13,9 @@ abstract class IInfoRegisterAdRepository {
   Future<Either<String, String>> postRegisterAd(
     String idCT,
     String location,
+    String title,
+    String description,
+    num price,
     int metr,
     int countRoom,
     int floor,
@@ -59,6 +62,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   Future<Either<String, String>> postRegisterAd(
     String idCT,
     String location,
+    String title,
+    String description,
+    num price,
     int metr,
     int countRoom,
     int floor,
@@ -68,6 +74,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
       var response = await datasource.postRegisterAd(
         idCT,
         location,
+        title,
+        description,
+        price,
         metr,
         countRoom,
         floor,

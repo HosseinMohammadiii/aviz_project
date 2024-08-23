@@ -6,7 +6,6 @@ import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
-import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/switch_box.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
@@ -16,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Bloc/bloc_page_number/page_n_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
 class RegisterAdvertising extends StatefulWidget {
@@ -26,11 +26,24 @@ class RegisterAdvertising extends StatefulWidget {
 }
 
 class _RegisterAdvertisingState extends State<RegisterAdvertising> {
-  TextEditingController controller1 = TextEditingController();
-  TextEditingController controller2 = TextEditingController();
-  TextEditingController controller3 = TextEditingController();
+  TextEditingController controllertitle = TextEditingController();
+  TextEditingController controllerDescription = TextEditingController();
+  TextEditingController controllerPrice = TextEditingController();
   List<File> galleryFile = [];
   final picker = ImagePicker();
+
+  @override
+  void initState() {
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
+
+    controllertitle.text = stateAd.title;
+    controllerDescription.text = stateAd.description;
+    controllerPrice.text =
+        stateAd.price.toString() == 'null' ? '' : stateAd.price.toString();
+    galleryFile = stateAd.images ?? [];
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +59,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
               children: <Widget>[
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('گالری'),
+                  title: const Text(
+                    'گالری',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   onTap: () async {
                     final pickedFileGallery = await picker.pickMultiImage();
                     List<XFile>? xfilePickGallery = pickedFileGallery;
@@ -74,7 +92,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('دوربین'),
+                  title: const Text(
+                    'دوربین',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   onTap: () async {
                     final pickedFileCamera =
                         await picker.pickImage(source: ImageSource.camera);
@@ -123,17 +146,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                     showPicker(context: context);
                   },
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    BlocProvider.of<AddAdvertisingBloc>(context)
-                        .add(AddImagesToGallery(galleryFile));
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: CustomColor.bluegrey,
-                  ),
-                ),
                 const TextTitleSection(
                     txt: 'عنوان آویز', img: 'images/edit2_icon.png'),
                 TextFieldBox(
@@ -141,7 +153,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   textInputType: TextInputType.text,
                   countLine: 1,
                   focusNode: FocusNode(),
-                  controller: controller1,
+                  controller: controllertitle,
                   textInputAction: TextInputAction.next,
                 ),
                 const TextTitleSection(
@@ -151,7 +163,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   textInputType: TextInputType.text,
                   countLine: 3,
                   focusNode: FocusNode(),
-                  controller: controller2,
+                  controller: controllerDescription,
                   textInputAction: TextInputAction.next,
                 ),
                 const TextTitleSection(
@@ -161,41 +173,86 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   textInputType: TextInputType.number,
                   countLine: 1,
                   focusNode: FocusNode(),
-                  controller: controller3,
+                  controller: controllerPrice,
                   textInputAction: TextInputAction.done,
                 ),
                 SwitchBox(switchCheck: false, txt: 'فعال کردن گفتگو'),
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
                 GestureDetector().textButton(
                   () {
+                    // Check if no images have been selected
                     if (galleryFile.isEmpty) {
+                      // Display a dialog prompting the user to select an image
                       displayDialog(
                           'لطفا عکس مورد نظر را انتخاب کنید', context);
-                    } else if (controller1.text.isEmpty ||
-                        controller2.text.isEmpty ||
-                        controller3.text.isEmpty) {
+                    }
+                    // Check if any of the required text fields are empty
+                    else if (controllertitle.text.isEmpty ||
+                        controllerDescription.text.isEmpty ||
+                        controllerPrice.text.isEmpty) {
+                      // Display a dialog prompting the user to fill in all fields
                       displayDialog('لطفا تمام فیلد ها را کامل کنید', context);
                     } else {
-                      try {
-                        String title = controller1.text;
-                        String description = controller2.text;
-                        String price = controller3.text;
+                      // Get the current state of the RegisterInfoAdCubit
+                      final stateAd = context.read<RegisterInfoAdCubit>().state;
+                      // Get the current state of the BoolStateCubit
+                      final boolState = context.read<BoolStateCubit>().state;
 
-                        advertisingData(
-                          title,
-                          description,
-                          galleryFile,
-                          double.parse(price),
-                        );
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  BottomNavigationScreen(index: 2),
-                            ));
-                      } catch (e) {
-                        displayDialog('لطفاً مقدار معتبر وارد کنید', context);
-                      }
+                      // Add the selected images to the gallery using the AddAdvertisingBloc
+                      BlocProvider.of<AddAdvertisingBloc>(context)
+                          .add(AddImagesToGallery(galleryFile));
+
+                      // Add the advertising information using the AddAdvertisingBloc
+                      BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        AddInfoAdvertising(
+                          stateAd.idCt,
+                          stateAd.address,
+                          stateAd.title,
+                          stateAd.description,
+                          stateAd.price!,
+                          stateAd.metr!.toInt(),
+                          stateAd.countRoom!.toInt(),
+                          stateAd.floor!.toInt(),
+                          stateAd.yearBuild!.toInt(),
+                        ),
+                      );
+
+                      // Add the facilities information using the AddAdvertisingBloc
+                      BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        AddFacilitiesAdvertising(
+                          boolState.elevator,
+                          boolState.parking,
+                          boolState.storeroom,
+                          boolState.balcony,
+                          boolState.penthouse,
+                          boolState.duplex,
+                          boolState.water,
+                          boolState.electricity,
+                          boolState.gas,
+                          boolState.floorMaterial,
+                          boolState.wc,
+                        ),
+                      );
+
+                      // Reset the information stored in RegisterInfoAdCubit
+                      context.read<RegisterInfoAdCubit>().resetInfoAdSet();
+                      // Reset the state of BoolStateCubit
+                      context.read<BoolStateCubit>().reset();
+                      // Navigate back to the first page
+                      context.read<NavigationPage>().backFirstPAge();
+
+                      // The following code is commented out and not currently in use:
+                      // advertisingData(
+                      //   title,
+                      //   description,
+                      //   galleryFile,
+                      //   price,
+                      // );
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => BottomNavigationScreen(index: 2),
+                      //     ));
                     }
                   },
                   'ثبت آگهی',
