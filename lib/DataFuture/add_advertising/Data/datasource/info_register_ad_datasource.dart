@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
+import '../model/ad_gallery.dart';
 
 abstract class IInfoRegisterAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAd(String idCt);
@@ -27,6 +30,10 @@ abstract class IInfoRegisterAdDatasource {
     String floorMaterial,
     String wc,
   );
+  Future<String> postImagesToGallery(
+    List<File> images,
+  );
+
   Future<AdvertisingFacilities> getFacilitiesAdvertising();
   Future<AdvertisingFacilities> getFacilitiesAdvertisingList();
 }
@@ -76,11 +83,25 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
       //This variable is For Take the last Id From Facilities Collections
       var idf = adf.last.id;
 
+      //This Variable is For Receiving the Gallery Records
+      var responseGallery =
+          await dio.get('collections/advertising_gallery/records');
+
+      List<RegisterFutureAdGallery> adg = responseGallery.data['items']
+          .map<RegisterFutureAdGallery>(
+            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
+          )
+          .toList();
+
+      //This variable is For Take the last Id From Gallery Collections
+      var idg = adg.last.id;
+
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
         data: {
           'id_category': idCT,
           'id_facilities': idf,
+          'id_gallery': idg,
           'location': location,
           'metr': metr,
           'count_room': countRoom,
@@ -178,5 +199,34 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
     } catch (e) {
       throw ApiExeption(0, 'Unknown');
     }
+  }
+
+  @override
+  Future<String> postImagesToGallery(List<File> images) async {
+    try {
+      List<MultipartFile> imageFiles = [];
+      for (var image in images) {
+        String fileName = image.path.split('/').last;
+        imageFiles
+            .add(await MultipartFile.fromFile(image.path, filename: fileName));
+      }
+
+      FormData formData = FormData.fromMap({
+        'images': imageFiles,
+      });
+      var response = await dio.post(
+        'collections/advertising_gallery/records',
+        data: formData,
+      );
+      if (response.statusCode == 200) {
+        return response.data['items'];
+      }
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+    return '';
   }
 }

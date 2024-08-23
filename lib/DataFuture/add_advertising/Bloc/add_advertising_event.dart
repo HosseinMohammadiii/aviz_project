@@ -1,6 +1,14 @@
+import 'dart:io';
+
 abstract class AddAdvertisingEvent {}
 
 class AddAdvertisingGetInitializeData extends AddAdvertisingEvent {}
+
+class AddImagesToGallery extends AddAdvertisingEvent {
+  List<File> images;
+
+  AddImagesToGallery(this.images);
+}
 
 class AddInfoAdvertising extends AddAdvertisingEvent {
   String idCt;

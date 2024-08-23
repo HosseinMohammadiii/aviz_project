@@ -27,6 +27,11 @@ final class AddInfoAdvertisingStateResponse extends AddAdvertisingState {
   );
 }
 
+final class AddImagesToGalleryStateResponse extends AddAdvertisingState {
+  Either<String, String> registerFutureImagesGallery;
+  AddImagesToGalleryStateResponse(this.registerFutureImagesGallery);
+}
+
 final class RegisterFacilitiesInfoAdvertising extends AddAdvertisingState {
   Either<String, String> registerFacilitiesInfoAdvertising;
   Either<String, AdvertisingFacilities> registerFacilitiesAd;

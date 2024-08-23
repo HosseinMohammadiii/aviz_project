@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aviz_project/DataFuture/add_advertising/Data/datasource/info_register_ad_datasource.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:dartz/dartz.dart';
@@ -30,6 +32,11 @@ abstract class IInfoRegisterAdRepository {
     String floorMaterial,
     String wc,
   );
+
+  Future<Either<String, String>> postImagesToGallery(
+    List<File> images,
+  );
+
   Future<Either<String, AdvertisingFacilities>> getFacilitiesAd();
   Future<Either<String, AdvertisingFacilities>> getFacilitiesAdvertising();
 }
@@ -131,6 +138,22 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
     try {
       var response = await datasource.getFacilitiesAdvertisingList();
       return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> postImagesToGallery(List<File> images) async {
+    try {
+      var response = await datasource.postImagesToGallery(
+        images,
+      );
+      if (response.isNotEmpty) {
+        return right(response);
+      } else {
+        return left('خطایی در ارسال تصاویر پیش آمده! ');
+      }
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }

@@ -37,6 +37,13 @@ class AddAdvertisingBloc
         ));
       },
     );
+    on<AddImagesToGallery>(
+      (event, emit) async {
+        var registerImages =
+            await infoRepository.postImagesToGallery(event.images);
+        emit(AddImagesToGalleryStateResponse(registerImages));
+      },
+    );
     on<AddFacilitiesAdvertising>(
       (event, emit) async {
         var registerFacilities = await infoRepository.postRegisterFacilities(
@@ -174,19 +181,6 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
           ),
         );
 
-  void resetInfoAdSet() {
-    emit(
-      RegisterInfoAd(
-        metr: null,
-        countRoom: null,
-        floor: null,
-        yearBuild: null,
-        idCt: '',
-        address: '',
-      ),
-    );
-  }
-
   void setParametrInfoAd({
     required final num metr,
     required final num countRoom,
@@ -203,5 +197,18 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       idCt: idCt,
       address: address,
     ));
+  }
+
+  void resetInfoAdSet() {
+    emit(
+      RegisterInfoAd(
+        metr: null,
+        countRoom: null,
+        floor: null,
+        yearBuild: null,
+        idCt: '',
+        address: '',
+      ),
+    );
   }
 }

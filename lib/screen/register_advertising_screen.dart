@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -12,7 +13,10 @@ import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:aviz_project/widgets/upload_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
 class RegisterAdvertising extends StatefulWidget {
   const RegisterAdvertising({super.key});
@@ -118,6 +122,17 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   onChange: () {
                     showPicker(context: context);
                   },
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    BlocProvider.of<AddAdvertisingBloc>(context)
+                        .add(AddImagesToGallery(galleryFile));
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: CustomColor.bluegrey,
+                  ),
                 ),
                 const TextTitleSection(
                     txt: 'عنوان آویز', img: 'images/edit2_icon.png'),
