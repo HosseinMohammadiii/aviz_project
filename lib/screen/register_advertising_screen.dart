@@ -72,9 +72,9 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       if (xfilePickGallery.isNotEmpty) {
                         for (var i = 0; i < xfilePickGallery.length; i++) {
                           galleryFile.add(File(xfilePickGallery[i].path));
-                          BlocProvider.of<AddAdvertisingBloc>(context)
-                              .add(AddImagesToGallery(galleryFile));
                         }
+                        BlocProvider.of<AddAdvertisingBloc>(context)
+                            .add(AddImagesToGallery(galleryFile));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -199,8 +199,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       final stateAd = context.read<RegisterInfoAdCubit>().state;
                       // Get the current state of the BoolStateCubit
                       final boolState = context.read<BoolStateCubit>().state;
-
-                      // Add the selected images to the gallery using the AddAdvertisingBloc
 
                       // Add the advertising information using the AddAdvertisingBloc
                       BlocProvider.of<AddAdvertisingBloc>(context).add(

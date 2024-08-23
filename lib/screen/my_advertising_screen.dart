@@ -51,32 +51,34 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                 ),
               ),
             ),
-            body: CustomScrollView(
-              slivers: [
-                if (state is AddAdvertisingLoading) ...[
-                  const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                context
+                    .read<AddAdvertisingBloc>()
+                    .add(InitializedDisplayAdvertising());
+              },
+              child: CustomScrollView(
+                slivers: [
+                  if (state is AddAdvertisingLoading) ...[
+                    const SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  ),
-                ],
-                if (state is DisplayInfoAdvertisingStateResponse) ...[
-                  state.displayAdvertising.fold(
-                    (error) {
-                      return SliverToBoxAdapter(
-                        child: Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      );
-                    },
-                    (advertising) {
-                      return state.displayAdvertisingFacilities.fold(
-                        (error) => SliverToBoxAdapter(
+                  ],
+                  if (state is DisplayInfoAdvertisingStateResponse) ...[
+                    SliverToBoxAdapter(
+                      child: Visibility(
+                          child: Row(
+                        children: [
+                          Icon(Icons.crop_square_rounded),
+                          Text('انتخاب همه'),
+                        ],
+                      )),
+                    ),
+                    state.displayAdvertising.fold(
+                      (error) {
+                        return SliverToBoxAdapter(
                           child: Center(
                             child: textWidget(
                               error,
@@ -85,51 +87,75 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                               FontWeight.w500,
                             ),
                           ),
-                        ),
-                        (facilities) {
-                          return state.displayImagesAdvertising.fold(
-                            (error) => SliverToBoxAdapter(
-                              child: Center(
-                                child: textWidget(
-                                  error,
-                                  CustomColor.black,
-                                  16,
-                                  FontWeight.w500,
-                                ),
+                        );
+                      },
+                      (advertising) {
+                        return state.displayAdvertisingFacilities.fold(
+                          (error) => SliverToBoxAdapter(
+                            child: Center(
+                              child: textWidget(
+                                error,
+                                CustomColor.black,
+                                16,
+                                FontWeight.w500,
                               ),
                             ),
-                            (gallery) {
-                              return SliverList.builder(
-                                itemCount: advertising.length,
-                                itemBuilder: (context, index) {
-                                  var advertisingAd =
-                                      advertising.toList()[index];
-                                  var advertisingImagesAd =
-                                      gallery.toList()[index];
-                                  var advertisingFacilities =
-                                      facilities.toList()[index];
+                          ),
+                          (facilities) {
+                            return state.displayImagesAdvertising.fold(
+                              (error) => SliverToBoxAdapter(
+                                child: Center(
+                                  child: textWidget(
+                                    error,
+                                    CustomColor.black,
+                                    16,
+                                    FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              (gallery) {
+                                return SliverList.builder(
+                                  itemCount: advertising.length,
+                                  itemBuilder: (context, index) {
+                                    var advertisingAd =
+                                        advertising.toList()[index];
+                                    var advertisingImagesAd =
+                                        gallery.toList()[index];
+                                    var advertisingFacilities =
+                                        facilities.toList()[index];
 
-                                  return AdvertisingWidget(
-                                    advertising: advertisingAd,
-                                    advertisingImages: advertisingImagesAd,
-                                    advertisingFacilities:
-                                        advertisingFacilities,
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  )
-                ],
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 50,
+                                    return GestureDetector(
+                                      onLongPress: () async {
+                                        await Future.delayed(
+                                          const Duration(milliseconds: 500),
+                                          () {
+                                            print('object');
+                                          },
+                                        );
+                                      },
+                                      child: AdvertisingWidget(
+                                        advertising: advertisingAd,
+                                        advertisingImages: advertisingImagesAd,
+                                        advertisingFacilities:
+                                            advertisingFacilities,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    )
+                  ],
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 50,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

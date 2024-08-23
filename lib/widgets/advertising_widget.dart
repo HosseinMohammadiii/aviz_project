@@ -72,9 +72,10 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
               height: 107,
               width: 111,
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return CachedNetworkImage(
-                    imageUrl: widget.advertisingImages.images[index = 0],
+                    imageUrl: widget.advertisingImages.images.first,
                     height: 110,
                     width: double.infinity,
                     fit: BoxFit.cover,

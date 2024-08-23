@@ -364,19 +364,17 @@ class SpecificationBox extends StatefulWidget {
 }
 
 class _SpecificationBoxState extends State<SpecificationBox> {
-  List listTextTitle = [
-    'متراژ',
-    'اتاق',
-    'طبقه',
-    'ساخت',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    int length = 0;
+    widget.advertisingHome.categoryId == '7ost8r7msw8lt0c'
+        ? length = 1
+        : length = 3;
     return Column(
       children: [
         Container(
           height: 100,
+          width: length == 1 ? 200 : double.infinity,
           decoration: BoxDecoration(
             border: Border.all(
               color: CustomColor.grey350,
@@ -391,19 +389,25 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    informationBoxItem(
-                        'ساخت', widget.advertisingHome.yearBiuld),
-                    informationBoxItem('طبقه', widget.advertisingHome.floor),
-                    informationBoxItem(
-                        'اتاق', widget.advertisingHome.countRoom),
-                    informationBoxItem('متراژ', widget.advertisingHome.metr),
+                    if (length == 1) ...[
+                      informationBoxItem(
+                          'خرید', widget.advertisingHome.yearBiuld),
+                      informationBoxItem('متراژ', widget.advertisingHome.metr),
+                    ] else ...[
+                      informationBoxItem(
+                          'ساخت', widget.advertisingHome.yearBiuld),
+                      informationBoxItem('طبقه', widget.advertisingHome.floor),
+                      informationBoxItem(
+                          'اتاق', widget.advertisingHome.countRoom),
+                      informationBoxItem('متراژ', widget.advertisingHome.metr),
+                    ],
                   ],
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  for (var i = 0; i < 3; i++) ...[
+                  for (var i = 0; i < length; i++) ...[
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: DottedLine(

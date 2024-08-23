@@ -33,6 +33,7 @@ class AdvertisingFacilitiesWidget extends StatelessWidget {
           ],
         ),
         Container(
+          width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
             border: Border.all(color: CustomColor.grey350),
@@ -120,27 +121,69 @@ class AdvertisingFacilitiesWidget extends StatelessWidget {
                 ),
                 _dottedLineWidget(),
               ],
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                child: textWidget(
-                  'جنس کف: ${adFacilities.floormaterial}',
-                  CustomColor.grey500,
-                  16,
-                  FontWeight.w400,
+              if (adFacilities.water) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'آب',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
                 ),
-              ),
-              _dottedLineWidget(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                child: textWidget(
-                  'سرویس بهداشتی: ${adFacilities.wc}',
-                  CustomColor.grey500,
-                  16,
-                  FontWeight.w400,
+                adFacilities.electricity == true || adFacilities.gas == true
+                    ? _dottedLineWidget()
+                    : const Center(),
+              ],
+              if (adFacilities.electricity) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'برق',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
                 ),
-              ),
+                adFacilities.gas == true ? _dottedLineWidget() : const Center(),
+              ],
+              if (adFacilities.gas) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'گاز',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+              ],
+              if (adFacilities.floormaterial.isNotEmpty) ...[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'جنس کف: ${adFacilities.floormaterial}',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+                _dottedLineWidget(),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: textWidget(
+                    'سرویس بهداشتی: ${adFacilities.wc}',
+                    CustomColor.grey500,
+                    16,
+                    FontWeight.w400,
+                  ),
+                ),
+              ]
             ],
           ),
         ),
