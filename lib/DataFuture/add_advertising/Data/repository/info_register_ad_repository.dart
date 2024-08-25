@@ -8,15 +8,8 @@ import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../model/ad_gallery.dart';
 
-abstract class IInfoRegisterAdRepository {
-  Future<Either<String, List<RegisterFutureAd>>> getDiplayAd(String idCt);
+abstract class IInfoAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDiplayAdvertising();
-  Future<Either<String, List<RegisterFutureAdGallery>>> getImagesAdvertising();
-  Future<Either<String, List<AdvertisingFacilities>>>
-      getDiplayAdvertisingFacilitiesItems(String id);
-  Future<Either<String, List<AdvertisingFacilities>>>
-      getDiplayAdvertisingFacilities();
-
   Future<Either<String, String>> postRegisterAd(
     String idCT,
     String location,
@@ -28,7 +21,15 @@ abstract class IInfoRegisterAdRepository {
     int floor,
     int yearBuild,
   );
+  Future<Either<String, String>> getDeleteAd(String id);
 
+  Future<Either<String, List<RegisterFutureAdGallery>>> getImagesAdvertising();
+  Future<Either<String, String>> postImagesToGallery(
+    List<File> images,
+  );
+  Future<Either<String, String>> getDeleteAdImagesAd(String id);
+
+  Future<Either<String, List<AdvertisingFacilities>>> getDiplayAdFacilities();
   Future<Either<String, String>> postRegisterFacilities(
     bool elevator,
     bool parking,
@@ -42,28 +43,12 @@ abstract class IInfoRegisterAdRepository {
     String floorMaterial,
     String wc,
   );
-
-  Future<Either<String, String>> postImagesToGallery(
-    List<File> images,
-  );
-
-  Future<Either<String, AdvertisingFacilities>> getFacilitiesAd();
-  Future<Either<String, AdvertisingFacilities>> getFacilitiesAdvertising();
+  Future<Either<String, String>> getDeleteAdFacilities(String id);
 }
 
-final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
-  IInfoRegisterAdDatasource datasource;
-  InfoRegisterAdRepository(this.datasource);
-  @override
-  Future<Either<String, List<RegisterFutureAd>>> getDiplayAd(
-      String idCt) async {
-    try {
-      var response = await datasource.getDiplayAd(idCt);
-      return right(response);
-    } on ApiExeption catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
+final class InfoAdRepository extends IInfoAdRepository {
+  IInfoAdDatasource datasource;
+  InfoAdRepository(this.datasource);
 
   @override
   Future<Either<String, String>> postRegisterAd(
@@ -139,27 +124,6 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   }
 
   @override
-  Future<Either<String, AdvertisingFacilities>> getFacilitiesAd() async {
-    try {
-      var response = await datasource.getFacilitiesAdvertising();
-      return right(response);
-    } on ApiExeption catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
-
-  @override
-  Future<Either<String, AdvertisingFacilities>>
-      getFacilitiesAdvertising() async {
-    try {
-      var response = await datasource.getFacilitiesAdvertisingList();
-      return right(response);
-    } on ApiExeption catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
-
-  @override
   Future<Either<String, String>> postImagesToGallery(List<File> images) async {
     try {
       var response = await datasource.postImagesToGallery(
@@ -198,9 +162,9 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
 
   @override
   Future<Either<String, List<AdvertisingFacilities>>>
-      getDiplayAdvertisingFacilitiesItems(String id) async {
+      getDiplayAdFacilities() async {
     try {
-      var response = await datasource.getDiplayAdvertisingFacilitiesItems(id);
+      var response = await datasource.getDiplayAdvertisingFacilities();
       return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
@@ -208,10 +172,29 @@ final class InfoRegisterAdRepository extends IInfoRegisterAdRepository {
   }
 
   @override
-  Future<Either<String, List<AdvertisingFacilities>>>
-      getDiplayAdvertisingFacilities() async {
+  Future<Either<String, String>> getDeleteAd(String id) async {
     try {
-      var response = await datasource.getDiplayAdvertisingFacilities();
+      var response = await datasource.getDeleteAd(id);
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> getDeleteAdFacilities(String id) async {
+    try {
+      var response = await datasource.getDeleteAdFacilities(id);
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> getDeleteAdImagesAd(String id) async {
+    try {
+      var response = await datasource.getDeleteAdImagesAd(id);
       return right(response);
     } on ApiExeption catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

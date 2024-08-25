@@ -216,21 +216,23 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       );
 
                       // Add the facilities information using the AddAdvertisingBloc
-                      BlocProvider.of<AddAdvertisingBloc>(context).add(
-                        AddFacilitiesAdvertising(
-                          boolState.elevator,
-                          boolState.parking,
-                          boolState.storeroom,
-                          boolState.balcony,
-                          boolState.penthouse,
-                          boolState.duplex,
-                          boolState.water,
-                          boolState.electricity,
-                          boolState.gas,
-                          boolState.floorMaterial,
-                          boolState.wc,
-                        ),
-                      );
+                      setState(() {
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                          AddFacilitiesAdvertising(
+                            boolState.elevator,
+                            boolState.parking,
+                            boolState.storeroom,
+                            boolState.balcony,
+                            boolState.penthouse,
+                            boolState.duplex,
+                            boolState.water,
+                            boolState.electricity,
+                            boolState.gas,
+                            boolState.floorMaterial,
+                            boolState.wc,
+                          ),
+                        );
+                      });
 
                       // Reset the information stored in RegisterInfoAdCubit
                       context.read<RegisterInfoAdCubit>().resetInfoAdSet();

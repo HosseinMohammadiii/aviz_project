@@ -1,7 +1,11 @@
+import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_facilities.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +21,10 @@ class MyAdvertisingScreen extends StatefulWidget {
 
 class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
   TextEditingController controller = TextEditingController();
+  List<bool> isDelete = [];
+  bool delete = false;
 
+  List<RegisterFutureAd> registerFutureList = [];
   @override
   void initState() {
     super.initState();
@@ -58,6 +65,7 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                     .add(InitializedDisplayAdvertising());
               },
               child: CustomScrollView(
+                shrinkWrap: true,
                 slivers: [
                   if (state is AddAdvertisingLoading) ...[
                     const SliverFillRemaining(
@@ -67,80 +75,19 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                     ),
                   ],
                   if (state is DisplayInfoAdvertisingStateResponse) ...[
-                    SliverToBoxAdapter(
-                      child: Visibility(
-                          child: Row(
-                        children: [
-                          Icon(Icons.crop_square_rounded),
-                          Text('انتخاب همه'),
-                        ],
-                      )),
-                    ),
                     state.displayAdvertising.fold(
-                      (error) {
-                        return SliverToBoxAdapter(
-                          child: Center(
-                            child: textWidget(
-                              error,
-                              CustomColor.black,
-                              16,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      },
+                      (error) => _errorMessageWidgetBloc(error),
                       (advertising) {
                         return state.displayAdvertisingFacilities.fold(
-                          (error) => SliverToBoxAdapter(
-                            child: Center(
-                              child: textWidget(
-                                error,
-                                CustomColor.black,
-                                16,
-                                FontWeight.w500,
-                              ),
-                            ),
-                          ),
+                          (error) => _errorMessageWidgetBloc(error),
                           (facilities) {
                             return state.displayImagesAdvertising.fold(
-                              (error) => SliverToBoxAdapter(
-                                child: Center(
-                                  child: textWidget(
-                                    error,
-                                    CustomColor.black,
-                                    16,
-                                    FontWeight.w500,
-                                  ),
-                                ),
-                              ),
+                              (error) => _errorMessageWidgetBloc(error),
                               (gallery) {
-                                return SliverList.builder(
-                                  itemCount: advertising.length,
-                                  itemBuilder: (context, index) {
-                                    var advertisingAd =
-                                        advertising.toList()[index];
-                                    var advertisingImagesAd =
-                                        gallery.toList()[index];
-                                    var advertisingFacilities =
-                                        facilities.toList()[index];
-
-                                    return GestureDetector(
-                                      onLongPress: () async {
-                                        await Future.delayed(
-                                          const Duration(milliseconds: 500),
-                                          () {
-                                            print('object');
-                                          },
-                                        );
-                                      },
-                                      child: AdvertisingWidget(
-                                        advertising: advertisingAd,
-                                        advertisingImages: advertisingImagesAd,
-                                        advertisingFacilities:
-                                            advertisingFacilities,
-                                      ),
-                                    );
-                                  },
+                                return ListMyAdvertising(
+                                  advertising: advertising,
+                                  advertisingGallery: gallery,
+                                  advertisingFacilities: facilities,
                                 );
                               },
                             );
@@ -160,6 +107,180 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
           ),
         );
       },
+    );
+  }
+
+//Widget For Display Error Message
+  Widget _errorMessageWidgetBloc(String error) {
+    return SliverToBoxAdapter(
+      child: Center(
+        child: textWidget(
+          error,
+          CustomColor.black,
+          16,
+          FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class ListMyAdvertising extends StatefulWidget {
+  ListMyAdvertising({
+    super.key,
+    required this.advertising,
+    required this.advertisingGallery,
+    required this.advertisingFacilities,
+  });
+
+  List<RegisterFutureAd> advertising;
+  List<RegisterFutureAdGallery> advertisingGallery;
+  List<AdvertisingFacilities> advertisingFacilities;
+
+  @override
+  State<ListMyAdvertising> createState() => _ListMyAdvertisingState();
+}
+
+class _ListMyAdvertisingState extends State<ListMyAdvertising> {
+  List<bool> isDelete = [];
+  bool isSelect = false;
+  List<bool> isNotDelete = [];
+
+  String idAd = '';
+  String idAdFacilities = '';
+  String idAdGallery = '';
+  @override
+  void initState() {
+    isDelete = List<bool>.filled(widget.advertising.length, false);
+    context.read<BoolStateCubit>().state.isDelete = false;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              Visibility(
+                visible: context.read<BoolStateCubit>().state.isDelete,
+                child: widgetIsDeleteBox(context),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: widget.advertising.length,
+                itemBuilder: (context, index) {
+                  var advertisingAd = widget.advertising.toList()[index];
+                  var advertisingImagesAd =
+                      widget.advertisingGallery.toList()[index];
+                  var advertisingFacilities =
+                      widget.advertisingFacilities.toList()[index];
+
+                  return GestureDetector(
+                    onLongPress: () async {
+                      idAd = advertisingAd.id;
+                      idAdFacilities = advertisingFacilities.id;
+                      idAdGallery = advertisingImagesAd.id;
+                      print(
+                          'idADver: ${idAd}---idFacilities: ${idAdFacilities}---idGallery: ${idAdGallery}');
+                      setState(() {
+                        isDelete[index] = !isDelete[index];
+
+                        context.read<BoolStateCubit>().state.isDelete =
+                            isDelete.contains(true);
+                        if (isDelete.every((element) => element)) {
+                          isSelect = true;
+                        } else {
+                          isSelect = false;
+                        }
+                      });
+                    },
+                    child: AdvertisingWidget(
+                      advertising: advertisingAd,
+                      advertisingImages: advertisingImagesAd,
+                      advertisingFacilities: advertisingFacilities,
+                      isDelete: isDelete[index],
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget widgetIsDeleteBox(
+    BuildContext context,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isSelect = !isSelect;
+                if (isSelect) {
+                  isDelete = List<bool>.filled(widget.advertising.length, true);
+                } else {
+                  isDelete =
+                      List<bool>.filled(widget.advertising.length, false);
+                }
+                context.read<BoolStateCubit>().state.isDelete = isSelect;
+              });
+            },
+            child: Icon(
+              Icons.check_box_rounded,
+              size: 32,
+              color: isDelete.every((element) => element)
+                  ? CustomColor.red
+                  : CustomColor.grey350,
+            ),
+          ),
+          Text(
+            'انتخاب همه',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+              color: isDelete.every((element) => element)
+                  ? CustomColor.red
+                  : CustomColor.pink,
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              print('object');
+
+              // context.read<AddAdvertisingBloc>().add(
+              //       DeleteAdvertisingData(
+              //         idAd: idAd,
+              //         idAdFacilities: idAdFacilities,
+              //         idAdGallery: idAdGallery,
+              //       ),
+              //     );
+
+              //Create Ring For Delete All Ad Selected to Delete
+              if (isDelete.every((element) => element)) {
+                print('Yes');
+              } else {
+                print('No');
+              }
+            },
+            child: const Icon(
+              Icons.delete_rounded,
+              size: 32,
+              color: CustomColor.red,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

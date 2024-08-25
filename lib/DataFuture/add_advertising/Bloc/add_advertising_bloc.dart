@@ -2,43 +2,29 @@ import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/category_advertising_repository.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/info_register_ad_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddAdvertisingBloc
-    extends Bloc<AddAdvertisingEvent, AddAdvertisingState> {
+    extends Bloc<InfoAdvertisingEvent, AddAdvertisingState> {
   final ICategoryAdvertisingRepository repository;
-  final IInfoRegisterAdRepository infoRepository;
+  final IInfoAdRepository infoRepository;
   AddAdvertisingBloc(this.repository, this.infoRepository)
       : super(AddAdvertisingInitializedData()) {
     on<AddAdvertisingGetInitializeData>(
       (event, emit) async {
         emit(AddAdvertisingLoading());
-        var addCategory = await repository.getCategoryAdvertising();
-
-        emit(AddAdvertisingResponse(
-          addCategory,
-        ));
       },
     );
-    on<InitializedDisplayAdvertisingFacilities>(
-      (event, emit) async {
-        var displayAdvertisingFacilities =
-            await infoRepository.getDiplayAdvertisingFacilitiesItems(event.id);
 
-        emit(
-          DisplayInfoAdvertisingFacilitiesStateResponse(
-            displayAdvertisingFacilities,
-          ),
-        );
-      },
-    );
     on<InitializedDisplayAdvertising>(
       (event, emit) async {
+        emit(AddAdvertisingLoading());
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
         var displayImages = await infoRepository.getImagesAdvertising();
-        var d = await infoRepository.getDiplayAdvertisingFacilities();
+        var d = await infoRepository.getDiplayAdFacilities();
         emit(
           DisplayInfoAdvertisingStateResponse(
             displayAdvertising,
@@ -50,8 +36,6 @@ class AddAdvertisingBloc
     );
     on<AddInfoAdvertising>(
       (event, emit) async {
-        var displayInfoRegister = await infoRepository.getDiplayAd(event.idCt);
-
         var registerInfo = await infoRepository.postRegisterAd(
           event.idCt,
           event.location,
@@ -64,7 +48,6 @@ class AddAdvertisingBloc
           event.yearBuild,
         );
         emit(AddInfoAdvertisingStateResponse(
-          displayInfoRegister,
           registerInfo,
         ));
       },
@@ -91,11 +74,27 @@ class AddAdvertisingBloc
           event.floorMaterial,
           event.wc,
         );
-        var facilitiesAd = await infoRepository.getFacilitiesAdvertising();
         emit(
           RegisterFacilitiesInfoAdvertising(
             registerFacilities,
-            facilitiesAd,
+          ),
+        );
+      },
+    );
+
+    on<DeleteAdvertisingData>(
+      (event, emit) async {
+        var deleteAdvertising = await infoRepository.getDeleteAd(event.idAd);
+        var deleteAdGallery =
+            await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
+        var deleteAdFacilities =
+            await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
+
+        emit(
+          DeleteInfoAdStateResponse(
+            deleteAdvertising,
+            deleteAdGallery,
+            deleteAdFacilities,
           ),
         );
       },
@@ -115,6 +114,7 @@ class BoolStateCubit extends Cubit<BoolState> {
           water: false,
           electricity: false,
           gas: false,
+          isDelete: false,
           floorMaterial: '',
           fIndex: 1,
           wc: '',
@@ -192,6 +192,7 @@ class BoolStateCubit extends Cubit<BoolState> {
       water: false,
       electricity: false,
       gas: false,
+      isDelete: false,
       floorMaterial: '',
       fIndex: 1,
       wc: '',
@@ -214,6 +215,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             description: '',
             price: null,
             images: [],
+            list: [],
           ),
         );
 
@@ -228,6 +230,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final String? description,
     final num? price,
     final List<File>? images,
+    final List<RegisterFutureAd>? list,
   }) {
     emit(state.copyWith(
       metr: metr,
@@ -240,6 +243,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       description: description,
       price: price,
       images: images,
+      list: list,
     ));
   }
 
@@ -256,6 +260,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         description: '',
         price: null,
         images: [],
+        list: [],
       ),
     );
   }

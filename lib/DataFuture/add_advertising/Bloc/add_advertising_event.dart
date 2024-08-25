@@ -1,23 +1,18 @@
 import 'dart:io';
 
-abstract class AddAdvertisingEvent {}
+abstract class InfoAdvertisingEvent {}
 
-class AddAdvertisingGetInitializeData extends AddAdvertisingEvent {}
+class AddAdvertisingGetInitializeData extends InfoAdvertisingEvent {}
 
-class AddImagesToGallery extends AddAdvertisingEvent {
+class AddImagesToGallery extends InfoAdvertisingEvent {
   List<File> images;
 
   AddImagesToGallery(this.images);
 }
 
-class InitializedDisplayAdvertising extends AddAdvertisingEvent {}
+class InitializedDisplayAdvertising extends InfoAdvertisingEvent {}
 
-class InitializedDisplayAdvertisingFacilities extends AddAdvertisingEvent {
-  String id;
-  InitializedDisplayAdvertisingFacilities(this.id);
-}
-
-class AddInfoAdvertising extends AddAdvertisingEvent {
+class AddInfoAdvertising extends InfoAdvertisingEvent {
   String idCt;
   String location;
   String title;
@@ -41,7 +36,7 @@ class AddInfoAdvertising extends AddAdvertisingEvent {
   );
 }
 
-final class AddFacilitiesAdvertising extends AddAdvertisingEvent {
+final class AddFacilitiesAdvertising extends InfoAdvertisingEvent {
   bool elevator;
   bool parking;
   bool storeroom;
@@ -67,4 +62,15 @@ final class AddFacilitiesAdvertising extends AddAdvertisingEvent {
     this.floorMaterial,
     this.wc,
   );
+}
+
+final class DeleteAdvertisingData extends InfoAdvertisingEvent {
+  String idAd;
+  String idAdFacilities;
+  String idAdGallery;
+  DeleteAdvertisingData({
+    required this.idAd,
+    required this.idAdFacilities,
+    required this.idAdGallery,
+  });
 }

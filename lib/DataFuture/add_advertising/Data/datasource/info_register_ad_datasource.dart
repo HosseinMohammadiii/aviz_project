@@ -7,13 +7,8 @@ import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../model/ad_gallery.dart';
 
-abstract class IInfoRegisterAdDatasource {
-  Future<List<RegisterFutureAd>> getDiplayAd(String idCt);
+abstract class IInfoAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAdvertising();
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
-  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilitiesItems(
-      String id);
-  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
   Future<String> postRegisterAd(
     String idCT,
     String location,
@@ -25,6 +20,15 @@ abstract class IInfoRegisterAdDatasource {
     int floor,
     int yearBuild,
   );
+  Future<String> getDeleteAd(String id);
+
+  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
+  Future<String> postImagesToGallery(
+    List<File> images,
+  );
+  Future<String> getDeleteAdImagesAd(String id);
+
+  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
   Future<String> postRegisterFacilities(
     bool elevator,
     bool parking,
@@ -38,36 +42,12 @@ abstract class IInfoRegisterAdDatasource {
     String floorMaterial,
     String wc,
   );
-  Future<String> postImagesToGallery(
-    List<File> images,
-  );
-
-  Future<AdvertisingFacilities> getFacilitiesAdvertising();
-  Future<AdvertisingFacilities> getFacilitiesAdvertisingList();
+  Future<String> getDeleteAdFacilities(String id);
 }
 
-final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
+final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Dio dio;
-  InfoRegisterAdDatasourceRemmot(this.dio);
-  @override
-  Future<List<RegisterFutureAd>> getDiplayAd(String idCt) async {
-    try {
-      Map<String, dynamic> query = {'filter': 'id_category="$idCt"'};
-      var response = await dio.get(
-        'collections/inforegisteredhomes/records',
-        queryParameters: query,
-      );
-      return response.data['items']
-          .map<RegisterFutureAd>(
-              (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiExeption(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiExeption(0, 'Unknown');
-    }
-  }
+  InfoAdDatasourceRemmot(this.dio);
 
   @override
   Future<String> postRegisterAd(
@@ -82,18 +62,6 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
     int yearBuild,
   ) async {
     try {
-      //This Variable is For Receiving the Facilities Records
-      var responsee = await dio.get('collections/facilities/records');
-
-      List<AdvertisingFacilities> adf = responsee.data['items']
-          .map<AdvertisingFacilities>(
-            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
-          )
-          .toList();
-
-      //This variable is For Take the last Id From Facilities Collections
-      var idf = adf.last.id;
-
       //This Variable is For Receiving the Gallery Records
       var responseGallery =
           await dio.get('collections/advertising_gallery/records');
@@ -106,6 +74,18 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
 
       //This variable is For Take the last Id From Gallery Collections
       var idg = adg.last.id;
+
+      //This Variable is For Receiving the Facilities Records
+      var responsee = await dio.get('collections/facilities/records');
+
+      List<AdvertisingFacilities> adf = responsee.data['items']
+          .map<AdvertisingFacilities>(
+            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
+          )
+          .toList();
+
+      //This variable is For Take the last Id From Facilities Collections
+      var idf = adf.last.id;
 
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
@@ -178,44 +158,6 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
   }
 
   @override
-  Future<AdvertisingFacilities> getFacilitiesAdvertising() async {
-    try {
-      var response = await dio.get(
-        'collections/facilities/records',
-      );
-      return response.data['items']
-          .map<AdvertisingFacilities>(
-            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
-          )
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiExeption(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiExeption(0, 'Unknown');
-    }
-  }
-
-  @override
-  Future<AdvertisingFacilities> getFacilitiesAdvertisingList() async {
-    try {
-      var response = await dio.get(
-        'collections/facilities/records',
-      );
-      return response.data['items']
-          .map<AdvertisingFacilities>(
-            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
-          )
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiExeption(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiExeption(0, 'Unknown');
-    }
-  }
-
-  @override
   Future<String> postImagesToGallery(List<File> images) async {
     try {
       List<MultipartFile> imageFiles = [];
@@ -283,16 +225,31 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
   }
 
   @override
-  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilitiesItems(
-      String id) async {
+  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
     try {
-      Map<String, dynamic> query = {'filter': 'id="$id"'};
       var response = await dio.get(
         'collections/facilities/records',
-        queryParameters: query,
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
+              (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<String> getDeleteAd(String id) async {
+    try {
+      var response = await dio.delete(
+        'collections/inforegisteredhomes/records/$id',
+      );
+      return response.data['items']
+          .map<RegisterFutureAd>(
               (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
@@ -304,14 +261,32 @@ final class InfoRegisterAdDatasourceRemmot extends IInfoRegisterAdDatasource {
   }
 
   @override
-  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
+  Future<String> getDeleteAdFacilities(String id) async {
     try {
-      var response = await dio.get(
-        'collections/facilities/records',
+      var response = await dio.delete(
+        'collections/facilities/records/$id',
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiExeption(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<String> getDeleteAdImagesAd(String id) async {
+    try {
+      var response = await dio.delete(
+        'collections/advertising_gallery/records/$id',
+      );
+      return response.data['items']
+          .map<RegisterFutureAdGallery>(
+              (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiExeption(

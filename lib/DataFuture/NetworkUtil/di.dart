@@ -40,8 +40,8 @@ Future<void> getInInit() async {
     ),
   );
 
-  locator.registerFactory<IInfoRegisterAdDatasource>(
-    () => InfoRegisterAdDatasourceRemmot(
+  locator.registerFactory<IInfoAdDatasource>(
+    () => InfoAdDatasourceRemmot(
       locator.get(),
     ),
   );
@@ -67,8 +67,8 @@ Future<void> getInInit() async {
       locator.get(),
     ),
   );
-  locator.registerFactory<IInfoRegisterAdRepository>(
-    () => InfoRegisterAdRepository(
+  locator.registerFactory<IInfoAdRepository>(
+    () => InfoAdRepository(
       locator.get(),
     ),
   );

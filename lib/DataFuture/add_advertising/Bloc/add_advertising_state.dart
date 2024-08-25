@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/category_advertising.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
@@ -12,24 +11,6 @@ abstract class AddAdvertisingState {}
 final class AddAdvertisingInitializedData extends AddAdvertisingState {}
 
 final class AddAdvertisingLoading extends AddAdvertisingState {}
-
-final class AddAdvertisingResponse extends AddAdvertisingState {
-  Either<String, List<CategoryAdvertising>> categoryAdvertising;
-
-  AddAdvertisingResponse(
-    this.categoryAdvertising,
-  );
-}
-
-final class AddInfoAdvertisingStateResponse extends AddAdvertisingState {
-  Either<String, String> registerInfoAdvertising;
-  Either<String, List<RegisterFutureAd>> registerAdvertising;
-
-  AddInfoAdvertisingStateResponse(
-    this.registerAdvertising,
-    this.registerInfoAdvertising,
-  );
-}
 
 final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
   Either<String, List<RegisterFutureAd>> displayAdvertising;
@@ -43,11 +24,11 @@ final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
   );
 }
 
-final class DisplayInfoAdvertisingFacilitiesStateResponse
-    extends AddAdvertisingState {
-  Either<String, List<AdvertisingFacilities>> displayAdvertisingFacilities;
-  DisplayInfoAdvertisingFacilitiesStateResponse(
-    this.displayAdvertisingFacilities,
+final class AddInfoAdvertisingStateResponse extends AddAdvertisingState {
+  Either<String, String> registerAdvertising;
+
+  AddInfoAdvertisingStateResponse(
+    this.registerAdvertising,
   );
 }
 
@@ -58,10 +39,20 @@ final class AddImagesToGalleryStateResponse extends AddAdvertisingState {
 
 final class RegisterFacilitiesInfoAdvertising extends AddAdvertisingState {
   Either<String, String> registerFacilitiesInfoAdvertising;
-  Either<String, AdvertisingFacilities> registerFacilitiesAd;
   RegisterFacilitiesInfoAdvertising(
     this.registerFacilitiesInfoAdvertising,
-    this.registerFacilitiesAd,
+  );
+}
+
+final class DeleteInfoAdStateResponse extends AddAdvertisingState {
+  Either<String, String> deleteAdvertising;
+  Either<String, String> deleteAdGallery;
+  Either<String, String> deleteAdFacilities;
+
+  DeleteInfoAdStateResponse(
+    this.deleteAdvertising,
+    this.deleteAdGallery,
+    this.deleteAdFacilities,
   );
 }
 
@@ -75,6 +66,7 @@ class BoolState {
   final bool water;
   final bool electricity;
   final bool gas;
+  bool isDelete;
   final String floorMaterial;
   int fIndex;
   final String wc;
@@ -90,6 +82,7 @@ class BoolState {
     required this.water,
     required this.electricity,
     required this.gas,
+    required this.isDelete,
     required this.floorMaterial,
     required this.fIndex,
     required this.wc,
@@ -106,6 +99,7 @@ class BoolState {
       bool? water,
       bool? electricity,
       bool? gas,
+      bool? isDelete,
       String? floorMaterial,
       int? fIndex,
       String? wc,
@@ -120,6 +114,7 @@ class BoolState {
       water: water ?? this.water,
       electricity: electricity ?? this.electricity,
       gas: gas ?? this.gas,
+      isDelete: isDelete ?? this.isDelete,
       floorMaterial: floorMaterial ?? this.floorMaterial,
       fIndex: fIndex ?? this.fIndex,
       wc: wc ?? this.wc,
@@ -139,6 +134,7 @@ class RegisterInfoAd {
   String description;
   num? price;
   final List<File>? images;
+  List<RegisterFutureAd>? list;
 
   RegisterInfoAd({
     required this.metr,
@@ -151,6 +147,7 @@ class RegisterInfoAd {
     required this.description,
     required this.price,
     required this.images,
+    required this.list,
   });
   RegisterInfoAd copyWith({
     final num? metr,
@@ -163,6 +160,7 @@ class RegisterInfoAd {
     final String? description,
     final num? price,
     final List<File>? images,
+    final List<RegisterFutureAd>? list,
   }) {
     return RegisterInfoAd(
       metr: metr ?? this.metr,
@@ -175,6 +173,7 @@ class RegisterInfoAd {
       description: description ?? this.description,
       price: price ?? this.price,
       images: images ?? this.images,
+      list: list ?? this.list,
     );
   }
 }

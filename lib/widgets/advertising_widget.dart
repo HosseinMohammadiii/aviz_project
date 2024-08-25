@@ -3,10 +3,12 @@ import 'package:aviz_project/widgets/items_information_advertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../screen/info_myad.dart';
@@ -18,10 +20,12 @@ class AdvertisingWidget extends StatefulWidget {
     required this.advertising,
     required this.advertisingImages,
     required this.advertisingFacilities,
+    this.isDelete,
   });
   RegisterFutureAd advertising;
   RegisterFutureAdGallery advertisingImages;
   AdvertisingFacilities advertisingFacilities;
+  bool? isDelete;
   @override
   State<AdvertisingWidget> createState() => _AdvertisingWidgetState();
 }
@@ -60,73 +64,111 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
             BoxShadow(
               color: CustomColor.black,
               blurRadius: 40,
-              spreadRadius: -35,
+              spreadRadius: -50,
               offset: Offset(0, 8),
             ),
           ],
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Stack(
           children: [
-            SizedBox(
-              height: 107,
-              width: 111,
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return CachedNetworkImage(
-                    imageUrl: widget.advertisingImages.images.first,
-                    height: 110,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    placeholder: (context, url) => Center(
-                      child: Shimmer.fromColors(
-                        baseColor: const Color(0xffE1E1E1),
-                        highlightColor: const Color(0xffF3F3F2),
-                        child: Container(
-                          height: 110,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 107,
+                  width: 111,
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.advertisingImages.images.first,
+                          height: 107,
                           width: double.infinity,
-                          color: Colors.blue,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          placeholder: (context, url) => Center(
+                            child: Shimmer.fromColors(
+                              baseColor: const Color(0xffE1E1E1),
+                              highlightColor: const Color(0xffF3F3F2),
+                              child: Container(
+                                height: 110,
+                                width: double.infinity,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
                         ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      textWidget(
+                        widget.advertising.titlehome,
+                        CustomColor.black,
+                        14,
+                        FontWeight.w700,
+                      ),
+                      textWidget(
+                        widget.advertising.description,
+                        CustomColor.black,
+                        12,
+                        FontWeight.w400,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      priceText(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 16,
+              child: GestureDetector(
+                onTap: () {
+                  context.read<BoolStateCubit>().state.isDelete = false;
+                  print(widget.isDelete);
+                },
+                child: AnimatedSize(
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeIn,
+                  child: Container(
+                    width: widget.isDelete! ? 25 : 0,
+                    height: widget.isDelete! ? 25 : 0,
+                    decoration: const BoxDecoration(
+                      color: CustomColor.red,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
                       ),
                     ),
-                  );
-                },
+                    child: widget.isDelete!
+                        ? Icon(
+                            Icons.check_rounded,
+                            color: CustomColor.white,
+                          )
+                        : null,
+                  ),
+                ),
               ),
             ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  textWidget(
-                    widget.advertising.titlehome,
-                    CustomColor.black,
-                    14,
-                    FontWeight.w700,
-                  ),
-                  textWidget(
-                    widget.advertising.description,
-                    CustomColor.black,
-                    12,
-                    FontWeight.w400,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  priceText(),
-                ],
-              ),
-            ),
+            // Icons.check_circle_outline_rounded
           ],
         ),
       ),
