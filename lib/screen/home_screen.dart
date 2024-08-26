@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SizedBox(
                   width: 111,
-                  child: cachedNetworkImage(
+                  child: CachedNetworkImageWidget(
                     imgUrl: adHome[index].images[0],
                   ),
                 ),
@@ -302,40 +302,51 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(right: 16),
         itemCount: adHome.length,
         itemBuilder: (context, index) {
-          return Container(
-            width: 210,
-            height: 240,
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.only(left: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: CustomColor.white,
-              boxShadow: const [
-                BoxShadow(
-                  color: CustomColor.black,
-                  blurRadius: 40,
-                  spreadRadius: -35,
-                  offset: Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                cachedNetworkImage(
-                  imgUrl: adHome[index].images[0],
-                ),
-                Text(
-                  adHome[index].title,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                Text(
-                  adHome[index].description,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                PriceWidget(context: context, adHome: adHome[index]),
-              ],
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InformationRecentlyAdvertising(
+                      advertisingHome: adHome[index],
+                    ),
+                  ));
+            },
+            child: Container(
+              width: 210,
+              height: 240,
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.only(left: 15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: CustomColor.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: CustomColor.black,
+                    blurRadius: 40,
+                    spreadRadius: -35,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CachedNetworkImageWidget(
+                    imgUrl: adHome[index].images[0],
+                  ),
+                  Text(
+                    adHome[index].title,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  Text(
+                    adHome[index].description,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  PriceWidget(context: context, adHome: adHome[index]),
+                ],
+              ),
             ),
           );
         },

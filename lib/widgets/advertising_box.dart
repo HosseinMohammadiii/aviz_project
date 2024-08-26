@@ -47,7 +47,7 @@ class AdvertisingSearchWidget extends StatelessWidget {
           children: [
             SizedBox(
               width: 111,
-              child: cachedNetworkImage(
+              child: CachedNetworkImageWidget(
                 imgUrl: advertisingHome.images[0],
               ),
             ),

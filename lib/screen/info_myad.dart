@@ -85,13 +85,13 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
   // Function to return category title based on categoryId
   String categoryType() {
     switch (widget.advertisingHome.categoryId) {
-      case '4m44z8mrvvmqmrb':
+      case '04lqfn5b7bpiwdm':
         categoryTitle = 'اجاره آپارتمان';
         break;
       case 'awbiuhrki02leje':
         categoryTitle = 'اجاره خانه';
         break;
-      case '04lqfn5b7bpiwdm':
+      case '4m44z8mrvvmqmrb':
         categoryTitle = 'اجاره ویلا';
         break;
       case 'daxmo7fipbo5xnc':

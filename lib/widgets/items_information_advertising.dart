@@ -2,20 +2,20 @@ import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
+import '../DataFuture/home/Data/model/advertising.dart';
 
 // ignore: must_be_immutable
-class ItemInformation extends StatefulWidget {
-  ItemInformation({
+class ItemInformationFuture extends StatefulWidget {
+  ItemInformationFuture({
     super.key,
     required this.advertising,
   });
-  RegisterFutureAd advertising;
+  AdvertisingHome advertising;
   @override
-  State<ItemInformation> createState() => _ItemInformationState();
+  State<ItemInformationFuture> createState() => _ItemInformationFutureState();
 }
 
-class _ItemInformationState extends State<ItemInformation> {
+class _ItemInformationFutureState extends State<ItemInformationFuture> {
   List listTextTitle = [
     'متراژ',
     'اتاق',
@@ -30,9 +30,9 @@ class _ItemInformationState extends State<ItemInformation> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            informationBoxItem('ساخت', widget.advertising.yearBiuld),
+            informationBoxItem('ساخت', widget.advertising.yerbuild),
             informationBoxItem('طبقه', widget.advertising.floor),
-            informationBoxItem('اتاق', widget.advertising.countRoom),
+            informationBoxItem('اتاق', widget.advertising.room),
             informationBoxItem('متراژ', widget.advertising.metr),
           ],
         ),

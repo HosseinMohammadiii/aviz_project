@@ -12,8 +12,8 @@ import '../widgets/advertisig_gallery_imaes_widget.dart';
 import '../widgets/advertising_detail_features.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/items_category_type.dart';
-import '../widgets/text_widget.dart';
 import '../widgets/uploadlocation.dart';
+import '../widgets/text_widget.dart';
 import 'dart:ui' as ui;
 
 // ignore: must_be_immutable
@@ -63,6 +63,43 @@ class _InformationRecentlyAdvertisingState
       int years = dr.inDays ~/ 365;
       return '$years سال پیش';
     }
+  }
+
+  String categoryTitle = '';
+
+  @override
+  void initState() {
+    categoryType();
+
+    super.initState();
+  }
+
+  // Function to return category title based on categoryId
+  String categoryType() {
+    switch (widget.advertisingHome.categoryId) {
+      case '04lqfn5b7bpiwdm':
+        categoryTitle = 'اجاره آپارتمان';
+        break;
+      case 'awbiuhrki02leje':
+        categoryTitle = 'اجاره خانه';
+        break;
+      case '4m44z8mrvvmqmrb':
+        categoryTitle = 'اجاره ویلا';
+        break;
+      case 'daxmo7fipbo5xnc':
+        categoryTitle = 'فروش آپارتمان';
+        break;
+      case 'zlbqbrywl9f0b92':
+        categoryTitle = 'فروش خانه';
+        break;
+      case 'egylfeay2tn1hxn':
+        categoryTitle = 'فروش ویلا';
+        break;
+      case '7ost8r7msw8lt0c':
+        categoryTitle = 'فروش زمین';
+        break;
+    }
+    return categoryTitle;
   }
 
   @override
@@ -134,14 +171,14 @@ class _InformationRecentlyAdvertisingState
                         ),
                         Container(
                           height: 29,
-                          width: 59,
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
                             color: CustomColor.grey200,
                           ),
                           child: textWidget(
-                            'آپارتمان',
+                            categoryType(),
                             CustomColor.red,
                             14,
                             FontWeight.w400,
@@ -391,7 +428,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         const SizedBox(
           height: 20,
         ),
-        UploadLocation(address: 'اصفهان، خواجو'),
+        UploadLocation(address: widget.advertisingHome.address),
       ],
     );
   }

@@ -155,8 +155,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
   void initState() {
     isDelete = List<bool>.filled(widget.advertising.length, false);
     context.read<BoolStateCubit>().state.isDelete = false;
-    // BlocProvider.of<AddAdvertisingBloc>(context)
-    //     .add(InitializedDisplayAdvertising());
+
     super.initState();
   }
 

@@ -3,8 +3,10 @@ import 'package:aviz_project/DataFuture/NetworkUtil/base_url.dart';
 class AdvertisingHome {
   String id;
   String collectionId;
+  String categoryId;
   String title;
   String description;
+  String address;
   String created;
   int price;
   int metr;
@@ -16,8 +18,10 @@ class AdvertisingHome {
   AdvertisingHome({
     required this.id,
     required this.collectionId,
+    required this.categoryId,
     required this.title,
     required this.description,
+    required this.address,
     required this.created,
     required this.price,
     required this.metr,
@@ -34,8 +38,10 @@ class AdvertisingHome {
     return AdvertisingHome(
       id: jsonObject['id'],
       collectionId: jsonObject['collectionId'],
+      categoryId: jsonObject['category_id'],
       title: jsonObject['home_name'],
       description: jsonObject['home_description'],
+      address: jsonObject['address'],
       created: jsonObject['created'],
       price: jsonObject['home_price'],
       metr: jsonObject['metr'],
