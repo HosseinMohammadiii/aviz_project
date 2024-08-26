@@ -42,102 +42,123 @@ class _UploadImageState extends State<UploadImage> {
             height: 144,
           ),
         ),
-        widget.fileImage!.isEmpty
-            ? Column(
-                children: [
-                  textWidget(
-                    'لطفا تصاویر آویز خود را بارگذاری کنید',
-                    CustomColor.grey500,
-                    14,
-                    FontWeight.w400,
-                  ),
-                  GestureDetector(
-                    onTap: () => widget.onChange(),
-                    child: Container(
-                      width: 149,
-                      height: 50,
-                      margin: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: CustomColor.red,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          textWidget(
-                            'انتخاب تصویر',
-                            CustomColor.grey,
-                            16,
-                            FontWeight.w400,
+        Visibility(
+          visible: widget.fileImage!.isEmpty,
+          replacement: SizedBox(
+            height: 150,
+            child: PageView.builder(
+              controller: controller,
+              itemCount: widget.fileImage?.length ?? 0,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.file(
+                          widget.fileImage![index],
+                          key: ValueKey(widget.fileImage![index].path),
+                          fit: BoxFit.fill,
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 12,
+                          child: GestureDetector(
+                            onTap: () => widget.onChange(),
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: CustomColor.red,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Icon(
+                                Icons.add_a_photo_rounded,
+                                color: CustomColor.white,
+                              ),
+                            ),
                           ),
-                          Image.asset('images/document_upload_icon.png'),
-                        ],
-                      ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          left: 12,
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.fileImage!.removeAt(index);
+                              setState(() {});
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: CustomColor.red,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Icon(
+                                Icons.delete,
+                                color: CustomColor.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              )
-            : SizedBox(
-                height: 150,
-                width: double.infinity,
-                child: PageView.builder(
-                  controller: controller,
-                  itemCount: widget.fileImage!.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Image.file(
-                              widget.fileImage![index],
-                              key: ValueKey(widget.fileImage![index].path),
-                              fit: BoxFit.fill,
-                            ),
-                            Positioned(
-                              top: 10,
-                              right: 12,
-                              child: GestureDetector(
-                                onTap: () => widget.onChange(),
-                                child: Icon(
-                                  Icons.add_a_photo,
-                                  color: CustomColor.white,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 10,
-                              left: 12,
-                              child: GestureDetector(
-                                onTap: () {
-                                  widget.fileImage!.removeAt(index);
-                                  setState(() {});
-                                },
-                                child: const Icon(
-                                  Icons.delete,
-                                  color: CustomColor.red,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                );
+              },
+            ),
+          ),
+          child: Column(
+            children: [
+              textWidget(
+                'لطفا تصاویر آویز خود را بارگذاری کنید',
+                CustomColor.grey500,
+                14,
+                FontWeight.w400,
+              ),
+              GestureDetector(
+                onTap: () => widget.onChange(),
+                child: Container(
+                  width: 149,
+                  height: 50,
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: CustomColor.red,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      textWidget(
+                        'انتخاب تصویر',
+                        CustomColor.grey,
+                        16,
+                        FontWeight.w400,
                       ),
-                    );
-                  },
-                )),
-        Positioned(
-          bottom: 12,
-          child: SmoothPageIndicator(
-            controller: controller,
-            count: widget.fileImage!.length,
-            effect: const ExpandingDotsEffect(
-              expansionFactor: 5,
-              dotHeight: 8,
-              dotWidth: 8,
-              dotColor: Colors.white,
-              activeDotColor: CustomColor.red,
+                      Image.asset('images/document_upload_icon.png'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Visibility(
+          visible: widget.fileImage!.isNotEmpty,
+          child: Positioned(
+            bottom: 12,
+            child: SmoothPageIndicator(
+              controller: controller,
+              count: widget.fileImage!.length,
+              effect: const ExpandingDotsEffect(
+                expansionFactor: 5,
+                dotHeight: 8,
+                dotWidth: 8,
+                dotColor: Colors.white,
+                activeDotColor: CustomColor.red,
+              ),
             ),
           ),
         ),

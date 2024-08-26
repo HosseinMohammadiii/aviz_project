@@ -78,6 +78,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
   @override
   void initState() {
     categoryType();
+
     super.initState();
   }
 
@@ -311,6 +312,11 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
 
@@ -683,7 +689,7 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
                           baseColor: const Color(0xffE1E1E1),
                           highlightColor: const Color(0xffF3F3F2),
                           child: Container(
-                            height: 110,
+                            height: 160,
                             width: double.infinity,
                             color: Colors.blue,
                           ),

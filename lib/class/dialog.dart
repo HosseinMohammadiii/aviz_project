@@ -24,7 +24,7 @@ Future<void> displayDialog(String txt, BuildContext context) async {
           TextButton(
             onPressed: () => Navigator.pop(context, 'OK'),
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(CustomColor.bluegrey),
+              backgroundColor: WidgetStatePropertyAll(CustomColor.grey500),
             ),
             child: Text(
               'قبول',

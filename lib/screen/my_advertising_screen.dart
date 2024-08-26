@@ -5,7 +5,6 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_futu
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -145,7 +144,9 @@ class ListMyAdvertising extends StatefulWidget {
 class _ListMyAdvertisingState extends State<ListMyAdvertising> {
   List<bool> isDelete = [];
   bool isSelect = false;
-  List<bool> isNotDelete = [];
+  List<String> selectedAdIds = [];
+  List<String> selectedAdGalleryIds = [];
+  List<String> selectedAdFacilitiesIds = [];
 
   String idAd = '';
   String idAdFacilities = '';
@@ -154,6 +155,8 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
   void initState() {
     isDelete = List<bool>.filled(widget.advertising.length, false);
     context.read<BoolStateCubit>().state.isDelete = false;
+    // BlocProvider.of<AddAdvertisingBloc>(context)
+    //     .add(InitializedDisplayAdvertising());
     super.initState();
   }
 
@@ -181,13 +184,18 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
 
                   return GestureDetector(
                     onLongPress: () async {
-                      idAd = advertisingAd.id;
-                      idAdFacilities = advertisingFacilities.id;
-                      idAdGallery = advertisingImagesAd.id;
-                      print(
-                          'idADver: ${idAd}---idFacilities: ${idAdFacilities}---idGallery: ${idAdGallery}');
                       setState(() {
                         isDelete[index] = !isDelete[index];
+                        if (isDelete[index]) {
+                          selectedAdIds.add(advertisingAd.id);
+                          selectedAdGalleryIds.add(advertisingImagesAd.id);
+                          selectedAdFacilitiesIds.add(advertisingFacilities.id);
+                        } else {
+                          selectedAdIds.remove(advertisingAd.id);
+                          selectedAdGalleryIds.remove(advertisingImagesAd.id);
+                          selectedAdFacilitiesIds
+                              .remove(advertisingFacilities.id);
+                        }
 
                         context.read<BoolStateCubit>().state.isDelete =
                             isDelete.contains(true);
@@ -255,23 +263,106 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
           ),
           const Spacer(),
           GestureDetector(
-            onTap: () {
-              print('object');
+            onTap: () async {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    alignment: Alignment.center,
+                    actionsAlignment: MainAxisAlignment.center,
+                    backgroundColor: CustomColor.bluegrey50,
+                    title: const Text(
+                      'آیا آگهی مورد نظر حذف شود؟',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'SM',
+                        fontSize: 20,
+                        color: CustomColor.black,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(CustomColor.grey500),
+                        ),
+                        child: Text(
+                          'خیر',
+                          style: TextStyle(
+                            color: CustomColor.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SM',
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          //Create Ring For Delete All Ad Selected to Delete
+                          if (isDelete.every((element) => element)) {
+                            for (var i = 0;
+                                i < widget.advertising.length;
+                                i++) {
+                              idAd = widget.advertising[i].id;
 
-              // context.read<AddAdvertisingBloc>().add(
-              //       DeleteAdvertisingData(
-              //         idAd: idAd,
-              //         idAdFacilities: idAdFacilities,
-              //         idAdGallery: idAdGallery,
-              //       ),
-              //     );
+                              idAdFacilities =
+                                  widget.advertisingFacilities[i].id;
 
-              //Create Ring For Delete All Ad Selected to Delete
-              if (isDelete.every((element) => element)) {
-                print('Yes');
-              } else {
-                print('No');
-              }
+                              idAdGallery = widget.advertisingGallery[i].id;
+
+                              context.read<AddAdvertisingBloc>().add(
+                                    DeleteAdvertisingData(
+                                      idAd: idAd,
+                                      idAdFacilities: idAdFacilities,
+                                      idAdGallery: idAdGallery,
+                                    ),
+                                  );
+                            }
+                            context
+                                .read<AddAdvertisingBloc>()
+                                .add(InitializedDisplayAdvertising());
+                          } else {
+                            for (var i = 0; i < selectedAdIds.length; i++) {
+                              idAd = selectedAdIds[i];
+
+                              idAdFacilities = selectedAdFacilitiesIds[i];
+
+                              idAdGallery = selectedAdGalleryIds[i];
+                              context.read<AddAdvertisingBloc>().add(
+                                    DeleteAdvertisingData(
+                                      idAd: idAd,
+                                      idAdFacilities: idAdFacilities,
+                                      idAdGallery: idAdGallery,
+                                    ),
+                                  );
+                            }
+
+                            Navigator.pop(context, 'OK');
+                            context
+                                .read<AddAdvertisingBloc>()
+                                .add(InitializedDisplayAdvertising());
+                          }
+                        },
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(CustomColor.red),
+                        ),
+                        child: Text(
+                          'بله',
+                          style: TextStyle(
+                            color: CustomColor.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SM',
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
             },
             child: const Icon(
               Icons.delete_rounded,
