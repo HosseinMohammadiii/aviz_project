@@ -11,7 +11,7 @@ abstract class IAuthenticationDatasource {
   Future<String> login(String userName, String password);
 }
 
-class AuthenticationRemote implements IAuthenticationDatasource {
+class AuthenticationRemote extends IAuthenticationDatasource {
   final Dio _dio = DioProvider.createDioWithoutHeader();
   @override
   Future<String> login(String userName, String password) async {
