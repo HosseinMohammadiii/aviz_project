@@ -23,7 +23,7 @@ class AdDetailRepository extends IAddDetailFuturesRepository {
     try {
       var response = await dataSoure.getAdvertisinFeatures(adId);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -34,7 +34,7 @@ class AdDetailRepository extends IAddDetailFuturesRepository {
     try {
       var response = await dataSoure.getAdvertisinFacilities(adId);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -45,7 +45,7 @@ class AdDetailRepository extends IAddDetailFuturesRepository {
     try {
       var response = await dataSoure.getAdvertisinFacilitiesList();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }

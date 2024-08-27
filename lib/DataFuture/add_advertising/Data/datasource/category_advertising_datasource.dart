@@ -21,10 +21,10 @@ class CategoryAdvertisingRemoot extends ICategoryAdvertisingDatasource {
           )
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -35,10 +35,10 @@ class CategoryAdvertisingRemoot extends ICategoryAdvertisingDatasource {
         'category_name': ctName,
       });
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 }

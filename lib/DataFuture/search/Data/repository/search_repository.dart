@@ -16,7 +16,7 @@ class SearchRepository extends ISearchRepository {
     try {
       var response = await dataSource.getSearchResult(query);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'آگهی مورد نظر وجود ندارد');
     }
   }

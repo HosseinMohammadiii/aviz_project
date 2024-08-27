@@ -1,35 +1,23 @@
-class ApiExeption implements Exception {
-  int code;
-  String message;
-  ApiExeption(this.code, this.message) {
-    if (code == 200) {
-      message = 'اتصال اینترنت خود را بررسی کنید';
-      return;
-    }
-    if (code == 201) {
-      message = 'محتوایی وجود ندارد';
-      return;
-    }
-    if (code == 400) {
-      message = 'این آدرس وجود ندارد';
-      return;
-    }
+import 'package:dio/dio.dart';
 
-    if (code == 401) {
-      message = 'شما مجاز به استفاده نیستید';
+class ApiException implements Exception {
+  int code;
+  String? message;
+  Response<dynamic>? response;
+  ApiException(this.code, this.message, {this.response}) {
+    if (code != 400) {
       return;
     }
-    if (code == 403) {
-      message = 'شما مجاز به دسترسی نمی باشید';
-      return;
+    if (message == 'Failed to authenticate.') {
+      message = 'نام کاربری یا رمز عبور اشتباه است';
     }
-    if (code == 500) {
-      message = 'سرور دچار مشکل شده است';
-      return;
-    }
-    if (code == 404) {
-      message = 'چنین صفحه ای وجود ندارد';
-      return;
+    if (message == 'Failed to create record.') {
+      if (response?.data['data']['username'] != null) {
+        if (response?.data['data']['username']['message'] ==
+            'The username is invalid or already in use.') {
+          message = 'نام‌کاربری نامعتبر است یا قبلا گرفته شده';
+        }
+      }
     }
   }
 }

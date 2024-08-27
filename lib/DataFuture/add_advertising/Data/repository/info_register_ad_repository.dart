@@ -80,7 +80,7 @@ final class InfoAdRepository extends IInfoAdRepository {
         return left('خطایی در ورود پیش آمده! ');
       }
       // return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -118,7 +118,7 @@ final class InfoAdRepository extends IInfoAdRepository {
       } else {
         return left('خطایی در ورود پیش آمده! ');
       }
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -134,7 +134,7 @@ final class InfoAdRepository extends IInfoAdRepository {
       } else {
         return left('خطایی در ارسال تصاویر پیش آمده! ');
       }
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -145,7 +145,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.getDiplayImagesAd();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -155,7 +155,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.getDiplayAdvertising();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -166,7 +166,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.getDiplayAdvertisingFacilities();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -176,7 +176,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.getDeleteAd(id);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -186,7 +186,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.getDeleteAdFacilities(id);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -196,7 +196,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.getDeleteAdImagesAd(id);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }

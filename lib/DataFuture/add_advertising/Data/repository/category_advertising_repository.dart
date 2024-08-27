@@ -18,7 +18,7 @@ class CategoryAdvertisingRepository extends ICategoryAdvertisingRepository {
     try {
       var response = await datasource.getCategory();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -28,7 +28,7 @@ class CategoryAdvertisingRepository extends ICategoryAdvertisingRepository {
     try {
       var response = await datasource.postCategory(ctName);
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }

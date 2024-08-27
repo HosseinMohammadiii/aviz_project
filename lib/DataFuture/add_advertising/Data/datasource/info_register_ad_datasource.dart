@@ -108,10 +108,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         return response.data['items'];
       }
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
     return '';
   }
@@ -149,10 +149,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         return response.data['items'];
       }
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
     return '';
   }
@@ -178,10 +178,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         return response.data['items'];
       }
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
     return '';
   }
@@ -199,10 +199,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           )
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -217,10 +217,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
               (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -235,10 +235,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -253,10 +253,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
               (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -271,10 +271,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -289,10 +289,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
               (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 }

@@ -21,7 +21,7 @@ class HomeRepository extends IHomeRepository {
     try {
       var response = await dataSoure.getHotAdvertising();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -31,7 +31,7 @@ class HomeRepository extends IHomeRepository {
     try {
       var response = await dataSoure.getRecentAdvertising();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -41,7 +41,7 @@ class HomeRepository extends IHomeRepository {
     try {
       var response = await dataSoure.getAdvertising();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
@@ -52,7 +52,7 @@ class HomeRepository extends IHomeRepository {
     try {
       var response = await dataSoure.getAdvertisinFeatures();
       return right(response);
-    } on ApiExeption catch (ex) {
+    } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }

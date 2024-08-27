@@ -26,10 +26,10 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
               (jsonObject) => AdvertisingFeatures.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -47,10 +47,10 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 
@@ -65,10 +65,10 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 }

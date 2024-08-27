@@ -24,10 +24,10 @@ class SearchRemootDataSorce extends ISearchDataSource {
           )
           .toList();
     } on DioException catch (ex) {
-      throw ApiExeption(
+      throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiExeption(0, 'Unknown');
+      throw ApiException(0, 'Unknown');
     }
   }
 }
