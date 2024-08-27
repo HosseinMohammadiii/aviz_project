@@ -24,12 +24,12 @@ class AddAdvertisingBloc
         emit(AddAdvertisingLoading());
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
         var displayImages = await infoRepository.getImagesAdvertising();
-        var d = await infoRepository.getDiplayAdFacilities();
+        var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
         emit(
           DisplayInfoAdvertisingStateResponse(
             displayAdvertising,
             displayImages,
-            d,
+            diplayAdFacilities,
           ),
         );
       },
@@ -89,12 +89,21 @@ class AddAdvertisingBloc
             await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
         var deleteAdFacilities =
             await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
-
         emit(
           DeleteInfoAdStateResponse(
             deleteAdvertising,
             deleteAdGallery,
             deleteAdFacilities,
+          ),
+        );
+        var displayAdvertising = await infoRepository.getDiplayAdvertising();
+        var displayImages = await infoRepository.getImagesAdvertising();
+        var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
+        emit(
+          DisplayInfoAdvertisingStateResponse(
+            displayAdvertising,
+            displayImages,
+            diplayAdFacilities,
           ),
         );
       },

@@ -319,9 +319,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                                     ),
                                   );
                             }
-                            context
-                                .read<AddAdvertisingBloc>()
-                                .add(InitializedDisplayAdvertising());
+                            Navigator.pop(context);
                           } else {
                             for (var i = 0; i < selectedAdIds.length; i++) {
                               idAd = selectedAdIds[i];
@@ -337,11 +335,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                                     ),
                                   );
                             }
-
-                            Navigator.pop(context, 'OK');
-                            context
-                                .read<AddAdvertisingBloc>()
-                                .add(InitializedDisplayAdvertising());
+                            Navigator.pop(context);
                           }
                         },
                         style: const ButtonStyle(
@@ -362,6 +356,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                   );
                 },
               );
+              setState(() {});
             },
             child: const Icon(
               Icons.delete_rounded,

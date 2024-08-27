@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: BottomNavigationScreen(),
+      home: MyAdvertisingScreen(),
     );
   }
 }
