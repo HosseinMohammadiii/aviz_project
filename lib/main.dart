@@ -1,5 +1,6 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
+import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -22,6 +23,9 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => AuthAccountBloc(),
+        ),
         BlocProvider(
           create: (context) => StatusModeBloc(),
         ),
