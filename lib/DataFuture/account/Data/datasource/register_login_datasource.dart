@@ -1,4 +1,3 @@
-import 'package:aviz_project/DataFuture/NetworkUtil/dio_provider.dart';
 import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
@@ -12,28 +11,8 @@ abstract class IAuthenticationDatasource {
 }
 
 class AuthenticationRemote extends IAuthenticationDatasource {
-  final Dio _dio = DioProvider.createDioWithoutHeader();
-  @override
-  Future<String> login(String userName, String password) async {
-    try {
-      var response =
-          await _dio.post('collections/users/auth-with-password', data: {
-        'username': userName,
-        'password': password,
-      });
-      if (response.statusCode == 200) {
-        AuthManager().saveToken(response.data?['token']);
-        return response.data?['token'];
-      }
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.data['message'],
-          response: ex.response);
-    } catch (ex) {
-      throw ApiException(0, 'unknown erorr');
-    }
-    return '';
-  }
+  final Dio _dio;
+  AuthenticationRemote(this._dio);
 
   @override
   Future<void> register(
@@ -55,5 +34,27 @@ class AuthenticationRemote extends IAuthenticationDatasource {
     } catch (ex) {
       throw ApiException(0, 'unknown erorr');
     }
+  }
+
+  @override
+  Future<String> login(String userName, String password) async {
+    try {
+      var response =
+          await _dio.post('collections/users/auth-with-password', data: {
+        'identity': userName,
+        'password': password,
+      });
+      if (response.statusCode == 200) {
+        AuthManager().saveToken(response.data?['token']);
+        return response.data?['token'];
+      }
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.data['message'],
+          response: ex.response);
+    } catch (ex) {
+      throw ApiException(0, 'unknown erorr');
+    }
+    return '';
   }
 }

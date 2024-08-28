@@ -1,6 +1,7 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
+import 'package:aviz_project/DataFuture/account/authmanager.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -24,9 +25,6 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthAccountBloc(),
-        ),
-        BlocProvider(
           create: (context) => StatusModeBloc(),
         ),
         BlocProvider(
@@ -37,6 +35,11 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => NavigationPage(),
+        ),
+        BlocProvider(
+          create: (context) => AuthAccountBloc(
+            locator.get(),
+          ),
         ),
         BlocProvider(
           create: (context) => HomeBloc(
@@ -120,7 +123,9 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: MyAdvertisingScreen(),
+      home: (AuthManager().readAuth().isEmpty)
+          ? const LogInScreen()
+          : BottomNavigationScreen(),
     );
   }
 }

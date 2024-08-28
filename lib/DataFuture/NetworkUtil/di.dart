@@ -19,9 +19,9 @@ import '../search/Data/repository/search_repository.dart';
 var locator = GetIt.instance;
 
 Future<void> getInInit() async {
-  locator.registerSingleton<Dio>(DioProvider.crateDio());
   locator.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
+  locator.registerSingleton<Dio>(DioProvider.crateDio());
 
   //locator Datasource
   locator.registerFactory<IHomeDataSoure>(
@@ -50,8 +50,9 @@ Future<void> getInInit() async {
       locator.get(),
     ),
   );
-  locator
-      .registerFactory<IAuthenticationDatasource>(() => AuthenticationRemote());
+  locator.registerFactory<IAuthenticationDatasource>(
+    () => AuthenticationRemote(DioProvider.createDioWithoutHeader()),
+  );
 
   //locator Repository
   locator.registerFactory<IHomeRepository>(
@@ -79,5 +80,9 @@ Future<void> getInInit() async {
       locator.get(),
     ),
   );
-  locator.registerFactory<IAuthRepository>(() => AuthencticationRepository());
+  locator.registerFactory<IAuthRepository>(
+    () => AuthencticationRepository(
+      locator.get(),
+    ),
+  );
 }

@@ -18,7 +18,7 @@ class DioProvider {
 
   static Dio createDioWithoutHeader() {
     Dio dio = Dio(BaseOptions(
-      baseUrl: 'https://startflutter.ir/api/',
+      baseUrl: BaseUrl.baseUrl,
     ));
 
     return dio;

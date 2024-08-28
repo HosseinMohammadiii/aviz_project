@@ -7,13 +7,10 @@ class AuthManager {
 
   final SharedPreferences _sharedPreferences = locator.get();
 
+
   void saveToken(String token) {
     _sharedPreferences.setString('access_token', token);
     authChangeNotifire.value = token;
-  }
-
-  String getId() {
-    return _sharedPreferences.getString('user_id') ?? '';
   }
 
   String readAuth() {

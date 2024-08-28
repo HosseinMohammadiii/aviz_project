@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
-import '../../../NetworkUtil/di.dart';
 import '../datasource/register_login_datasource.dart';
 
 abstract class IAuthRepository {
@@ -12,7 +11,8 @@ abstract class IAuthRepository {
 }
 
 class AuthencticationRepository extends IAuthRepository {
-  final IAuthenticationDatasource _datasource = locator.get();
+  final IAuthenticationDatasource _datasource;
+  AuthencticationRepository(this._datasource);
   @override
   Future<Either<String, String>> register(
       String username, String password, String passwordConfirm) async {
