@@ -15,7 +15,7 @@ Future<void> displayDialog(String txt, BuildContext context) async {
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.w700,
-            fontFamily: 'SM',
+            fontFamily: 'SN',
             fontSize: 20,
             color: CustomColor.black,
           ),
@@ -31,7 +31,7 @@ Future<void> displayDialog(String txt, BuildContext context) async {
               style: TextStyle(
                 color: CustomColor.white,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'SM',
+                fontFamily: 'SN',
                 fontSize: 18,
               ),
             ),

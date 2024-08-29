@@ -15,6 +15,7 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
         emit(
           AuthResponseState(loginRequest),
         );
+        // emit(AuthLoadingState());
       },
     );
     on<AuthRegisterRequest>(
@@ -28,6 +29,7 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
         emit(
           AuthResponseState(registerRequest),
         );
+        emit(AuthLoadingState());
       },
     );
   }

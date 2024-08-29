@@ -13,6 +13,8 @@ class TextFieldBox extends StatefulWidget {
     required this.countLine,
     required this.focusNode,
     this.controller,
+    this.isShowPassword,
+    this.enable = false,
     required this.textInputAction,
   });
   String hint;
@@ -21,6 +23,8 @@ class TextFieldBox extends StatefulWidget {
   FocusNode focusNode = FocusNode();
   TextEditingController? controller;
   TextInputAction textInputAction;
+  bool? isShowPassword;
+  bool enable = false;
 
   @override
   State<TextFieldBox> createState() => _TextFieldBoxState();
@@ -29,55 +33,86 @@ class TextFieldBox extends StatefulWidget {
 class _TextFieldBoxState extends State<TextFieldBox> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: CustomColor.grey300,
-      ),
-      child: TextField(
-        keyboardType: widget.textInputType,
-        textInputAction: widget.textInputAction,
-        maxLines: widget.countLine,
-        focusNode: widget.focusNode,
-        controller: widget.controller,
-        textAlign: TextAlign.end,
-        style: TextStyle(
-          fontFamily: 'SN',
-          fontSize: 20,
-          color: CustomColor.grey500,
-        ),
-        decoration: InputDecoration(
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          hintText: widget.hint,
-          hintStyle: TextStyle(
-            fontFamily: 'SN',
-            fontSize: 18,
-            color: CustomColor.grey500,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: CustomColor.grey300,
           ),
-        ),
-        onTapOutside: (event) {
-          widget.focusNode.unfocus();
-        },
-        onChanged: (value) {
-          final stateAd = context.read<RegisterInfoAdCubit>().state;
+          child: TextField(
+            keyboardType: widget.textInputType,
+            textInputAction: widget.textInputAction,
+            maxLines: widget.countLine,
+            focusNode: widget.focusNode,
+            controller: widget.controller,
+            obscuringCharacter: '*',
+            obscureText: widget.isShowPassword ?? false,
+            textAlign: TextAlign.end,
+            style: TextStyle(
+              fontFamily: 'SN',
+              fontSize: 20,
+              color: CustomColor.grey500,
+            ),
+            decoration: InputDecoration(
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              icon: widget.enable
+                  ? widget.isShowPassword!
+                      ? GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.isShowPassword = !widget.isShowPassword!;
+                            });
+                          },
+                          child: Image.asset(
+                            'images/hide_password.png',
+                            scale: 5,
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.isShowPassword = !widget.isShowPassword!;
+                            });
+                          },
+                          child: Image.asset(
+                            'images/show_password.png',
+                            scale: 5,
+                          ),
+                        )
+                  : null,
+              hintText: widget.hint,
+              hintStyle: TextStyle(
+                fontFamily: 'SN',
+                fontSize: 18,
+                color: CustomColor.grey500,
+              ),
+            ),
+            onTapOutside: (event) {
+              widget.focusNode.unfocus();
+            },
+            onChanged: (value) {
+              final stateAd = context.read<RegisterInfoAdCubit>().state;
 
-          setState(() {
-            switch (widget.hint) {
-              case 'عنوان آویز را وارد کنید':
-                stateAd.title = value;
-                break;
-              case '... توضیحات آویز را وارد کنید':
-                stateAd.description = value;
-                break;
-              case 'قیمت را وارد کنید':
-                stateAd.price = num.tryParse(value);
-                break;
-            }
-          });
-        },
-      ),
+              setState(() {
+                switch (widget.hint) {
+                  case 'عنوان آویز را وارد کنید':
+                    stateAd.title = value;
+                    break;
+                  case '... توضیحات آویز را وارد کنید':
+                    stateAd.description = value;
+                    break;
+                  case 'قیمت را وارد کنید':
+                    stateAd.price = num.tryParse(value);
+                    break;
+                }
+              });
+            },
+          ),
+        );
+      },
     );
   }
 

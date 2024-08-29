@@ -123,9 +123,7 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: (AuthManager().readAuth().isEmpty)
-          ? const LogInScreen()
-          : BottomNavigationScreen(),
+      home: LogInScreen(),
     );
   }
 }

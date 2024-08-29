@@ -28,8 +28,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         login(userName, password);
       }
     } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.data['message'],
+      throw ApiException(ex.response!.statusCode!, ex.response?.data['message'],
           response: ex.response);
     } catch (ex) {
       throw ApiException(0, 'unknown erorr');
@@ -49,8 +48,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         return response.data?['token'];
       }
     } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.data['message'],
+      throw ApiException(ex.response!.statusCode!, ex.response?.data['message'],
           response: ex.response);
     } catch (ex) {
       throw ApiException(0, 'unknown erorr');

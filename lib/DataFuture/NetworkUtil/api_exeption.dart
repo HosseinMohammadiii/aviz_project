@@ -12,11 +12,12 @@ class ApiException implements Exception {
       message = 'نام کاربری یا رمز عبور اشتباه است';
     }
     if (message == 'Failed to create record.') {
-      if (response?.data['data']['username'] != null) {
-        if (response?.data['data']['username']['message'] ==
-            'The username is invalid or already in use.') {
-          message = 'نام‌کاربری نامعتبر است یا قبلا گرفته شده';
-        }
+      message = '!متاسفانه نام کاربری ایجاد نشد';
+    }
+    if (response?.data['data']['username'] != null) {
+      if (response?.data['data']['username']['message'] ==
+          'The username is invalid or already in use.') {
+        message = '!نام‌کاربری نامعتبر است یا قبلا ثبت شده است';
       }
     }
   }
