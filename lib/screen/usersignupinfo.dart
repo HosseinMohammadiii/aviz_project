@@ -11,6 +11,7 @@ import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../class/checkinvalidcharacters.dart';
 import '../widgets/buttomnavigationbar.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -29,39 +30,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final FocusNode __userNameFocus = FocusNode();
   final FocusNode __passwordFocus = FocusNode();
   final FocusNode __passwordConfirmFocus = FocusNode();
-
-  List<String> invalidCharacters = [
-    "@",
-    "#",
-    "\$",
-    "%",
-    "^",
-    "&",
-    "*",
-    "(",
-    ")",
-    "-",
-    "+",
-    "=",
-    "{",
-    "}",
-    "[",
-    "]",
-    "|",
-    "\\",
-    ":",
-    ";",
-    "\"",
-    "'",
-    "<",
-    ">",
-    ",",
-    ".",
-    "?",
-    "/",
-    "!",
-    "~"
-  ];
 
   String errorText = '';
   bool isShowErrorText = false;
@@ -138,7 +106,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                textFieldUserNAme(),
+                textFieldUserNAme(
+                  _userNameController,
+                  __userNameFocus,
+                  () {
+                    checkForInvalidCharacters();
+                  },
+                ),
 
                 Visibility(
                   visible: isShowErrorText,
@@ -229,7 +203,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (_passwordController.text.length < 8 ||
                               _passwordConfirmController.text.length < 8) {
                             displayDialog(
-                                'طول رمز عبور باید بیش از 8 عدد باشد', context);
+                                'طول رمز عبور باید بیش از 8 کاراکتر باشد',
+                                context);
                             return;
                           }
                           if (_passwordController.text !=
@@ -243,6 +218,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             displayDialog('کاراکتر معتبر وارد کنید', context);
                             return;
                           }
+
+                          super.dispose();
 
                           // Trigger registration event
                           BlocProvider.of<AuthAccountBloc>(context).add(
@@ -313,57 +290,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-
-// Widget for username input field
-  Widget textFieldUserNAme() {
-    return LayoutBuilder(
-      builder: (context, constraints) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: CustomColor.grey300,
-        ),
-        child: TextField(
-          keyboardType: TextInputType.name,
-          textInputAction: TextInputAction.next,
-          focusNode: __userNameFocus,
-          controller: _userNameController,
-          textAlign: TextAlign.end,
-          style: TextStyle(
-            fontFamily: 'SN',
-            fontSize: 20,
-            color: CustomColor.grey500,
-          ),
-          decoration: InputDecoration(
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            hintText: 'نام کاربری',
-            hintStyle: TextStyle(
-              fontFamily: 'SN',
-              fontSize: 18,
-              color: CustomColor.grey500,
-            ),
-          ),
-          onTapOutside: (event) {
-            __userNameFocus.unfocus();
-          },
-          onChanged: (value) {
-            checkForInvalidCharacters();
-          },
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _userNameController.dispose();
-    _passwordController.dispose();
-    _passwordConfirmController.dispose();
-    __userNameFocus.dispose();
-    __passwordFocus.dispose();
-    __passwordConfirmFocus.dispose();
-    super.dispose();
   }
 }

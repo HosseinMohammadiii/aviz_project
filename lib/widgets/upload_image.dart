@@ -57,10 +57,33 @@ class _UploadImageState extends State<UploadImage> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.file(
-                          widget.fileImage![index],
-                          key: ValueKey(widget.fileImage![index].path),
-                          fit: BoxFit.fill,
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  contentPadding: EdgeInsets.zero,
+                                  content: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: InteractiveViewer(
+                                      child: Image.file(
+                                        widget.fileImage![index],
+                                        key: ValueKey(
+                                            widget.fileImage![index].path),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Image.file(
+                            widget.fileImage![index],
+                            key: ValueKey(widget.fileImage![index].path),
+                            fit: BoxFit.fill,
+                          ),
                         ),
                         Positioned(
                           top: 10,

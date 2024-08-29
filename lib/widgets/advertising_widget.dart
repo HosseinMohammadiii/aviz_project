@@ -142,7 +142,6 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
               child: GestureDetector(
                 onTap: () {
                   context.read<BoolStateCubit>().state.isDelete = false;
-                  print(widget.isDelete);
                 },
                 child: AnimatedSize(
                   duration: const Duration(milliseconds: 100),
@@ -167,7 +166,6 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                 ),
               ),
             ),
-            // Icons.check_circle_outline_rounded
           ],
         ),
       ),

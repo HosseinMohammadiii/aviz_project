@@ -80,10 +80,4 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.controller.dispose();
-  }
 }

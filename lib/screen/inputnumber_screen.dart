@@ -10,15 +10,60 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
+import '../class/checkinvalidcharacters.dart';
+import '../class/dialog.dart';
 import '../widgets/buttomnavigationbar.dart';
 
-class InputNumberScreen extends StatelessWidget {
+class InputNumberScreen extends StatefulWidget {
   const InputNumberScreen({super.key});
 
   @override
+  State<InputNumberScreen> createState() => _InputNumberScreenState();
+}
+
+class _InputNumberScreenState extends State<InputNumberScreen> {
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  final FocusNode userNameFocus = FocusNode();
+  final FocusNode passwordFocus = FocusNode();
+
+  String errorText = '';
+  bool isShowErrorText = false;
+
+// Function to check for invalid characters in the username input
+  void checkForInvalidCharacters() {
+// Generate a list of all characters that are not alphanumeric and not in invalidCharacters
+    final List<String> allCharacters =
+        List.generate(65536, (i) => String.fromCharCode(i))
+            .where((char) => !RegExp(r'[a-zA-Z0-9]').hasMatch(char))
+            .toList()
+            .where((char) => !invalidCharacters.contains(char))
+            .toList();
+
+// Combine invalidCharacters and allCharacters
+    final allInvalidChars = invalidCharacters + allCharacters;
+
+// Check if the username contains any of the invalid characters
+    for (String character in allInvalidChars) {
+      if (userNameController.text.contains(character)) {
+        setState(() {
+          errorText = 'از کاراکترهای غیرمجاز استفاده شده است: $character';
+          isShowErrorText = true;
+        });
+        return;
+      }
+    }
+
+// If no invalid characters are found, clear the error text
+    setState(() {
+      errorText = ''; // No invalid characters found
+      isShowErrorText = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController userNameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(0, 0),
@@ -40,18 +85,27 @@ class InputNumberScreen extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
-                TextFieldBox(
-                  hint: 'نام کاربری',
-                  textInputType: TextInputType.text,
-                  controller: userNameController,
-                  isShowPassword: true,
-                  enable: true,
-                  countLine: 1,
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.done,
+                textFieldUserNAme(
+                  userNameController,
+                  userNameFocus,
+                  () {
+                    checkForInvalidCharacters();
+                  },
                 ),
-                const SizedBox(
-                  height: 30,
+                Visibility(
+                  visible: isShowErrorText,
+                  replacement: const SizedBox(
+                    height: 30,
+                  ),
+                  child: SizedBox(
+                    height: 30,
+                    child: textWidget(
+                      errorText,
+                      CustomColor.pink,
+                      15,
+                      FontWeight.w400,
+                    ),
+                  ),
                 ),
                 TextFieldBox(
                   hint: 'رمز عبور',
@@ -60,7 +114,7 @@ class InputNumberScreen extends StatelessWidget {
                   isShowPassword: true,
                   enable: true,
                   countLine: 1,
-                  focusNode: FocusNode(),
+                  focusNode: passwordFocus,
                   textInputAction: TextInputAction.done,
                 ),
                 SizedBox(
@@ -71,6 +125,26 @@ class InputNumberScreen extends StatelessWidget {
                     if (state is AuthInitiateState) {
                       return GestureDetector().textButton(
                         () {
+                          // Validate input fields
+                          if (userNameController.text.isEmpty ||
+                              passwordController.text.isEmpty) {
+                            displayDialog(
+                                'لطفا تمامی فیلد ها را کامل کنید', context);
+                            return;
+                          }
+                          if (passwordController.text.length < 8) {
+                            displayDialog(
+                                'طول رمز عبور باید بیش از 8 کاراکتر باشد',
+                                context);
+                            return;
+                          }
+
+                          if (isShowErrorText) {
+                            displayDialog('کاراکتر معتبر وارد کنید', context);
+                            return;
+                          }
+
+                          // Trigger registration event
                           BlocProvider.of<AuthAccountBloc>(context).add(
                             AuthLoginRequest(
                               userNameController.text,
@@ -87,14 +161,19 @@ class InputNumberScreen extends StatelessWidget {
                     if (state is AuthLoadingState) {
                       return const CircularProgressIndicator();
                     }
-                    return const Center(
-                      child: Text(
-                        '!خطای نامشخص',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: CustomColor.pink,
-                        ),
-                      ),
+                    return GestureDetector().textButton(
+                      () {
+                        BlocProvider.of<AuthAccountBloc>(context).add(
+                          AuthLoginRequest(
+                            userNameController.text,
+                            passwordController.text,
+                          ),
+                        );
+                      },
+                      'ورود',
+                      CustomColor.red,
+                      CustomColor.grey,
+                      false,
                     );
                   },
                   listener: (context, state) {
