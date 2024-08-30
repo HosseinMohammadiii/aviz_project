@@ -1,23 +1,32 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
-import 'package:aviz_project/DataFuture/account/authmanager.dart';
+
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
+import 'package:aviz_project/Hive/UsersLogin/user_login.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/login_screen.dart';
-import 'package:aviz_project/screen/register_feature_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import 'screen/manegement_add_advertising_screen.dart';
-import 'screen/my_advertising_screen.dart';
+
+import 'screen/account_screen.dart';
+import 'screen/user_account_informatio.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(UserLoginAdapter());
+
+  await Hive.openBox<UserLogin>('user_login');
 
   await getInInit();
 
@@ -73,6 +82,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Box<UserLogin> userLogin = Hive.box('user_login');
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -123,8 +134,25 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: LogInScreen(),
+      home: userLogin.get(1)?.isLogin ?? false
+          ? UserAccountInfirmation()
+          : const LogInScreen(),
     );
   }
 }
-// LogInScreen()
+//  AuthManager().isLogin()
+//           ? const LogInScreen()
+//           : BottomNavigationScreen(),
+
+
+// BlocBuilder<ISLogIn, IsLogInState>(
+//         builder: (context, state) {
+//           return (() {
+//             if (state.isLogIn) {
+//               return BottomNavigationScreen();
+//             } else {
+//               return const LogInScreen();
+//             }
+//           }());
+//         },
+//       ),

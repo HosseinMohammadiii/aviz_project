@@ -21,6 +21,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
         'collections/home_screen/records',
         queryParameters: query,
       );
+
       return response.data['items']
           .map<AdvertisingHome>(
             (jsonObject) => AdvertisingHome.fromJson(jsonObject),

@@ -3,14 +3,15 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
-import 'package:aviz_project/extension/button.dart';
 // import 'package:aviz_project/screen/confirmationnumber_screen.dart';
 import 'package:aviz_project/screen/inputnumber_screen.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
+import '../Hive/UsersLogin/user_login.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/buttomnavigationbar.dart';
 
@@ -154,7 +155,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   textInputAction: TextInputAction.done,
                 ),
                 // const Spacer(),
-
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    color: CustomColor.red,
+                  ),
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 2.4,
                 ),
@@ -175,85 +183,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackbar);
                         },
                         (r) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNavigationScreen(),
-                            ),
-                          );
+                          // Wait until the token is available
+                          final Box<UserLogin> userLogin =
+                              Hive.box('user_login');
+                          final String? token = userLogin.get(1)?.token;
+
+                          if (token != null && token.isNotEmpty) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BottomNavigationScreen(),
+                              ),
+                            );
+                          } else {
+                            // Handle error: Token not available
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('لطفا مجدد تلاش کنید')),
+                            );
+                          }
                         },
                       );
                     }
                   },
                   builder: (context, state) {
-                    if (state is AuthLoadingState) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+                    // if (state is AuthLoadingState) {
+                    //   return const Center(child: CircularProgressIndicator());
+                    // }
                     if (state is AuthInitiateState) {
-                      return GestureDetector().textButton(
-                        () {
-                          // Validate input fields
-                          if (_userNameController.text.isEmpty ||
-                              _passwordController.text.isEmpty ||
-                              _passwordConfirmController.text.isEmpty) {
-                            displayDialog(
-                                'لطفا تمامی فیلد ها را کامل کنید', context);
-                            return;
-                          }
-                          if (_passwordController.text.length < 8 ||
-                              _passwordConfirmController.text.length < 8) {
-                            displayDialog(
-                                'طول رمز عبور باید بیش از 8 کاراکتر باشد',
-                                context);
-                            return;
-                          }
-                          if (_passwordController.text !=
-                              _passwordConfirmController.text) {
-                            displayDialog(
-                                'رمز عبور با تکرار رمز عبور یکسان نمی باشند',
-                                context);
-                            return;
-                          }
-                          if (isShowErrorText) {
-                            displayDialog('کاراکتر معتبر وارد کنید', context);
-                            return;
-                          }
-
-                          super.dispose();
-
-                          // Trigger registration event
-                          BlocProvider.of<AuthAccountBloc>(context).add(
-                            AuthRegisterRequest(
-                              _userNameController.text,
-                              _passwordController.text,
-                              _passwordConfirmController.text,
-                            ),
-                          );
-                        },
-                        'ثبت نام',
-                        CustomColor.red,
-                        CustomColor.grey,
-                        false,
-                      );
+                      return buttonSignUp();
                     }
 
-                    return GestureDetector().textButton(
-                      () {
-                        BlocProvider.of<AuthAccountBloc>(context).add(
-                          AuthRegisterRequest(
-                            _userNameController.text,
-                            _passwordController.text,
-                            _passwordConfirmController.text,
-                          ),
-                        );
-                      },
-                      'ثبت نام',
-                      CustomColor.red,
-                      CustomColor.grey,
-                      false,
-                    );
+                    return buttonSignUp();
                   },
                 ),
+
                 const SizedBox(
                   height: 10,
                 ),
@@ -287,6 +251,71 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+//Widget For Button SignUp
+  Widget buttonSignUp() {
+    return GestureDetector(
+      onTap: () {
+        // Validate input fields
+        if (_userNameController.text.isEmpty ||
+            _passwordController.text.isEmpty ||
+            _passwordConfirmController.text.isEmpty) {
+          displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+          return;
+        }
+        if (_passwordController.text.length < 8 ||
+            _passwordConfirmController.text.length < 8) {
+          displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
+          return;
+        }
+        if (_passwordController.text != _passwordConfirmController.text) {
+          displayDialog('رمز عبور با تکرار رمز عبور یکسان نمی باشند', context);
+          return;
+        }
+        if (isShowErrorText) {
+          displayDialog('کاراکتر معتبر وارد کنید', context);
+          return;
+        }
+        // Trigger registration event
+        BlocProvider.of<AuthAccountBloc>(context).add(
+          AuthRegisterRequest(
+            _userNameController.text,
+            _passwordController.text,
+            _passwordConfirmController.text,
+          ),
+        );
+      },
+      child: Container(
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: CustomColor.red,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: CustomColor.red,
+          ),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'ثبت نام',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: CustomColor.grey,
+                fontSize: 16,
+                fontFamily: 'SN',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

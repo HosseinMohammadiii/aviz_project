@@ -14,3 +14,5 @@ final class AuthRegisterRequest extends AuthAccountEvent {
 
   AuthRegisterRequest(this.username, this.password, this.passwordConfirm);
 }
+
+final class AuthTryingEvent extends AuthAccountEvent {}

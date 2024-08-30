@@ -1,15 +1,16 @@
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/extension/button.dart';
 // import 'package:aviz_project/screen/confirmationnumber_screen.dart';
 import 'package:aviz_project/screen/usersignupinfo.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
+import '../Hive/UsersLogin/user_login.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../class/dialog.dart';
 import '../widgets/buttomnavigationbar.dart';
@@ -123,58 +124,10 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                 BlocConsumer<AuthAccountBloc, AuthAccountState>(
                   builder: (context, state) {
                     if (state is AuthInitiateState) {
-                      return GestureDetector().textButton(
-                        () {
-                          // Validate input fields
-                          if (userNameController.text.isEmpty ||
-                              passwordController.text.isEmpty) {
-                            displayDialog(
-                                'لطفا تمامی فیلد ها را کامل کنید', context);
-                            return;
-                          }
-                          if (passwordController.text.length < 8) {
-                            displayDialog(
-                                'طول رمز عبور باید بیش از 8 کاراکتر باشد',
-                                context);
-                            return;
-                          }
-
-                          if (isShowErrorText) {
-                            displayDialog('کاراکتر معتبر وارد کنید', context);
-                            return;
-                          }
-
-                          // Trigger registration event
-                          BlocProvider.of<AuthAccountBloc>(context).add(
-                            AuthLoginRequest(
-                              userNameController.text,
-                              passwordController.text,
-                            ),
-                          );
-                        },
-                        'ورود',
-                        CustomColor.red,
-                        CustomColor.grey,
-                        false,
-                      );
+                      return buttonLogIn();
                     }
-                    if (state is AuthLoadingState) {
-                      return const CircularProgressIndicator();
-                    }
-                    return GestureDetector().textButton(
-                      () {
-                        BlocProvider.of<AuthAccountBloc>(context).add(
-                          AuthLoginRequest(
-                            userNameController.text,
-                            passwordController.text,
-                          ),
-                        );
-                      },
-                      'ورود',
-                      CustomColor.red,
-                      CustomColor.grey,
-                      false,
-                    );
+
+                    return buttonLogIn();
                   },
                   listener: (context, state) {
                     if (state is AuthResponseState) {
@@ -192,12 +145,25 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackbar);
                         },
                         (r) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNavigationScreen(),
-                            ),
-                          );
+                          // Wait until the token is available
+                          final Box<UserLogin> userLogin =
+                              Hive.box('user_login');
+                          final String? token = userLogin.get(1)?.token;
+
+                          if (token != null && token.isNotEmpty) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BottomNavigationScreen(),
+                              ),
+                            );
+                          } else {
+                            // Handle error: Token not available
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('لطفا مجدد تلاش کنید')),
+                            );
+                          }
                         },
                       );
                     }
@@ -236,6 +202,65 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+//Widget For Button LogIn
+  Widget buttonLogIn() {
+    return GestureDetector(
+      onTap: () {
+        // Validate input fields
+        if (userNameController.text.isEmpty ||
+            passwordController.text.isEmpty) {
+          displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+          return;
+        }
+        if (passwordController.text.length < 8) {
+          displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
+          return;
+        }
+
+        if (isShowErrorText) {
+          displayDialog('کاراکتر معتبر وارد کنید', context);
+          return;
+        }
+        // Trigger registration event
+        BlocProvider.of<AuthAccountBloc>(context).add(
+          AuthLoginRequest(
+            userNameController.text,
+            passwordController.text,
+          ),
+        );
+      },
+      child: Container(
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: CustomColor.red,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: CustomColor.red,
+          ),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'ورود',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: CustomColor.grey,
+                fontSize: 16,
+                fontFamily: 'SN',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,12 +1,21 @@
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/login_screen.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-class InfoAccountUser extends StatelessWidget {
+import '../Hive/UsersLogin/user_login.dart';
+
+class InfoAccountUser extends StatefulWidget {
   const InfoAccountUser({
     super.key,
   });
 
+  @override
+  State<InfoAccountUser> createState() => _InfoAccountUserState();
+}
+
+class _InfoAccountUserState extends State<InfoAccountUser> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +36,26 @@ class InfoAccountUser extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset('images/edit.png'),
+                      GestureDetector(
+                        onTap: () {
+                          final Box<UserLogin> userLogin =
+                              Hive.box('user_login');
+                          UserLogin user = UserLogin(
+                            isLogin: false,
+                            token: null,
+                          );
+
+                          userLogin.put(1, user);
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LogInScreen(),
+                            ),
+                          );
+                        },
+                        child: Image.asset('images/edit.png'),
+                      ),
                       textWidget(
                         'حسین محمدی',
                         CustomColor.black,

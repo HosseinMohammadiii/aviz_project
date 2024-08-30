@@ -27,6 +27,7 @@ dependencies:
   dio: ^5.4.3+1
   get_it: ^7.7.0
   hive: ^2.2.3
+  hive_flutter: ^1.1.0
   cached_network_image: ^3.3.1
   zarinpal: ^1.0.5+1
   url_launcher: ^6.2.6

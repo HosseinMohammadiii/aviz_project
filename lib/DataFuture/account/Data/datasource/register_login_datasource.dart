@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 
+import '../../../../Hive/UsersLogin/user_login.dart';
 import '../../../NetworkUtil/api_exeption.dart';
-import '../../authmanager.dart';
 
 abstract class IAuthenticationDatasource {
   Future<void> register(
@@ -12,6 +13,8 @@ abstract class IAuthenticationDatasource {
 
 class AuthenticationRemote extends IAuthenticationDatasource {
   final Dio _dio;
+  final Box<UserLogin> userLogin = Hive.box('user_login');
+
   AuthenticationRemote(this._dio);
 
   @override
@@ -25,13 +28,13 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         'passwordConfirm': passwordConfirm,
       });
       if (request.statusCode == 200) {
-        login(userName, password);
+        await login(userName, password);
       }
     } on DioException catch (ex) {
       throw ApiException(ex.response!.statusCode!, ex.response?.data['message'],
           response: ex.response);
     } catch (ex) {
-      throw ApiException(0, 'unknown erorr');
+      throw ApiException(0, 'لطفا برنامه را کامل بسته و مجدد باز کنید');
     }
   }
 
@@ -44,14 +47,18 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         'password': password,
       });
       if (response.statusCode == 200) {
-        AuthManager().saveToken(response.data?['token']);
+        UserLogin userLoginState = UserLogin(
+          isLogin: true,
+          token: response.data?['token'],
+        );
+        await userLogin.put(1, userLoginState);
         return response.data?['token'];
       }
     } on DioException catch (ex) {
       throw ApiException(ex.response!.statusCode!, ex.response?.data['message'],
           response: ex.response);
     } catch (ex) {
-      throw ApiException(0, 'unknown erorr');
+      throw ApiException(0, 'لطفا برنامه را کامل بسته و مجدد باز کنید');
     }
     return '';
   }

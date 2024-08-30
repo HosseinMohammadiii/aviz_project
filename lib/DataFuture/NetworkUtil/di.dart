@@ -8,7 +8,6 @@ import 'package:aviz_project/DataFuture/home/Data/repository/home_repository.dar
 import 'package:aviz_project/DataFuture/search/Data/dataSource/search_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../account/Data/datasource/register_login_datasource.dart';
 import '../account/Data/repository/registe_login_repository.dart';
@@ -19,8 +18,6 @@ import '../search/Data/repository/search_repository.dart';
 var locator = GetIt.instance;
 
 Future<void> getInInit() async {
-  locator.registerSingleton<SharedPreferences>(
-      await SharedPreferences.getInstance());
   locator.registerSingleton<Dio>(DioProvider.crateDio());
 
   //locator Datasource

@@ -10,3 +10,5 @@ final class AuthResponseState extends AuthAccountState {
   Either<String, String> reponse;
   AuthResponseState(this.reponse);
 }
+
+final class AuthTryingState extends AuthAccountState {}
