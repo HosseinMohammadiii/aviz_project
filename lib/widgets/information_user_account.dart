@@ -1,10 +1,8 @@
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/login_screen.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
-import '../Hive/UsersLogin/user_login.dart';
+import '../screen/user_account_informatio.dart';
 
 class InfoAccountUser extends StatefulWidget {
   const InfoAccountUser({
@@ -38,19 +36,11 @@ class _InfoAccountUserState extends State<InfoAccountUser> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          final Box<UserLogin> userLogin =
-                              Hive.box('user_login');
-                          UserLogin user = UserLogin(
-                            isLogin: false,
-                            token: null,
-                          );
-
-                          userLogin.put(1, user);
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LogInScreen(),
+                              builder: (context) =>
+                                  const UserAccountInfirmation(),
                             ),
                           );
                         },

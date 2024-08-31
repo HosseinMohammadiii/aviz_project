@@ -107,6 +107,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                     setState(() {
                       if (xfilePickCamera != null) {
                         galleryFile.add(File(xfilePickCamera.path));
+                        BlocProvider.of<AddAdvertisingBloc>(context)
+                            .add(AddImagesToGallery(galleryFile));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
