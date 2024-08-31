@@ -91,6 +91,12 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         useMaterial3: true,
         textTheme: TextTheme(
+          displayLarge: TextStyle(
+            color: CustomColor.white,
+            fontSize: 18,
+            fontFamily: 'SN',
+            fontWeight: FontWeight.w700,
+          ),
           titleLarge: const TextStyle(
             color: CustomColor.black,
             fontSize: 16,

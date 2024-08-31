@@ -34,6 +34,27 @@ List<String> invalidCharacters = [
   "!",
   "~",
 ];
+List<String> validCharacters = [
+  "@",
+  ".",
+  "_",
+  "-",
+];
+
+// تولید لیست کاراکترهای نامعتبر
+final List<String> invalidCharactersEmail =
+    List.generate(65536, (i) => String.fromCharCode(i))
+        .where((char) => !RegExp(r'[a-zA-Z0-9]').hasMatch(char))
+        .where((char) => !validCharacters.contains(char))
+        .toList();
+
+// Generate a list of all characters that are not alphanumeric and not in invalidCharacters
+final List<String> allCharacters =
+    List.generate(65536, (i) => String.fromCharCode(i))
+        .where((char) => !RegExp(r'[a-zA-Z0-9]').hasMatch(char))
+        .toList()
+        .where((char) => !invalidCharacters.contains(char))
+        .toList();
 
 // Widget for username input field
 Widget textFieldUserNAme(

@@ -37,14 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 // Function to check for invalid characters in the username input
   void checkForInvalidCharacters() {
-// Generate a list of all characters that are not alphanumeric and not in invalidCharacters
-    final List<String> allCharacters =
-        List.generate(65536, (i) => String.fromCharCode(i))
-            .where((char) => !RegExp(r'[a-zA-Z0-9]').hasMatch(char))
-            .toList()
-            .where((char) => !invalidCharacters.contains(char))
-            .toList();
-
 // Combine invalidCharacters and allCharacters
     final allInvalidChars = invalidCharacters + allCharacters;
 
@@ -265,6 +257,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _passwordController.text.isEmpty ||
             _passwordConfirmController.text.isEmpty) {
           displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+          return;
+        }
+        if (_userNameController.text.length < 3) {
+          displayDialog('نام کاربری باید بیش از 3 حرف باشد', context);
           return;
         }
         if (_passwordController.text.length < 8 ||

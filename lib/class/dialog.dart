@@ -13,6 +13,7 @@ Future<void> displayDialog(String txt, BuildContext context) async {
         title: Text(
           txt,
           textAlign: TextAlign.center,
+          textDirection: TextDirection.rtl,
           style: const TextStyle(
             fontWeight: FontWeight.w700,
             fontFamily: 'SN',

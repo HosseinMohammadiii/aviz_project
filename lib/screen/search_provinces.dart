@@ -1,0 +1,263 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import '../class/colors.dart';
+
+class SearchProvincesScreen extends StatefulWidget {
+  const SearchProvincesScreen({super.key});
+
+  @override
+  State<SearchProvincesScreen> createState() => _SearchProvincesScreenState();
+}
+
+class _SearchProvincesScreenState extends State<SearchProvincesScreen> {
+  final TextEditingController provincesController = TextEditingController();
+
+  final FocusNode provincesFocusNode = FocusNode();
+
+  bool isSearchList = false;
+  bool isSelectProvinces = false;
+
+  List<String> searchList = [];
+
+  List<String> provinces = [
+    "آذربایجان شرقی",
+    "آذربایجان غربی",
+    "اردبیل",
+    "اصفهان",
+    "البرز",
+    "ایلام",
+    "بوشهر",
+    "تهران",
+    "چهارمحال و بختیاری",
+    "خراسان جنوبی",
+    "خراسان رضوی",
+    "خراسان شمالی",
+    "خوزستان",
+    "زنجان",
+    "سمنان",
+    "سیستان و بلوچستان",
+    "فارس",
+    "قزوین",
+    "قم",
+    "کردستان",
+    "کرمان",
+    "کرمانشاه",
+    "کهگیلویه وبویراحمد",
+    "گلستان",
+    "گیلان",
+    "لرستان",
+    "مازندران",
+    "مرکزی",
+    "هرمزگان",
+    "همدان",
+    "یزد"
+  ];
+
+  void searchListItems(String value) {
+    List<String> searchProvinces = [];
+
+    if (value.isEmpty) {
+      setState(() {});
+      List<String> updatedList = provinces.toList();
+      setState(() {
+        searchList = updatedList;
+        isSearchList = false;
+      });
+      FocusScope.of(context).unfocus();
+      return;
+    }
+
+    searchProvinces = provinces
+        .where((element) => element.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+
+    setState(() {
+      searchList = searchProvinces;
+      isSearchList = true;
+    });
+    if (searchProvinces.length == 1 && searchProvinces.first == value) {
+      isSelectProvinces = true;
+    } else {
+      isSelectProvinces = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: double.infinity,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Spacer(),
+              const Text(
+                'استان',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: CustomColor.black,
+                ),
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.arrow_forward_ios_rounded),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: TextField(
+                        controller: provincesController,
+                        focusNode: provincesFocusNode,
+                        keyboardType: TextInputType.streetAddress,
+                        autofocus: true,
+                        textDirection: TextDirection.rtl,
+                        decoration: InputDecoration(
+                          hintText: 'نام استان خود را وارد کنید',
+                          labelText: 'استان',
+                          labelStyle: TextStyle(
+                            fontSize: 18,
+                            color: colorShow(
+                                provincesFocusNode, provincesController),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: colorShow(
+                                  provincesFocusNode, provincesController),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: colorShow(
+                                  provincesFocusNode, provincesController),
+                            ),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          searchListItems(value);
+                          if (value.isEmpty) {
+                            provincesFocusNode.requestFocus();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: ListView.builder(
+                    itemCount:
+                        isSearchList ? searchList.length : provinces.length,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(bottom: 80),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      var search = isSearchList
+                          ? searchList.toList()[index]
+                          : provinces.toList()[index];
+                      return Column(
+                        children: [
+                          InkWell(
+                            splashColor: CustomColor.grey350,
+                            onTap: () {
+                              provincesController.text = search;
+                              setState(() {
+                                isSelectProvinces = true;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    search,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: CustomColor.black,
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.location_on_outlined,
+                                    size: 18,
+                                    color: CustomColor.red,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Divider(
+                              thickness: 1,
+                              height: 5,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              height: 70,
+              width: double.infinity,
+              color: CustomColor.grey,
+              alignment: Alignment.topCenter,
+              transformAlignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  decoration: BoxDecoration(
+                    color: isSelectProvinces
+                        ? CustomColor.red
+                        : CustomColor.grey300,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    'انتخاب',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

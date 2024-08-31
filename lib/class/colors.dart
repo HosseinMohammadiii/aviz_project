@@ -17,3 +17,12 @@ class CustomColor {
 
   static Color white = Colors.white;
 }
+
+Color colorShow(
+  FocusNode focusNode,
+  TextEditingController controller,
+) {
+  if (focusNode.hasFocus || controller.text.isNotEmpty) return Colors.pink;
+
+  return CustomColor.grey500;
+}

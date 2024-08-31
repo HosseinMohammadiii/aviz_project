@@ -217,6 +217,10 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
           displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
           return;
         }
+        if (userNameController.text.length < 3) {
+          displayDialog('نام کاربری باید بیش از 3 حرف باشد', context);
+          return;
+        }
         if (passwordController.text.length < 8) {
           displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
           return;
