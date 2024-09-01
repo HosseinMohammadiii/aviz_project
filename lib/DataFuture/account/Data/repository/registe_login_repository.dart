@@ -2,12 +2,15 @@ import 'package:dartz/dartz.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../datasource/register_login_datasource.dart';
+import '../model/account.dart';
 
 abstract class IAuthRepository {
   Future<Either<String, String>> register(
       String username, String password, String passwordConfirm);
 
   Future<Either<String, String>> login(String username, String password);
+
+  Future<Either<String, AccountInformation>> getDisplayUserInfo();
 }
 
 class AuthencticationRepository extends IAuthRepository {
@@ -35,6 +38,16 @@ class AuthencticationRepository extends IAuthRepository {
       }
     } on ApiException catch (ex) {
       return left('${ex.message}');
+    }
+  }
+
+  @override
+  Future<Either<String, AccountInformation>> getDisplayUserInfo() async {
+    try {
+      var response = await _datasource.getDisplayUserInfo();
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
 }

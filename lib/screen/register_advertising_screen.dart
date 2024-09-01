@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -182,85 +184,122 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 ),
                 SwitchBox(switchCheck: false, txt: 'فعال کردن گفتگو'),
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
-                GestureDetector().textButton(
-                  () {
-                    // Check if no images have been selected
-                    if (galleryFile.isEmpty) {
-                      // Display a dialog prompting the user to select an image
-                      displayDialog(
-                          'لطفا عکس مورد نظر را انتخاب کنید', context);
-                    }
-                    // Check if any of the required text fields are empty
-                    else if (controllertitle.text.isEmpty ||
-                        controllerDescription.text.isEmpty ||
-                        controllerPrice.text.isEmpty) {
-                      // Display a dialog prompting the user to fill in all fields
-                      displayDialog('لطفا تمام فیلد ها را کامل کنید', context);
-                    } else {
-                      // Get the current state of the RegisterInfoAdCubit
-                      final stateAd = context.read<RegisterInfoAdCubit>().state;
-                      // Get the current state of the BoolStateCubit
-                      final boolState = context.read<BoolStateCubit>().state;
+                BlocConsumer<AddAdvertisingBloc, AddAdvertisingState>(
+                  builder: (context, state) {
+                    return GestureDetector().textButton(
+                      () {
+                        // Check if no images have been selected
+                        if (galleryFile.isEmpty) {
+                          // Display a dialog prompting the user to select an image
+                          displayDialog(
+                              'لطفا عکس مورد نظر را انتخاب کنید', context);
+                        }
+                        // Check if any of the required text fields are empty
+                        else if (controllertitle.text.isEmpty ||
+                            controllerDescription.text.isEmpty ||
+                            controllerPrice.text.isEmpty) {
+                          // Display a dialog prompting the user to fill in all fields
+                          displayDialog(
+                              'لطفا تمام فیلد ها را کامل کنید', context);
+                        } else {
+                          // Get the current state of the RegisterInfoAdCubit
+                          final stateAd =
+                              context.read<RegisterInfoAdCubit>().state;
+                          // Get the current state of the BoolStateCubit
+                          final boolState =
+                              context.read<BoolStateCubit>().state;
 
-                      // Add the advertising information using the AddAdvertisingBloc
-                      BlocProvider.of<AddAdvertisingBloc>(context).add(
-                        AddInfoAdvertising(
-                          stateAd.idCt,
-                          stateAd.address,
-                          stateAd.title,
-                          stateAd.description,
-                          stateAd.price!,
-                          stateAd.metr!.toInt(),
-                          stateAd.countRoom!.toInt(),
-                          stateAd.floor!.toInt(),
-                          stateAd.yearBuild!.toInt(),
-                        ),
+                          setState(() {
+                            BlocProvider.of<AddAdvertisingBloc>(context)
+                                .add(AddImagesToGallery(galleryFile));
+                          });
+                          // Add the advertising information using the AddAdvertisingBloc
+
+                          // Add the facilities information using the AddAdvertisingBloc
+                          setState(() {
+                            BlocProvider.of<AddAdvertisingBloc>(context).add(
+                              AddFacilitiesAdvertising(
+                                boolState.elevator,
+                                boolState.parking,
+                                boolState.storeroom,
+                                boolState.balcony,
+                                boolState.penthouse,
+                                boolState.duplex,
+                                boolState.water,
+                                boolState.electricity,
+                                boolState.gas,
+                                boolState.floorMaterial,
+                                boolState.wc,
+                              ),
+                            );
+                          });
+                          BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            AddInfoAdvertising(
+                              stateAd.idCt,
+                              stateAd.address,
+                              stateAd.title,
+                              stateAd.description,
+                              stateAd.price!,
+                              stateAd.metr!.toInt(),
+                              stateAd.countRoom!.toInt(),
+                              stateAd.floor!.toInt(),
+                              stateAd.yearBuild!.toInt(),
+                            ),
+                          );
+                          // // Reset the information stored in RegisterInfoAdCubit
+                          // context.read<RegisterInfoAdCubit>().resetInfoAdSet();
+                          // // Reset the state of BoolStateCubit
+                          // context.read<BoolStateCubit>().reset();
+                          // // Navigate back to the first page
+                          // context.read<NavigationPage>().backFirstPAge();
+
+                          // The following code is commented out and not currently in use:
+                          // advertisingData(
+                          //   title,
+                          //   description,
+                          //   galleryFile,
+                          //   price,
+                          // );
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => BottomNavigationScreen(index: 2),
+                          //     ));
+                        }
+                      },
+                      'ثبت آگهی',
+                      CustomColor.red,
+                      CustomColor.grey,
+                      false,
+                    );
+                  },
+                  listener: (context, state) {
+                    if (state is AddInfoAdvertisingStateResponse) {
+                      state.registerAdvertising.fold(
+                        (error) {
+                          var snackbar = SnackBar(
+                            content: Text(
+                              error,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            backgroundColor: Colors.black,
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 2),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                        },
+                        (r) {
+                          // Wait until the token is available
+
+                          context.read<RegisterInfoAdCubit>().resetInfoAdSet();
+                          // Reset the state of BoolStateCubit
+                          context.read<BoolStateCubit>().reset();
+                          // Navigate back to the first page
+                          context.read<NavigationPage>().backFirstPAge();
+                        },
                       );
-
-                      // Add the facilities information using the AddAdvertisingBloc
-                      setState(() {
-                        BlocProvider.of<AddAdvertisingBloc>(context).add(
-                          AddFacilitiesAdvertising(
-                            boolState.elevator,
-                            boolState.parking,
-                            boolState.storeroom,
-                            boolState.balcony,
-                            boolState.penthouse,
-                            boolState.duplex,
-                            boolState.water,
-                            boolState.electricity,
-                            boolState.gas,
-                            boolState.floorMaterial,
-                            boolState.wc,
-                          ),
-                        );
-                      });
-
-                      // Reset the information stored in RegisterInfoAdCubit
-                      context.read<RegisterInfoAdCubit>().resetInfoAdSet();
-                      // Reset the state of BoolStateCubit
-                      context.read<BoolStateCubit>().reset();
-                      // Navigate back to the first page
-                      context.read<NavigationPage>().backFirstPAge();
-
-                      // The following code is commented out and not currently in use:
-                      // advertisingData(
-                      //   title,
-                      //   description,
-                      //   galleryFile,
-                      //   price,
-                      // );
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => BottomNavigationScreen(index: 2),
-                      //     ));
                     }
                   },
-                  'ثبت آگهی',
-                  CustomColor.red,
-                  CustomColor.grey,
-                  false,
                 ),
               ],
             ),

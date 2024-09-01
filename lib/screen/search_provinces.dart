@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../class/colors.dart';
 
@@ -57,25 +56,29 @@ class _SearchProvincesScreenState extends State<SearchProvincesScreen> {
   void searchListItems(String value) {
     List<String> searchProvinces = [];
 
+    // Reset the list when the search field is empty
     if (value.isEmpty) {
       setState(() {});
       List<String> updatedList = provinces.toList();
       setState(() {
         searchList = updatedList;
-        isSearchList = false;
+        isSearchList = false; // No search active
       });
-      FocusScope.of(context).unfocus();
+      FocusScope.of(context).unfocus(); // Unfocus the text field
       return;
     }
 
+    // Filter provinces based on search input
     searchProvinces = provinces
         .where((element) => element.toLowerCase().contains(value.toLowerCase()))
         .toList();
 
     setState(() {
       searchList = searchProvinces;
-      isSearchList = true;
+      isSearchList = true; // Search is active
     });
+
+    // Toggle selection if the search result exactly matches a province
     if (searchProvinces.length == 1 && searchProvinces.first == value) {
       isSelectProvinces = true;
     } else {
@@ -170,6 +173,7 @@ class _SearchProvincesScreenState extends State<SearchProvincesScreen> {
                 ),
                 SliverToBoxAdapter(
                   child: ListView.builder(
+                    // Display search results or full list
                     itemCount:
                         isSearchList ? searchList.length : provinces.length,
                     shrinkWrap: true,
@@ -184,8 +188,10 @@ class _SearchProvincesScreenState extends State<SearchProvincesScreen> {
                           InkWell(
                             splashColor: CustomColor.grey350,
                             onTap: () {
+                              // Update text field with selected province
                               provincesController.text = search;
                               setState(() {
+                                // Set selection status to true
                                 isSelectProvinces = true;
                               });
                             },

@@ -1,13 +1,20 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
+import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
+import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
+import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/screen/search_provinces.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Hive/UsersLogin/user_login.dart';
+import '../Hive/Advertising/advertising_hive.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/text_widget.dart';
 import 'login_screen.dart';
@@ -168,6 +175,12 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
   }
 
   @override
+  void initState() {
+    BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -211,163 +224,217 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: CustomScrollView(
-            slivers: [
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 30,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: showandselectProfileImage(context),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 18,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: () async {
-                    await showBottomSheet(
-                      context: context,
-                      title: 'نام کاربری',
-                      label: 'نام کاربری',
-                      focusNode: usernameFocusNode,
-                      inputType: TextInputType.name,
-                      controller: usernameController,
-                      registration: () {
-                        checkForInvalidCharacters(usernameController.text);
-                        if (isShowErrorText) {
-                          displayDialog(errorText, context);
-                        }
-                      },
-                    );
-                  },
-                  child: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.edit_outlined,
-                        size: 20,
-                        color: CustomColor.red,
-                      ),
-                      Text(
-                        'Hossein',
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: CustomColor.black,
+          child: BlocBuilder<AuthAccountBloc, AuthAccountState>(
+            builder: (context, state) {
+              return CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 30,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: showandselectProfileImage(context),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 18,
+                    ),
+                  ),
+                  if (state is DisplayInformationState) ...[
+                    state.displayUserInformation.fold(
+                      (l) => SliverToBoxAdapter(
+                        child: Center(
+                          child: textWidget(
+                            l,
+                            CustomColor.black,
+                            16,
+                            FontWeight.w500,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 30,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    rowEnterInformationBox(
-                      info: 'hosseinmohammadi.dev22@yahoo.com',
-                      title: 'پست الکترونیکی',
-                      onChaged: () {
-                        return showBottomSheet(
-                          context: context,
-                          title: 'پست الکترونیکی',
-                          label: 'پست الکترونیکی',
-                          controller: emailController,
-                          focusNode: emailFocusNode,
-                          inputType: TextInputType.emailAddress,
-                          registration: () {
-                            checkInvalidEmailCharacters(emailController.text);
-                            if (isShowErrorText) {
-                              displayDialog(errorText, context);
-                            }
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    rowEnterInformationBox(
-                      info: '09135887182',
-                      title: 'شماره موبایل',
-                      onChaged: () {
-                        return showBottomSheet(
-                          context: context,
-                          title: 'شماره موبایل',
-                          label: 'شماره موبایل',
-                          focusNode: phoneNumberFocusNode,
-                          controller: phoneNumberController,
-                          inputType: TextInputType.phone,
-                          registration: () {
-                            checkForInvalidCharacters(
-                                phoneNumberController.text);
-
-                            if (isShowErrorText) {
-                              displayDialog(errorText, context);
-                            }
-
-                            if (!isShowErrorText &&
-                                    phoneNumberController.text.length < 11 ||
-                                !isShowErrorText &&
-                                    phoneNumberController.text.length > 11) {
-                              displayDialog(
-                                  'شماره وارد شده باید 11 رقم باشد', context);
-                              return;
-                            }
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    rowEnterInformationBox(
-                      info: 'اصفهان',
-                      title: 'استان',
-                      onChaged: () {
-                        // return showBottomSheet(
-                        //   context: context,
-                        //   title: 'استان',
-                        //   label: 'استان',
-                        //   focusNode: provincesFocusNode,
-                        //   controller: provincesController,
-                        //   inputType: TextInputType.streetAddress,
-                        //   onChanged: (value) {
-                        //   },
-                        //   registration: () {},
-                        // );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SearchProvincesScreen(),
+                      (r) {
+                        return SliverToBoxAdapter(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await showBottomSheet(
+                                context: context,
+                                title: 'نام کاربری',
+                                label: 'نام کاربری',
+                                focusNode: usernameFocusNode,
+                                inputType: TextInputType.name,
+                                controller: usernameController,
+                                registration: () {
+                                  checkForInvalidCharacters(
+                                      usernameController.text);
+                                  if (isShowErrorText) {
+                                    displayDialog(errorText, context);
+                                  }
+                                },
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.edit_outlined,
+                                  size: 20,
+                                  color: CustomColor.red,
+                                ),
+                                Text(
+                                  r.name,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    color: CustomColor.black,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ),
-                    const SizedBox(
-                      height: 35,
+                  ],
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 30,
                     ),
-                    Text(
-                      'اطلاعات حساب کاربری شما به صورت محرمانه نگهدرای می شود.این اطلاعات تحت هیچ شرایطی در اختیار سایر کاربران قرار نخواهد گرفت.',
-                      textAlign: TextAlign.justify,
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: CustomColor.grey500,
+                  ),
+                  if (state is DisplayInformationState) ...[
+                    state.displayUserInformation.fold(
+                      (l) => SliverToBoxAdapter(
+                        child: Center(
+                          child: textWidget(
+                            l,
+                            CustomColor.black,
+                            16,
+                            FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      (r) => SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            rowEnterInformationBox(
+                              info: r.email,
+                              title: 'پست الکترونیکی',
+                              onChaged: () {
+                                return showBottomSheet(
+                                  context: context,
+                                  title: 'پست الکترونیکی',
+                                  label: 'پست الکترونیکی',
+                                  controller: emailController,
+                                  focusNode: emailFocusNode,
+                                  inputType: TextInputType.emailAddress,
+                                  registration: () {
+                                    checkInvalidEmailCharacters(
+                                        emailController.text);
+                                    if (isShowErrorText) {
+                                      displayDialog(errorText, context);
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            rowEnterInformationBox(
+                              info: r.phoneNumber.toString(),
+                              title: 'شماره موبایل',
+                              onChaged: () {
+                                return showBottomSheet(
+                                  context: context,
+                                  title: 'شماره موبایل',
+                                  label: 'شماره موبایل',
+                                  focusNode: phoneNumberFocusNode,
+                                  controller: phoneNumberController,
+                                  inputType: TextInputType.phone,
+                                  registration: () {
+                                    checkForInvalidCharacters(
+                                        phoneNumberController.text);
+
+                                    if (isShowErrorText) {
+                                      displayDialog(errorText, context);
+                                    }
+
+                                    if (!isShowErrorText &&
+                                            phoneNumberController.text.length <
+                                                11 ||
+                                        !isShowErrorText &&
+                                            phoneNumberController.text.length >
+                                                11) {
+                                      displayDialog(
+                                          'شماره وارد شده باید 11 رقم باشد',
+                                          context);
+                                      return;
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            rowEnterInformationBox(
+                              info: r.province,
+                              title: 'استان',
+                              onChaged: () {
+                                // return showBottomSheet(
+                                //   context: context,
+                                //   title: 'استان',
+                                //   label: 'استان',
+                                //   focusNode: provincesFocusNode,
+                                //   controller: provincesController,
+                                //   inputType: TextInputType.streetAddress,
+                                //   onChanged: (value) {
+                                //   },
+                                //   registration: () {},
+                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SearchProvincesScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 35,
+                            ),
+                            Text(
+                              'اطلاعات حساب کاربری شما به صورت محرمانه نگهدرای می شود.این اطلاعات تحت هیچ شرایطی در اختیار سایر کاربران قرار نخواهد گرفت.',
+                              textAlign: TextAlign.justify,
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: CustomColor.grey500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
-                ),
-              ),
-            ],
+                  SliverToBoxAdapter(
+                    child: GestureDetector(
+                      onTap: () {
+                        final Box<AdvertisingHive> adBox = Hive.box('ad_hive');
+
+                        // adBox.clear();
+                        print(RegisterId().getIdGallery());
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        color: CustomColor.black,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -608,13 +675,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
             ),
             TextButton(
               onPressed: () {
-                final Box<UserLogin> userLogin = Hive.box('user_login');
-                UserLogin user = UserLogin(
-                  isLogin: false,
-                  token: null,
-                );
-
-                userLogin.put(1, user);
+                Authmanager().isLogout();
 
                 Navigator.push(
                   context,
@@ -656,10 +717,12 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
           SizedBox(
             width: 210,
             child: Text(
-              info ?? 'اختیاری',
-              style: const TextStyle(
+              info == '' || info == '0' ? 'اختیاری' : info!,
+              style: TextStyle(
                 fontSize: 17,
-                color: CustomColor.pink,
+                color: info == '' || info == '0'
+                    ? CustomColor.grey500
+                    : CustomColor.pink,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

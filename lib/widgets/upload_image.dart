@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 
 // ignore: must_be_immutable
 class UploadImage extends StatefulWidget {
@@ -110,6 +115,14 @@ class _UploadImageState extends State<UploadImage> {
                           child: GestureDetector(
                             onTap: () {
                               widget.fileImage!.removeAt(index);
+
+                              BlocProvider.of<AddAdvertisingBloc>(context).add(
+                                  DeleteImageData(RegisterId().getIdGallery()));
+                              if (widget.fileImage!.isNotEmpty) {
+                                BlocProvider.of<AddAdvertisingBloc>(context)
+                                    .add(AddImagesToGallery(widget.fileImage!));
+                              }
+
                               setState(() {});
                             },
                             child: Container(

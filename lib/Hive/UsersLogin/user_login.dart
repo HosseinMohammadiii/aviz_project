@@ -9,5 +9,8 @@ class UserLogin extends HiveObject {
 
   @HiveField(1)
   String? token;
-  UserLogin({this.isLogin, this.token});
+
+  @HiveField(2)
+  String? id;
+  UserLogin({this.isLogin, this.token, this.id});
 }

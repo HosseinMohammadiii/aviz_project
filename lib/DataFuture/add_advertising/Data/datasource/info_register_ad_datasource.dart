@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:dio/dio.dart';
 
@@ -90,6 +91,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
         data: {
+          'user_id': Authmanager().getId(),
           'id_category': idCT,
           'id_facilities': idf,
           'id_gallery': idg,
@@ -175,6 +177,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         data: formData,
       );
       if (response.statusCode == 200) {
+        RegisterId().saveIdGallery(response.data['id']);
         return response.data['items'];
       }
     } on DioException catch (ex) {
@@ -284,10 +287,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       var response = await dio.delete(
         'collections/advertising_gallery/records/$id',
       );
-      return response.data['items']
-          .map<RegisterFutureAdGallery>(
-              (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject))
-          .toList();
+      return response.data['items'];
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');

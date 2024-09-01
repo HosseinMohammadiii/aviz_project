@@ -1,9 +1,11 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
+import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
+import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
 import 'package:aviz_project/Hive/UsersLogin/user_login.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/login_screen.dart';
@@ -26,7 +28,11 @@ void main() async {
 
   Hive.registerAdapter(UserLoginAdapter());
 
+  Hive.registerAdapter(AdvertisingHiveAdapter());
+
   await Hive.openBox<UserLogin>('user_login');
+
+  await Hive.openBox<AdvertisingHive>('ad_hive');
 
   await getInInit();
 
@@ -82,8 +88,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Box<UserLogin> userLogin = Hive.box('user_login');
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -140,25 +144,9 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: userLogin.get(1)?.isLogin ?? false
-          ? UserAccountInfirmation()
+      home: Authmanager().isLogin()
+          ? BottomNavigationScreen()
           : const LogInScreen(),
     );
   }
 }
-//  AuthManager().isLogin()
-//           ? const LogInScreen()
-//           : BottomNavigationScreen(),
-
-
-// BlocBuilder<ISLogIn, IsLogInState>(
-//         builder: (context, state) {
-//           return (() {
-//             if (state.isLogIn) {
-//               return BottomNavigationScreen();
-//             } else {
-//               return const LogInScreen();
-//             }
-//           }());
-//         },
-//       ),

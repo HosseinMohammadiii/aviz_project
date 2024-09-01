@@ -1,3 +1,4 @@
+import 'package:aviz_project/DataFuture/account/Data/model/account.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class AuthAccountState {}
@@ -11,4 +12,7 @@ final class AuthResponseState extends AuthAccountState {
   AuthResponseState(this.reponse);
 }
 
-final class AuthTryingState extends AuthAccountState {}
+final class DisplayInformationState extends AuthAccountState {
+  Either<String, AccountInformation> displayUserInformation;
+  DisplayInformationState(this.displayUserInformation);
+}

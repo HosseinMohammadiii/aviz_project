@@ -1,3 +1,5 @@
+import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
+import 'package:aviz_project/DataFuture/account/Data/model/account.dart';
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 
@@ -9,19 +11,20 @@ abstract class IAuthenticationDatasource {
       String userName, String password, String passwordConfirm);
 
   Future<String> login(String userName, String password);
+  Future<AccountInformation> getDisplayUserInfo();
 }
 
 class AuthenticationRemote extends IAuthenticationDatasource {
-  final Dio _dio;
+  final Dio dio;
   final Box<UserLogin> userLogin = Hive.box('user_login');
 
-  AuthenticationRemote(this._dio);
+  AuthenticationRemote(this.dio);
 
   @override
   Future<void> register(
       String userName, String password, String passwordConfirm) async {
     try {
-      var request = await _dio.post('collections/users/records', data: {
+      var request = await dio.post('collections/users/records', data: {
         'username': userName,
         'name': userName,
         'password': password,
@@ -42,16 +45,14 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   Future<String> login(String userName, String password) async {
     try {
       var response =
-          await _dio.post('collections/users/auth-with-password', data: {
+          await dio.post('collections/users/auth-with-password', data: {
         'identity': userName,
         'password': password,
       });
       if (response.statusCode == 200) {
-        UserLogin userLoginState = UserLogin(
-          isLogin: true,
-          token: response.data?['token'],
-        );
-        await userLogin.put(1, userLoginState);
+        Authmanager().saveId(response.data?['record']['id']);
+        Authmanager().saveToken(response.data?['token']);
+
         return response.data?['token'];
       }
     } on DioException catch (ex) {
@@ -61,5 +62,24 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       throw ApiException(0, 'لطفا برنامه را کامل بسته و مجدد باز کنید');
     }
     return '';
+  }
+
+  @override
+  Future<AccountInformation> getDisplayUserInfo() async {
+    try {
+      var response = await dio.get(
+        'collections/users/records/${Authmanager().getId()}',
+        options: Options(
+            headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'}),
+      );
+
+      // Assuming response data is directly the user object.
+      return AccountInformation.fromJson(response.data);
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown error');
+    }
   }
 }

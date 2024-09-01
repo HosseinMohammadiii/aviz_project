@@ -108,6 +108,15 @@ class AddAdvertisingBloc
         );
       },
     );
+
+    on<DeleteImageData>(
+      (event, emit) async {
+        var deleteAdGallery =
+            await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
+
+        emit(DeleteImageState(deleteAdGallery));
+      },
+    );
   }
 }
 

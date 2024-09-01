@@ -4,6 +4,7 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.da
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -164,6 +165,29 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 30,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: GestureDetector(
+                      onTap: () async {
+                        Dio dio = Dio();
+                        // widget.registerFutureAdGallery.images
+                        //     .remove('img_20240122_014344_254_KgRBMFqYNw.jpg');
+                        var img = await dio.get(
+                          'https://aviz.chbk.run/api/collections/advertising_gallery/records/xtx838lidk0rizs',
+                          data: {
+                            ['images']: ["", ""],
+                          },
+                        );
+
+                        // img;
+                        print(img.data['images']);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        color: CustomColor.pink,
+                      ),
                     ),
                   ),
                   SliverToBoxAdapter(

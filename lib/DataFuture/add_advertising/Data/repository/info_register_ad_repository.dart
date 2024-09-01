@@ -75,9 +75,9 @@ final class InfoAdRepository extends IInfoAdRepository {
         yearBuild,
       );
       if (response.isNotEmpty) {
-        return right('شما وارد شده اید');
+        return right(response);
       } else {
-        return left('خطایی در ورود پیش آمده! ');
+        return left('خطایی پیش آمده! ');
       }
       // return right(response);
     } on ApiException catch (ex) {
@@ -114,9 +114,9 @@ final class InfoAdRepository extends IInfoAdRepository {
         wc,
       );
       if (response.isNotEmpty) {
-        return right('شما وارد شده اید');
+        return right(response);
       } else {
-        return left('خطایی در ورود پیش آمده! ');
+        return left('خطایی پیش آمده! ');
       }
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
@@ -132,7 +132,7 @@ final class InfoAdRepository extends IInfoAdRepository {
       if (response.isNotEmpty) {
         return right(response);
       } else {
-        return left('خطایی در ارسال تصاویر پیش آمده! ');
+        return left('خطایی پیش آمده! ');
       }
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

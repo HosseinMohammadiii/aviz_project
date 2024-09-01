@@ -56,6 +56,11 @@ final class DeleteInfoAdStateResponse extends AddAdvertisingState {
   );
 }
 
+final class DeleteImageState extends AddAdvertisingState {
+  Either<String, String> deleteAdGallery;
+  DeleteImageState(this.deleteAdGallery);
+}
+
 class BoolState {
   final bool elevator;
   final bool parking;

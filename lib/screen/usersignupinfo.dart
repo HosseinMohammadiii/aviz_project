@@ -147,14 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   textInputAction: TextInputAction.done,
                 ),
                 // const Spacer(),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    color: CustomColor.red,
-                  ),
-                ),
+
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 2.4,
                 ),

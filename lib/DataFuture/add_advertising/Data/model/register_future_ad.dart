@@ -1,3 +1,6 @@
+import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
+import 'package:hive/hive.dart';
+
 class RegisterFutureAd {
   String id;
   String created;
@@ -47,5 +50,28 @@ class RegisterFutureAd {
       homeprice: jsonObject['price'],
       description: jsonObject['description'],
     );
+  }
+}
+
+class RegisterId {
+  AdvertisingHive adHive = AdvertisingHive();
+  final Box<AdvertisingHive> adBox = Hive.box('ad_hive');
+
+  void saveIdFacilities(String id) {
+    adHive.idFacilities = id;
+    adBox.put(1, adHive);
+  }
+
+  String getIdFacilities() {
+    return adBox.get(1)?.idFacilities ?? '';
+  }
+
+  void saveIdGallery(String id) {
+    adHive.idGallery = id;
+    adBox.put(2, adHive);
+  }
+
+  String getIdGallery() {
+    return adBox.get(2)?.idGallery ?? '';
   }
 }

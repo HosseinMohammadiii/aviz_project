@@ -35,5 +35,12 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
         emit(AuthLoadingState());
       },
     );
+
+    on<DisplayInformationEvent>(
+      (event, emit) async {
+        var displayUserInformation = await _repository.getDisplayUserInfo();
+        emit(DisplayInformationState(displayUserInformation));
+      },
+    );
   }
 }
