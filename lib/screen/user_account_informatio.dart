@@ -5,16 +5,13 @@ import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/screen/search_provinces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Hive/Advertising/advertising_hive.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/text_widget.dart';
 import 'login_screen.dart';
@@ -420,13 +417,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   SliverToBoxAdapter(
                     child: GestureDetector(
                       onTap: () {
-                        final Box<AdvertisingHive> adBox = Hive.box('ad_hive');
-                        RegisterId().saveIdGallery('id');
-
-                        //  adBox.clear();
-                        print('Before Clear: ${RegisterId().getIdGallery()}');
-                        RegisterId().clearID();
-                        print('After Clear: ${RegisterId().getIdGallery()}');
+                       
                       },
                       child: Container(
                         width: 50,

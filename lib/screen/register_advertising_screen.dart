@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
