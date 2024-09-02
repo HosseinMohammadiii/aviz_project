@@ -117,6 +117,14 @@ class AddAdvertisingBloc
         emit(DeleteImageState(deleteAdGallery));
       },
     );
+
+    on<UpdateImageData>(
+      (event, emit) async {
+        var updateImage =
+            await infoRepository.getUpdateAdImagesAd(event.id, event.images);
+        emit(UpdateImageState(updateImage));
+      },
+    );
   }
 }
 

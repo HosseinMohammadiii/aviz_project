@@ -27,6 +27,10 @@ abstract class IInfoAdRepository {
   Future<Either<String, String>> postImagesToGallery(
     List<File> images,
   );
+  Future<Either<String, String>> getUpdateAdImagesAd(
+    String id,
+    List<File> images,
+  );
   Future<Either<String, String>> getDeleteAdImagesAd(String id);
 
   Future<Either<String, List<AdvertisingFacilities>>> getDiplayAdFacilities();
@@ -198,6 +202,19 @@ final class InfoAdRepository extends IInfoAdRepository {
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> getUpdateAdImagesAd(
+    String id,
+    List<File> images,
+  ) async {
+    try {
+      var response = await datasource.getUpdateAdImagesAd(id, images);
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message = 'خطال محتوای متنی ندارد');
     }
   }
 }

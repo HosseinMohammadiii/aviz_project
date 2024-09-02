@@ -79,3 +79,9 @@ final class DeleteImageData extends InfoAdvertisingEvent {
   String idAdGallery;
   DeleteImageData(this.idAdGallery);
 }
+
+final class UpdateImageData extends InfoAdvertisingEvent {
+  String id;
+  List<File> images;
+  UpdateImageData(this.id, this.images);
+}

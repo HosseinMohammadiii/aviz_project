@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -32,6 +33,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   TextEditingController controllerDescription = TextEditingController();
   TextEditingController controllerPrice = TextEditingController();
   List<File> galleryFile = [];
+  List<File> updateImage = [];
+  List<File> finalImages = [];
   final picker = ImagePicker();
 
   @override
@@ -47,11 +50,65 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
     super.initState();
   }
 
+  Future<List<File>> setImages(List<File> gallery) async {
+    final pickedFileGallery = await picker.pickMultiImage();
+    List<XFile>? xfilePickGallery = pickedFileGallery;
+
+    setState(() {
+      if (xfilePickGallery.isNotEmpty) {
+        for (var i = 0; i < xfilePickGallery.length; i++) {
+          gallery.add(File(xfilePickGallery[i].path));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: CustomColor.bluegrey,
+            content: textWidget(
+              'عکسی انتخاب نشد',
+              CustomColor.grey,
+              14,
+              FontWeight.w500,
+            ),
+          ),
+        );
+      }
+      Navigator.of(context).pop();
+    });
+    return gallery;
+  }
+
+  Future<List<File>> setCameraImage(List<File> camera) async {
+    final pickedFileCamera = await picker.pickImage(source: ImageSource.camera);
+    XFile? xfilePickCamera = pickedFileCamera;
+    setState(() {
+      if (xfilePickCamera != null) {
+        camera.add(File(xfilePickCamera.path));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: CustomColor.bluegrey,
+            content: textWidget(
+              'عکسی انتخاب نشد',
+              CustomColor.grey,
+              14,
+              FontWeight.w500,
+            ),
+          ),
+        );
+      }
+      Navigator.of(context).pop();
+    });
+    return camera;
+  }
+
   @override
   Widget build(BuildContext context) {
 //Widget For display buttomsheet Use Camera or Gallary for Select image
     Future showPicker({
       required BuildContext context,
+      required Function(Future<List<File>>) regiterFileImage,
+      required Function(Future<List<File>>) regiterCameraImage,
+      required List<File> images,
     }) async {
       showModalBottomSheet(
         context: context,
@@ -67,32 +124,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  onTap: () async {
-                    final pickedFileGallery = await picker.pickMultiImage();
-                    List<XFile>? xfilePickGallery = pickedFileGallery;
-                    setState(() {
-                      if (xfilePickGallery.isNotEmpty) {
-                        for (var i = 0; i < xfilePickGallery.length; i++) {
-                          galleryFile.add(File(xfilePickGallery[i].path));
-                        }
-                        BlocProvider.of<AddAdvertisingBloc>(context)
-                            .add(AddImagesToGallery(galleryFile));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: CustomColor.bluegrey,
-                            content: textWidget(
-                              'عکسی انتخاب نشد',
-                              CustomColor.grey,
-                              14,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      }
-                      Navigator.of(context).pop();
-                    });
-                  },
+                  onTap: () => regiterFileImage(setImages(images)),
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
@@ -102,31 +134,9 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  onTap: () async {
-                    final pickedFileCamera =
-                        await picker.pickImage(source: ImageSource.camera);
-                    XFile? xfilePickCamera = pickedFileCamera;
-                    setState(() {
-                      if (xfilePickCamera != null) {
-                        galleryFile.add(File(xfilePickCamera.path));
-                        BlocProvider.of<AddAdvertisingBloc>(context)
-                            .add(AddImagesToGallery(galleryFile));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: CustomColor.bluegrey,
-                            content: textWidget(
-                              'عکسی انتخاب نشد',
-                              CustomColor.grey,
-                              14,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      }
-                      Navigator.of(context).pop();
-                    });
-                  },
+                  onTap: () => regiterCameraImage(setCameraImage(
+                    images,
+                  )),
                 ),
               ],
             ),
@@ -149,7 +159,41 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 UploadImage(
                   fileImage: galleryFile,
                   onChange: () {
-                    showPicker(context: context);
+                    showPicker(
+                      context: context,
+                      regiterFileImage: (p0) async {
+                        galleryFile = await p0;
+                        BlocProvider.of<AddAdvertisingBloc>(context)
+                            .add(AddImagesToGallery(galleryFile));
+                      },
+                      regiterCameraImage: (p0) async {
+                        galleryFile = await p0;
+                        BlocProvider.of<AddAdvertisingBloc>(context)
+                            .add(AddImagesToGallery(galleryFile));
+                      },
+                      images: galleryFile,
+                    );
+                  },
+                  addImage: () {
+                    updateImage.clear();
+                    showPicker(
+                      context: context,
+                      regiterFileImage: (p0) async {
+                        updateImage = await p0;
+                        galleryFile.addAll(updateImage);
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            UpdateImageData(
+                                RegisterId().getIdGallery(), updateImage));
+                      },
+                      regiterCameraImage: (p0) async {
+                        updateImage = await p0;
+                        galleryFile.addAll(updateImage);
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            UpdateImageData(
+                                RegisterId().getIdGallery(), updateImage));
+                      },
+                      images: updateImage,
+                    );
                   },
                 ),
                 const TextTitleSection(

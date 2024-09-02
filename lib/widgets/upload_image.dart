@@ -16,9 +16,11 @@ class UploadImage extends StatefulWidget {
   UploadImage({
     super.key,
     required this.onChange,
+    required this.addImage,
     required this.fileImage,
   });
   Function() onChange;
+  Function() addImage;
   List<File>? fileImage;
 
   @override
@@ -94,7 +96,7 @@ class _UploadImageState extends State<UploadImage> {
                           top: 10,
                           right: 12,
                           child: GestureDetector(
-                            onTap: () => widget.onChange(),
+                            onTap: () => widget.addImage(),
                             child: Container(
                               width: 30,
                               height: 30,

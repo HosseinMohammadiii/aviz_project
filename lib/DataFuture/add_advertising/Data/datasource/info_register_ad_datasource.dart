@@ -28,6 +28,10 @@ abstract class IInfoAdDatasource {
     List<File> images,
   );
   Future<String> getDeleteAdImagesAd(String id);
+  Future<String> getUpdateAdImagesAd(
+    String id,
+    List<File> images,
+  );
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
   Future<String> postRegisterFacilities(
@@ -44,6 +48,7 @@ abstract class IInfoAdDatasource {
     String wc,
   );
   Future<String> getDeleteAdFacilities(String id);
+  Future<String> getUpdateAdFacilities(String id);
 }
 
 final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
@@ -176,6 +181,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         'collections/advertising_gallery/records',
         data: formData,
       );
+
       if (response.statusCode == 200) {
         RegisterId().saveIdGallery(response.data['id']);
         return response.data['items'];
@@ -294,5 +300,56 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     } catch (e) {
       throw ApiException(0, 'Unknown');
     }
+  }
+
+  @override
+  Future<String> getUpdateAdFacilities(String id) async {
+    try {
+      var response = await dio.delete(
+        'collections/facilities/records/$id',
+      );
+      return response.data['items']
+          .map<AdvertisingFacilities>(
+              (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<String> getUpdateAdImagesAd(
+    String id,
+    List<File> images,
+  ) async {
+    try {
+      List<MultipartFile> imageFiles = [];
+      for (var image in images) {
+        String fileName = image.path.split('/').last;
+        imageFiles
+            .add(await MultipartFile.fromFile(image.path, filename: fileName));
+      }
+
+      FormData formData = FormData.fromMap({
+        'images': imageFiles,
+      });
+      var response = await dio.patch(
+        'collections/advertising_gallery/records/${RegisterId().getIdGallery()}',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return response.data['items'];
+      }
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
+    return '';
   }
 }
