@@ -44,6 +44,11 @@ final class RegisterFacilitiesInfoAdvertising extends AddAdvertisingState {
   );
 }
 
+final class UpdateFacilitiesState extends AddAdvertisingState {
+  Either<String, String> updateFacilities;
+  UpdateFacilitiesState(this.updateFacilities);
+}
+
 final class DeleteInfoAdStateResponse extends AddAdvertisingState {
   Either<String, String> deleteAdvertising;
   Either<String, String> deleteAdGallery;
@@ -77,6 +82,7 @@ class BoolState {
   final bool electricity;
   final bool gas;
   bool isDelete;
+  bool isUpdate;
   final String floorMaterial;
   int fIndex;
   final String wc;
@@ -93,6 +99,7 @@ class BoolState {
     required this.electricity,
     required this.gas,
     required this.isDelete,
+    required this.isUpdate,
     required this.floorMaterial,
     required this.fIndex,
     required this.wc,
@@ -110,6 +117,7 @@ class BoolState {
       bool? electricity,
       bool? gas,
       bool? isDelete,
+      bool? isUpdate,
       String? floorMaterial,
       int? fIndex,
       String? wc,
@@ -125,6 +133,7 @@ class BoolState {
       electricity: electricity ?? this.electricity,
       gas: gas ?? this.gas,
       isDelete: isDelete ?? this.isDelete,
+      isUpdate: isUpdate ?? this.isUpdate,
       floorMaterial: floorMaterial ?? this.floorMaterial,
       fIndex: fIndex ?? this.fIndex,
       wc: wc ?? this.wc,

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
@@ -50,21 +49,25 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
     super.initState();
   }
 
+// Function to select images from the gallery and add them to the list
   Future<List<File>> setImages(List<File> gallery) async {
-    final pickedFileGallery = await picker.pickMultiImage();
+    final pickedFileGallery =
+        await picker.pickMultiImage(); // Pick multiple images from gallery
     List<XFile>? xfilePickGallery = pickedFileGallery;
 
     setState(() {
       if (xfilePickGallery.isNotEmpty) {
+        // If images are picked, add them to the gallery list
         for (var i = 0; i < xfilePickGallery.length; i++) {
           gallery.add(File(xfilePickGallery[i].path));
         }
       } else {
+        // Show a message if no images were selected
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: CustomColor.bluegrey,
             content: textWidget(
-              'عکسی انتخاب نشد',
+              'No images selected',
               CustomColor.grey,
               14,
               FontWeight.w500,
@@ -72,23 +75,27 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
           ),
         );
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(); // Close the bottom sheet
     });
     return gallery;
   }
 
+// Function to take a photo using the camera and add it to the list
   Future<List<File>> setCameraImage(List<File> camera) async {
-    final pickedFileCamera = await picker.pickImage(source: ImageSource.camera);
+    final pickedFileCamera = await picker.pickImage(
+        source: ImageSource.camera); // Capture image using camera
     XFile? xfilePickCamera = pickedFileCamera;
     setState(() {
       if (xfilePickCamera != null) {
+        // If an image was captured, add it to the camera list
         camera.add(File(xfilePickCamera.path));
       } else {
+        // Show a message if no image was captured
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: CustomColor.bluegrey,
             content: textWidget(
-              'عکسی انتخاب نشد',
+              'No images captured',
               CustomColor.grey,
               14,
               FontWeight.w500,
@@ -96,19 +103,21 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
           ),
         );
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(); // Close the bottom sheet
     });
     return camera;
   }
 
   @override
   Widget build(BuildContext context) {
-//Widget For display buttomsheet Use Camera or Gallary for Select image
+    // Widget to display a bottom sheet for selecting images from the camera or gallery
     Future showPicker({
       required BuildContext context,
-      required Function(Future<List<File>>) regiterFileImage,
-      required Function(Future<List<File>>) regiterCameraImage,
-      required List<File> images,
+      required Function(Future<List<File>>)
+          regiterFileImage, // Callback for gallery selection
+      required Function(Future<List<File>>)
+          regiterCameraImage, // Callback for camera selection
+      required List<File> images, // List of images
     }) async {
       showModalBottomSheet(
         context: context,
@@ -124,7 +133,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  onTap: () => regiterFileImage(setImages(images)),
+                  onTap: () => regiterFileImage(
+                      setImages(images)), // Call function to pick from gallery
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
@@ -135,8 +145,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                     ),
                   ),
                   onTap: () => regiterCameraImage(setCameraImage(
-                    images,
-                  )),
+                      images)), // Call function to pick from camera
                 ),
               ],
             ),
@@ -163,34 +172,38 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       context: context,
                       regiterFileImage: (p0) async {
                         galleryFile = await p0;
-                        BlocProvider.of<AddAdvertisingBloc>(context)
-                            .add(AddImagesToGallery(galleryFile));
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            AddImagesToGallery(
+                                galleryFile)); // Add selected gallery images to Bloc
                       },
                       regiterCameraImage: (p0) async {
                         galleryFile = await p0;
-                        BlocProvider.of<AddAdvertisingBloc>(context)
-                            .add(AddImagesToGallery(galleryFile));
+                        BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            AddImagesToGallery(
+                                galleryFile)); // Add selected camera images to Bloc
                       },
                       images: galleryFile,
                     );
                   },
                   addImage: () {
-                    updateImage.clear();
+                    updateImage.clear(); // Clear the update image list
                     showPicker(
                       context: context,
                       regiterFileImage: (p0) async {
                         updateImage = await p0;
-                        galleryFile.addAll(updateImage);
+                        galleryFile.addAll(
+                            updateImage); // Add images to the gallery list
                         BlocProvider.of<AddAdvertisingBloc>(context).add(
                             UpdateImageData(
-                                RegisterId().getIdGallery(), updateImage));
+                                updateImage)); // Update image data in Bloc
                       },
                       regiterCameraImage: (p0) async {
                         updateImage = await p0;
-                        galleryFile.addAll(updateImage);
+                        galleryFile.addAll(
+                            updateImage); // Add images to the gallery list
                         BlocProvider.of<AddAdvertisingBloc>(context).add(
                             UpdateImageData(
-                                RegisterId().getIdGallery(), updateImage));
+                                updateImage)); // Update image data in Bloc
                       },
                       images: updateImage,
                     );
@@ -228,122 +241,51 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 ),
                 SwitchBox(switchCheck: false, txt: 'فعال کردن گفتگو'),
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
-                BlocConsumer<AddAdvertisingBloc, AddAdvertisingState>(
-                  builder: (context, state) {
-                    return GestureDetector().textButton(
-                      () {
-                        // Check if no images have been selected
-                        if (galleryFile.isEmpty) {
-                          // Display a dialog prompting the user to select an image
-                          displayDialog(
-                              'لطفا عکس مورد نظر را انتخاب کنید', context);
-                        }
-                        // Check if any of the required text fields are empty
-                        else if (controllertitle.text.isEmpty ||
-                            controllerDescription.text.isEmpty ||
-                            controllerPrice.text.isEmpty) {
-                          // Display a dialog prompting the user to fill in all fields
-                          displayDialog(
-                              'لطفا تمام فیلد ها را کامل کنید', context);
-                        } else {
-                          // Get the current state of the RegisterInfoAdCubit
-                          final stateAd =
-                              context.read<RegisterInfoAdCubit>().state;
-                          // Get the current state of the BoolStateCubit
-                          final boolState =
-                              context.read<BoolStateCubit>().state;
+                GestureDetector().textButton(
+                  () {
+                    // Check if no images have been selected
+                    if (galleryFile.isEmpty) {
+                      // Display a dialog prompting the user to select an image
+                      displayDialog(
+                          'لطفا عکس مورد نظر را انتخاب کنید', context);
+                    }
+                    // Check if any of the required text fields are empty
+                    else if (controllertitle.text.isEmpty ||
+                        controllerDescription.text.isEmpty ||
+                        controllerPrice.text.isEmpty) {
+                      // Display a dialog prompting the user to fill in all fields
+                      displayDialog('لطفا تمام فیلد ها را کامل کنید', context);
+                    } else {
+                      // Get the current state of the RegisterInfoAdCubit
+                      final stateAd = context.read<RegisterInfoAdCubit>().state;
 
-                          setState(() {
-                            BlocProvider.of<AddAdvertisingBloc>(context)
-                                .add(AddImagesToGallery(galleryFile));
-                          });
-                          // Add the advertising information using the AddAdvertisingBloc
-
-                          // Add the facilities information using the AddAdvertisingBloc
-                          setState(() {
-                            BlocProvider.of<AddAdvertisingBloc>(context).add(
-                              AddFacilitiesAdvertising(
-                                boolState.elevator,
-                                boolState.parking,
-                                boolState.storeroom,
-                                boolState.balcony,
-                                boolState.penthouse,
-                                boolState.duplex,
-                                boolState.water,
-                                boolState.electricity,
-                                boolState.gas,
-                                boolState.floorMaterial,
-                                boolState.wc,
-                              ),
-                            );
-                          });
-                          BlocProvider.of<AddAdvertisingBloc>(context).add(
-                            AddInfoAdvertising(
-                              stateAd.idCt,
-                              stateAd.address,
-                              stateAd.title,
-                              stateAd.description,
-                              stateAd.price!,
-                              stateAd.metr!.toInt(),
-                              stateAd.countRoom!.toInt(),
-                              stateAd.floor!.toInt(),
-                              stateAd.yearBuild!.toInt(),
-                            ),
-                          );
-                          // // Reset the information stored in RegisterInfoAdCubit
-                          // context.read<RegisterInfoAdCubit>().resetInfoAdSet();
-                          // // Reset the state of BoolStateCubit
-                          // context.read<BoolStateCubit>().reset();
-                          // // Navigate back to the first page
-                          // context.read<NavigationPage>().backFirstPAge();
-
-                          // The following code is commented out and not currently in use:
-                          // advertisingData(
-                          //   title,
-                          //   description,
-                          //   galleryFile,
-                          //   price,
-                          // );
-                          // Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => BottomNavigationScreen(index: 2),
-                          //     ));
-                        }
-                      },
-                      'ثبت آگهی',
-                      CustomColor.red,
-                      CustomColor.grey,
-                      false,
-                    );
-                  },
-                  listener: (context, state) {
-                    if (state is AddInfoAdvertisingStateResponse) {
-                      state.registerAdvertising.fold(
-                        (error) {
-                          var snackbar = SnackBar(
-                            content: Text(
-                              error,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            backgroundColor: Colors.black,
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 2),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        },
-                        (r) {
-                          // Wait until the token is available
-
-                          context.read<RegisterInfoAdCubit>().resetInfoAdSet();
-                          // Reset the state of BoolStateCubit
-                          context.read<BoolStateCubit>().reset();
-                          // Navigate back to the first page
-                          context.read<NavigationPage>().backFirstPAge();
-                        },
+                      BlocProvider.of<AddAdvertisingBloc>(context).add(
+                        AddInfoAdvertising(
+                          stateAd.idCt,
+                          stateAd.address,
+                          stateAd.title,
+                          stateAd.description,
+                          stateAd.price!,
+                          stateAd.metr!.toInt(),
+                          stateAd.countRoom!.toInt(),
+                          stateAd.floor!.toInt(),
+                          stateAd.yearBuild!.toInt(),
+                        ),
                       );
+                      // Reset the information stored in RegisterInfoAdCubit
+                      context.read<RegisterInfoAdCubit>().resetInfoAdSet();
+                      // Reset the state of BoolStateCubit
+                      context.read<BoolStateCubit>().reset();
+                      // Navigate back to the first page
+                      context.read<NavigationPage>().backFirstPAge();
+
+                      // RegisterId().clearID();
                     }
                   },
+                  'ثبت آگهی',
+                  CustomColor.red,
+                  CustomColor.grey,
+                  false,
                 ),
               ],
             ),

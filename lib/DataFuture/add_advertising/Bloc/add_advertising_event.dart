@@ -64,6 +64,34 @@ final class AddFacilitiesAdvertising extends InfoAdvertisingEvent {
   );
 }
 
+final class UpdateFacilitiesData extends InfoAdvertisingEvent {
+  bool elevator;
+  bool parking;
+  bool storeroom;
+  bool balcony;
+  bool penthouse;
+  bool duplex;
+  bool water;
+  bool electricity;
+  bool gas;
+  String floorMaterial;
+  String wc;
+
+  UpdateFacilitiesData(
+    this.elevator,
+    this.parking,
+    this.storeroom,
+    this.balcony,
+    this.penthouse,
+    this.duplex,
+    this.water,
+    this.electricity,
+    this.gas,
+    this.floorMaterial,
+    this.wc,
+  );
+}
+
 final class DeleteAdvertisingData extends InfoAdvertisingEvent {
   String idAd;
   String idAdFacilities;
@@ -81,7 +109,6 @@ final class DeleteImageData extends InfoAdvertisingEvent {
 }
 
 final class UpdateImageData extends InfoAdvertisingEvent {
-  String id;
   List<File> images;
-  UpdateImageData(this.id, this.images);
+  UpdateImageData(this.images);
 }

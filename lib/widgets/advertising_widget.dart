@@ -32,6 +32,12 @@ class AdvertisingWidget extends StatefulWidget {
 class _AdvertisingWidgetState extends State<AdvertisingWidget> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'fa-IR', symbol: '');
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

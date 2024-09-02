@@ -2,6 +2,7 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/List/list_advertising.dart';
 import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
@@ -483,7 +484,41 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               idCt: idCt(),
                               address: controllerAddress.text,
                             );
-
+                        final boolState = context.read<BoolStateCubit>().state;
+                        print(RegisterId().getIdFacilities());
+                        if (boolState.isUpdate) {
+                          BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            UpdateFacilitiesData(
+                              boolState.elevator,
+                              boolState.parking,
+                              boolState.storeroom,
+                              boolState.balcony,
+                              boolState.penthouse,
+                              boolState.duplex,
+                              boolState.water,
+                              boolState.electricity,
+                              boolState.gas,
+                              boolState.floorMaterial,
+                              boolState.wc,
+                            ),
+                          );
+                        } else {
+                          BlocProvider.of<AddAdvertisingBloc>(context).add(
+                            AddFacilitiesAdvertising(
+                              boolState.elevator,
+                              boolState.parking,
+                              boolState.storeroom,
+                              boolState.balcony,
+                              boolState.penthouse,
+                              boolState.duplex,
+                              boolState.water,
+                              boolState.electricity,
+                              boolState.gas,
+                              boolState.floorMaterial,
+                              boolState.wc,
+                            ),
+                          );
+                        }
                         // addAdvertising(
                         //   metr,
                         //   countRoom,

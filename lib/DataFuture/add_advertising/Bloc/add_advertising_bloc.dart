@@ -81,6 +81,24 @@ class AddAdvertisingBloc
         );
       },
     );
+    on<UpdateFacilitiesData>(
+      (event, emit) async {
+        var updateFacilities = await infoRepository.getUpdateAdFacilities(
+          event.elevator,
+          event.parking,
+          event.storeroom,
+          event.balcony,
+          event.penthouse,
+          event.duplex,
+          event.water,
+          event.electricity,
+          event.gas,
+          event.floorMaterial,
+          event.wc,
+        );
+        emit(UpdateFacilitiesState(updateFacilities));
+      },
+    );
 
     on<DeleteAdvertisingData>(
       (event, emit) async {
@@ -121,7 +139,7 @@ class AddAdvertisingBloc
     on<UpdateImageData>(
       (event, emit) async {
         var updateImage =
-            await infoRepository.getUpdateAdImagesAd(event.id, event.images);
+            await infoRepository.getUpdateAdImagesAd(event.images);
         emit(UpdateImageState(updateImage));
       },
     );
@@ -141,6 +159,7 @@ class BoolStateCubit extends Cubit<BoolState> {
           electricity: false,
           gas: false,
           isDelete: false,
+          isUpdate: false,
           floorMaterial: '',
           fIndex: 1,
           wc: '',
@@ -219,6 +238,7 @@ class BoolStateCubit extends Cubit<BoolState> {
       electricity: false,
       gas: false,
       isDelete: false,
+      isUpdate: false,
       floorMaterial: '',
       fIndex: 1,
       wc: '',

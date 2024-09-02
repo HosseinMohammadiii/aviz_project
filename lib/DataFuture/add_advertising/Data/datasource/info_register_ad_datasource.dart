@@ -29,7 +29,6 @@ abstract class IInfoAdDatasource {
   );
   Future<String> getDeleteAdImagesAd(String id);
   Future<String> getUpdateAdImagesAd(
-    String id,
     List<File> images,
   );
 
@@ -48,7 +47,19 @@ abstract class IInfoAdDatasource {
     String wc,
   );
   Future<String> getDeleteAdFacilities(String id);
-  Future<String> getUpdateAdFacilities(String id);
+  Future<String> getUpdateAdFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+    bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
+    String floorMaterial,
+    String wc,
+  );
 }
 
 final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
@@ -68,38 +79,13 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     int yearBuild,
   ) async {
     try {
-      //This Variable is For Receiving the Gallery Records
-      var responseGallery =
-          await dio.get('collections/advertising_gallery/records');
-
-      List<RegisterFutureAdGallery> adg = responseGallery.data['items']
-          .map<RegisterFutureAdGallery>(
-            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
-          )
-          .toList();
-
-      //This variable is For Take the last Id From Gallery Collections
-      var idg = adg.last.id;
-
-      //This Variable is For Receiving the Facilities Records
-      var responsee = await dio.get('collections/facilities/records');
-
-      List<AdvertisingFacilities> adf = responsee.data['items']
-          .map<AdvertisingFacilities>(
-            (jsonObject) => AdvertisingFacilities.fromJson(jsonObject),
-          )
-          .toList();
-
-      //This variable is For Take the last Id From Facilities Collections
-      var idf = adf.last.id;
-
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
         data: {
           'user_id': Authmanager().getId(),
           'id_category': idCT,
-          'id_facilities': idf,
-          'id_gallery': idg,
+          'id_facilities': RegisterId().getIdFacilities(),
+          'id_gallery': RegisterId().getIdGallery(),
           'title': title,
           'price': price,
           'description': description,
@@ -138,21 +124,25 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     String wc,
   ) async {
     try {
-      var response = await dio.post('collections/facilities/records', data: {
-        'elevator': elevator,
-        'parking': parking,
-        'storeroom': storeroom,
-        'balcony': balcony,
-        'penthouse': penthouse,
-        'duplex': duplex,
-        'water': water,
-        'electricity': electricity,
-        'gas': gas,
-        'floor_material': floorMaterial,
-        'wc': wc,
-      });
+      var response = await dio.post(
+        'collections/facilities/records',
+        data: {
+          'elevator': elevator,
+          'parking': parking,
+          'storeroom': storeroom,
+          'balcony': balcony,
+          'penthouse': penthouse,
+          'duplex': duplex,
+          'water': water,
+          'electricity': electricity,
+          'gas': gas,
+          'floor_material': floorMaterial,
+          'wc': wc,
+        },
+      );
 
       if (response.statusCode == 200) {
+        RegisterId().saveIdFacilities(response.data['id']);
         return response.data['items'];
       }
     } on DioException catch (ex) {
@@ -218,8 +208,10 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   @override
   Future<List<RegisterFutureAd>> getDiplayAdvertising() async {
     try {
+      // Map<String, String> qParams = {'filter': 'id="$id"'};
       var response = await dio.get(
         'collections/inforegisteredhomes/records',
+        // queryParameters: qParams,
       );
       return response.data['items']
           .map<RegisterFutureAd>(
@@ -303,26 +295,50 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   }
 
   @override
-  Future<String> getUpdateAdFacilities(String id) async {
+  Future<String> getUpdateAdFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+    bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
+    String floorMaterial,
+    String wc,
+  ) async {
     try {
-      var response = await dio.delete(
-        'collections/facilities/records/$id',
+      var response = await dio.patch(
+        'collections/facilities/records/${RegisterId().getIdFacilities()}',
+        data: {
+          'elevator': elevator,
+          'parking': parking,
+          'storeroom': storeroom,
+          'balcony': balcony,
+          'penthouse': penthouse,
+          'duplex': duplex,
+          'water': water,
+          'electricity': electricity,
+          'gas': gas,
+          'floor_material': floorMaterial,
+          'wc': wc,
+        },
       );
-      return response.data['items']
-          .map<AdvertisingFacilities>(
-              (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
-          .toList();
+      if (response.statusCode == 200) {
+        return response.data['items'];
+      }
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
       throw ApiException(0, 'Unknown');
     }
+    return '';
   }
 
   @override
   Future<String> getUpdateAdImagesAd(
-    String id,
     List<File> images,
   ) async {
     try {

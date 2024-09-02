@@ -28,7 +28,6 @@ abstract class IInfoAdRepository {
     List<File> images,
   );
   Future<Either<String, String>> getUpdateAdImagesAd(
-    String id,
     List<File> images,
   );
   Future<Either<String, String>> getDeleteAdImagesAd(String id);
@@ -48,6 +47,19 @@ abstract class IInfoAdRepository {
     String wc,
   );
   Future<Either<String, String>> getDeleteAdFacilities(String id);
+  Future<Either<String, String>> getUpdateAdFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+    bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
+    String floorMaterial,
+    String wc,
+  );
 }
 
 final class InfoAdRepository extends IInfoAdRepository {
@@ -207,11 +219,44 @@ final class InfoAdRepository extends IInfoAdRepository {
 
   @override
   Future<Either<String, String>> getUpdateAdImagesAd(
-    String id,
     List<File> images,
   ) async {
     try {
-      var response = await datasource.getUpdateAdImagesAd(id, images);
+      var response = await datasource.getUpdateAdImagesAd(images);
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message = 'خطال محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> getUpdateAdFacilities(
+    bool elevator,
+    bool parking,
+    bool storeroom,
+    bool balcony,
+    bool penthouse,
+    bool duplex,
+    bool water,
+    bool electricity,
+    bool gas,
+    String floorMaterial,
+    String wc,
+  ) async {
+    try {
+      var response = await datasource.getUpdateAdFacilities(
+        elevator,
+        parking,
+        storeroom,
+        balcony,
+        penthouse,
+        duplex,
+        water,
+        electricity,
+        gas,
+        floorMaterial,
+        wc,
+      );
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطال محتوای متنی ندارد');

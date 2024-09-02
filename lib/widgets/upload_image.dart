@@ -116,16 +116,18 @@ class _UploadImageState extends State<UploadImage> {
                           left: 12,
                           child: GestureDetector(
                             onTap: () {
-                              widget.fileImage!.removeAt(index);
+                              setState(() {
+                                widget.fileImage!.removeAt(index);
 
-                              BlocProvider.of<AddAdvertisingBloc>(context).add(
-                                  DeleteImageData(RegisterId().getIdGallery()));
-                              if (widget.fileImage!.isNotEmpty) {
                                 BlocProvider.of<AddAdvertisingBloc>(context)
-                                    .add(AddImagesToGallery(widget.fileImage!));
-                              }
-
-                              setState(() {});
+                                    .add(DeleteImageData(
+                                        RegisterId().getIdGallery()));
+                                if (widget.fileImage!.isNotEmpty) {
+                                  BlocProvider.of<AddAdvertisingBloc>(context)
+                                      .add(AddImagesToGallery(
+                                          widget.fileImage!));
+                                }
+                              });
                             },
                             child: Container(
                               width: 30,

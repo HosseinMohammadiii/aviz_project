@@ -421,9 +421,12 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                     child: GestureDetector(
                       onTap: () {
                         final Box<AdvertisingHive> adBox = Hive.box('ad_hive');
+                        RegisterId().saveIdGallery('id');
 
-                        // adBox.clear();
-                        print(RegisterId().getIdGallery());
+                        //  adBox.clear();
+                        print('Before Clear: ${RegisterId().getIdGallery()}');
+                        RegisterId().clearID();
+                        print('After Clear: ${RegisterId().getIdGallery()}');
                       },
                       child: Container(
                         width: 50,

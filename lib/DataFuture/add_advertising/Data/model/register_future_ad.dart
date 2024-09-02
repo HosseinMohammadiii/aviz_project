@@ -57,6 +57,13 @@ class RegisterId {
   AdvertisingHive adHive = AdvertisingHive();
   final Box<AdvertisingHive> adBox = Hive.box('ad_hive');
 
+  void clearID() {
+    adHive.idFacilities = null;
+    adHive.idGallery = null;
+    adBox.put(1, adHive);
+    adBox.put(2, adHive);
+  }
+
   void saveIdFacilities(String id) {
     adHive.idFacilities = id;
     adBox.put(1, adHive);

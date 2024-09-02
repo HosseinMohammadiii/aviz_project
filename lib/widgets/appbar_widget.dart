@@ -43,13 +43,15 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                           case ViewPage.itemsBuyHome:
                             // case ViewPage.itemsBuyBusinessPlace:
                             // case ViewPage.itemsRentBusinessPlace:
-                            BlocProvider.of<NavigationPage>(context)
+                            context
+                                .read<NavigationPage>()
                                 .getNavItems(ViewPage.category);
                             break;
 
                           //Switching the status when we are on the ad information registration page to a previous step.
                           case ViewPage.registerDetialsRentHomeAdvertising:
-                            BlocProvider.of<NavigationPage>(context)
+                            context
+                                .read<NavigationPage>()
                                 .getNavItems(ViewPage.itemsRentHome);
                             context
                                 .read<RegisterInfoAdCubit>()
@@ -57,7 +59,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                             context.read<BoolStateCubit>().reset();
                             break;
                           case ViewPage.registerDetialsBuyHomeAdvertising:
-                            BlocProvider.of<NavigationPage>(context)
+                            context
+                                .read<NavigationPage>()
                                 .getNavItems(ViewPage.itemsBuyHome);
                             context
                                 .read<RegisterInfoAdCubit>()
@@ -67,9 +70,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
                           //Switching the status when we are on the ad location registration page to a previous step.
                           case ViewPage.registerHomeLocation:
-                            BlocProvider.of<NavigationPage>(context)
-                                .getNavItems(
-                                    ViewPage.registerDetialsBuyHomeAdvertising);
+                            context.read<NavigationPage>().getNavItems(
+                                ViewPage.registerDetialsBuyHomeAdvertising);
+                            context.read<BoolStateCubit>().state.isUpdate =
+                                true;
+
                             break;
 
                           // case ViewPage.registerBusinessLocation:
@@ -79,7 +84,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
                           //Switching the status when we are on the ad final information registration page to a previous step.
                           case ViewPage.registerHomeAdvertising:
-                            BlocProvider.of<NavigationPage>(context)
+                            context
+                                .read<NavigationPage>()
                                 .getNavItems(ViewPage.registerHomeLocation);
 
                             break;
@@ -91,7 +97,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
                           //Switching the status when we are not in a stage.
                           default:
-                            BlocProvider.of<NavigationPage>(context)
+                            context
+                                .read<NavigationPage>()
                                 .getNavItems(ViewPage.category);
                             break;
                         }
