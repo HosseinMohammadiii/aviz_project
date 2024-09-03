@@ -1,3 +1,4 @@
+import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';

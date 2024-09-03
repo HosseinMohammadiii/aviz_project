@@ -57,6 +57,7 @@ Future<void> getInInit() async {
       locator.get(),
     ),
   );
+
   locator.registerFactory<ISearchRepository>(
     () => SearchRepository(
       locator.get(),

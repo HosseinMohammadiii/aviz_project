@@ -40,7 +40,7 @@ class AdvertisingSearchWidget extends StatelessWidget {
           SizedBox(
             width: 111,
             child: CachedNetworkImageWidget(
-              imgUrl: advertisingHome.images[0],
+              imgUrl: advertisingHome.idGallery,
             ),
           ),
           const SizedBox(

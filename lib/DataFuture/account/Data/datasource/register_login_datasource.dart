@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/account/Data/model/account.dart';
 import 'package:dio/dio.dart';
-import 'package:hive/hive.dart';
 
-import '../../../../Hive/UsersLogin/user_login.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 
 abstract class IAuthenticationDatasource {
@@ -12,11 +12,14 @@ abstract class IAuthenticationDatasource {
 
   Future<String> login(String userName, String password);
   Future<AccountInformation> getDisplayUserInfo();
+  Future<String> getUpdateUserInfo(File? avatar);
+  Future<String> getUpdateNameUser(String name);
+  Future<String> getUpdateEmailUser(String email);
+  Future<String> getUpdatePhoneNumberUser(int phoneNumber);
 }
 
 class AuthenticationRemote extends IAuthenticationDatasource {
   final Dio dio;
-  final Box<UserLogin> userLogin = Hive.box('user_login');
 
   AuthenticationRemote(this.dio);
 
@@ -81,5 +84,113 @@ class AuthenticationRemote extends IAuthenticationDatasource {
     } catch (e) {
       throw ApiException(0, 'Unknown error');
     }
+  }
+
+  @override
+  Future<String> getUpdateUserInfo(File? avatar) async {
+    try {
+      String fileName = avatar!.path.split('/').last;
+      MultipartFile imageFile = await MultipartFile.fromFile(
+        avatar.path,
+        filename: fileName,
+      );
+
+      FormData formData = FormData.fromMap({
+        'avatar': imageFile,
+      });
+
+      var response = await dio.patch(
+        'collections/users/records/${Authmanager().getId()}',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
+        data: formData,
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      // Assuming response data is directly the user object.
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown error');
+    }
+    return '';
+  }
+
+  @override
+  Future<String> getUpdateNameUser(String name) async {
+    try {
+      var response = await dio.patch(
+        'collections/users/records/${Authmanager().getId()}',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
+        data: {
+          'name': name,
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      // Assuming response data is directly the user object.
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown error');
+    }
+    return '';
+  }
+
+  @override
+  Future<String> getUpdateEmailUser(String email) async {
+    try {
+      var response = await dio.patch(
+        'collections/users/records/${Authmanager().getId()}',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
+        data: {
+          'email_user': email,
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      // Assuming response data is directly the user object.
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown error');
+    }
+    return '';
+  }
+
+  @override
+  Future<String> getUpdatePhoneNumberUser(int phoneNumber) async {
+    try {
+      var response = await dio.patch(
+        'collections/users/records/${Authmanager().getId()}',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
+        data: {
+          'phone_number': phoneNumber,
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      // Assuming response data is directly the user object.
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown error');
+    }
+    return '';
   }
 }

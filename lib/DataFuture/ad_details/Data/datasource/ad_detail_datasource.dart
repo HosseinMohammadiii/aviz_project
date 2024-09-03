@@ -2,21 +2,22 @@ import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_detail.dart';
 import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
+import '../../../add_advertising/Data/model/ad_gallery.dart';
 import '../model/ad_facilities.dart';
 
 abstract class IAdvertisingFeaturesDataSoure {
-  Future<List<AdvertisingFeatures>> getAdvertisinFeatures(String adId);
-  Future<List<AdvertisingFacilities>> getAdvertisinFacilities(String adId);
-  Future<List<AdvertisingFacilities>> getAdvertisinFacilitiesList();
+  Future<List<AdvertisingFeatures>> getAdvertisinFeatures(String id);
+  Future<List<AdvertisingFacilities>> getAdvertisinFacilities(String id);
+  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd(String id);
 }
 
 class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
   final Dio dio;
   IAdFeaturesRemoteDataSource(this.dio);
   @override
-  Future<List<AdvertisingFeatures>> getAdvertisinFeatures(String adId) async {
+  Future<List<AdvertisingFeatures>> getAdvertisinFeatures(String id) async {
     try {
-      Map<String, dynamic> query = {'filter': 'id_advertising="$adId"'};
+      Map<String, dynamic> query = {'filter': 'id_advertising="$id"'};
       var response = await dio.get(
         'collections/features/records',
         queryParameters: query,
@@ -34,14 +35,14 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
   }
 
   @override
-  Future<List<AdvertisingFacilities>> getAdvertisinFacilities(
-      String adId) async {
+  Future<List<AdvertisingFacilities>> getAdvertisinFacilities(String id) async {
     try {
-      Map<String, dynamic> query = {'filter': 'id_advertising="$adId"'};
+      Map<String, dynamic> query = {'filter': 'id="$id"'};
       var response = await dio.get(
         'collections/facilities/records',
         queryParameters: query,
       );
+
       return response.data['items']
           .map<AdvertisingFacilities>(
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
@@ -55,14 +56,18 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
   }
 
   @override
-  Future<List<AdvertisingFacilities>> getAdvertisinFacilitiesList() async {
+  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd(String id) async {
     try {
+      Map<String, dynamic> query = {'filter': 'id="$id"'};
       var response = await dio.get(
-        'collections/facilities/records',
+        'collections/advertising_gallery/records',
+        queryParameters: query,
       );
+
       return response.data['items']
-          .map<AdvertisingFacilities>(
-              (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .map<RegisterFutureAdGallery>(
+            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
+          )
           .toList();
     } on DioException catch (ex) {
       throw ApiException(

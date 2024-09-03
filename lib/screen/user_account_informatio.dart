@@ -8,10 +8,13 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/screen/search_provinces.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../DataFuture/account/Data/model/account.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/text_widget.dart';
 import 'login_screen.dart';
@@ -48,7 +51,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
 
     // Check if the username contains any of the invalid characters
     for (String character in allInvalidChars) {
-      if (emailController.text.contains(character)) {
+      if (text.contains(character)) {
         setState(() {
           errorText = 'از کاراکتر غیرمجاز استفاده شده است: $character';
           isShowErrorText = true;
@@ -115,10 +118,14 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   setState(() {
                     if (xfilePickCamera != null) {
                       galleryFile = File(xfilePickCamera.path);
+
+                      context
+                          .read<AuthAccountBloc>()
+                          .add(UpdateAvataUserEvent(galleryFile!));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: CustomColor.bluegrey,
+                          backgroundColor: CustomColor.grey500,
                           content: textWidget(
                             'عکسی انتخاب نشد',
                             CustomColor.grey,
@@ -147,10 +154,13 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   setState(() {
                     if (xfilePickCamera != null) {
                       galleryFile = File(xfilePickCamera.path);
+                      context
+                          .read<AuthAccountBloc>()
+                          .add(UpdateAvataUserEvent(galleryFile!));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: CustomColor.bluegrey,
+                          backgroundColor: CustomColor.grey500,
                           content: textWidget(
                             'عکسی انتخاب نشد',
                             CustomColor.grey,
@@ -225,14 +235,35 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
             builder: (context, state) {
               return CustomScrollView(
                 slivers: [
+                  if (state is AuthLoadingState) ...[
+                    const SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ],
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 30,
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: showandselectProfileImage(context),
-                  ),
+                  if (state is DisplayInformationState) ...[
+                    state.displayUserInformation.fold(
+                      (error) => SliverToBoxAdapter(
+                        child: Center(
+                          child: textWidget(
+                            error,
+                            CustomColor.black,
+                            16,
+                            FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      (r) => SliverToBoxAdapter(
+                        child: showandselectProfileImage(context, r),
+                      ),
+                    ),
+                  ],
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 18,
@@ -240,10 +271,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (l) => SliverToBoxAdapter(
+                      (error) => SliverToBoxAdapter(
                         child: Center(
                           child: textWidget(
-                            l,
+                            error,
                             CustomColor.black,
                             16,
                             FontWeight.w500,
@@ -254,6 +285,8 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                         return SliverToBoxAdapter(
                           child: GestureDetector(
                             onTap: () async {
+                              usernameController.text = r.name;
+                              isShowErrorText = false;
                               await showBottomSheet(
                                 context: context,
                                 title: 'نام کاربری',
@@ -262,11 +295,20 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 inputType: TextInputType.name,
                                 controller: usernameController,
                                 registration: () {
-                                  checkForInvalidCharacters(
-                                      usernameController.text);
-                                  if (isShowErrorText) {
-                                    displayDialog(errorText, context);
+                                  if (usernameController.text.length < 3 ||
+                                      usernameController.text.length > 25) {
+                                    setState(() {
+                                      isShowErrorText = true;
+                                      errorText =
+                                          'طول <<اسم>> می تواند حداقل 3 و حداکثر 25 حرف باشد';
+                                    });
+                                    return;
                                   }
+
+                                  context.read<AuthAccountBloc>().add(
+                                      UpdateNameUserEvent(
+                                          usernameController.text));
+                                  Navigator.pop(context);
                                 },
                               );
                             },
@@ -280,6 +322,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 ),
                                 Text(
                                   r.name,
+                                  textDirection: TextDirection.rtl,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     color: CustomColor.black,
@@ -315,7 +358,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                             rowEnterInformationBox(
                               info: r.email,
                               title: 'پست الکترونیکی',
-                              onChaged: () {
+                              onChaged: () async {
+                                isShowErrorText = false;
+
+                                //   emailController.text = r.email;
                                 return showBottomSheet(
                                   context: context,
                                   title: 'پست الکترونیکی',
@@ -326,6 +372,26 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   registration: () {
                                     checkInvalidEmailCharacters(
                                         emailController.text);
+                                    bool isValidEmail(String email) {
+                                      final emailRegex = RegExp(
+                                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                      return emailRegex.hasMatch(email);
+                                    }
+
+                                    if (!isValidEmail(emailController.text)) {
+                                      errorText = '';
+                                      // اقدام لازم برای اطلاع‌رسانی به کاربر
+                                      return;
+                                    }
+                                    if (isShowErrorText) {
+                                      return;
+                                    }
+                                    context.read<AuthAccountBloc>().add(
+                                        UpdateEmailUserEvent(
+                                            emailController.text));
+                                    Navigator.pop(context);
+                                    isShowErrorText = true;
+
                                     if (isShowErrorText) {
                                       displayDialog(errorText, context);
                                     }
@@ -392,7 +458,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        SearchProvincesScreen(),
+                                        const SearchProvincesScreen(),
                                   ),
                                 );
                               },
@@ -417,7 +483,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   SliverToBoxAdapter(
                     child: GestureDetector(
                       onTap: () {
-                       
+                        try {} catch (e) {
+                          print(e);
+                        }
                       },
                       child: Container(
                         width: 50,
@@ -440,6 +508,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
     required BuildContext context,
     required String title,
     required String label,
+    //required String errorText,
     required FocusNode focusNode,
     required TextEditingController controller,
     required TextInputType inputType,
@@ -511,6 +580,8 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                             child: Directionality(
                               textDirection: TextDirection.rtl,
                               child: TextField(
+                                cursorColor: CustomColor.pink,
+                                showCursor: true,
                                 controller: controller,
                                 focusNode: focusNode,
                                 keyboardType: inputType,
@@ -548,6 +619,18 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               ),
                             ),
                           ),
+                          Visibility.maintain(
+                            visible: isShowErrorText,
+                            child: SizedBox(
+                              height: 30,
+                              child: textWidget(
+                                errorText,
+                                CustomColor.pink,
+                                15,
+                                FontWeight.w400,
+                              ),
+                            ),
+                          ),
                           GestureDetector(
                             onTap: () => registration(),
                             child: Container(
@@ -580,7 +663,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
   }
 
 //Widget For Slect And Display User Profile Image
-  Widget showandselectProfileImage(BuildContext context) {
+  Widget showandselectProfileImage(
+    BuildContext context,
+    AccountInformation accountIno,
+  ) {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -589,13 +675,26 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
           child: SizedBox(
             height: 100,
             width: 100,
-            child: galleryFile != null
-                ? Image.file(
-                    galleryFile!,
-                    key: ValueKey(galleryFile?.path),
-                    fit: BoxFit.fill,
-                  )
-                : Image.asset('images/user_profile.png'),
+            child: CachedNetworkImage(
+              imageUrl: accountIno.avatar,
+              height: 107,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) => Center(
+                child: Image.asset('images/user_profile.png'),
+              ),
+              placeholder: (context, url) => Center(
+                child: Shimmer.fromColors(
+                  baseColor: const Color(0xffE1E1E1),
+                  highlightColor: const Color(0xffF3F3F2),
+                  child: Container(
+                    height: 110,
+                    width: double.infinity,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
         Positioned(

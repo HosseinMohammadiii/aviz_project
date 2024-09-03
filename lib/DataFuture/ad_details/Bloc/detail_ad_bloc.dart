@@ -11,14 +11,24 @@ class AdFeaturesBloc extends Bloc<AdFeaturesEvent, AdFeaturesState> {
       (event, emit) async {
         emit(AdDetailLoadingState());
         var adFeatures = await repository.getAdvertisinFeatures(event.adId);
-        var adFacilities = await repository.getAdvertisinFacilities(event.adId);
         var adFacilitiesList =
-            await repository.getAdvertisinFacilities(event.adId);
+            await repository.getAdvertisinFacilities(event.facilitiesId);
         emit(AdDetailRequestSuccessState(
           adFeatures,
-          adFacilities,
           adFacilitiesList,
         ));
+      },
+    );
+  }
+}
+
+class AdvertisingImagesBloc extends Bloc<AdImagesEvent, AdImagesState> {
+  final IAddDetailFuturesRepository repository;
+  AdvertisingImagesBloc(this.repository) : super(AdImagesInitializeState()) {
+    on<AdGalleryImagesDataEvent>(
+      (event, emit) async {
+        var adGallery = await repository.getDiplayImagesAd(event.id);
+        emit(AdGalleryImagesDataState(adGallery));
       },
     );
   }

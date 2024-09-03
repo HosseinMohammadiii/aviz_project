@@ -28,7 +28,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
   @override
   void initState() {
     BlocProvider.of<AdFeaturesBloc>(context)
-        .add(AdFeaturesGetInitializeData(widget.ad.id));
+        .add(AdFeaturesGetInitializeData(widget.ad.id, widget.ad.idFacilities));
     super.initState();
   }
 
@@ -136,7 +136,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
               ),
             ],
             if (state is AdDetailRequestSuccessState) ...[
-              state.advertisingFacilities.fold(
+              state.advertisingFacilitiesList.fold(
                 (error) => Center(
                   child: textWidget(
                     error,
@@ -149,13 +149,8 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   slivers: [
-                    SliverList.builder(
-                      itemCount: facilities.length,
-                      itemBuilder: (context, index) {
-                        return AdvertisingFacilitiesWidget(
-                          adFacilities: facilities[index],
-                        );
-                      },
+                    AdvertisingFacilitiesWidget(
+                      adFacilities: facilities,
                     ),
                   ],
                 ),

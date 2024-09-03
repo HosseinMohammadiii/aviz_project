@@ -2,6 +2,7 @@ import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_detail.dart';
+import '../../ad_details/Data/model/ad_facilities.dart';
 
 abstract class HomeState {}
 
@@ -21,4 +22,9 @@ final class HomeRequestSuccessState extends HomeState {
     this.recentAdvertising,
     this.advertisingdetails,
   );
+}
+
+final class HomeFuturesDataState extends HomeState {
+  Either<String, AdvertisingFacilities> advertisingFacilities;
+  HomeFuturesDataState(this.advertisingFacilities);
 }
