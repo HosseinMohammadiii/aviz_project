@@ -181,6 +181,10 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                   var advertisingFacilities =
                       widget.advertisingFacilities.toList()[index];
 
+                  var gallery = widget.advertisingGallery
+                      .where((item) => item.id == advertisingAd.idGallery)
+                      .toList();
+
                   return GestureDetector(
                     onLongPress: () async {
                       setState(() {
@@ -207,7 +211,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                     },
                     child: AdvertisingWidget(
                       advertising: advertisingAd,
-                      advertisingImages: advertisingImagesAd,
+                      advertisingImages: gallery[0].images[0],
                       advertisingFacilities: advertisingFacilities,
                       isDelete: isDelete[index],
                     ),

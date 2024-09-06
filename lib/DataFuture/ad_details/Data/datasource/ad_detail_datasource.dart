@@ -63,7 +63,6 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
         'collections/advertising_gallery/records',
         queryParameters: query,
       );
-
       return response.data['items']
           .map<RegisterFutureAdGallery>(
             (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),

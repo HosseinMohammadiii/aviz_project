@@ -1,4 +1,3 @@
-import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
@@ -10,9 +9,8 @@ import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
-import '../Hive/UsersLogin/user_login.dart';
+import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import '../widgets/cached_network_image.dart';
 import '../widgets/container_search.dart';
 import '../widgets/price_widget.dart';
@@ -34,12 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     BlocProvider.of<HomeBloc>(context).add(HomeGetInitializeData());
     super.initState();
-  }
-
-  Future<String> loadToken() async {
-    final Box<UserLogin> userLogin = Hive.box('user_login');
-    // Wait for Hive to return the token
-    return userLogin.get(1)?.token ?? '';
   }
 
   @override
@@ -64,95 +56,92 @@ class _HomeScreenState extends State<HomeScreen> {
               onRefresh: () async {
                 context.read<HomeBloc>().add(HomeGetInitializeData());
               },
-              child: FutureBuilder(
-                future: loadToken(),
-                builder: (context, snapshot) => CustomScrollView(
-                  slivers: [
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      sliver: SliverToBoxAdapter(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ContainerSearch(
-                                    textEditingController:
-                                        textEditingController,
-                                    focusNode: focusNode,
-                                  ),
-                                ));
-                          },
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            margin: const EdgeInsets.only(bottom: 18),
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: CustomColor.grey350,
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    sliver: SliverToBoxAdapter(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ContainerSearch(
+                                  textEditingController: textEditingController,
+                                  focusNode: focusNode,
+                                ),
+                              ));
+                        },
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          margin: const EdgeInsets.only(bottom: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          height: 45,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                              color: CustomColor.grey350,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                textDirection: TextDirection.rtl,
+                                'جستوجو...',
+                                style: TextStyle(
+                                  fontFamily: 'SN',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: CustomColor.grey500,
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  textDirection: TextDirection.rtl,
-                                  'جستوجو...',
-                                  style: TextStyle(
-                                    fontFamily: 'SN',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: CustomColor.grey500,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Image.asset('images/search-normal.png'),
-                              ],
-                            ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Image.asset('images/search-normal.png'),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    if (state is HomeLoadingState) ...[
-                      const SliverFillRemaining(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                    ],
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      sliver: SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  'مشاهده همه',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'آویز های داغ',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
+                  ),
+                  if (state is HomeLoadingState) ...[
+                    const SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
-                    if (state is HomeRequestSuccessState) ...[
-                      state.hotAdvertising.fold(
-                        (l) => SliverToBoxAdapter(
+                  ],
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                'مشاهده همه',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const Spacer(),
+                              Text(
+                                'آویز های داغ',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.hotAdvertising.fold(
+                      (l) {
+                        return SliverToBoxAdapter(
                           child: Center(
                             child: textWidget(
                               l,
@@ -161,41 +150,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               FontWeight.w500,
                             ),
                           ),
-                        ),
-                        (hotAdvertising) {
-                          return SliverToBoxAdapter(
-                            child: hotestAdvertisingBox(adHome: hotAdvertising),
-                          );
-                        },
-                      )
-                    ],
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 20,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'مشاهده همه',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(
-                            width: 130,
-                          ),
-                          Text(
-                            'آویز های اخیر',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (state is HomeRequestSuccessState) ...[
-                      state.recentAdvertising.fold(
-                        (l) {
-                          return SliverToBoxAdapter(
+                        );
+                      },
+                      (hotAdvertising) {
+                        return state.advertisingGalleryDetails.fold(
+                          (l) => SliverToBoxAdapter(
                             child: Center(
                               child: textWidget(
                                 l,
@@ -204,16 +163,75 @@ class _HomeScreenState extends State<HomeScreen> {
                                 FontWeight.w500,
                               ),
                             ),
-                          );
-                        },
-                        (recentAdvertising) {
-                          return recentlyAdvertisingBox(
-                              adHome: recentAdvertising);
-                        },
-                      ),
-                    ],
+                          ),
+                          (gallery) {
+                            return hotestAdvertisingBox(
+                                adHome: hotAdvertising,
+                                advertisingGallery: gallery);
+                          },
+                        );
+                      },
+                    ),
                   ],
-                ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 20,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'مشاهده همه',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(
+                          width: 130,
+                        ),
+                        Text(
+                          'آویز های اخیر',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.recentAdvertising.fold(
+                      (l) {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: textWidget(
+                              l,
+                              CustomColor.black,
+                              16,
+                              FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      },
+                      (recentAdvertising) {
+                        return state.advertisingGalleryDetails.fold(
+                          (l) => SliverToBoxAdapter(
+                            child: Center(
+                              child: textWidget(
+                                l,
+                                CustomColor.black,
+                                16,
+                                FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          (gallery) {
+                            return recentlyAdvertisingBox(
+                                adHome: recentAdvertising,
+                                advertisingGallery: gallery);
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ],
               ),
             ),
           );
@@ -225,10 +243,14 @@ class _HomeScreenState extends State<HomeScreen> {
 //Widget For display recently Advertising
   Widget recentlyAdvertisingBox({
     required List<AdvertisingHome> adHome,
+    required List<RegisterFutureAdGallery> advertisingGallery,
   }) {
     return SliverList.builder(
       itemCount: adHome.length,
       itemBuilder: (context, index) {
+        var gallery = advertisingGallery
+            .where((item) => item.id == adHome[index].idGallery)
+            .toList();
         return GestureDetector(
           onTap: () {
             Navigator.push(
@@ -263,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: 111,
                   child: CachedNetworkImageWidget(
-                    imgUrl: adHome[index].images[0],
+                    imgUrl: gallery[0].images[0],
                   ),
                 ),
                 const SizedBox(
@@ -307,63 +329,69 @@ class _HomeScreenState extends State<HomeScreen> {
 //Widget For display hotest Advertising
   Widget hotestAdvertisingBox({
     required List<AdvertisingHome> adHome,
+    required List<RegisterFutureAdGallery> advertisingGallery,
   }) {
-    return SizedBox(
-      height: 250,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        reverse: true,
-        padding: const EdgeInsets.only(right: 16),
-        itemCount: adHome.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InformationRecentlyAdvertising(
-                      advertisingHome: adHome[index],
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 250,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          reverse: true,
+          padding: const EdgeInsets.only(right: 16),
+          itemCount: adHome.length,
+          itemBuilder: (context, index) {
+            var gallery = advertisingGallery
+                .where((item) => item.id == adHome[index].idGallery)
+                .toList();
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InformationRecentlyAdvertising(
+                        advertisingHome: adHome[index],
+                      ),
+                    ));
+              },
+              child: Container(
+                width: 210,
+                height: 240,
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.only(left: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: CustomColor.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: CustomColor.black,
+                      blurRadius: 40,
+                      spreadRadius: -35,
+                      offset: Offset(0, 8),
                     ),
-                  ));
-            },
-            child: Container(
-              width: 210,
-              height: 240,
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.only(left: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: CustomColor.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: CustomColor.black,
-                    blurRadius: 40,
-                    spreadRadius: -35,
-                    offset: Offset(0, 8),
-                  ),
-                ],
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CachedNetworkImageWidget(
+                      imgUrl: gallery[0].images[0],
+                    ),
+                    Text(
+                      adHome[index].title,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      adHome[index].description,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    PriceWidget(context: context, adHome: adHome[index]),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CachedNetworkImageWidget(
-                    imgUrl: adHome[index].images[0],
-                  ),
-                  Text(
-                    adHome[index].title,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Text(
-                    adHome[index].description,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  PriceWidget(context: context, adHome: adHome[index]),
-                ],
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

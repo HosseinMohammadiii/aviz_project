@@ -1,6 +1,6 @@
-import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
+import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
+import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_state.dart';
+
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 import '../class/colors.dart';
 
@@ -26,11 +27,9 @@ class InformatioMyAdvertising extends StatefulWidget {
   InformatioMyAdvertising({
     super.key,
     required this.advertisingHome,
-    required this.registerFutureAdGallery,
     required this.advertisingFacilities,
   });
   RegisterFutureAd advertisingHome;
-  RegisterFutureAdGallery registerFutureAdGallery;
   AdvertisingFacilities advertisingFacilities;
   @override
   State<InformatioMyAdvertising> createState() =>
@@ -77,6 +76,9 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
 
   @override
   void initState() {
+    BlocProvider.of<AdHomeFeaturesBloc>(context).add(
+        AdFeaturesGetInitializeData(
+            widget.advertisingHome.id, widget.advertisingHome.idFacilities));
     categoryType();
 
     super.initState();
@@ -151,13 +153,13 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
+          child: BlocBuilder<AdHomeFeaturesBloc, AdFeaturesState>(
             builder: (context, state) {
               return CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
                     child: AdvertisingGalleryImages(
-                      advertisingGallery: widget.registerFutureAdGallery,
+                      advertisingHome: widget.advertisingHome,
                       controller: controller,
                     ),
                   ),
@@ -292,11 +294,32 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
                       height: 25,
                     ),
                   ),
-                  _changeBoxContainer(
-                    indexContainer,
-                    widget.advertisingHome,
-                    widget.advertisingFacilities,
-                  ),
+                  if (state is AdDetailLoadingState) ...[
+                    const SliverToBoxAdapter(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ],
+                  if (state is AdDetailRequestSuccessState) ...[
+                    state.advertisingFacilitiesList.fold(
+                      (error) => SliverToBoxAdapter(
+                        child: Center(
+                          child: textWidget(
+                            error,
+                            CustomColor.black,
+                            16,
+                            FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      (facilities) => _changeBoxContainer(
+                        indexContainer,
+                        widget.advertisingHome,
+                        facilities,
+                      ),
+                    )
+                  ],
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 25,
@@ -324,7 +347,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
 _changeBoxContainer(
   int index,
   RegisterFutureAd adHome,
-  AdvertisingFacilities adf,
+  List<AdvertisingFacilities> adf,
 ) {
   switch (index) {
     case 0:
@@ -334,12 +357,10 @@ _changeBoxContainer(
     case 1:
       return SliverToBoxAdapter(
           child: PriceInfoWidget(advertisingHome: adHome));
-    // case 2:
-    //   return SliverToBoxAdapter(
-    //     child: AdvertisingFacilitiesWidget(
-    //       adFacilities: adf,
-    //     ),
-    //   );
+    case 2:
+      return AdvertisingFacilitiesWidget(
+        adFacilities: adf,
+      );
     case 3:
       return SliverToBoxAdapter(
           child: DescriptionWidget(advertisingHome: adHome));
@@ -611,12 +632,12 @@ class DescriptionWidget extends StatelessWidget {
 }
 
 class AdvertisingGalleryImages extends StatefulWidget {
-  AdvertisingGalleryImages({
+  const AdvertisingGalleryImages({
     super.key,
-    required this.advertisingGallery,
+    required this.advertisingHome,
     required this.controller,
   });
-  final RegisterFutureAdGallery advertisingGallery;
+  final RegisterFutureAd advertisingHome;
   final PageController controller;
 
   @override
@@ -626,97 +647,132 @@ class AdvertisingGalleryImages extends StatefulWidget {
 
 class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
   @override
+  void initState() {
+    BlocProvider.of<AdImagesHomeBloc>(context)
+        .add(AdImageListHomeEvent(widget.advertisingHome.idGallery));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      width: double.infinity,
-      child: PageView.builder(
-        itemCount: widget.advertisingGallery.images.length,
-        controller: widget.controller,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Stack(
-                fit: StackFit.expand,
-                alignment: Alignment.bottomCenter,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            contentPadding: EdgeInsets.zero,
-                            content: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: InteractiveViewer(
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl:
-                                      widget.advertisingGallery.images[index],
-                                  errorWidget: (context, url, error) =>
-                                      const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  placeholder: (context, url) => Center(
-                                    child: Shimmer.fromColors(
-                                      baseColor: const Color(0xffE1E1E1),
-                                      highlightColor: const Color(0xffF3F3F2),
-                                      child: Container(
-                                        color: Colors.blue,
+    return BlocBuilder<AdImagesHomeBloc, AdImagesState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            if (state is AdImageDataState) ...[
+              state.displayImageAdvertising.fold(
+                (error) => Center(
+                  child: textWidget(
+                    error,
+                    CustomColor.black,
+                    16,
+                    FontWeight.w500,
+                  ),
+                ),
+                (r) {
+                  // Combine all images into a single list from all items
+                  List<String> allImages =
+                      r.expand((item) => item.images).toList();
+
+                  return SizedBox(
+                    height: 160,
+                    width: double.infinity,
+                    child: PageView.builder(
+                      itemCount: allImages.length,
+                      controller: widget.controller,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          contentPadding: EdgeInsets.zero,
+                                          content: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: InteractiveViewer(
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl: allImages[index],
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                  child: Shimmer.fromColors(
+                                                    baseColor:
+                                                        const Color(0xffE1E1E1),
+                                                    highlightColor:
+                                                        const Color(0xffF3F3F2),
+                                                    child: Container(
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: CachedNetworkImage(
+                                    height: 110,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    imageUrl: allImages[index],
+                                    errorWidget: (context, url, error) =>
+                                        const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    placeholder: (context, url) => Center(
+                                      child: Shimmer.fromColors(
+                                        baseColor: const Color(0xffE1E1E1),
+                                        highlightColor: const Color(0xffF3F3F2),
+                                        child: const SizedBox(),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                Positioned(
+                                  bottom: 12,
+                                  child: SmoothPageIndicator(
+                                    controller: widget.controller,
+                                    count: allImages.length,
+                                    effect: const ExpandingDotsEffect(
+                                      expansionFactor: 5,
+                                      dotHeight: 8,
+                                      dotWidth: 8,
+                                      dotColor: Colors.white,
+                                      activeDotColor: CustomColor.red,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      );
-                    },
-                    child: CachedNetworkImage(
-                      height: 110,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                      imageUrl: widget.advertisingGallery.images[index],
-                      errorWidget: (context, url, error) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      placeholder: (context, url) => Center(
-                        child: Shimmer.fromColors(
-                          baseColor: const Color(0xffE1E1E1),
-                          highlightColor: const Color(0xffF3F3F2),
-                          child: Container(
-                            height: 160,
-                            width: double.infinity,
-                            color: Colors.blue,
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                  ),
-                  Positioned(
-                    bottom: 12,
-                    child: SmoothPageIndicator(
-                      controller: widget.controller,
-                      count: widget.advertisingGallery.images.length,
-                      effect: const ExpandingDotsEffect(
-                        expansionFactor: 5,
-                        dotHeight: 8,
-                        dotWidth: 8,
-                        dotColor: Colors.white,
-                        activeDotColor: CustomColor.red,
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
-            ),
-          );
-        },
-      ),
+            ],
+          ],
+        );
+      },
     );
   }
 }

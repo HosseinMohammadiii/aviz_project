@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'detail_ad_event.dart';
 import 'detail_ad_state.dart';
 
-class AdFeaturesBloc extends Bloc<AdFeaturesEvent, AdFeaturesState> {
+class AdHomeFeaturesBloc extends Bloc<AdFeaturesEvent, AdFeaturesState> {
   final IAddDetailFuturesRepository repository;
-  AdFeaturesBloc(this.repository) : super(AdDetailInitializeState()) {
+  AdHomeFeaturesBloc(this.repository) : super(AdDetailInitializeState()) {
     on<AdFeaturesGetInitializeData>(
       (event, emit) async {
         emit(AdDetailLoadingState());
@@ -22,13 +22,19 @@ class AdFeaturesBloc extends Bloc<AdFeaturesEvent, AdFeaturesState> {
   }
 }
 
-class AdvertisingImagesBloc extends Bloc<AdImagesEvent, AdImagesState> {
+class AdImagesHomeBloc extends Bloc<UserAdEvent, AdImagesState> {
   final IAddDetailFuturesRepository repository;
-  AdvertisingImagesBloc(this.repository) : super(AdImagesInitializeState()) {
+  AdImagesHomeBloc(this.repository) : super(AdImagesInitializeState()) {
     on<AdGalleryImagesDataEvent>(
       (event, emit) async {
         var adGallery = await repository.getDiplayImagesAd(event.id);
         emit(AdGalleryImagesDataState(adGallery));
+      },
+    );
+    on<AdImageListHomeEvent>(
+      (event, emit) async {
+        var adGallery = await repository.getDiplayImagesAd(event.id);
+        emit(AdImageDataState(adGallery));
       },
     );
   }

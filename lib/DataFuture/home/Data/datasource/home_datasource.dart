@@ -4,12 +4,14 @@ import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dio/dio.dart';
 
 import '../../../ad_details/Data/model/ad_facilities.dart';
+import '../../../add_advertising/Data/model/ad_gallery.dart';
 
 abstract class IHomeDataSoure {
   Future<List<AdvertisingHome>> getAdvertising();
   Future<List<AdvertisingHome>> getHotAdvertising();
   Future<List<AdvertisingHome>> getRecentAdvertising();
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures();
+  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities(String id);
 }
 
@@ -117,6 +119,25 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       return response.data['items']
           .map<AdvertisingFacilities>(
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
+    try {
+      var response = await dio.get(
+        'collections/advertising_gallery/records',
+      );
+      return response.data['items']
+          .map<RegisterFutureAdGallery>(
+            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
+          )
           .toList();
     } on DioException catch (ex) {
       throw ApiException(

@@ -28,14 +28,14 @@ class AdvertisingGalleryImages extends StatefulWidget {
 class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
   @override
   void initState() {
-    BlocProvider.of<AdvertisingImagesBloc>(context)
+    BlocProvider.of<AdImagesHomeBloc>(context)
         .add(AdGalleryImagesDataEvent(widget.advertisingHome.idGallery));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AdvertisingImagesBloc, AdImagesState>(
+    return BlocBuilder<AdImagesHomeBloc, AdImagesState>(
       builder: (context, state) {
         return Column(
           children: [

@@ -8,7 +8,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../screen/info_myad.dart';
 
@@ -22,7 +21,7 @@ class AdvertisingWidget extends StatefulWidget {
     this.isDelete,
   });
   RegisterFutureAd advertising;
-  RegisterFutureAdGallery advertisingImages;
+  String advertisingImages;
   AdvertisingFacilities advertisingFacilities;
   bool? isDelete;
   @override
@@ -32,19 +31,21 @@ class AdvertisingWidget extends StatefulWidget {
 class _AdvertisingWidgetState extends State<AdvertisingWidget> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'fa-IR', symbol: '');
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          ItemInformation(advertising: widget.advertising);
-        });
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => InformatioMyAdvertising(
               advertisingHome: widget.advertising,
-              registerFutureAdGallery: widget.advertisingImages,
               advertisingFacilities: widget.advertisingFacilities,
             ),
           ),
@@ -73,36 +74,27 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 107,
-                  width: 111,
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.advertisingImages.images.first,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.advertisingImages,
+                    height: 107,
+                    width: 107,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    placeholder: (context, url) => Center(
+                      child: Shimmer.fromColors(
+                        baseColor: const Color(0xffE1E1E1),
+                        highlightColor: const Color(0xffF3F3F2),
+                        child: Container(
                           height: 107,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                          placeholder: (context, url) => Center(
-                            child: Shimmer.fromColors(
-                              baseColor: const Color(0xffE1E1E1),
-                              highlightColor: const Color(0xffF3F3F2),
-                              child: Container(
-                                height: 110,
-                                width: double.infinity,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
+                          width: 107,
+                          color: Colors.blue,
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -166,7 +158,6 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                 ),
               ),
             ),
-            // Icons.check_circle_outline_rounded
           ],
         ),
       ),
@@ -174,7 +165,7 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
   }
 
 //Widget For display Price Advertising
-  Row priceText() {
+  Widget priceText() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

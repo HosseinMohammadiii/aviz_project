@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../DataFuture/ad_details/Data/model/ad_detail.dart';
 import '../DataFuture/home/Data/model/advertising.dart';
 import '../class/colors.dart';
-import 'advertising_facilities.dart';
+import 'display_ad_facilities.dart';
 import 'text_widget.dart';
 
 // ignore: must_be_immutable
@@ -27,14 +27,14 @@ class AdvertisindFeaturesWidget extends StatefulWidget {
 class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
   @override
   void initState() {
-    BlocProvider.of<AdFeaturesBloc>(context)
+    BlocProvider.of<AdHomeFeaturesBloc>(context)
         .add(AdFeaturesGetInitializeData(widget.ad.id, widget.ad.idFacilities));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AdFeaturesBloc, AdFeaturesState>(
+    return BlocBuilder<AdHomeFeaturesBloc, AdFeaturesState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -54,62 +54,72 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
               ],
             ),
             if (state is AdDetailLoadingState) ...[
-              const SizedBox(
-                height: 112,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+              const Center(
+                child: CircularProgressIndicator(),
               ),
             ],
             if (state is AdDetailRequestSuccessState) ...[
-              Container(
-                height: 112,
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  border: Border.all(color: CustomColor.grey350),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    state.advertisingdetails.fold(
-                      (error) {
-                        return Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        );
-                      },
-                      (document) {
-                        return advertisingDocumentWidget(document);
-                      },
+              state.advertisingdetails.fold(
+                (error) {
+                  return Center(
+                    child: textWidget(
+                      error,
+                      CustomColor.black,
+                      16,
+                      FontWeight.w500,
                     ),
-                    DottedLine(
-                      dashColor: CustomColor.grey350,
-                      lineThickness: 1.5,
-                      dashLength: 6,
+                  );
+                },
+                (document) {
+                  return Container(
+                    height: 112,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: CustomColor.grey350),
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    state.advertisingdetails.fold(
-                      (error) {
-                        return Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        );
-                      },
-                      (direction) {
-                        return advertisingFeatutersDirection(direction);
-                      },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: document.length,
+                          itemBuilder: (context, index) =>
+                              advertisingDocumentWidget(document[index]),
+                        ),
+                        DottedLine(
+                          dashColor: CustomColor.grey350,
+                          lineThickness: 1.5,
+                          dashLength: 6,
+                        ),
+                        state.advertisingdetails.fold(
+                          (error) {
+                            return Center(
+                              child: textWidget(
+                                error,
+                                CustomColor.black,
+                                16,
+                                FontWeight.w500,
+                              ),
+                            );
+                          },
+                          (direction) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: direction.length,
+                              itemBuilder: (context, index) =>
+                                  advertisingFeatutersDirection(
+                                      direction[index]),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
             ],
             Row(
@@ -128,11 +138,8 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
               ],
             ),
             if (state is AdDetailLoadingState) ...[
-              const SizedBox(
-                height: 112,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+              const Center(
+                child: CircularProgressIndicator(),
               ),
             ],
             if (state is AdDetailRequestSuccessState) ...[
@@ -145,14 +152,12 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                     FontWeight.w500,
                   ),
                 ),
-                (facilities) => CustomScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
+                (facilities) => ListView.builder(
                   shrinkWrap: true,
-                  slivers: [
-                    AdvertisingFacilitiesWidget(
-                      adFacilities: facilities,
-                    ),
-                  ],
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: facilities.length,
+                  itemBuilder: (context, index) =>
+                      DisplayAdFacilities(facilities: facilities[index]),
                 ),
               ),
             ],
@@ -162,63 +167,45 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
     );
   }
 
-  Widget advertisingFeatutersDirection(List<AdvertisingFeatures> ad) {
-    return SizedBox(
-      height: 25,
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: ad.length,
-        itemBuilder: (context, index) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              textWidget(
-                ad[index].direction,
-                CustomColor.grey500,
-                16,
-                FontWeight.w700,
-              ),
-              textWidget(
-                'جهت ساختمان',
-                CustomColor.grey500,
-                16,
-                FontWeight.w700,
-              ),
-            ],
-          );
-        },
-      ),
+  Widget advertisingFeatutersDirection(AdvertisingFeatures ad) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        textWidget(
+          ad.direction,
+          CustomColor.grey500,
+          16,
+          FontWeight.w700,
+        ),
+        textWidget(
+          'جهت ساختمان',
+          CustomColor.grey500,
+          16,
+          FontWeight.w700,
+        ),
+      ],
     );
   }
 
-  Widget advertisingDocumentWidget(List<AdvertisingFeatures> ad) {
-    return SizedBox(
-      height: 20,
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: ad.length,
-        itemBuilder: (context, index) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              textWidget(
-                ad[index].document,
-                CustomColor.grey500,
-                16,
-                FontWeight.w700,
-              ),
-              textWidget(
-                'سند',
-                CustomColor.grey500,
-                16,
-                FontWeight.w700,
-              ),
-            ],
-          );
-        },
-      ),
+  Widget advertisingDocumentWidget(AdvertisingFeatures ad) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        textWidget(
+          ad.document,
+          CustomColor.grey500,
+          16,
+          FontWeight.w700,
+        ),
+        textWidget(
+          'سند',
+          CustomColor.grey500,
+          16,
+          FontWeight.w700,
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,6 @@
 abstract class AdFeaturesEvent {}
 
-abstract class AdImagesEvent {}
+abstract class UserAdEvent {}
 
 class AdFeaturesGetInitializeData extends AdFeaturesEvent {
   String adId;
@@ -8,12 +8,18 @@ class AdFeaturesGetInitializeData extends AdFeaturesEvent {
   AdFeaturesGetInitializeData(this.adId, this.facilitiesId);
 }
 
-class AdGalleryImagesDataEvent extends AdImagesEvent {
+class AdGalleryImagesDataEvent extends UserAdEvent {
   String id;
   AdGalleryImagesDataEvent(this.id);
 }
 
-final class AdGalleryListHomeEvent extends AdImagesEvent {
-  List<String> id;
-  AdGalleryListHomeEvent(this.id);
+final class AdImageListHomeEvent extends UserAdEvent {
+  String id;
+  AdImageListHomeEvent(this.id);
+}
+
+class MyAdFeaturesGetInitializeData extends UserAdEvent {
+  String adId;
+  String facilitiesId;
+  MyAdFeaturesGetInitializeData(this.adId, this.facilitiesId);
 }

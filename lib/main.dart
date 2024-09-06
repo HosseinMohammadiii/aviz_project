@@ -67,12 +67,12 @@ void main() async {
           ),
         ),
         BlocProvider(
-          create: (context) => AdFeaturesBloc(
+          create: (context) => AdHomeFeaturesBloc(
             locator.get(),
           ),
         ),
         BlocProvider(
-          create: (context) => AdvertisingImagesBloc(
+          create: (context) => AdImagesHomeBloc(
             locator.get(),
           ),
         ),
