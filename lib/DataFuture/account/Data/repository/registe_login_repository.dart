@@ -21,6 +21,8 @@ abstract class IAuthRepository {
   Future<Either<String, String>> getUpdateEmailUser(String email);
 
   Future<Either<String, String>> getUpdatePhoneNumberUser(int phoneNumber);
+
+  Future<Either<String, String>> getUpdateProvinceUser(String province);
 }
 
 class AuthencticationRepository extends IAuthRepository {
@@ -96,6 +98,16 @@ class AuthencticationRepository extends IAuthRepository {
       int phoneNumber) async {
     try {
       var response = await _datasource.getUpdatePhoneNumberUser(phoneNumber);
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> getUpdateProvinceUser(String province) async {
+    try {
+      var response = await _datasource.getUpdateProvinceUser(province);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

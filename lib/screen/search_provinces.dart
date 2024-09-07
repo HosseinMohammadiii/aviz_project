@@ -1,5 +1,8 @@
+import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../class/colors.dart';
 
 class SearchProvincesScreen extends StatefulWidget {
@@ -242,7 +245,16 @@ class _SearchProvincesScreenState extends State<SearchProvincesScreen> {
               alignment: Alignment.topCenter,
               transformAlignment: Alignment.topCenter,
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (isSelectProvinces) {
+                    context.read<AuthAccountBloc>().add(
+                          UpdateProvinceUserEvent(
+                            provincesController.text,
+                          ),
+                        );
+                    Navigator.pop(context);
+                  }
+                },
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,

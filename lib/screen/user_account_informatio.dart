@@ -6,7 +6,6 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/screen/search_provinces.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -291,6 +290,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 context: context,
                                 title: 'نام کاربری',
                                 label: 'نام کاربری',
+                                icon: Icon(
+                                  Icons.person_outline_sharp,
+                                  color: CustomColor.grey500,
+                                ),
                                 focusNode: usernameFocusNode,
                                 inputType: TextInputType.name,
                                 controller: usernameController,
@@ -366,12 +369,14 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   context: context,
                                   title: 'پست الکترونیکی',
                                   label: 'پست الکترونیکی',
+                                  icon: Icon(
+                                    Icons.email_outlined,
+                                    color: CustomColor.grey500,
+                                  ),
                                   controller: emailController,
                                   focusNode: emailFocusNode,
                                   inputType: TextInputType.emailAddress,
                                   registration: () {
-                                    checkInvalidEmailCharacters(
-                                        emailController.text);
                                     bool isValidEmail(String email) {
                                       final emailRegex = RegExp(
                                           r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -406,32 +411,29 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   phoneNumberController.text =
                                       r.phoneNumber.toString();
                                 }
+                                isShowErrorText = false;
 
                                 return showBottomSheet(
                                   context: context,
                                   title: 'شماره موبایل',
                                   label: 'شماره موبایل',
+                                  icon: Icon(
+                                    Icons.phone_enabled_outlined,
+                                    color: CustomColor.grey500,
+                                  ),
                                   focusNode: phoneNumberFocusNode,
                                   controller: phoneNumberController,
                                   inputType: TextInputType.phone,
                                   registration: () {
-                                    checkForInvalidCharacters(
-                                        phoneNumberController.text);
-
-                                    if (isShowErrorText) {
-                                      displayDialog(errorText, context);
+                                    bool isValidPhoneNumber(String text) {
+                                      final RegExp regex = RegExp(r'^09\d{9}$');
+                                      return regex.hasMatch(text);
                                     }
 
-                                    if (!isShowErrorText &&
-                                            phoneNumberController.text.length <
-                                                11 ||
-                                        !isShowErrorText &&
-                                            phoneNumberController.text.length >
-                                                11) {
-                                      errorText =
-                                          'شماره وارد شده باید 11 رقم باشد';
+                                    if (!isValidPhoneNumber(
+                                        phoneNumberController.text)) {
+                                      errorText = 'شماره تلفن معتبر وارد کنید';
                                       isShowErrorText = true;
-
                                       return;
                                     }
 
@@ -452,17 +454,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               info: r.province,
                               title: 'استان',
                               onChaged: () {
-                                // return showBottomSheet(
-                                //   context: context,
-                                //   title: 'استان',
-                                //   label: 'استان',
-                                //   focusNode: provincesFocusNode,
-                                //   controller: provincesController,
-                                //   inputType: TextInputType.streetAddress,
-                                //   onChanged: (value) {
-                                //   },
-                                //   registration: () {},
-                                // );
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -489,16 +480,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                       ),
                     ),
                   ],
-                  SliverToBoxAdapter(
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        color: CustomColor.black,
-                      ),
-                    ),
-                  ),
                 ],
               );
             },
@@ -513,7 +494,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
     required BuildContext context,
     required String title,
     required String label,
-    //required String errorText,
+    required Icon icon,
     required FocusNode focusNode,
     required TextEditingController controller,
     required TextInputType inputType,
@@ -610,10 +591,11 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                       color: colorShow(focusNode, controller),
                                     ),
                                   ),
-                                  prefixIcon: Image.asset(
-                                    'images/user_icon_text.png',
-                                    scale: 6,
-                                  ),
+                                  prefixIcon: icon,
+                                  // prefixIcon: Image.asset(
+                                  //   'images/user_icon_text.png',
+                                  //   scale: 6,
+                                  // ),
                                 ),
                                 onChanged: (value) {
                                   onChanged != null ? onChanged(value) : null;
@@ -650,7 +632,11 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               ),
                               child: Text(
                                 'ثبت',
-                                style: Theme.of(context).textTheme.displayLarge,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -692,11 +678,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                 child: Shimmer.fromColors(
                   baseColor: const Color(0xffE1E1E1),
                   highlightColor: const Color(0xffF3F3F2),
-                  child: Container(
-                    height: 110,
-                    width: double.infinity,
-                    color: Colors.blue,
-                  ),
+                  child: const Center(),
                 ),
               ),
             ),
@@ -704,7 +686,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
         ),
         Positioned(
           bottom: 0,
-          left: 142,
+          left: 146,
           child: GestureDetector(
             onTap: () async {
               showPicker(context: context);

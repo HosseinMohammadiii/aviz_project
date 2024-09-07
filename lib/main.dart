@@ -150,7 +150,7 @@ class MyApp extends StatelessWidget {
         );
       },
       home: Authmanager().isLogin()
-          ? BottomNavigationScreen()
+          ? UserAccountInfirmation()
           : const LogInScreen(),
     );
   }

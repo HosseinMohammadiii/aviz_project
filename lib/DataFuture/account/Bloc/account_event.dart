@@ -38,3 +38,8 @@ final class UpdatePhoNumberUserEvent extends AuthAccountEvent {
   int phoneNumber;
   UpdatePhoNumberUserEvent(this.phoneNumber);
 }
+
+final class UpdateProvinceUserEvent extends AuthAccountEvent {
+  String province;
+  UpdateProvinceUserEvent(this.province);
+}

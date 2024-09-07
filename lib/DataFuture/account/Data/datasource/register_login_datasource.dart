@@ -16,6 +16,7 @@ abstract class IAuthenticationDatasource {
   Future<String> getUpdateNameUser(String name);
   Future<String> getUpdateEmailUser(String email);
   Future<String> getUpdatePhoneNumberUser(int phoneNumber);
+  Future<String> getUpdateProvinceUser(String province);
 }
 
 class AuthenticationRemote extends IAuthenticationDatasource {
@@ -179,6 +180,31 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         ),
         data: {
           'phone_number': phoneNumber,
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      // Assuming response data is directly the user object.
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown error');
+    }
+    return '';
+  }
+
+  @override
+  Future<String> getUpdateProvinceUser(String province) async {
+    try {
+      var response = await dio.patch(
+        'collections/users/records/${Authmanager().getId()}',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
+        data: {
+          'province': province,
         },
       );
       if (response.statusCode == 200) {
