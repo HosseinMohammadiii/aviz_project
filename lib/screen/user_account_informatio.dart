@@ -43,30 +43,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
 
   bool isShowErrorText = false;
 
-// Function to check for invalid characters EmailAddress
-  void checkInvalidEmailCharacters(String text) {
-    // Combine invalidCharacters and allCharacters
-    final allInvalidChars = invalidCharactersEmail + allCharacters;
-
-    // Check if the username contains any of the invalid characters
-    for (String character in allInvalidChars) {
-      if (text.contains(character)) {
-        setState(() {
-          errorText = 'از کاراکتر غیرمجاز استفاده شده است: $character';
-          isShowErrorText = true;
-        });
-        return;
-      }
-      setState(() {});
-    }
-
-    // If no invalid characters are found, clear the error text
-    setState(() {
-      errorText = ''; // No invalid characters found
-      isShowErrorText = false;
-    });
-  }
-
 // Function to check for invalid characters
   void checkForInvalidCharacters(
     String text,
