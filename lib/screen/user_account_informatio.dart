@@ -258,8 +258,8 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                           ),
                         ),
                       ),
-                      (r) => SliverToBoxAdapter(
-                        child: showandselectProfileImage(context, r),
+                      (userInfo) => SliverToBoxAdapter(
+                        child: showandselectProfileImage(context, userInfo),
                       ),
                     ),
                   ],
@@ -280,12 +280,15 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                           ),
                         ),
                       ),
-                      (r) {
+                      (userInfo) {
                         return SliverToBoxAdapter(
                           child: GestureDetector(
                             onTap: () async {
-                              usernameController.text = r.name;
+                              // Setting initial text for username and hiding error message
+                              usernameController.text = userInfo.name;
                               isShowErrorText = false;
+
+                              // Show the bottom sheet for editing username
                               await showBottomSheet(
                                 context: context,
                                 title: 'نام کاربری',
@@ -298,6 +301,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 inputType: TextInputType.name,
                                 controller: usernameController,
                                 registration: () {
+                                  // Validation for username length
                                   if (usernameController.text.length < 3 ||
                                       usernameController.text.length > 25) {
                                     setState(() {
@@ -308,6 +312,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                     return;
                                   }
 
+                                  // Update username using Bloc event
                                   context.read<AuthAccountBloc>().add(
                                       UpdateNameUserEvent(
                                           usernameController.text));
@@ -324,7 +329,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   color: CustomColor.red,
                                 ),
                                 Text(
-                                  r.name,
+                                  userInfo.name,
                                   textDirection: TextDirection.rtl,
                                   style: const TextStyle(
                                     fontSize: 17,
@@ -345,26 +350,27 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (l) => SliverToBoxAdapter(
+                      (error) => SliverToBoxAdapter(
                         child: Center(
                           child: textWidget(
-                            l,
+                            error,
                             CustomColor.black,
                             16,
                             FontWeight.w500,
                           ),
                         ),
                       ),
-                      (r) => SliverToBoxAdapter(
+                      (userInfo) => SliverToBoxAdapter(
                         child: Column(
                           children: [
                             rowEnterInformationBox(
-                              info: r.email,
+                              info: userInfo.email,
                               title: 'پست الکترونیکی',
                               onChaged: () async {
                                 isShowErrorText = false;
 
-                                emailController.text = r.email;
+                                // Set initial email and show bottom sheet for email input
+                                emailController.text = userInfo.email;
                                 return showBottomSheet(
                                   context: context,
                                   title: 'پست الکترونیکی',
@@ -377,12 +383,14 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   focusNode: emailFocusNode,
                                   inputType: TextInputType.emailAddress,
                                   registration: () {
+                                    // Email validation function
                                     bool isValidEmail(String email) {
                                       final emailRegex = RegExp(
                                           r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                                       return emailRegex.hasMatch(email);
                                     }
 
+                                    // Check email validity and show error if necessary
                                     if (!isValidEmail(emailController.text)) {
                                       errorText =
                                           'پست الکترونیکی معتبر وارد کنید';
@@ -392,6 +400,8 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                     if (isShowErrorText) {
                                       return;
                                     }
+
+                                    // Update email using Bloc event
                                     context.read<AuthAccountBloc>().add(
                                         UpdateEmailUserEvent(
                                             emailController.text));
@@ -404,15 +414,17 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               height: 25,
                             ),
                             rowEnterInformationBox(
-                              info: r.phoneNumber.toString(),
+                              info: userInfo.phoneNumber.toString(),
                               title: 'شماره موبایل',
                               onChaged: () {
-                                if (r.phoneNumber != 0) {
+                                // Pre-fill phone number if available
+                                if (userInfo.phoneNumber != 0) {
                                   phoneNumberController.text =
-                                      r.phoneNumber.toString();
+                                      userInfo.phoneNumber.toString();
                                 }
                                 isShowErrorText = false;
 
+                                // Show bottom sheet for phone number input
                                 return showBottomSheet(
                                   context: context,
                                   title: 'شماره موبایل',
@@ -425,11 +437,13 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   controller: phoneNumberController,
                                   inputType: TextInputType.phone,
                                   registration: () {
+                                    // Phone number validation for Iranian format
                                     bool isValidPhoneNumber(String text) {
                                       final RegExp regex = RegExp(r'^09\d{9}$');
                                       return regex.hasMatch(text);
                                     }
 
+                                    // Validate phone number and show error if invalid
                                     if (!isValidPhoneNumber(
                                         phoneNumberController.text)) {
                                       errorText = 'شماره تلفن معتبر وارد کنید';
@@ -437,11 +451,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                       return;
                                     }
 
-                                    context
-                                        .read<AuthAccountBloc>()
-                                        .add(UpdatePhoNumberUserEvent(
-                                          int.parse(phoneNumberController.text),
-                                        ));
+                                    // Update phone number using Bloc event
+                                    context.read<AuthAccountBloc>().add(
+                                        UpdatePhoNumberUserEvent(int.parse(
+                                            phoneNumberController.text)));
                                     Navigator.pop(context);
                                   },
                                 );
@@ -451,9 +464,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               height: 25,
                             ),
                             rowEnterInformationBox(
-                              info: r.province,
+                              info: userInfo.province,
                               title: 'استان',
                               onChaged: () {
+                                // Navigate to province search screen
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
