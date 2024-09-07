@@ -36,14 +36,8 @@ class AdGalleryImagesDataState extends AdImagesState {
   AdGalleryImagesDataState(this.displayImagesAdvertising);
 }
 
-class AdImageDataState extends AdImagesState {
+class UserAdvertisingImageDataState extends AdImagesState {
   Either<String, List<RegisterFutureAdGallery>> displayImageAdvertising;
 
-  AdImageDataState(this.displayImageAdvertising);
-}
-
-final class MyAdFacilitiesFuturesDataState extends AdImagesState {
-  Either<String, List<AdvertisingFacilities>> advertisingFacilities;
-  // Either<String, List<AdvertisingFeatures>> advertisingFeatures;
-  MyAdFacilitiesFuturesDataState(this.advertisingFacilities);
+  UserAdvertisingImageDataState(this.displayImageAdvertising);
 }

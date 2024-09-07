@@ -361,7 +361,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               onChaged: () async {
                                 isShowErrorText = false;
 
-                                //   emailController.text = r.email;
+                                emailController.text = r.email;
                                 return showBottomSheet(
                                   context: context,
                                   title: 'پست الکترونیکی',
@@ -379,8 +379,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                     }
 
                                     if (!isValidEmail(emailController.text)) {
-                                      errorText = '';
-                                      // اقدام لازم برای اطلاع‌رسانی به کاربر
+                                      errorText =
+                                          'پست الکترونیکی معتبر وارد کنید';
+                                      isShowErrorText = true;
                                       return;
                                     }
                                     if (isShowErrorText) {
@@ -390,11 +391,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                         UpdateEmailUserEvent(
                                             emailController.text));
                                     Navigator.pop(context);
-                                    isShowErrorText = true;
-
-                                    if (isShowErrorText) {
-                                      displayDialog(errorText, context);
-                                    }
                                   },
                                 );
                               },
@@ -406,6 +402,11 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               info: r.phoneNumber.toString(),
                               title: 'شماره موبایل',
                               onChaged: () {
+                                if (r.phoneNumber != 0) {
+                                  phoneNumberController.text =
+                                      r.phoneNumber.toString();
+                                }
+
                                 return showBottomSheet(
                                   context: context,
                                   title: 'شماره موبایل',
@@ -427,11 +428,19 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                         !isShowErrorText &&
                                             phoneNumberController.text.length >
                                                 11) {
-                                      displayDialog(
-                                          'شماره وارد شده باید 11 رقم باشد',
-                                          context);
+                                      errorText =
+                                          'شماره وارد شده باید 11 رقم باشد';
+                                      isShowErrorText = true;
+
                                       return;
                                     }
+
+                                    context
+                                        .read<AuthAccountBloc>()
+                                        .add(UpdatePhoNumberUserEvent(
+                                          int.parse(phoneNumberController.text),
+                                        ));
+                                    Navigator.pop(context);
                                   },
                                 );
                               },
@@ -482,11 +491,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ],
                   SliverToBoxAdapter(
                     child: GestureDetector(
-                      onTap: () {
-                        try {} catch (e) {
-                          print(e);
-                        }
-                      },
+                      onTap: () {},
                       child: Container(
                         width: 50,
                         height: 50,

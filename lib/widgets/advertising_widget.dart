@@ -10,6 +10,7 @@ import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../screen/info_myad.dart';
+import 'price_widget.dart';
 
 // ignore: must_be_immutable
 class AdvertisingWidget extends StatefulWidget {
@@ -123,7 +124,9 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                       const SizedBox(
                         height: 10,
                       ),
-                      priceText(),
+                      PriceWidget(
+                          context: context,
+                          adPrice: widget.advertising.homeprice),
                     ],
                   ),
                 ),
@@ -161,44 +164,6 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
           ],
         ),
       ),
-    );
-  }
-
-//Widget For display Price Advertising
-  Widget priceText() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          height: 26,
-          width: 95,
-          margin: const EdgeInsets.only(bottom: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(2),
-            color: CustomColor.grey200,
-          ),
-          child: Text(
-            currencyFormat.format(widget.advertising.homeprice),
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.left,
-            style: const TextStyle(
-              color: CustomColor.red,
-              fontSize: 12,
-              decoration: TextDecoration.none,
-              fontFamily: 'SN',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        textWidget(
-          'قیمت:',
-          CustomColor.black,
-          12,
-          FontWeight.w500,
-        ),
-      ],
     );
   }
 }

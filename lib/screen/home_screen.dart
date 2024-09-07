@@ -314,7 +314,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      PriceWidget(context: context, adHome: adHome[index]),
+                      PriceWidget(
+                          context: context, adPrice: adHome[index].price),
                     ],
                   ),
                 ),
@@ -385,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       adHome[index].description,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    PriceWidget(context: context, adHome: adHome[index]),
+                    PriceWidget(context: context, adPrice: adHome[index].price),
                   ],
                 ),
               ),

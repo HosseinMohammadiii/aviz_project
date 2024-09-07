@@ -49,10 +49,10 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
                     FontWeight.w500,
                   ),
                 ),
-                (r) {
+                (images) {
                   // Combine all images into a single list from all items
                   List<String> allImages =
-                      r.expand((item) => item.images).toList();
+                      images.expand((item) => item.images).toList();
 
                   return SizedBox(
                     height: 160,

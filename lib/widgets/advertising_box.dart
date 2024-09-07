@@ -69,7 +69,7 @@ class AdvertisingSearchWidget extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                PriceWidget(context: context, adHome: advertisingHome)
+                PriceWidget(context: context, adPrice: advertisingHome.price),
               ],
             ),
           ),

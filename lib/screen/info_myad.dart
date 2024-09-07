@@ -336,11 +336,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
 
 // Function to switch and display different widgets based on selected category
@@ -604,6 +599,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
   priceChanged(RegisterFutureAd adHome) {
     NumberFormat currencyFormat =
         NumberFormat.currency(locale: 'fa-IR', symbol: '');
+
     var priceChange = currencyFormat.format(adHome.homeprice / adHome.metr);
     return priceChange;
   }
@@ -659,7 +655,7 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
       builder: (context, state) {
         return Column(
           children: [
-            if (state is AdImageDataState) ...[
+            if (state is UserAdvertisingImageDataState) ...[
               state.displayImageAdvertising.fold(
                 (error) => Center(
                   child: textWidget(
