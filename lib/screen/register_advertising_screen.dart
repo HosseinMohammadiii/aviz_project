@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'package:aviz_project/List/list_advertising.dart';
-import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
@@ -292,20 +290,5 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
         ),
       ),
     );
-  }
-
-  void advertisingData(
-    String title,
-    String description,
-    List<File> img,
-    double price,
-  ) {
-    AdvertisingData advertisingData = AdvertisingData(
-      title: title,
-      description: description,
-      img: img,
-      price: price,
-    );
-    advertisingDataBox.add(advertisingData);
   }
 }

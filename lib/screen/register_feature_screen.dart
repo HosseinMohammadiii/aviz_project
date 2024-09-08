@@ -3,8 +3,6 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
-import 'package:aviz_project/List/list_advertising.dart';
-import 'package:aviz_project/class/advertising.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
@@ -519,14 +517,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             ),
                           );
                         }
-                        // addAdvertising(
-                        //   metr,
-                        //   countRoom,
-                        //   floor,
-                        //   yearBuild,
-                        //   txtTitle!,
-                        //   address,
-                        // );
 
                         BlocProvider.of<NavigationPage>(context)
                             .getNavItems(ViewPage.registerHomeLocation);
@@ -899,26 +889,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         ),
       ),
     );
-  }
-
-//Widget For Add Advertising
-  void addAdvertising(
-    num metr,
-    num countRoom,
-    num floor,
-    num yearBuild,
-    String title,
-    String address,
-  ) {
-    Advertising advertising = Advertising(
-      metr: metr,
-      countRom: countRoom,
-      floor: floor,
-      yearBuild: yearBuild,
-      title: title,
-      address: address,
-    );
-    advertisingBox.add(advertising);
   }
 
 //Widget for display title category top box
