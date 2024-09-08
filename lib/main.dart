@@ -149,9 +149,7 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: Authmanager().isLogin()
-          ? UserAccountInfirmation()
-          : const LogInScreen(),
+      home: Authmanager().isLogin() ? AccountScreen() : const LogInScreen(),
     );
   }
 }

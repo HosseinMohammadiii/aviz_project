@@ -620,7 +620,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 borderRadius: BorderRadius.circular(8),
                                 color: Colors.pink,
                               ),
-                              child: Text(
+                              child: const Text(
                                 'ثبت',
                                 style: TextStyle(
                                   fontSize: 16,

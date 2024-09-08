@@ -25,53 +25,53 @@ class _AccountScreenState extends State<AccountScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              sliver: SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: TextField(
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.end,
-                        textInputAction: TextInputAction.search,
-                        textDirection: TextDirection.ltr,
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(
-                          fontFamily: 'SN',
-                          fontSize: 18,
-                          color: CustomColor.grey500,
-                        ),
-                        decoration: InputDecoration(
-                          suffixIcon: Image.asset('images/search-normal.png'),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColor.grey350,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: CustomColor.grey350,
-                            ),
-                          ),
-                          hintText: '...جستوجو',
-                          hintStyle: TextStyle(
-                            fontFamily: 'SN',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: CustomColor.grey500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // SliverPadding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            //   sliver: SliverToBoxAdapter(
+            //     child: Column(
+            //       children: [
+            //         Container(
+            //           height: 45,
+            //           decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(4),
+            //           ),
+            //           child: TextField(
+            //             keyboardType: TextInputType.text,
+            //             textAlign: TextAlign.end,
+            //             textInputAction: TextInputAction.search,
+            //             textDirection: TextDirection.ltr,
+            //             textAlignVertical: TextAlignVertical.center,
+            //             style: TextStyle(
+            //               fontFamily: 'SN',
+            //               fontSize: 18,
+            //               color: CustomColor.grey500,
+            //             ),
+            //             decoration: InputDecoration(
+            //               suffixIcon: Image.asset('images/search-normal.png'),
+            //               enabledBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                   color: CustomColor.grey350,
+            //                 ),
+            //               ),
+            //               focusedBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                   color: CustomColor.grey350,
+            //                 ),
+            //               ),
+            //               hintText: '...جستوجو',
+            //               hintStyle: TextStyle(
+            //                 fontFamily: 'SN',
+            //                 fontSize: 16,
+            //                 fontWeight: FontWeight.w400,
+            //                 color: CustomColor.grey500,
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             SliverPadding(
               padding: const EdgeInsets.only(
                   left: 15, right: 15, bottom: 20, top: 25),
