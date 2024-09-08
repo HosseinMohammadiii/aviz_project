@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../Hive/UsersLogin/user_login.dart';
+import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/buttomnavigationbar.dart';
 
@@ -238,7 +239,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //Widget For Button SignUp
   Widget buttonSignUp() {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (!await checkInternetConnection(context)) {
+          return;
+        }
         // Validate input fields
         if (_userNameController.text.isEmpty ||
             _passwordController.text.isEmpty ||

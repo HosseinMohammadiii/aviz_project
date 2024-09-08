@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
+import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../class/dialog.dart';
 import '../widgets/buttomnavigationbar.dart';
@@ -162,7 +163,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
 //Widget For Button LogIn
   Widget buttonLogIn() {
     return BlocConsumer<AuthAccountBloc, AuthAccountState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthLoadingState) {
           // Reset error visibility when loading starts
           setState(() {
@@ -170,7 +171,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
           });
         } else if (state is AuthResponseState) {
           state.reponse.fold(
-            (l) {
+            (l) async {
               // Show error message if login fails
               setState(() {
                 isShowErrorText = true;
@@ -202,18 +203,14 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
         }
       },
       builder: (context, state) {
-        if (state is AuthLoadingState) {
-          // Display loading indicator when in loading state
-          return const Center(
-            child: CircularProgressIndicator(
-              color: CustomColor.red,
-            ),
-          );
-        }
-
         // Display login button when not in loading state
         return GestureDetector(
-          onTap: () {
+          onTap: () async {
+            // اگر اینترنت قطع بود، پیغام به کاربر نمایش داده و از ادامه جلوگیری می‌کنیم
+            if (!await checkInternetConnection(context)) {
+              return;
+            }
+
             // Validate input fields
             if (userNameController.text.isEmpty ||
                 passwordController.text.isEmpty) {
