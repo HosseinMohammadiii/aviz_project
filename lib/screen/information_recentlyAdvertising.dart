@@ -118,14 +118,6 @@ class _InformationRecentlyAdvertisingState
                 onTap: () {},
                 child: Image.asset('images/archive_icon.png'),
               ),
-              const SizedBox(
-                width: 20,
-              ),
-              Image.asset('images/share_icon.png'),
-              const SizedBox(
-                width: 20,
-              ),
-              Image.asset('images/information_icon.png'),
               const Spacer(),
               GestureDetector(
                 onTap: () {

@@ -6,11 +6,9 @@ import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
-import '../Hive/UsersLogin/user_login.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../class/dialog.dart';
 import '../widgets/buttomnavigationbar.dart';
@@ -33,7 +31,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
   bool isShowErrorText = false;
 
 // Function to check for invalid characters in the username input
-  void checkForInvalidCharacters() {
+  bool checkForInvalidCharacters() {
 // Generate a list of all characters that are not alphanumeric and not in invalidCharacters
     final List<String> allCharacters =
         List.generate(65536, (i) => String.fromCharCode(i))
@@ -52,7 +50,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
           errorText = 'از کاراکترهای غیرمجاز استفاده شده است: $character';
           isShowErrorText = true;
         });
-        return;
+        return false;
       }
     }
 
@@ -61,6 +59,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
       errorText = ''; // No invalid characters found
       isShowErrorText = false;
     });
+    return true;
   }
 
   @override
@@ -90,7 +89,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                   userNameController,
                   userNameFocus,
                   () {
-                    checkForInvalidCharacters();
+                    // checkForInvalidCharacters();
                   },
                 ),
                 Visibility(
@@ -121,54 +120,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 1.9,
                 ),
-                BlocConsumer<AuthAccountBloc, AuthAccountState>(
-                  builder: (context, state) {
-                    if (state is AuthInitiateState) {
-                      return buttonLogIn();
-                    }
-
-                    return buttonLogIn();
-                  },
-                  listener: (context, state) {
-                    if (state is AuthResponseState) {
-                      state.reponse.fold(
-                        (l) {
-                          var snackbar = SnackBar(
-                            content: Text(
-                              l,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            backgroundColor: Colors.black,
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 1),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        },
-                        (r) {
-                          // Wait until the token is available
-                          final Box<UserLogin> userLogin =
-                              Hive.box('user_login');
-                          final String? token = userLogin.get(1)?.token;
-
-                          if (token != null && token.isNotEmpty) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BottomNavigationScreen(),
-                              ),
-                            );
-                          } else {
-                            // Handle error: Token not available
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('لطفا مجدد تلاش کنید')),
-                            );
-                          }
-                        },
-                      );
-                    }
-                  },
-                ),
+                buttonLogIn(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -209,64 +161,117 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
 
 //Widget For Button LogIn
   Widget buttonLogIn() {
-    return GestureDetector(
-      onTap: () {
-        // Validate input fields
-        if (userNameController.text.isEmpty ||
-            passwordController.text.isEmpty) {
-          displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
-          return;
+    return BlocConsumer<AuthAccountBloc, AuthAccountState>(
+      listener: (context, state) {
+        if (state is AuthLoadingState) {
+          // Reset error visibility when loading starts
+          setState(() {
+            isShowErrorText = false;
+          });
+        } else if (state is AuthResponseState) {
+          state.reponse.fold(
+            (l) {
+              // Show error message if login fails
+              setState(() {
+                isShowErrorText = true;
+              });
+              var snackbar = const SnackBar(
+                content: Text(
+                  'نام کاربری یا رمز عبور اشتباه است',
+                  style: TextStyle(fontSize: 14),
+                ),
+                backgroundColor: Colors.black,
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(seconds: 1),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackbar);
+            },
+            (r) {
+              // Hide error message if login is successful
+              setState(() {
+                isShowErrorText = false;
+              });
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BottomNavigationScreen(),
+                ),
+              );
+            },
+          );
         }
-        if (userNameController.text.length < 3) {
-          displayDialog('نام کاربری باید بیش از 3 حرف باشد', context);
-          return;
-        }
-        if (passwordController.text.length < 8) {
-          displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
-          return;
+      },
+      builder: (context, state) {
+        if (state is AuthLoadingState) {
+          // Display loading indicator when in loading state
+          return const Center(
+            child: CircularProgressIndicator(
+              color: CustomColor.red,
+            ),
+          );
         }
 
-        if (isShowErrorText) {
-          displayDialog('کاراکتر معتبر وارد کنید', context);
-          return;
-        }
-        // Trigger registration event
-        BlocProvider.of<AuthAccountBloc>(context).add(
-          AuthLoginRequest(
-            userNameController.text,
-            passwordController.text,
+        // Display login button when not in loading state
+        return GestureDetector(
+          onTap: () {
+            // Validate input fields
+            if (userNameController.text.isEmpty ||
+                passwordController.text.isEmpty) {
+              displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+              return;
+            }
+            if (!checkForInvalidCharacters()) {
+              isShowErrorText = true;
+              return;
+            }
+            if (userNameController.text.length < 3) {
+              displayDialog('نام کاربری باید بیش از 3 حرف باشد', context);
+              return;
+            }
+            if (passwordController.text.length < 8) {
+              displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
+              return;
+            }
+
+            // Trigger login event
+            BlocProvider.of<AuthAccountBloc>(context).add(
+              AuthLoginRequest(
+                userNameController.text,
+                passwordController.text,
+              ),
+            );
+          },
+          child: Container(
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: CustomColor.red,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: CustomColor.red,
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  'ورود',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: CustomColor.grey,
+                    fontSize: 16,
+                    fontFamily: 'SN',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
-      child: Container(
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: CustomColor.red,
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(
-            color: CustomColor.red,
-          ),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 8,
-            ),
-            Text(
-              'ورود',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: CustomColor.grey,
-                fontSize: 16,
-                fontFamily: 'SN',
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

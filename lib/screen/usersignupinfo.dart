@@ -34,9 +34,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   String errorText = '';
   bool isShowErrorText = false;
-
 // Function to check for invalid characters in the username input
-  void checkForInvalidCharacters() {
+  bool checkForInvalidCharacters() {
 // Combine invalidCharacters and allCharacters
     final allInvalidChars = invalidCharacters + allCharacters;
 
@@ -47,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           errorText = 'از کاراکترهای غیرمجاز استفاده شده است: $character';
           isShowErrorText = true;
         });
-        return;
+        return false;
       }
     }
 
@@ -56,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       errorText = ''; // No invalid characters found
       isShowErrorText = false;
     });
+    return true;
   }
 
   @override
@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _userNameController,
                   __userNameFocus,
                   () {
-                    checkForInvalidCharacters();
+                    //    checkForInvalidCharacters();
                   },
                 ),
 
@@ -182,6 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           } else {
                             // Handle error: Token not available
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('لطفا مجدد تلاش کنید')),
@@ -192,13 +193,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     }
                   },
                   builder: (context, state) {
-                    // if (state is AuthLoadingState) {
-                    //   return const Center(child: CircularProgressIndicator());
-                    // }
-                    if (state is AuthInitiateState) {
-                      return buttonSignUp();
-                    }
-
                     return buttonSignUp();
                   },
                 ),
@@ -250,6 +244,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _passwordController.text.isEmpty ||
             _passwordConfirmController.text.isEmpty) {
           displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+          return;
+        }
+        if (!checkForInvalidCharacters()) {
+          isShowErrorText = true;
           return;
         }
         if (_userNameController.text.length < 3) {
