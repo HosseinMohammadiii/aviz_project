@@ -8,11 +8,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(this.searchRepository) : super(SearchInitialState()) {
     on<SearchWithQueryData>(
       (event, emit) async {
-        emit(SearchLoadingState());
-        final result = await searchRepository.search(event.query);
+        var searchResult = await searchRepository.search(event.query);
+        var advertisingGalleryDeatail =
+            await searchRepository.getDiplayImagesAd();
         emit(
-          SearchRequestSuccessState(result),
-        );
+            SearchRequestSuccessState(searchResult, advertisingGalleryDeatail));
       },
     );
   }

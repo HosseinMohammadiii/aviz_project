@@ -1,3 +1,4 @@
+import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:aviz_project/widgets/cached_network_image.dart';
 import 'package:aviz_project/widgets/price_widget.dart';
@@ -11,8 +12,10 @@ class AdvertisingSearchWidget extends StatelessWidget {
   AdvertisingSearchWidget({
     super.key,
     required this.advertisingHome,
+    required this.adGallery,
   });
   AdvertisingHome advertisingHome;
+  RegisterFutureAdGallery adGallery;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class AdvertisingSearchWidget extends StatelessWidget {
           SizedBox(
             width: 111,
             child: CachedNetworkImageWidget(
-              imgUrl: advertisingHome.idGallery,
+              imgUrl: adGallery.images[0],
             ),
           ),
           const SizedBox(

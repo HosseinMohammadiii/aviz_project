@@ -9,8 +9,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeGetInitializeData>(
       (event, emit) async {
         emit(HomeLoadingState());
-        var getAdvertisingHome = await homeRepository.getAdvertising();
-
+        var getAdvertising = await homeRepository.getAdvertising();
         var hotAdvertisingHome = await homeRepository.getHotAdvertising();
         var recentAdvertisingHome = await homeRepository.getRecentAdvertising();
         var advertisingDeatail = await homeRepository.getAdvertisingDetail();
@@ -18,7 +17,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             await homeRepository.getDiplayImagesAd();
         emit(
           HomeRequestSuccessState(
-            getAdvertisingHome,
+            getAdvertising,
             hotAdvertisingHome,
             recentAdvertisingHome,
             advertisingDeatail,

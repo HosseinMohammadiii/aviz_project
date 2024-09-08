@@ -95,24 +95,43 @@ class _ContainerSearchState extends State<ContainerSearch> {
               slivers: [
                 if (state is SearchRequestSuccessState) ...[
                   state.searchResult.fold(
-                    (l) => SliverToBoxAdapter(
-                      child: Center(
-                        child: textWidget(
-                          l,
-                          CustomColor.black,
-                          16,
-                          FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    (search) => SliverList.builder(
-                      itemCount: search.length,
-                      itemBuilder: (context, index) {
-                        return AdvertisingSearchWidget(
-                            advertisingHome: search[index]);
-                      },
-                    ),
-                  )
+                      (l) => SliverToBoxAdapter(
+                            child: Center(
+                              child: textWidget(
+                                l,
+                                CustomColor.black,
+                                16,
+                                FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                      (adHome) => state.advertisingGalleryDetails.fold(
+                            (l) => SliverToBoxAdapter(
+                              child: Center(
+                                child: textWidget(
+                                  l,
+                                  CustomColor.black,
+                                  16,
+                                  FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            (r) {
+                              return SliverList.builder(
+                                itemCount: adHome.length,
+                                itemBuilder: (context, index) {
+                                  var gallery = r
+                                      .where((item) =>
+                                          item.id == adHome[index].idGallery)
+                                      .toList();
+                                  return AdvertisingSearchWidget(
+                                    advertisingHome: adHome[index],
+                                    adGallery: gallery[0],
+                                  );
+                                },
+                              );
+                            },
+                          ))
                 ],
                 if (state is SearchLoadingState) ...[
                   const SliverToBoxAdapter(
