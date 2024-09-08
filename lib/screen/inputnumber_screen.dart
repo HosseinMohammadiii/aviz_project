@@ -68,7 +68,10 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(0, 0),
-        child: AppBar(),
+        child: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: CustomColor.grey,
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -77,7 +80,24 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Image.asset('images/textinputnumscreen.png'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'images/welcome_to_Aviz.png',
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    textWidget(
+                      'ورود به',
+                      CustomColor.black,
+                      16,
+                      FontWeight.w700,
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 12,
                 ),
@@ -206,7 +226,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
         // Display login button when not in loading state
         return GestureDetector(
           onTap: () async {
-            // اگر اینترنت قطع بود، پیغام به کاربر نمایش داده و از ادامه جلوگیری می‌کنیم
+            //Check Internet Connection
             if (!await checkInternetConnection(context)) {
               return;
             }

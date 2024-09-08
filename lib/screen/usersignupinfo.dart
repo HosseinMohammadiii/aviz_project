@@ -64,7 +64,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(0, 0),
-        child: AppBar(),
+        child: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: CustomColor.grey,
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -74,9 +77,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('images/aviz_icon.png'),
+                    Image.asset(
+                      'images/welcome_to_Aviz.png',
+                      fit: BoxFit.contain,
+                    ),
                     const SizedBox(
                       width: 4,
                     ),
@@ -240,6 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget buttonSignUp() {
     return GestureDetector(
       onTap: () async {
+        //Check Internet Connection
         if (!await checkInternetConnection(context)) {
           return;
         }

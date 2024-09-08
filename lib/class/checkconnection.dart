@@ -11,6 +11,9 @@ Future<bool> checkInternetConnection(BuildContext context) async {
   if (connectivityResult.contains(ConnectivityResult.none)) {
     displayDialog('لطفاً اتصال اینترنت خود را بررسی کنید', context);
     return false;
+  } else if (connectivityResult.contains(ConnectivityResult.vpn)) {
+    displayDialog('لطفا VPN خود را خاموش کنید', context);
+    return false;
   }
   // Otherwise, return true
   return true;
