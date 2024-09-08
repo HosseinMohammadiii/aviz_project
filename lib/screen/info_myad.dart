@@ -77,8 +77,8 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
   @override
   void initState() {
     BlocProvider.of<AdHomeFeaturesBloc>(context).add(
-        AdFeaturesGetInitializeData(
-            widget.advertisingHome.id, widget.advertisingHome.idFacilities));
+        AdFeaturesGetInitializeData(widget.advertisingHome.idFacilities,
+            widget.advertisingHome.idFeatures));
     categoryType();
 
     super.initState();

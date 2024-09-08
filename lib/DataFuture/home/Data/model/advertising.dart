@@ -4,6 +4,7 @@ class AdvertisingHome {
   String id;
   String collectionId;
   String idFacilities;
+  String idFeatures;
   String idGallery;
   String categoryId;
   String title;
@@ -21,6 +22,7 @@ class AdvertisingHome {
     required this.id,
     required this.collectionId,
     required this.idFacilities,
+    required this.idFeatures,
     required this.idGallery,
     required this.categoryId,
     required this.title,
@@ -43,6 +45,7 @@ class AdvertisingHome {
       id: jsonObject['id'],
       collectionId: jsonObject['collectionId'],
       idFacilities: jsonObject['facilities_id'],
+      idFeatures: jsonObject['id_features'],
       idGallery: jsonObject['gallery_id'],
       categoryId: jsonObject['category_id'],
       title: jsonObject['home_name'],

@@ -5,7 +5,6 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../DataFuture/ad_details/Data/model/ad_detail.dart';
 import '../DataFuture/home/Data/model/advertising.dart';
 import '../class/colors.dart';
 import 'display_ad_facilities.dart';
@@ -27,9 +26,66 @@ class AdvertisindFeaturesWidget extends StatefulWidget {
 class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
   @override
   void initState() {
-    BlocProvider.of<AdHomeFeaturesBloc>(context)
-        .add(AdFeaturesGetInitializeData(widget.ad.id, widget.ad.idFacilities));
+    BlocProvider.of<AdHomeFeaturesBloc>(context).add(
+        AdFeaturesGetInitializeData(
+            widget.ad.idFacilities, widget.ad.idFeatures));
+    documentAndView();
     super.initState();
+  }
+
+  String document = '';
+  String view = '';
+  void documentAndView() {
+    switch (widget.ad.idFeatures) {
+      case '6prs9whayez5ndc':
+        document = 'وقفی';
+        view = 'شرقی';
+        break;
+      case 'y4nt0dvixr4xcna':
+        document = 'شش دانگ';
+        view = 'شرقی';
+        break;
+      case 'c756fp5htkh2gno':
+        document = 'تک برگ';
+        view = 'شرقی';
+        break;
+      case 'urmnw7g2c4zegf1':
+        document = 'وقفی';
+        view = 'غربی';
+        break;
+      case 'xw0low6fmir8sgo':
+        document = 'شش دانگ';
+        view = 'غربی';
+        break;
+      case 'mj34tvx7hhsm27u':
+        document = 'تک برگ';
+        view = 'غربی';
+        break;
+      case 'jvnz5pbmul5s6oi':
+        document = 'وقفی';
+        view = 'جنوبی';
+        break;
+      case 'adgv0zg79giyxni':
+        document = 'شش دانگ';
+        view = 'جنوبی';
+        break;
+      case 'v6ixmhzhqziudho':
+        document = 'تک برگ';
+        view = 'جنوبی';
+        break;
+      case 'io5oqwlgulcgehk':
+        document = 'وقفی';
+        view = 'شمالی';
+        break;
+      case 'hnrty8b2u4uu2zo':
+        document = 'شش دانگ';
+        view = 'شرقی';
+        break;
+      case 'nish48ruq5zsisv':
+        document = 'تک برگ';
+        view = 'شرقی';
+        break;
+    }
   }
 
   @override
@@ -87,7 +143,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: document.length,
                           itemBuilder: (context, index) =>
-                              advertisingDocumentWidget(document[index]),
+                              advertisingDocumentWidget(),
                         ),
                         DottedLine(
                           dashColor: CustomColor.grey350,
@@ -111,8 +167,7 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: direction.length,
                               itemBuilder: (context, index) =>
-                                  advertisingFeatutersDirection(
-                                      direction[index]),
+                                  advertisingFeatutersDirection(),
                             );
                           },
                         ),
@@ -167,13 +222,13 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
     );
   }
 
-  Widget advertisingFeatutersDirection(AdvertisingFeatures ad) {
+  Widget advertisingFeatutersDirection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         textWidget(
-          ad.direction,
+          view,
           CustomColor.grey500,
           16,
           FontWeight.w700,
@@ -188,13 +243,13 @@ class _AdvertisindFeaturesWidgetState extends State<AdvertisindFeaturesWidget> {
     );
   }
 
-  Widget advertisingDocumentWidget(AdvertisingFeatures ad) {
+  Widget advertisingDocumentWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         textWidget(
-          ad.document,
+          document,
           CustomColor.grey500,
           16,
           FontWeight.w700,

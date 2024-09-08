@@ -95,6 +95,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'floor': floor,
           'year_build': yearBuild,
         },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -139,6 +142,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'floor_material': floorMaterial,
           'wc': wc,
         },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -170,6 +176,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       var response = await dio.post(
         'collections/advertising_gallery/records',
         data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -190,6 +199,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     try {
       var response = await dio.get(
         'collections/advertising_gallery/records',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return response.data['items']
@@ -212,6 +224,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       var response = await dio.get(
         'collections/inforegisteredhomes/records',
         // queryParameters: qParams,
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<RegisterFutureAd>(
@@ -230,6 +245,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     try {
       var response = await dio.get(
         'collections/facilities/records',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -248,6 +266,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     try {
       var response = await dio.delete(
         'collections/inforegisteredhomes/records/$id',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<RegisterFutureAd>(
@@ -266,6 +287,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     try {
       var response = await dio.delete(
         'collections/facilities/records/$id',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -284,6 +308,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     try {
       var response = await dio.delete(
         'collections/advertising_gallery/records/$id',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items'];
     } on DioException catch (ex) {
@@ -324,6 +351,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'floor_material': floorMaterial,
           'wc': wc,
         },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       if (response.statusCode == 200) {
         return response.data['items'];
@@ -354,6 +384,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       });
       var response = await dio.patch(
         'collections/advertising_gallery/records/${RegisterId().getIdGallery()}',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
         data: formData,
       );
 

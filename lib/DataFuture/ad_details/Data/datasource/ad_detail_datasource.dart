@@ -17,7 +17,7 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
   @override
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures(String id) async {
     try {
-      Map<String, dynamic> query = {'filter': 'id_advertising="$id"'};
+      Map<String, dynamic> query = {'filter': 'id="$id"'};
       var response = await dio.get(
         'collections/features/records',
         queryParameters: query,

@@ -10,7 +10,8 @@ class AdHomeFeaturesBloc extends Bloc<AdFeaturesEvent, AdFeaturesState> {
     on<AdFeaturesGetInitializeData>(
       (event, emit) async {
         emit(AdDetailLoadingState());
-        var adFeatures = await repository.getAdvertisinFeatures(event.adId);
+        var adFeatures =
+            await repository.getAdvertisinFeatures(event.idFeatures);
         var adFacilitiesList =
             await repository.getAdvertisinFacilities(event.facilitiesId);
         emit(AdDetailRequestSuccessState(

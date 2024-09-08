@@ -144,13 +144,8 @@ class ListMyAdvertising extends StatefulWidget {
 class _ListMyAdvertisingState extends State<ListMyAdvertising> {
   List<bool> isDelete = [];
   bool isSelect = false;
-  List<String> selectedAdIds = [];
-  List<String> selectedAdGalleryIds = [];
-  List<String> selectedAdFacilitiesIds = [];
+  List<RegisterFutureAd> selectedAdIds = [];
 
-  String idAd = '';
-  String idAdFacilities = '';
-  String idAdGallery = '';
   @override
   void initState() {
     isDelete = List<bool>.filled(widget.advertising.length, false);
@@ -176,8 +171,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                 itemCount: widget.advertising.length,
                 itemBuilder: (context, index) {
                   var advertisingAd = widget.advertising.toList()[index];
-                  var advertisingImagesAd =
-                      widget.advertisingGallery.toList()[index];
+
                   var advertisingFacilities =
                       widget.advertisingFacilities.toList()[index];
 
@@ -190,14 +184,9 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                       setState(() {
                         isDelete[index] = !isDelete[index];
                         if (isDelete[index]) {
-                          selectedAdIds.add(advertisingAd.id);
-                          selectedAdGalleryIds.add(advertisingImagesAd.id);
-                          selectedAdFacilitiesIds.add(advertisingFacilities.id);
+                          selectedAdIds.add(advertisingAd);
                         } else {
-                          selectedAdIds.remove(advertisingAd.id);
-                          selectedAdGalleryIds.remove(advertisingImagesAd.id);
-                          selectedAdFacilitiesIds
-                              .remove(advertisingFacilities.id);
+                          selectedAdIds.remove(advertisingAd);
                         }
 
                         context.read<BoolStateCubit>().state.isDelete =
@@ -308,34 +297,25 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                             for (var i = 0;
                                 i < widget.advertising.length;
                                 i++) {
-                              idAd = widget.advertising[i].id;
-
-                              idAdFacilities =
-                                  widget.advertisingFacilities[i].id;
-
-                              idAdGallery = widget.advertisingGallery[i].id;
-
                               context.read<AddAdvertisingBloc>().add(
                                     DeleteAdvertisingData(
-                                      idAd: idAd,
-                                      idAdFacilities: idAdFacilities,
-                                      idAdGallery: idAdGallery,
+                                      idAd: widget.advertising[i].id,
+                                      idAdFacilities:
+                                          widget.advertising[i].idFacilities,
+                                      idAdGallery:
+                                          widget.advertising[i].idGallery,
                                     ),
                                   );
                             }
                             Navigator.pop(context);
                           } else {
                             for (var i = 0; i < selectedAdIds.length; i++) {
-                              idAd = selectedAdIds[i];
-
-                              idAdFacilities = selectedAdFacilitiesIds[i];
-
-                              idAdGallery = selectedAdGalleryIds[i];
                               context.read<AddAdvertisingBloc>().add(
                                     DeleteAdvertisingData(
-                                      idAd: idAd,
-                                      idAdFacilities: idAdFacilities,
-                                      idAdGallery: idAdGallery,
+                                      idAd: selectedAdIds[i].id,
+                                      idAdFacilities:
+                                          selectedAdIds[i].idFacilities,
+                                      idAdGallery: selectedAdIds[i].idGallery,
                                     ),
                                   );
                             }

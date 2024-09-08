@@ -5,6 +5,7 @@ class RegisterFutureAd {
   String id;
   String created;
   String categoryId;
+  String idFeatures;
   String idFacilities;
   String idGallery;
   String collectionId;
@@ -20,6 +21,7 @@ class RegisterFutureAd {
     required this.id,
     required this.created,
     required this.categoryId,
+    required this.idFeatures,
     required this.idFacilities,
     required this.idGallery,
     required this.collectionId,
@@ -38,6 +40,7 @@ class RegisterFutureAd {
       id: jsonObject['id'],
       created: jsonObject['created'],
       idFacilities: jsonObject['id_facilities'],
+      idFeatures: jsonObject['id_features'],
       categoryId: jsonObject['id_category'],
       idGallery: jsonObject['id_gallery'],
       collectionId: jsonObject['collectionId'],

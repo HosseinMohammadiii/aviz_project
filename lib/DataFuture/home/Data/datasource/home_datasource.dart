@@ -3,6 +3,7 @@ import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_detail.dart';
 import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dio/dio.dart';
 
+import '../../../NetworkUtil/authmanager.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/ad_gallery.dart';
 
@@ -12,7 +13,7 @@ abstract class IHomeDataSoure {
   Future<List<AdvertisingHome>> getRecentAdvertising();
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures();
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
-  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities(String id);
+  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
 }
 
 class HomeRemoteDataSource extends IHomeDataSoure {
@@ -25,6 +26,9 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       var response = await dio.get(
         'collections/home_screen/records',
         queryParameters: query,
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return response.data['items']
@@ -53,7 +57,11 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       var response = await dio.get(
         'collections/home_screen/records',
         queryParameters: query,
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
+
       return response.data['items']
           .map<AdvertisingHome>(
             (jsonObject) => AdvertisingHome.fromJson(jsonObject),
@@ -89,12 +97,8 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   @override
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures() async {
     try {
-      Map<String, dynamic> query = {
-        'filter': 'id_advertising="afz1mzmvoxqjk9v"'
-      };
       var response = await dio.get(
         'collections/features/records',
-        queryParameters: query,
       );
       return response.data['items']
           .map<AdvertisingFeatures>(
@@ -110,8 +114,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   }
 
   @override
-  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities(
-      String id) async {
+  Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
     try {
       var response = await dio.get(
         'collections/facilities/records',

@@ -1,4 +1,3 @@
-import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/information_user_account.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +16,9 @@ class _AccountScreenState extends State<AccountScreen> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
+        centerTitle: true,
         title: Image.asset(
-          'images/my_aviz.png',
+          'images/logo_avizman.png',
         ),
         automaticallyImplyLeading: false,
       ),
