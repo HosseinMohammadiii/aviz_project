@@ -27,92 +27,92 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           builder: (context, state) {
             return Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        switch (state.viewPage) {
-                          //Switching the status when we are on the items category page.
-                          case ViewPage.category:
-                            break;
+                    Visibility.maintain(
+                      visible: ViewPage.category != state.viewPage,
+                      child: GestureDetector(
+                        onTap: () {
+                          switch (state.viewPage) {
+                            //Switching the status when we are on the items category page.
+                            case ViewPage.category:
+                              break;
 
-                          //Switching the status when we are on the ad items category page to a category step.
-                          case ViewPage.itemsRentHome:
-                          case ViewPage.itemsBuyHome:
-                            // case ViewPage.itemsBuyBusinessPlace:
-                            // case ViewPage.itemsRentBusinessPlace:
-                            context
-                                .read<NavigationPage>()
-                                .getNavItems(ViewPage.category);
-                            break;
+                            //Switching the status when we are on the ad items category page to a category step.
+                            case ViewPage.itemsRentHome:
+                            case ViewPage.itemsBuyHome:
+                              // case ViewPage.itemsBuyBusinessPlace:
+                              // case ViewPage.itemsRentBusinessPlace:
+                              context
+                                  .read<NavigationPage>()
+                                  .getNavItems(ViewPage.category);
+                              break;
 
-                          //Switching the status when we are on the ad information registration page to a previous step.
-                          case ViewPage.registerDetialsRentHomeAdvertising:
-                            context
-                                .read<NavigationPage>()
-                                .getNavItems(ViewPage.itemsRentHome);
-                            context
-                                .read<RegisterInfoAdCubit>()
-                                .resetInfoAdSet();
-                            context.read<BoolStateCubit>().reset();
-                            break;
-                          case ViewPage.registerDetialsBuyHomeAdvertising:
-                            context
-                                .read<NavigationPage>()
-                                .getNavItems(ViewPage.itemsBuyHome);
-                            context
-                                .read<RegisterInfoAdCubit>()
-                                .resetInfoAdSet();
-                            context.read<BoolStateCubit>().reset();
-                            break;
+                            //Switching the status when we are on the ad information registration page to a previous step.
+                            case ViewPage.registerDetialsRentHomeAdvertising:
+                              context
+                                  .read<NavigationPage>()
+                                  .getNavItems(ViewPage.itemsRentHome);
+                              context
+                                  .read<RegisterInfoAdCubit>()
+                                  .resetInfoAdSet();
+                              context.read<BoolStateCubit>().reset();
+                              break;
+                            case ViewPage.registerDetialsBuyHomeAdvertising:
+                              context
+                                  .read<NavigationPage>()
+                                  .getNavItems(ViewPage.itemsBuyHome);
+                              context
+                                  .read<RegisterInfoAdCubit>()
+                                  .resetInfoAdSet();
+                              context.read<BoolStateCubit>().reset();
+                              break;
 
-                          //Switching the status when we are on the ad location registration page to a previous step.
-                          case ViewPage.registerHomeLocation:
-                            context.read<NavigationPage>().getNavItems(
-                                ViewPage.registerDetialsBuyHomeAdvertising);
-                            context.read<BoolStateCubit>().state.isUpdate =
-                                true;
+                            //Switching the status when we are on the ad location registration page to a previous step.
+                            case ViewPage.registerHomeLocation:
+                              context.read<NavigationPage>().getNavItems(
+                                  ViewPage.registerDetialsBuyHomeAdvertising);
+                              context.read<BoolStateCubit>().state.isUpdate =
+                                  true;
 
-                            break;
+                              break;
 
-                          // case ViewPage.registerBusinessLocation:
-                          //   BlocProvider.of<NavigationPage>(context)
-                          //       .getNavItems(ViewPage.itemsRentBusinessPlace);
-                          //   break;
+                            // case ViewPage.registerBusinessLocation:
+                            //   BlocProvider.of<NavigationPage>(context)
+                            //       .getNavItems(ViewPage.itemsRentBusinessPlace);
+                            //   break;
 
-                          //Switching the status when we are on the ad final information registration page to a previous step.
-                          case ViewPage.registerHomeAdvertising:
-                            context
-                                .read<NavigationPage>()
-                                .getNavItems(ViewPage.registerHomeLocation);
+                            //Switching the status when we are on the ad final information registration page to a previous step.
+                            case ViewPage.registerHomeAdvertising:
+                              context
+                                  .read<NavigationPage>()
+                                  .getNavItems(ViewPage.registerHomeLocation);
 
-                            break;
+                              break;
 
-                          // case ViewPage.registerBusinessAdvertising:
-                          //   BlocProvider.of<NavigationPage>(context)
-                          //       .getNavItems(ViewPage.registerBusinessLocation);
-                          //   break;
+                            // case ViewPage.registerBusinessAdvertising:
+                            //   BlocProvider.of<NavigationPage>(context)
+                            //       .getNavItems(ViewPage.registerBusinessLocation);
+                            //   break;
 
-                          //Switching the status when we are not in a stage.
-                          default:
-                            context
-                                .read<NavigationPage>()
-                                .getNavItems(ViewPage.category);
-                            break;
-                        }
-                      },
-                      child: state.viewPage == ViewPage.category
-                          ? const SizedBox()
-                          : const Icon(
-                              Icons.close_rounded,
-                              size: 35,
-                            ),
+                            //Switching the status when we are not in a stage.
+                            default:
+                              context
+                                  .read<NavigationPage>()
+                                  .getNavItems(ViewPage.category);
+                              break;
+                          }
+                        },
+                        child: const Icon(
+                          Icons.close_rounded,
+                          size: 35,
+                        ),
+                      ),
                     ),
                     const Spacer(),
-                    SizedBox(
-                      height: 35,
+                    Center(
+                      //  height: 35,
                       child: Image.asset(
                         state.viewPage == ViewPage.itemsBuyBusinessPlace
                             ? 'images/register_aviz.png'
@@ -120,8 +120,9 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                       ),
                     ),
                     const SizedBox(
-                      width: 105,
+                      width: 25,
                     ),
+                    const Spacer(),
                   ],
                 ),
                 StepProgressIndicator(

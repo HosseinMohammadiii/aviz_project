@@ -37,63 +37,69 @@ class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
     ];
     return BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 1.3,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                itemCount: txt1.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (index == 0) {
-                        BlocProvider.of<NavigationPage>(context)
-                            .getNavItems(ViewPage.itemsRentHome);
-                      } else if (index == 1) {
-                        BlocProvider.of<NavigationPage>(context)
-                            .getNavItems(ViewPage.itemsBuyHome);
-                        // } else if (index == 2) {
-                        //   //Should Changed viewpage***************************
-                        //   BlocProvider.of<NavigationPage>(context)
-                        //       .getNavItems(ViewPage.itemsRentBusinessPlace);
-                        // } else if (index == 3) {
-                        //   //Should Changed viewpage***************************
-                        //   BlocProvider.of<NavigationPage>(context)
-                        //       .getNavItems(ViewPage.itemsBuyBusinessPlace);
-                      }
-                    },
-                    child: Container(
-                      height: 40,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: CustomColor.grey350),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(
-                            Icons.arrow_back_ios_rounded,
-                            color: CustomColor.red,
+        return CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      itemCount: txt1.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (index == 0) {
+                              BlocProvider.of<NavigationPage>(context)
+                                  .getNavItems(ViewPage.itemsRentHome);
+                            } else if (index == 1) {
+                              BlocProvider.of<NavigationPage>(context)
+                                  .getNavItems(ViewPage.itemsBuyHome);
+                              // } else if (index == 2) {
+                              //   //Should Changed viewpage***************************
+                              //   BlocProvider.of<NavigationPage>(context)
+                              //       .getNavItems(ViewPage.itemsRentBusinessPlace);
+                              // } else if (index == 3) {
+                              //   //Should Changed viewpage***************************
+                              //   BlocProvider.of<NavigationPage>(context)
+                              //       .getNavItems(ViewPage.itemsBuyBusinessPlace);
+                            }
+                          },
+                          child: Container(
+                            height: 40,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: CustomColor.grey350),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Icon(
+                                  Icons.arrow_back_ios_rounded,
+                                  color: CustomColor.red,
+                                ),
+                                const Spacer(),
+                                textWidget(
+                                  txt1[index],
+                                  CustomColor.black,
+                                  16,
+                                  FontWeight.w500,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
                           ),
-                          const Spacer(),
-                          textWidget(
-                            txt1[index],
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           ],
