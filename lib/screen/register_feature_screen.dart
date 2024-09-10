@@ -2,7 +2,6 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
@@ -14,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+
+import '../class/checkconnection.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
   const RegisterHomeFeatureScreen({
@@ -38,6 +39,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   final TextEditingController controllerYearBuild = TextEditingController();
   final TextEditingController controllerFloor = TextEditingController();
   final TextEditingController controllerAddress = TextEditingController();
+  final TextEditingController controllerView = TextEditingController();
+  final TextEditingController controllerDocument = TextEditingController();
 
   OverlayEntry? entry;
 
@@ -47,10 +50,26 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   Jalali currentYear = Jalali(1340);
   Jalali endYear = Jalali.now();
 
-  int _currentSliderPrimaryValue = 0;
+  int metr = 0;
+
+  int year = 0;
   int yearLength = 0;
+  int indexDocument = 0;
+  int indexView = 0;
 
   List itemYear = [];
+  List<String> view = [
+    'شمالی',
+    'جنوبی',
+    'شرقی',
+    'غربی',
+  ];
+  List<String> document = [
+    'وقفی',
+    'شش دانگ',
+    'تک برگ',
+    'ندارد',
+  ];
 
   var _scrollController = FixedExtentScrollController();
 
@@ -75,6 +94,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         break;
     }
     yearLength = endYear.year - currentYear.year + 1;
+    year = currentYear.year;
     itemYear = List.generate(yearLength, (index) {});
     final stateAd = context.read<RegisterInfoAdCubit>().state;
 
@@ -114,7 +134,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
           child: CompositedTransformFollower(
             link: layerLink,
             showWhenUnlinked: false,
-            offset: Offset(0, size.height / 32),
+            offset: Offset(0, size.height / 12),
             child: SizedBox(
               height: 140,
               child: ListView.builder(
@@ -191,51 +211,62 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     const TextTitleSection(
                         txt: 'انتخاب دسته بندی آویز',
                         img: 'images/category-2.png'),
-                    textCategory(
-                        title == 'فروش زمین' ? 'محدوده زمین' : 'محدوده ملک',
-                        'دسته بندی'),
                     Row(
                       children: [
-                        Container(
-                          width: 159,
-                          height: 48,
-                          padding: const EdgeInsets.only(right: 5),
-                          decoration: BoxDecoration(
-                            color: CustomColor.grey350,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          alignment: Alignment.center,
-                          child: TextField(
-                            controller: controllerAddress,
-                            keyboardType: TextInputType.streetAddress,
-                            focusNode: focusNode1,
-                            textInputAction: TextInputAction.done,
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              fontFamily: 'SN',
-                              fontSize: 16,
-                              color: CustomColor.grey500,
-                              overflow: TextOverflow.ellipsis,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            textWidget(
+                              title == 'فروش زمین'
+                                  ? 'محدوده زمین'
+                                  : 'محدوده ملک',
+                              CustomColor.grey500,
+                              14,
+                              FontWeight.w600,
                             ),
-                            decoration: InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'محدوده را وارد کنید',
-                              hintStyle: TextStyle(
-                                fontFamily: 'SN',
-                                fontSize: 16,
-                                color: CustomColor.grey500,
+                            Container(
+                              width: 159,
+                              height: 48,
+                              padding: const EdgeInsets.only(right: 5),
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                color: CustomColor.grey350,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              alignment: Alignment.center,
+                              child: TextField(
+                                controller: controllerAddress,
+                                keyboardType: TextInputType.streetAddress,
+                                focusNode: focusNode1,
+                                textInputAction: TextInputAction.done,
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  fontFamily: 'SN',
+                                  fontSize: 16,
+                                  color: CustomColor.grey500,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  hintText: 'محدوده را وارد کنید',
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'SN',
+                                    fontSize: 16,
+                                    color: CustomColor.grey500,
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    controllerAddress.text = value;
+                                  });
+                                },
+                                onTapOutside: (event) {
+                                  focusNode1.unfocus();
+                                },
                               ),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                controllerAddress.text = value;
-                              });
-                            },
-                            onTapOutside: (event) {
-                              focusNode1.unfocus();
-                            },
-                          ),
+                          ],
                         ),
                         const Spacer(),
                         BlocBuilder<StatusModeBloc, StatusModeState>(
@@ -269,53 +300,69 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                   if (changeIcon) {
                                     showOverlay();
                                   } else {
-                                    hideOverlay();
+                                    entry?.remove();
+                                    entry = null;
                                   }
                                 });
                               },
                               child: CompositedTransformTarget(
                                 link: layerLink,
-                                child: Container(
-                                  width: 159,
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: CustomColor.grey350),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: const Radius.circular(4),
-                                      topRight: const Radius.circular(4),
-                                      bottomLeft: changeIcon == false
-                                          ? const Radius.circular(4)
-                                          : const Radius.circular(0),
-                                      bottomRight: changeIcon == false
-                                          ? const Radius.circular(4)
-                                          : const Radius.circular(0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    textWidget(
+                                      'دسته بندی',
+                                      CustomColor.grey500,
+                                      14,
+                                      FontWeight.w600,
                                     ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        changeIcon == false
-                                            ? Icons.keyboard_arrow_down_rounded
-                                            : Icons.keyboard_arrow_up_rounded,
-                                        size: 34,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 6),
-                                        child: textWidget(
-                                          txtTitle ?? '',
-                                          CustomColor.black,
-                                          16,
-                                          FontWeight.w400,
+                                    Container(
+                                      width: 159,
+                                      height: 48,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: CustomColor.grey350),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: const Radius.circular(4),
+                                          topRight: const Radius.circular(4),
+                                          bottomLeft: changeIcon == false
+                                              ? const Radius.circular(4)
+                                              : const Radius.circular(0),
+                                          bottomRight: changeIcon == false
+                                              ? const Radius.circular(4)
+                                              : const Radius.circular(0),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            changeIcon == false
+                                                ? Icons
+                                                    .keyboard_arrow_down_rounded
+                                                : Icons
+                                                    .keyboard_arrow_up_rounded,
+                                            size: 34,
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 6),
+                                            child: textWidget(
+                                              txtTitle ?? '',
+                                              CustomColor.black,
+                                              16,
+                                              FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
@@ -339,67 +386,636 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                       replacement: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          textCategory('تعداد اتاق', 'متراژ'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextfieldFeature(
                                 controller: controllerCounRoom,
+                                title: 'تعداد اتاق',
                                 value:
                                     num.tryParse(controllerCounRoom.text) ?? 0,
                                 textInputAction: TextInputAction.done,
                               ),
-                              widgetBoxMetrFeature(
-                                context,
-                                widgetSliderMeterFeature(),
-                                controllerMetr,
-                                'متراژ را وارد کنید',
+                              selectDocument(
+                                title: 'متراژ',
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      backgroundColor: CustomColor.grey350,
+                                      alignment: Alignment.center,
+                                      content: StatefulBuilder(
+                                        builder: (context, setState) => Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'متراژ را وارد کنید',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            widgetSliderMeterFeature(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ).then(
+                                    (value) {
+                                      setState(() {});
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  int metr =
+                                      int.tryParse(controllerMetr.text) ?? 0;
+                                  setState(() {
+                                    if (metr >= 1000) {
+                                      return;
+                                    }
+                                    metr++;
+                                    controllerMetr.text = metr.toString();
+                                  });
+                                },
+                                onTapMinus: () {
+                                  int metr =
+                                      int.tryParse(controllerMetr.text) ?? 0;
+                                  if (metr <= 0) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    metr--;
+
+                                    controllerMetr.text = metr.toString();
+                                  });
+                                },
+                                valueSelected: controllerMetr.text != 'null'
+                                    ? controllerMetr.text
+                                    : '',
                               ),
                             ],
-                          ),
-                          textCategory(
-                            'سال ساخت',
-                            'طبقه',
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              widgetBoxYearBuildFeature(
-                                context,
-                                _boxListWheelYears(),
-                                controllerYearBuild,
-                                'سال ساخت را انتخاب کنید',
+                              selectDocument(
+                                title: 'سال ساخت',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: CustomColor.grey350,
+                                        alignment: Alignment.center,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'سال ساخت را انتخاب کنید',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            _boxListWheelYears(),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  setState(() {
+                                    if (year == Jalali.now().year) {
+                                      return;
+                                    }
+                                    year++;
+                                    controllerYearBuild.text = year.toString();
+                                  });
+                                },
+                                onTapMinus: () {
+                                  if (year <= 1340) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    year--;
+
+                                    controllerYearBuild.text = year.toString();
+                                  });
+                                },
+                                valueSelected:
+                                    controllerYearBuild.text != 'null'
+                                        ? controllerYearBuild.text
+                                        : '',
                               ),
                               TextfieldFeature(
                                 controller: controllerFloor,
+                                title: 'طبقه',
                                 value: num.tryParse(controllerFloor.text) ?? 0,
                                 textInputAction: TextInputAction.done,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              selectDocument(
+                                title: 'جهت ساختمان',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: CustomColor.grey350,
+                                        alignment: Alignment.center,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'جهت ساختمان را انتخاب کنید',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            SizedBox(
+                                              height: 150,
+                                              child: ListWheelScrollView
+                                                  .useDelegate(
+                                                controller: _scrollController,
+                                                itemExtent: 50,
+                                                squeeze: 0.7,
+                                                childDelegate:
+                                                    ListWheelChildBuilderDelegate(
+                                                  childCount: view.length,
+                                                  builder: (context, index) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          controllerView.text =
+                                                              view[index];
+
+                                                          //Display Scroll Item last Value selected
+                                                          _scrollController =
+                                                              FixedExtentScrollController(
+                                                                  initialItem:
+                                                                      index);
+
+                                                          //Navigator Pop For When Selected Item
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        width: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: controllerView
+                                                                      .text ==
+                                                                  view[index]
+                                                              ? CustomColor.red
+                                                              : CustomColor
+                                                                  .white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          view[index],
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .apply(
+                                                                    fontSizeDelta:
+                                                                        10,
+                                                                    bodyColor: controllerView.text ==
+                                                                            view[
+                                                                                index]
+                                                                        ? CustomColor
+                                                                            .white
+                                                                        : CustomColor
+                                                                            .bluegrey,
+                                                                  )
+                                                                  .titleMedium,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  setState(() {
+                                    if (indexView != 3) {
+                                      indexView++;
+                                      controllerView.text = view[indexView];
+                                    }
+                                  });
+                                },
+                                onTapMinus: () {
+                                  setState(() {
+                                    if (indexView != 0) {
+                                      indexView--;
+                                      controllerView.text = view[indexView];
+                                    }
+                                  });
+                                },
+                                valueSelected: controllerView.text,
+                              ),
+                              selectDocument(
+                                title: 'سند',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: CustomColor.grey350,
+                                        alignment: Alignment.center,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'سند',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            SizedBox(
+                                              height: 150,
+                                              child: ListWheelScrollView
+                                                  .useDelegate(
+                                                controller: _scrollController,
+                                                itemExtent: 50,
+                                                squeeze: 0.7,
+                                                childDelegate:
+                                                    ListWheelChildBuilderDelegate(
+                                                  childCount: document.length,
+                                                  builder: (context, index) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          controllerDocument
+                                                                  .text =
+                                                              document[index];
+
+                                                          //Display Scroll Item last Value selected
+                                                          _scrollController =
+                                                              FixedExtentScrollController(
+                                                                  initialItem:
+                                                                      index);
+
+                                                          //Navigator Pop For When Selected Item
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        width: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              controllerDocument
+                                                                          .text ==
+                                                                      document[
+                                                                          index]
+                                                                  ? CustomColor
+                                                                      .red
+                                                                  : CustomColor
+                                                                      .white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          document[index],
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .apply(
+                                                                    fontSizeDelta:
+                                                                        8,
+                                                                    bodyColor: controllerDocument.text ==
+                                                                            document[
+                                                                                index]
+                                                                        ? CustomColor
+                                                                            .white
+                                                                        : CustomColor
+                                                                            .bluegrey,
+                                                                  )
+                                                                  .titleMedium,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  setState(() {
+                                    if (indexDocument != 2) {
+                                      indexDocument++;
+                                      controllerDocument.text =
+                                          document[indexDocument];
+                                    }
+                                  });
+                                },
+                                onTapMinus: () {
+                                  setState(() {
+                                    if (indexDocument != 0) {
+                                      indexDocument--;
+                                      controllerDocument.text =
+                                          document[indexDocument];
+                                    }
+                                  });
+                                },
+                                valueSelected: controllerDocument.text,
                               ),
                             ],
                           ),
                         ],
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          textCategory(
-                            'سال خرید',
-                            'متراژ',
-                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              widgetBoxYearBuildFeature(
-                                context,
-                                _boxListWheelYears(),
-                                controllerYearBuild,
-                                'سال خرید را انتخاب کنید',
+                              selectDocument(
+                                title: 'سال ساخت',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: CustomColor.grey350,
+                                        alignment: Alignment.center,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'سال ساخت را انتخاب کنید',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            _boxListWheelYears(),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  setState(() {
+                                    if (year == Jalali.now().year) {
+                                      return;
+                                    }
+                                    year++;
+                                    controllerYearBuild.text = year.toString();
+                                  });
+                                },
+                                onTapMinus: () {
+                                  if (year <= 1340) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    year--;
+
+                                    controllerYearBuild.text = year.toString();
+                                  });
+                                },
+                                valueSelected:
+                                    controllerYearBuild.text != 'null'
+                                        ? controllerYearBuild.text
+                                        : '',
                               ),
-                              widgetBoxMetrFeature(
-                                context,
-                                widgetSliderMeterFeature(),
-                                controllerMetr,
-                                'متراژ را وارد کنید',
+                              selectDocument(
+                                title: 'متراژ',
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      backgroundColor: CustomColor.grey350,
+                                      alignment: Alignment.center,
+                                      content: StatefulBuilder(
+                                        builder: (context, setState) => Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'متراژ را وارد کنید',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            widgetSliderMeterFeature(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ).then(
+                                    (value) {
+                                      setState(() {});
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  int metr =
+                                      int.tryParse(controllerMetr.text) ?? 0;
+                                  setState(() {
+                                    if (metr >= 1000) {
+                                      return;
+                                    }
+                                    metr++;
+                                    controllerMetr.text = metr.toString();
+                                  });
+                                },
+                                onTapMinus: () {
+                                  int metr =
+                                      int.tryParse(controllerMetr.text) ?? 0;
+                                  if (metr <= 0) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    metr--;
+
+                                    controllerMetr.text = metr.toString();
+                                  });
+                                },
+                                valueSelected: controllerMetr.text != 'null'
+                                    ? controllerMetr.text
+                                    : '',
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              selectDocument(
+                                title: 'سند',
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: CustomColor.grey350,
+                                        alignment: Alignment.center,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'سند',
+                                              style: TextStyle(
+                                                color: CustomColor.bluegrey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            SizedBox(
+                                              height: 150,
+                                              child: ListWheelScrollView
+                                                  .useDelegate(
+                                                controller: _scrollController,
+                                                itemExtent: 50,
+                                                squeeze: 0.7,
+                                                childDelegate:
+                                                    ListWheelChildBuilderDelegate(
+                                                  childCount: document.length,
+                                                  builder: (context, index) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          controllerDocument
+                                                                  .text =
+                                                              document[index];
+
+                                                          //Display Scroll Item last Value selected
+                                                          _scrollController =
+                                                              FixedExtentScrollController(
+                                                                  initialItem:
+                                                                      index);
+
+                                                          //Navigator Pop For When Selected Item
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        width: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              controllerDocument
+                                                                          .text ==
+                                                                      document[
+                                                                          index]
+                                                                  ? CustomColor
+                                                                      .red
+                                                                  : CustomColor
+                                                                      .white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          document[index],
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .apply(
+                                                                    fontSizeDelta:
+                                                                        8,
+                                                                    bodyColor: controllerDocument.text ==
+                                                                            document[
+                                                                                index]
+                                                                        ? CustomColor
+                                                                            .white
+                                                                        : CustomColor
+                                                                            .bluegrey,
+                                                                  )
+                                                                  .titleMedium,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                onTapPlus: () {
+                                  setState(() {
+                                    if (indexDocument != 3) {
+                                      indexDocument++;
+                                      controllerDocument.text =
+                                          document[indexDocument];
+                                    }
+                                  });
+                                },
+                                onTapMinus: () {
+                                  setState(() {
+                                    if (indexDocument > 0) {
+                                      indexDocument--;
+                                      controllerDocument.text =
+                                          document[indexDocument];
+                                    }
+                                  });
+                                },
+                                valueSelected: controllerDocument.text,
                               ),
                             ],
                           ),
@@ -427,7 +1043,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20, top: 15),
                   child: GestureDetector().textButton(
-                    () {
+                    () async {
                       //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
                       String idCt() {
                         String idCt = '';
@@ -451,6 +1067,69 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         }
 
                         return idCt;
+                      }
+
+                      //Function For Set idFeatures
+                      String idFeature() {
+                        String idFeature = '';
+                        if (controllerDocument.text == 'وقفی' &&
+                            controllerView.text == 'شرقی') {
+                          idFeature = '6prs9whayez5ndc';
+                        } else if (controllerDocument.text == 'شش دانگ' &&
+                            controllerView.text == 'شرقی') {
+                          idFeature = 'y4nt0dvixr4xcna';
+                        } else if (controllerDocument.text == 'تک برگ' &&
+                            controllerView.text == 'شرقی') {
+                          idFeature = 'c756fp5htkh2gno';
+                        } else if (controllerDocument.text == 'وقفی' &&
+                            controllerView.text == 'غربی') {
+                          idFeature = 'urmnw7g2c4zegf1';
+                        } else if (controllerDocument.text == 'شش دانگ' &&
+                            controllerView.text == 'غربی') {
+                          idFeature = 'xw0low6fmir8sgo';
+                        } else if (controllerDocument.text == 'تک برگ' &&
+                            controllerView.text == 'غربی') {
+                          idFeature = 'mj34tvx7hhsm27u';
+                        } else if (controllerDocument.text == 'وقفی' &&
+                            controllerView.text == 'جنوبی') {
+                          idFeature = 'jvnz5pbmul5s6oi';
+                        } else if (controllerDocument.text == 'شش دانگ' &&
+                            controllerView.text == 'جنوبی') {
+                          idFeature = 'adgv0zg79giyxni';
+                        } else if (controllerDocument.text == 'تک برگ' &&
+                            controllerView.text == 'جنوبی') {
+                          idFeature = 'v6ixmhzhqziudho';
+                        } else if (controllerDocument.text == 'وقفی' &&
+                            controllerView.text == 'شمالی') {
+                          idFeature = 'io5oqwlgulcgehk';
+                        } else if (controllerDocument.text == 'شش دانگ' &&
+                            controllerView.text == 'شمالی') {
+                          idFeature = 'hnrty8b2u4uu2zo';
+                        } else if (controllerDocument.text == 'تک برگ' &&
+                            controllerView.text == 'شمالی') {
+                          idFeature = 'nish48ruq5zsisv';
+                        } else if (controllerDocument.text == 'ندارد' &&
+                            controllerView.text == '') {
+                          idFeature = 'ti012w7mmoyhmw2';
+                        } else if (controllerDocument.text == 'ندارد' &&
+                            controllerView.text == 'شمالی') {
+                          idFeature = 'gmxzv044ugckigz';
+                        } else if (controllerDocument.text == 'ندارد' &&
+                            controllerView.text == 'جنوبی') {
+                          idFeature = '65ym07y7mwlmy2a';
+                        } else if (controllerDocument.text == 'ندارد' &&
+                            controllerView.text == 'غربی') {
+                          idFeature = '01zb7u52n31fi8m';
+                        } else if (controllerDocument.text == 'ندارد' &&
+                            controllerView.text == 'شرقی') {
+                          idFeature = '761f4u4nm3qpuzp';
+                        }
+                        return idFeature;
+                      }
+
+                      //Check Internet Connection Befor Register Information Ad in the Database
+                      if (!await checkInternetConnection(context)) {
+                        return;
                       }
 
                       if (title != 'فروش زمین'
@@ -481,9 +1160,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               yearBuild: yearBuild,
                               idCt: idCt(),
                               address: controllerAddress.text,
+                              idFeature: idFeature(),
                             );
                         final boolState = context.read<BoolStateCubit>().state;
-                        print(RegisterId().getIdFacilities());
                         if (boolState.isUpdate) {
                           BlocProvider.of<AddAdvertisingBloc>(context).add(
                             UpdateFacilitiesData(
@@ -551,15 +1230,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         activeColor: CustomColor.pink,
         label: controllerMetr.text,
         onChanged: (value) {
-          if (value > 0) {
-            setState(() {
-              _currentSliderPrimaryValue = value.toInt();
-
-              controllerMetr.text = _currentSliderPrimaryValue.toString();
-            });
-          } else {
-            controllerMetr.text = '';
-          }
+          setState(() {
+            metr = value.toInt();
+            controllerMetr.text = value.toInt().toString();
+          });
         },
       ),
     );
@@ -845,41 +1519,41 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         itemExtent: 50,
         squeeze: 0.7,
         childDelegate: ListWheelChildBuilderDelegate(
-          childCount: itemYear.length,
+          childCount: Jalali.now().year - 1340 + 1,
           builder: (context, index) {
-            int year = currentYear.year + index;
+            int itemYear = 1340 + index;
 
             return GestureDetector(
               onTap: () {
                 setState(() {
+                  year = itemYear;
                   controllerYearBuild.text = year.toString();
 
-                  //Display Scroll Item last Value selected
                   _scrollController =
                       FixedExtentScrollController(initialItem: index);
 
-                  //Navigator Pop For When Selected Item
                   Navigator.pop(context);
                 });
               },
               child: Container(
                 width: 100,
                 decoration: BoxDecoration(
-                  color: controllerYearBuild.text == year.toString()
+                  color: controllerYearBuild.text == itemYear.toString()
                       ? CustomColor.red
                       : CustomColor.white,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  '$year'.toPersianDigit(),
+                  '$itemYear'.toPersianDigit(),
                   style: Theme.of(context)
                       .textTheme
                       .apply(
                         fontSizeDelta: 10,
-                        bodyColor: controllerYearBuild.text == year.toString()
-                            ? CustomColor.white
-                            : CustomColor.bluegrey,
+                        bodyColor:
+                            controllerYearBuild.text == itemYear.toString()
+                                ? CustomColor.white
+                                : CustomColor.bluegrey,
                       )
                       .titleMedium,
                 ),
@@ -891,33 +1565,72 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     );
   }
 
-//Widget for display title category top box
-  Widget textCategory(String txt1, String txt2) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 7,
+//Widget For Select Document
+  Widget selectDocument({
+    required String title,
+    required Function onTap,
+    required Function onTapPlus,
+    required Function onTapMinus,
+    required String valueSelected,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        textWidget(
+          title,
+          CustomColor.grey500,
+          14,
+          FontWeight.w600,
+        ),
+        GestureDetector(
+          onTap: () => onTap(),
+          child: Container(
+            width: 159,
+            height: 48,
+            padding: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: CustomColor.grey350,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => onTapPlus(),
+                      child: const Icon(
+                        Icons.arrow_drop_up_rounded,
+                        color: CustomColor.red,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => onTapMinus(),
+                      child: const Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: CustomColor.red,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  valueSelected,
+                  style: const TextStyle(
+                    fontFamily: 'SN',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: CustomColor.black,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
-          textWidget(
-            txt1,
-            CustomColor.grey500,
-            14,
-            FontWeight.w600,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 3.5,
-          ),
-          textWidget(
-            txt2,
-            CustomColor.grey500,
-            14,
-            FontWeight.w600,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

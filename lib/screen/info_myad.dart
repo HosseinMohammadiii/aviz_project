@@ -76,11 +76,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
 
   @override
   void initState() {
-    BlocProvider.of<AdHomeFeaturesBloc>(context).add(
-        AdFeaturesGetInitializeData(widget.advertisingHome.idFacilities,
-            widget.advertisingHome.idFeatures));
     categoryType();
-
     super.initState();
   }
 
@@ -294,32 +290,10 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
                       height: 25,
                     ),
                   ),
-                  if (state is AdDetailLoadingState) ...[
-                    const SliverToBoxAdapter(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ],
-                  if (state is AdDetailRequestSuccessState) ...[
-                    state.advertisingFacilitiesList.fold(
-                      (error) => SliverToBoxAdapter(
-                        child: Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      (facilities) => _changeBoxContainer(
-                        indexContainer,
-                        widget.advertisingHome,
-                        facilities,
-                      ),
-                    )
-                  ],
+                  _changeBoxContainer(
+                    indexContainer,
+                    widget.advertisingHome,
+                  ),
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 25,
@@ -342,7 +316,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
 _changeBoxContainer(
   int index,
   RegisterFutureAd adHome,
-  List<AdvertisingFacilities> adf,
 ) {
   switch (index) {
     case 0:
@@ -353,8 +326,10 @@ _changeBoxContainer(
       return SliverToBoxAdapter(
           child: PriceInfoWidget(advertisingHome: adHome));
     case 2:
-      return AdvertisingFacilitiesWidget(
-        adFacilities: adf,
+      return SliverToBoxAdapter(
+        child: AdvertisingFacilitiesWidget(
+          advertisingHome: adHome,
+        ),
       );
     case 3:
       return SliverToBoxAdapter(

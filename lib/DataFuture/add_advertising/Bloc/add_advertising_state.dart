@@ -153,7 +153,7 @@ class RegisterInfoAd {
   String description;
   num? price;
   final List<File>? images;
-  List<RegisterFutureAd>? list;
+  final String idFeature;
 
   RegisterInfoAd({
     required this.metr,
@@ -166,7 +166,7 @@ class RegisterInfoAd {
     required this.description,
     required this.price,
     required this.images,
-    required this.list,
+    required this.idFeature,
   });
   RegisterInfoAd copyWith({
     final num? metr,
@@ -179,7 +179,7 @@ class RegisterInfoAd {
     final String? description,
     final num? price,
     final List<File>? images,
-    final List<RegisterFutureAd>? list,
+    final String? idFeature,
   }) {
     return RegisterInfoAd(
       metr: metr ?? this.metr,
@@ -192,7 +192,7 @@ class RegisterInfoAd {
       description: description ?? this.description,
       price: price ?? this.price,
       images: images ?? this.images,
-      list: list ?? this.list,
+      idFeature: idFeature ?? this.idFeature,
     );
   }
 }

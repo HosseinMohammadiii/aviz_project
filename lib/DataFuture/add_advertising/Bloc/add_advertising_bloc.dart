@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/category_advertising_repository.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/info_register_ad_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +37,7 @@ class AddAdvertisingBloc
       (event, emit) async {
         var registerInfo = await infoRepository.postRegisterAd(
           event.idCt,
+          event.idFeature,
           event.location,
           event.title,
           event.description,
@@ -261,7 +261,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             description: '',
             price: null,
             images: [],
-            list: [],
+            idFeature: '',
           ),
         );
 
@@ -276,7 +276,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final String? description,
     final num? price,
     final List<File>? images,
-    final List<RegisterFutureAd>? list,
+    final String? idFeature,
   }) {
     emit(state.copyWith(
       metr: metr,
@@ -289,7 +289,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       description: description,
       price: price,
       images: images,
-      list: list,
+      idFeature: idFeature,
     ));
   }
 
@@ -306,7 +306,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         description: '',
         price: null,
         images: [],
-        list: [],
+        idFeature: '',
       ),
     );
   }

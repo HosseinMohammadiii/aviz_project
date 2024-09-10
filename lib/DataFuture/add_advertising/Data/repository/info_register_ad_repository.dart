@@ -12,6 +12,7 @@ abstract class IInfoAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDiplayAdvertising();
   Future<Either<String, String>> postRegisterAd(
     String idCT,
+    String idFeature,
     String location,
     String title,
     String description,
@@ -69,6 +70,7 @@ final class InfoAdRepository extends IInfoAdRepository {
   @override
   Future<Either<String, String>> postRegisterAd(
     String idCT,
+    String idFeature,
     String location,
     String title,
     String description,
@@ -81,6 +83,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     try {
       var response = await datasource.postRegisterAd(
         idCT,
+        idFeature,
         location,
         title,
         description,

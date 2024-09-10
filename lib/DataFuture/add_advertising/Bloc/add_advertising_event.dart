@@ -14,6 +14,7 @@ class InitializedDisplayAdvertising extends InfoAdvertisingEvent {}
 
 class AddInfoAdvertising extends InfoAdvertisingEvent {
   String idCt;
+  String idFeature;
   String location;
   String title;
   String description;
@@ -25,6 +26,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
 
   AddInfoAdvertising(
     this.idCt,
+    this.idFeature,
     this.location,
     this.title,
     this.description,

@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../Bloc/bloc_page_number/page_n_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../class/checkconnection.dart';
 
 class RegisterAdvertising extends StatefulWidget {
   const RegisterAdvertising({super.key});
@@ -239,7 +240,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 SwitchBox(switchCheck: false, txt: 'فعال کردن گفتگو'),
                 SwitchBox(switchCheck: true, txt: 'فعال کردن تماس'),
                 GestureDetector().textButton(
-                  () {
+                  () async {
+                    //Check Internet Connection Befor Register Information Ad in the Database
+                    if (!await checkInternetConnection(context)) {
+                      return;
+                    }
+
                     // Check if no images have been selected
                     if (galleryFile.isEmpty) {
                       // Display a dialog prompting the user to select an image
@@ -259,6 +265,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       BlocProvider.of<AddAdvertisingBloc>(context).add(
                         AddInfoAdvertising(
                           stateAd.idCt,
+                          stateAd.idFeature,
                           stateAd.address,
                           stateAd.title,
                           stateAd.description,

@@ -12,6 +12,7 @@ abstract class IInfoAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAdvertising();
   Future<String> postRegisterAd(
     String idCT,
+    String idFeature,
     String location,
     String title,
     String description,
@@ -69,6 +70,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   @override
   Future<String> postRegisterAd(
     String idCT,
+    String idFeature,
     String location,
     String title,
     String description,
@@ -84,6 +86,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         data: {
           'user_id': Authmanager().getId(),
           'id_category': idCT,
+          'id_features': idFeature,
           'id_facilities': RegisterId().getIdFacilities(),
           'id_gallery': RegisterId().getIdGallery(),
           'title': title,
