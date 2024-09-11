@@ -26,7 +26,7 @@ class _TextfieldFeatureState extends State<TextfieldFeature> {
 
   @override
   void initState() {
-    widget.controller.text == 'null'
+    widget.controller.text == 'null' || widget.controller.text == '0'
         ? widget.controller.text = ''
         : widget.controller.text;
     super.initState();

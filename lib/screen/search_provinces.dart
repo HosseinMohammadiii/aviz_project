@@ -5,8 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../class/colors.dart';
 
+// ignore: must_be_immutable
 class SearchProvincesScreen extends StatefulWidget {
-  const SearchProvincesScreen({super.key});
+  SearchProvincesScreen({
+    super.key,
+    this.isTurn = false,
+  });
+  bool isTurn;
 
   @override
   State<SearchProvincesScreen> createState() => _SearchProvincesScreenState();
@@ -246,14 +251,14 @@ class _SearchProvincesScreenState extends State<SearchProvincesScreen> {
               transformAlignment: Alignment.topCenter,
               child: GestureDetector(
                 onTap: () {
-                  if (isSelectProvinces) {
+                  if (!widget.isTurn && isSelectProvinces) {
                     context.read<AuthAccountBloc>().add(
                           UpdateProvinceUserEvent(
                             provincesController.text,
                           ),
                         );
                     Navigator.pop(context);
-                  }
+                  } else {}
                 },
                 child: Container(
                   width: double.infinity,

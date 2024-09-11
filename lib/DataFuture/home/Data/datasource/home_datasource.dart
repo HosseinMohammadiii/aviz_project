@@ -1,16 +1,15 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
 import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_detail.dart';
-import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dio/dio.dart';
 
-import '../../../NetworkUtil/authmanager.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/ad_gallery.dart';
+import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class IHomeDataSoure {
-  Future<List<AdvertisingHome>> getAdvertising();
-  Future<List<AdvertisingHome>> getHotAdvertising();
-  Future<List<AdvertisingHome>> getRecentAdvertising();
+  Future<List<RegisterFutureAd>> getAdvertising();
+  Future<List<RegisterFutureAd>> getHotAdvertising();
+  Future<List<RegisterFutureAd>> getRecentAdvertising();
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures();
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
@@ -20,20 +19,17 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   final Dio dio;
   HomeRemoteDataSource(this.dio);
   @override
-  Future<List<AdvertisingHome>> getHotAdvertising() async {
+  Future<List<RegisterFutureAd>> getHotAdvertising() async {
     try {
       Map<String, dynamic> query = {'filter': 'is_hot=true'};
       var response = await dio.get(
-        'collections/home_screen/records',
+        'collections/inforegisteredhomes/records',
         queryParameters: query,
-        options: Options(
-          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
-        ),
       );
 
       return response.data['items']
-          .map<AdvertisingHome>(
-            (jsonObject) => AdvertisingHome.fromJson(jsonObject),
+          .map<RegisterFutureAd>(
+            (jsonObject) => RegisterFutureAd.fromJson(jsonObject),
           )
           .toList();
     } on DioException catch (ex) {
@@ -45,7 +41,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   }
 
   @override
-  Future<List<AdvertisingHome>> getRecentAdvertising() async {
+  Future<List<RegisterFutureAd>> getRecentAdvertising() async {
     //This function returns the current time in ISO 8601 format, which includes the exact date and time.
     String currentDateTime() {
       DateTime dt = DateTime.now();
@@ -55,16 +51,13 @@ class HomeRemoteDataSource extends IHomeDataSoure {
     try {
       Map<String, dynamic> query = {'filter': 'created<"${currentDateTime()}"'};
       var response = await dio.get(
-        'collections/home_screen/records',
+        'collections/inforegisteredhomes/records',
         queryParameters: query,
-        options: Options(
-          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
-        ),
       );
 
       return response.data['items']
-          .map<AdvertisingHome>(
-            (jsonObject) => AdvertisingHome.fromJson(jsonObject),
+          .map<RegisterFutureAd>(
+            (jsonObject) => RegisterFutureAd.fromJson(jsonObject),
           )
           .toList();
     } on DioException catch (ex) {
@@ -76,14 +69,14 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   }
 
   @override
-  Future<List<AdvertisingHome>> getAdvertising() async {
+  Future<List<RegisterFutureAd>> getAdvertising() async {
     try {
       var response = await dio.get(
-        'collections/home_screen/records',
+        'collections/inforegisteredhomes/records',
       );
       return response.data['items']
-          .map<AdvertisingHome>(
-            (jsonObject) => AdvertisingHome.fromJson(jsonObject),
+          .map<RegisterFutureAd>(
+            (jsonObject) => RegisterFutureAd.fromJson(jsonObject),
           )
           .toList();
     } on DioException catch (ex) {

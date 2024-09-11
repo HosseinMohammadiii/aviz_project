@@ -15,6 +15,7 @@ class InitializedDisplayAdvertising extends InfoAdvertisingEvent {}
 class AddInfoAdvertising extends InfoAdvertisingEvent {
   String idCt;
   String idFeature;
+  String province;
   String location;
   String title;
   String description;
@@ -27,6 +28,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
   AddInfoAdvertising(
     this.idCt,
     this.idFeature,
+    this.province,
     this.location,
     this.title,
     this.description,
@@ -96,10 +98,12 @@ final class UpdateFacilitiesData extends InfoAdvertisingEvent {
 
 final class DeleteAdvertisingData extends InfoAdvertisingEvent {
   String idAd;
+  String? idHome;
   String idAdFacilities;
   String idAdGallery;
   DeleteAdvertisingData({
     required this.idAd,
+    this.idHome,
     required this.idAdFacilities,
     required this.idAdGallery,
   });

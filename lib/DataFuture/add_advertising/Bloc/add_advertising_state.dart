@@ -154,6 +154,9 @@ class RegisterInfoAd {
   num? price;
   final List<File>? images;
   final String idFeature;
+  String document;
+  String view;
+  final String province;
 
   RegisterInfoAd({
     required this.metr,
@@ -167,6 +170,9 @@ class RegisterInfoAd {
     required this.price,
     required this.images,
     required this.idFeature,
+    required this.document,
+    required this.view,
+    required this.province,
   });
   RegisterInfoAd copyWith({
     final num? metr,
@@ -180,6 +186,9 @@ class RegisterInfoAd {
     final num? price,
     final List<File>? images,
     final String? idFeature,
+    final String? document,
+    final String? view,
+    final String? province,
   }) {
     return RegisterInfoAd(
       metr: metr ?? this.metr,
@@ -193,6 +202,9 @@ class RegisterInfoAd {
       price: price ?? this.price,
       images: images ?? this.images,
       idFeature: idFeature ?? this.idFeature,
+      document: document ?? this.document,
+      view: view ?? this.view,
+      province: province ?? this.province,
     );
   }
 }

@@ -1,15 +1,15 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
 import 'package:aviz_project/DataFuture/home/Data/datasource/home_datasource.dart';
-import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../ad_details/Data/model/ad_detail.dart';
 import '../../../add_advertising/Data/model/ad_gallery.dart';
+import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class IHomeRepository {
-  Future<Either<String, List<AdvertisingHome>>> getAdvertising();
-  Future<Either<String, List<AdvertisingHome>>> getHotAdvertising();
-  Future<Either<String, List<AdvertisingHome>>> getRecentAdvertising();
+  Future<Either<String, List<RegisterFutureAd>>> getAdvertising();
+  Future<Either<String, List<RegisterFutureAd>>> getHotAdvertising();
+  Future<Either<String, List<RegisterFutureAd>>> getRecentAdvertising();
   Future<Either<String, List<AdvertisingFeatures>>> getAdvertisingDetail();
   Future<Either<String, List<RegisterFutureAdGallery>>> getDiplayImagesAd();
 }
@@ -19,7 +19,7 @@ class HomeRepository extends IHomeRepository {
 
   HomeRepository(this.dataSoure);
   @override
-  Future<Either<String, List<AdvertisingHome>>> getHotAdvertising() async {
+  Future<Either<String, List<RegisterFutureAd>>> getHotAdvertising() async {
     try {
       var response = await dataSoure.getHotAdvertising();
       return right(response);
@@ -29,7 +29,7 @@ class HomeRepository extends IHomeRepository {
   }
 
   @override
-  Future<Either<String, List<AdvertisingHome>>> getRecentAdvertising() async {
+  Future<Either<String, List<RegisterFutureAd>>> getRecentAdvertising() async {
     try {
       var response = await dataSoure.getRecentAdvertising();
       return right(response);
@@ -39,7 +39,7 @@ class HomeRepository extends IHomeRepository {
   }
 
   @override
-  Future<Either<String, List<AdvertisingHome>>> getAdvertising() async {
+  Future<Either<String, List<RegisterFutureAd>>> getAdvertising() async {
     try {
       var response = await dataSoure.getAdvertising();
       return right(response);

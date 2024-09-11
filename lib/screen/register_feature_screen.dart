@@ -103,6 +103,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     controllerMetr.text = stateAd.metr.toString();
     controllerYearBuild.text = stateAd.yearBuild.toString();
     controllerFloor.text = stateAd.floor.toString();
+    controllerDocument.text = stateAd.document;
+    controllerView.text = stateAd.view;
 
     super.initState();
     BlocProvider.of<AddAdvertisingBloc>(context)
@@ -564,9 +566,16 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                                   builder: (context, index) {
                                                     return GestureDetector(
                                                       onTap: () {
+                                                        final stateAd = context
+                                                            .read<
+                                                                RegisterInfoAdCubit>()
+                                                            .state;
                                                         setState(() {
                                                           controllerView.text =
                                                               view[index];
+                                                          stateAd.view =
+                                                              controllerView
+                                                                  .text;
 
                                                           //Display Scroll Item last Value selected
                                                           _scrollController =
@@ -680,10 +689,17 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                                   builder: (context, index) {
                                                     return GestureDetector(
                                                       onTap: () {
+                                                        final stateAd = context
+                                                            .read<
+                                                                RegisterInfoAdCubit>()
+                                                            .state;
                                                         setState(() {
                                                           controllerDocument
                                                                   .text =
                                                               document[index];
+                                                          stateAd.document =
+                                                              controllerDocument
+                                                                  .text;
 
                                                           //Display Scroll Item last Value selected
                                                           _scrollController =
@@ -932,10 +948,17 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                                   builder: (context, index) {
                                                     return GestureDetector(
                                                       onTap: () {
+                                                        final stateAd = context
+                                                            .read<
+                                                                RegisterInfoAdCubit>()
+                                                            .state;
                                                         setState(() {
                                                           controllerDocument
                                                                   .text =
                                                               document[index];
+                                                          stateAd.document =
+                                                              controllerDocument
+                                                                  .text;
 
                                                           //Display Scroll Item last Value selected
                                                           _scrollController =
@@ -1137,10 +1160,13 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               controllerCounRoom.text.isEmpty ||
                               controllerMetr.text.isEmpty ||
                               controllerYearBuild.text.isEmpty ||
-                              controllerFloor.text.isEmpty
+                              controllerFloor.text.isEmpty ||
+                              controllerDocument.text.isEmpty ||
+                              controllerView.text.isEmpty
                           : controllerAddress.text.isEmpty ||
                               controllerMetr.text.isEmpty ||
-                              controllerYearBuild.text.isEmpty) {
+                              controllerYearBuild.text.isEmpty ||
+                              controllerDocument.text.isEmpty) {
                         displayDialog(
                             'لطفا تمامی فیلد ها را کامل کنید', context);
                         return;
@@ -1161,8 +1187,11 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               idCt: idCt(),
                               address: controllerAddress.text,
                               idFeature: idFeature(),
+                              document: controllerDocument.text,
+                              view: controllerView.text,
                             );
                         final boolState = context.read<BoolStateCubit>().state;
+
                         if (boolState.isUpdate) {
                           BlocProvider.of<AddAdvertisingBloc>(context).add(
                             UpdateFacilitiesData(
@@ -1175,8 +1204,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               boolState.water,
                               boolState.electricity,
                               boolState.gas,
-                              boolState.floorMaterial,
-                              boolState.wc,
+                              title != 'فروش زمین'
+                                  ? boolState.floorMaterial
+                                  : '',
+                              title != 'فروش زمین' ? boolState.wc : '',
                             ),
                           );
                         } else {
@@ -1191,14 +1222,16 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               boolState.water,
                               boolState.electricity,
                               boolState.gas,
-                              boolState.floorMaterial,
-                              boolState.wc,
+                              title != 'فروش زمین'
+                                  ? boolState.floorMaterial
+                                  : '',
+                              title != 'فروش زمین' ? boolState.wc : '',
                             ),
                           );
                         }
 
                         BlocProvider.of<NavigationPage>(context)
-                            .getNavItems(ViewPage.registerHomeLocation);
+                            .getNavItems(ViewPage.registerHomeAdvertising);
                       } catch (e) {
                         displayDialog(
                             'لطفاً مقدار عددی معتبر وارد کنید', context);

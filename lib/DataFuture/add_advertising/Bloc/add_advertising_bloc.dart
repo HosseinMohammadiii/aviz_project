@@ -38,6 +38,7 @@ class AddAdvertisingBloc
         var registerInfo = await infoRepository.postRegisterAd(
           event.idCt,
           event.idFeature,
+          event.province,
           event.location,
           event.title,
           event.description,
@@ -103,6 +104,7 @@ class AddAdvertisingBloc
     on<DeleteAdvertisingData>(
       (event, emit) async {
         var deleteAdvertising = await infoRepository.getDeleteAd(event.idAd);
+
         var deleteAdGallery =
             await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
         var deleteAdFacilities =
@@ -262,6 +264,9 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             price: null,
             images: [],
             idFeature: '',
+            document: '',
+            view: '',
+            province: '',
           ),
         );
 
@@ -277,6 +282,9 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final num? price,
     final List<File>? images,
     final String? idFeature,
+    final String? document,
+    final String? view,
+    final String? province,
   }) {
     emit(state.copyWith(
       metr: metr,
@@ -290,6 +298,9 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       price: price,
       images: images,
       idFeature: idFeature,
+      document: document,
+      view: view,
+      province: province,
     ));
   }
 
@@ -307,6 +318,9 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         price: null,
         images: [],
         idFeature: '',
+        document: '',
+        view: '',
+        province: '',
       ),
     );
   }

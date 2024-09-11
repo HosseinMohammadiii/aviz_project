@@ -1,18 +1,17 @@
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
-import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../DataFuture/home/Bloc/home_bloc.dart';
 import '../class/colors.dart';
 import '../widgets/advertisig_gallery_imaes_widget.dart';
 import '../widgets/advertising_detail_features.dart';
 import '../widgets/button_widget.dart';
-import '../widgets/items_category_type.dart';
-import '../widgets/uploadlocation.dart';
+import '../widgets/box_attention.dart';
 import '../widgets/text_widget.dart';
 import 'dart:ui' as ui;
 
@@ -22,7 +21,7 @@ class InformationRecentlyAdvertising extends StatefulWidget {
     super.key,
     required this.advertisingHome,
   });
-  AdvertisingHome advertisingHome;
+  RegisterFutureAd advertisingHome;
   @override
   State<InformationRecentlyAdvertising> createState() =>
       _InformationRecentlyAdvertisingState();
@@ -186,7 +185,7 @@ class _InformationRecentlyAdvertisingState
                   ),
                   SliverToBoxAdapter(
                     child: textWidget(
-                      widget.advertisingHome.title,
+                      widget.advertisingHome.titlehome,
                       CustomColor.black,
                       16,
                       FontWeight.w700,
@@ -210,7 +209,7 @@ class _InformationRecentlyAdvertisingState
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: ItemCategoryType(
+                    child: BoxAttention(
                       txt: 'هشدار های قبل از معامله!',
                       color: CustomColor.grey350,
                     ),
@@ -300,7 +299,7 @@ class _InformationRecentlyAdvertisingState
 //Function Switch For Display Widgets
 _changeBoxContainer(
   int index,
-  AdvertisingHome adHome,
+  RegisterFutureAd adHome,
 ) {
   switch (index) {
     case 0:
@@ -340,7 +339,7 @@ class SpecificationBox extends StatefulWidget {
     super.key,
     required this.advertisingHome,
   });
-  AdvertisingHome advertisingHome;
+  RegisterFutureAd advertisingHome;
   @override
   State<SpecificationBox> createState() => _SpecificationBoxState();
 }
@@ -373,9 +372,11 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    informationBoxItem('ساخت', widget.advertisingHome.yerbuild),
+                    informationBoxItem(
+                        'ساخت', widget.advertisingHome.yearBiuld),
                     informationBoxItem('طبقه', widget.advertisingHome.floor),
-                    informationBoxItem('اتاق', widget.advertisingHome.room),
+                    informationBoxItem(
+                        'اتاق', widget.advertisingHome.countRoom),
                     informationBoxItem('متراژ', widget.advertisingHome.metr),
                   ],
                 ),
@@ -402,25 +403,25 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            textWidget(
-              'موقعیت مکانی',
-              CustomColor.black,
-              16,
-              FontWeight.w700,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset('images/map_icon.png'),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        UploadLocation(address: widget.advertisingHome.address),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: [
+        //     textWidget(
+        //       'موقعیت مکانی',
+        //       CustomColor.black,
+        //       16,
+        //       FontWeight.w700,
+        //     ),
+        //     const SizedBox(
+        //       width: 10,
+        //     ),
+        //     Image.asset('images/map_icon.png'),
+        //   ],
+        // ),
+        // const SizedBox(
+        //   height: 20,
+        // ),
+        // UploadLocation(address: widget.advertisingHome.address),
       ],
     );
   }
@@ -471,7 +472,7 @@ class PriceInfoWidget extends StatefulWidget {
     super.key,
     required this.advertisingHome,
   });
-  AdvertisingHome advertisingHome;
+  RegisterFutureAd advertisingHome;
   @override
   State<PriceInfoWidget> createState() => _PriceInfoWidgetState();
 }
@@ -525,7 +526,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
               SizedBox(
                 width: 150,
                 child: Text(
-                  widget.advertisingHome.price.formatter(),
+                  widget.advertisingHome.homeprice.formatter(),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: CustomColor.black,
@@ -550,10 +551,10 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
   }
 
   //Function to calculate the price per meter of the house
-  priceChanged(AdvertisingHome adHome) {
+  priceChanged(RegisterFutureAd adHome) {
     NumberFormat currencyFormat =
         NumberFormat.currency(locale: 'fa-IR', symbol: '');
-    var priceChange = currencyFormat.format(adHome.price / adHome.metr);
+    var priceChange = currencyFormat.format(adHome.homeprice / adHome.metr);
     return priceChange;
   }
 }
@@ -564,7 +565,7 @@ class DescriptionWidget extends StatelessWidget {
     super.key,
     required this.advertisingHome,
   });
-  AdvertisingHome advertisingHome;
+  RegisterFutureAd advertisingHome;
   @override
   Widget build(BuildContext context) {
     return Text(

@@ -448,7 +448,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const SearchProvincesScreen(),
+                                        SearchProvincesScreen(),
                                   ),
                                 );
                               },

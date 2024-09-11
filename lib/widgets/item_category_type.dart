@@ -56,14 +56,7 @@ class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
                             } else if (index == 1) {
                               BlocProvider.of<NavigationPage>(context)
                                   .getNavItems(ViewPage.itemsBuyHome);
-                              // } else if (index == 2) {
-                              //   //Should Changed viewpage***************************
-                              //   BlocProvider.of<NavigationPage>(context)
-                              //       .getNavItems(ViewPage.itemsRentBusinessPlace);
-                              // } else if (index == 3) {
-                              //   //Should Changed viewpage***************************
-                              //   BlocProvider.of<NavigationPage>(context)
-                              //       .getNavItems(ViewPage.itemsBuyBusinessPlace);
+                            
                             }
                           },
                           child: Container(

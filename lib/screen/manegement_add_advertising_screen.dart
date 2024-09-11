@@ -3,7 +3,6 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
-import 'package:aviz_project/widgets/register_details_business.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,16 +42,8 @@ class _ManagementAddAdvertisingScreenState
             case ViewPage.itemsRentHome:
               return ItemSelectCategory(title: 'اجاره');
 
-            case ViewPage.itemsRentBusinessPlace:
-              return RegisterDetailsBusiness(
-                title: 'اجاره',
-              );
-
             case ViewPage.itemsBuyHome:
               return ItemSelectCategory(title: 'فروش');
-
-            case ViewPage.itemsBuyBusinessPlace:
-              return RegisterDetailsBusiness(title: 'فروش');
 
             case ViewPage.registerDetialsRentHomeAdvertising:
               return const RegisterHomeFeatureScreen(
@@ -68,9 +59,6 @@ class _ManagementAddAdvertisingScreenState
               return LocatioUpload(
                 address: stateAd.address,
               );
-
-            case ViewPage.registerBusinessLocation:
-              return RegisterDetailsBusiness(title: 'موقعیت مکانی');
 
             case ViewPage.registerHomeAdvertising:
             case ViewPage.registerBusinessAdvertising:

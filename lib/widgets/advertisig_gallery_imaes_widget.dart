@@ -1,13 +1,13 @@
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_state.dart';
-import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../class/colors.dart';
 import 'text_widget.dart';
 
@@ -17,7 +17,7 @@ class AdvertisingGalleryImages extends StatefulWidget {
     required this.advertisingHome,
     required this.controller,
   });
-  final AdvertisingHome advertisingHome;
+  final RegisterFutureAd advertisingHome;
   final PageController controller;
 
   @override

@@ -1,7 +1,6 @@
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
-import 'package:aviz_project/DataFuture/home/Data/model/advertising.dart';
 
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
+import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../widgets/cached_network_image.dart';
 import '../widgets/container_search.dart';
 import '../widgets/price_widget.dart';
@@ -242,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //Widget For display recently Advertising
   Widget recentlyAdvertisingBox({
-    required List<AdvertisingHome> adHome,
+    required List<RegisterFutureAd> adHome,
     required List<RegisterFutureAdGallery> advertisingGallery,
   }) {
     return SliverList.builder(
@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 5,
                       ),
                       textWidget(
-                        adHome[index].title,
+                        adHome[index].titlehome,
                         CustomColor.black,
                         14,
                         FontWeight.w700,
@@ -315,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       PriceWidget(
-                          context: context, adPrice: adHome[index].price),
+                          context: context, adPrice: adHome[index].homeprice),
                     ],
                   ),
                 ),
@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //Widget For display hotest Advertising
   Widget hotestAdvertisingBox({
-    required List<AdvertisingHome> adHome,
+    required List<RegisterFutureAd> adHome,
     required List<RegisterFutureAdGallery> advertisingGallery,
   }) {
     return SliverToBoxAdapter(
@@ -379,14 +379,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       imgUrl: gallery[0].images[0],
                     ),
                     Text(
-                      adHome[index].title,
+                      adHome[index].titlehome,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     Text(
                       adHome[index].description,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    PriceWidget(context: context, adPrice: adHome[index].price),
+                    PriceWidget(
+                        context: context, adPrice: adHome[index].homeprice),
                   ],
                 ),
               ),

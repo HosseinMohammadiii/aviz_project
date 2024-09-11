@@ -85,9 +85,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
                             //Switching the status when we are on the ad final information registration page to a previous step.
                             case ViewPage.registerHomeAdvertising:
-                              context
-                                  .read<NavigationPage>()
-                                  .getNavItems(ViewPage.registerHomeLocation);
+                              context.read<NavigationPage>().getNavItems(
+                                  ViewPage.registerDetialsBuyHomeAdvertising);
 
                               break;
 
@@ -126,7 +125,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   ],
                 ),
                 StepProgressIndicator(
-                  totalSteps: 5,
+                  totalSteps: 4,
                   currentStep: indexItem(state.viewPage),
                   unselectedColor: CustomColor.white,
                   selectedColor: CustomColor.red,
@@ -161,13 +160,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         index = 3;
         break;
 
-      case ViewPage.registerHomeLocation:
-        // case ViewPage.registerBusinessLocation:
-        index = 4;
-        break;
+      // case ViewPage.registerHomeLocation:
+      //   // case ViewPage.registerBusinessLocation:
+      //   index = 4;
+      //   break;
       case ViewPage.registerHomeAdvertising:
       case ViewPage.registerBusinessAdvertising:
-        index = 5;
+        index = 4;
         break;
 
       default:

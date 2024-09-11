@@ -20,13 +20,16 @@ class ButtonWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               textWidget(
                 'اطلاعات تماس',
                 CustomColor.grey,
                 16,
                 FontWeight.w500,
+              ),
+              const SizedBox(
+                width: 12,
               ),
               Image.asset('images/call_icon.png')
             ],

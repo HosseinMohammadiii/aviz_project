@@ -13,6 +13,7 @@ abstract class IInfoAdDatasource {
   Future<String> postRegisterAd(
     String idCT,
     String idFeature,
+    String province,
     String location,
     String title,
     String description,
@@ -71,6 +72,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<String> postRegisterAd(
     String idCT,
     String idFeature,
+    String province,
     String location,
     String title,
     String description,
@@ -80,6 +82,26 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     int floor,
     int yearBuild,
   ) async {
+    var responseHome = await dio.post(
+      'collections/home_screen/records',
+      data: {
+        'user_id': Authmanager().getId(),
+        'id_category': idCT,
+        'id_features': idFeature,
+        'province': province,
+        'id_facilities': RegisterId().getIdFacilities(),
+        'id_gallery': RegisterId().getIdGallery(),
+        'home_name': title,
+        'home_price': price,
+        'home_description': description,
+        'address': location,
+        'metr': metr,
+        'room': countRoom,
+        'floor': floor,
+        'year_build': yearBuild,
+        'is_hot': false,
+      },
+    );
     try {
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
@@ -87,6 +109,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'user_id': Authmanager().getId(),
           'id_category': idCT,
           'id_features': idFeature,
+          'province': province,
           'id_facilities': RegisterId().getIdFacilities(),
           'id_gallery': RegisterId().getIdGallery(),
           'title': title,
@@ -105,6 +128,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
       if (response.statusCode == 200) {
         return response.data['items'];
+      }
+      if (responseHome.statusCode == 200) {
+        return responseHome.data['items'];
       }
     } on DioException catch (ex) {
       throw ApiException(
@@ -223,10 +249,12 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   @override
   Future<List<RegisterFutureAd>> getDiplayAdvertising() async {
     try {
-      // Map<String, String> qParams = {'filter': 'id="$id"'};
+      Map<String, String> qParams = {
+        'filter': 'user_id="${Authmanager().getId()}"'
+      };
       var response = await dio.get(
         'collections/inforegisteredhomes/records',
-        // queryParameters: qParams,
+        queryParameters: qParams,
         options: Options(
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
@@ -266,6 +294,20 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
   @override
   Future<String> getDeleteAd(String id) async {
+    // try {
+    //   var responseHome = await dio.delete(
+    //     'collections/inforegisteredhomes/records/$idH',
+    //   );
+    //   if (responseHome.statusCode == 200) {
+    //     return responseHome.data['items'];
+    //   }
+    // } on DioException catch (ex) {
+    //   throw ApiException(
+    //       ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    // } catch (e) {
+    //   throw ApiException(0, 'Unknown');
+    // }
+
     try {
       var response = await dio.delete(
         'collections/inforegisteredhomes/records/$id',
@@ -273,10 +315,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
-      return response.data['items']
-          .map<RegisterFutureAd>(
-              (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
-          .toList();
+      return response.data['items'];
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');

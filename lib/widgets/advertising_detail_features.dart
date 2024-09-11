@@ -5,7 +5,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../DataFuture/home/Data/model/advertising.dart';
+import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../class/colors.dart';
 import 'display_ad_facilities.dart';
 import 'text_widget.dart';
@@ -16,7 +16,7 @@ class AdvertisindFeaturesWidget extends StatefulWidget {
     super.key,
     required this.ad,
   });
-  AdvertisingHome ad;
+  RegisterFutureAd ad;
 
   @override
   State<AdvertisindFeaturesWidget> createState() =>

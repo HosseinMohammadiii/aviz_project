@@ -4,8 +4,8 @@ import '../class/colors.dart';
 import 'text_widget.dart';
 
 // ignore: must_be_immutable
-class ItemCategoryType extends StatelessWidget {
-  ItemCategoryType({
+class BoxAttention extends StatelessWidget {
+  BoxAttention({
     super.key,
     required this.txt,
     required this.color,

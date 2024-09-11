@@ -17,9 +17,8 @@ import '../class/colors.dart';
 
 import '../widgets/advertising_facilities.dart';
 import '../widgets/button_widget.dart';
-import '../widgets/items_category_type.dart';
+import '../widgets/box_attention.dart';
 import '../widgets/text_widget.dart';
-import '../widgets/uploadlocation.dart';
 import 'dart:ui' as ui;
 
 // ignore: must_be_immutable
@@ -224,7 +223,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: ItemCategoryType(
+                    child: BoxAttention(
                       txt: 'هشدار های قبل از معامله!',
                       color: CustomColor.grey350,
                     ),
@@ -423,25 +422,6 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            textWidget(
-              'موقعیت مکانی',
-              CustomColor.black,
-              16,
-              FontWeight.w700,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset('images/map_icon.png'),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        UploadLocation(address: widget.advertisingHome.location),
       ],
     );
   }
