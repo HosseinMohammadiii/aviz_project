@@ -75,7 +75,7 @@ class _InfoAccountUserState extends State<InfoAccountUser> {
                               ],
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Visibility(
                             visible: userInfo.phoneNumber != 0,
                             replacement: Container(

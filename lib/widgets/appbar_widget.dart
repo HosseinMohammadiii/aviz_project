@@ -113,7 +113,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     Center(
                       //  height: 35,
                       child: Image.asset(
-                        state.viewPage == ViewPage.itemsBuyBusinessPlace
+                        state.viewPage == ViewPage.registerHomeAdvertising
                             ? 'images/register_aviz.png'
                             : 'images/appbar_image_add_dvertising_screen.png',
                       ),

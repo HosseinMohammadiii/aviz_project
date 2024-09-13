@@ -12,6 +12,7 @@ class RegisterFutureAd {
   String location;
   String titlehome;
   String description;
+  String province;
   int homeprice;
   int metr;
   int countRoom;
@@ -28,6 +29,7 @@ class RegisterFutureAd {
     required this.location,
     required this.titlehome,
     required this.description,
+    required this.province,
     required this.homeprice,
     required this.metr,
     required this.countRoom,
@@ -52,6 +54,7 @@ class RegisterFutureAd {
       yearBiuld: jsonObject['year_build'],
       homeprice: jsonObject['price'],
       description: jsonObject['description'],
+      province: jsonObject['province'],
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
+import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
+import 'package:aviz_project/DataFuture/recent/bloc/recent_event.dart';
 
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
@@ -253,6 +255,8 @@ class _HomeScreenState extends State<HomeScreen> {
             .toList();
         return GestureDetector(
           onTap: () {
+            BlocProvider.of<RecentBloc>(context)
+                .add(PostRecentEvent(adHome[index].id));
             Navigator.push(
                 context,
                 MaterialPageRoute(

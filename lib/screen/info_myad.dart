@@ -168,8 +168,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         textWidget(
-                          _createADTime(
-                              DateTime.parse(widget.advertisingHome.created)),
+                          '${_createADTime(DateTime.parse(widget.advertisingHome.created))} در ${widget.advertisingHome.province}',
                           CustomColor.grey500,
                           14,
                           FontWeight.w400,

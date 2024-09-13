@@ -3,13 +3,19 @@ import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_sta
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
+import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../Bloc/bloc_page_number/page_n_bloc.dart';
+import '../Bloc/bloc_page_number/page_n_bloc_state.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import '../class/screens.dart';
+import '../widgets/item_category_type.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
   const MyAdvertisingScreen({super.key});
@@ -83,11 +89,51 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                             return state.displayImagesAdvertising.fold(
                               (error) => _errorMessageWidgetBloc(error),
                               (gallery) {
-                                return ListMyAdvertising(
-                                  advertising: advertising,
-                                  advertisingGallery: gallery,
-                                  advertisingFacilities: facilities,
-                                );
+                                return advertising.isNotEmpty
+                                    ? ListMyAdvertising(
+                                        advertising: advertising,
+                                        advertisingGallery: gallery,
+                                        advertisingFacilities: facilities,
+                                      )
+                                    : SliverFillRemaining(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            textWidget(
+                                              'اولین آگهیت رو بساز',
+                                              CustomColor.grey500,
+                                              18,
+                                              FontWeight.w700,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Container(
+                                                height: 40,
+                                                width: 100,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  color: CustomColor.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  border: Border.all(
+                                                    color: CustomColor.red,
+                                                  ),
+                                                ),
+                                                child: textWidget(
+                                                  'ساخت آگهی',
+                                                  CustomColor.white,
+                                                  15,
+                                                  FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
                               },
                             );
                           },

@@ -5,6 +5,8 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/repository/category
 import 'package:aviz_project/DataFuture/add_advertising/Data/repository/info_register_ad_repository.dart';
 import 'package:aviz_project/DataFuture/home/Data/datasource/home_datasource.dart';
 import 'package:aviz_project/DataFuture/home/Data/repository/home_repository.dart';
+import 'package:aviz_project/DataFuture/recent/datasource/recent_datasource.dart';
+import 'package:aviz_project/DataFuture/recent/repository/recent_repository.dart';
 import 'package:aviz_project/DataFuture/search/Data/dataSource/search_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -21,6 +23,11 @@ Future<void> getInInit() async {
   locator.registerSingleton<Dio>(DioProvider.crateDio());
 
   //locator Datasource
+  locator.registerFactory<IRecentAdItems>(
+    () => IRecentAdItemsDatasourceRemoot(
+      locator.get(),
+    ),
+  );
   locator.registerFactory<IHomeDataSoure>(
     () => HomeRemoteDataSource(
       locator.get(),
@@ -47,11 +54,13 @@ Future<void> getInInit() async {
       locator.get(),
     ),
   );
+
   locator.registerFactory<IAuthenticationDatasource>(
     () => AuthenticationRemote(DioProvider.createDioWithoutHeader()),
   );
 
   //locator Repository
+
   locator.registerFactory<IHomeRepository>(
     () => HomeRepository(
       locator.get(),
@@ -80,6 +89,12 @@ Future<void> getInInit() async {
   );
   locator.registerFactory<IAuthRepository>(
     () => AuthencticationRepository(
+      locator.get(),
+    ),
+  );
+
+  locator.registerFactory<IRecentRepository>(
+    () => IRecentRepositoryRemoot(
       locator.get(),
     ),
   );

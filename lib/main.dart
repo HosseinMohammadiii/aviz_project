@@ -4,6 +4,7 @@ import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
+import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
 import 'package:aviz_project/Hive/UsersLogin/user_login.dart';
@@ -79,6 +80,11 @@ void main() async {
         BlocProvider(
           create: (context) => AddAdvertisingBloc(
             locator.get(),
+            locator.get(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => RecentBloc(
             locator.get(),
           ),
         ),
