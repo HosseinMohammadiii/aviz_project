@@ -2,18 +2,28 @@ import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/screens.dart';
 import 'package:flutter/material.dart';
 
+// ignore: library_private_types_in_public_api
+final GlobalKey<_BottomNavigationScreenState> bottomNavigationKey =
+    GlobalKey<_BottomNavigationScreenState>();
+
 // ignore: must_be_immutable
 class BottomNavigationScreen extends StatefulWidget {
   BottomNavigationScreen({
-    super.key,
     this.index = 3,
-  });
+  }) : super(key: bottomNavigationKey);
   int index;
+
   @override
   State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
+  void setPage(int index) {
+    setState(() {
+      widget.index = index; // شاخص صفحه را به روز کنید
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
