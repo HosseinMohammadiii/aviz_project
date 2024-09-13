@@ -22,5 +22,10 @@ class RecentBloc extends Bloc<RecentEvent, RecentState> {
         advertisingFacilities,
       ));
     });
+    on<PostRecentEvent>(
+      (event, emit) async {
+        await repository.postRecentAd(event.id);
+      },
+    );
   }
 }
