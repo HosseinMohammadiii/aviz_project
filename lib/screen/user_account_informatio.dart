@@ -15,6 +15,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/account/Data/model/account.dart';
 import '../class/checkinvalidcharacters.dart';
+import '../widgets/display_error.dart';
 import '../widgets/text_widget.dart';
 import 'login_screen.dart';
 
@@ -224,16 +225,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => SliverToBoxAdapter(
-                        child: Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                      (error) => DisplayError(error: error),
                       (userInfo) => SliverToBoxAdapter(
                         child: showandselectProfileImage(context, userInfo),
                       ),
@@ -246,16 +238,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => SliverToBoxAdapter(
-                        child: Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                      (error) => DisplayError(error: error),
                       (userInfo) {
                         return SliverToBoxAdapter(
                           child: GestureDetector(
@@ -326,16 +309,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => SliverToBoxAdapter(
-                        child: Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                      (error) => DisplayError(error: error),
                       (userInfo) => SliverToBoxAdapter(
                         child: Column(
                           children: [

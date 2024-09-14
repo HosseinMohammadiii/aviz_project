@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/ad_gallery.dart';
 import '../../../add_advertising/Data/model/register_future_ad.dart';
+import '../../../advertising_save/model/advertising_save.dart';
 
 abstract class IHomeDataSoure {
   Future<List<RegisterFutureAd>> getAdvertising();
@@ -13,6 +14,7 @@ abstract class IHomeDataSoure {
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures();
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
+  Future<List<AdvertisingSave>> getSaveAd();
 }
 
 class HomeRemoteDataSource extends IHomeDataSoure {
@@ -127,6 +129,26 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       return response.data['items']
           .map<RegisterFutureAdGallery>(
             (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<AdvertisingSave>> getSaveAd() async {
+    try {
+      var response = await dio.get(
+        'collections/save_ad_items/records',
+      );
+
+      return response.data['items']
+          .map<AdvertisingSave>(
+            (jsonObject) => AdvertisingSave.fromJsonObject(jsonObject),
           )
           .toList();
     } on DioException catch (ex) {

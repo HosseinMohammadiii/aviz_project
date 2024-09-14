@@ -1,5 +1,6 @@
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_state.dart';
+import 'package:aviz_project/screen/display_ad_save_items.dart';
 import 'package:aviz_project/widgets/information_user_account.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,14 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: itemsAccountButton(
                       title: 'ذخیره شده ها',
                       icon: 'images/save-2.png',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DisplayAdSaveItems(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

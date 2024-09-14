@@ -1,4 +1,5 @@
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
+import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_detail.dart';
@@ -15,8 +16,11 @@ final class HomeRequestSuccessState extends HomeState {
   Either<String, List<RegisterFutureAd>> getAdvertising;
   Either<String, List<RegisterFutureAd>> hotAdvertising;
   Either<String, List<RegisterFutureAd>> recentAdvertising;
+
   Either<String, List<AdvertisingFeatures>> advertisingdetails;
   Either<String, List<RegisterFutureAdGallery>> advertisingGalleryDetails;
+  Either<String, List<AdvertisingFacilities>> advertisingFacilities;
+  Either<String, List<AdvertisingSave>> advertisingSave;
 
   HomeRequestSuccessState(
     this.getAdvertising,
@@ -24,6 +28,8 @@ final class HomeRequestSuccessState extends HomeState {
     this.recentAdvertising,
     this.advertisingdetails,
     this.advertisingGalleryDetails,
+    this.advertisingFacilities,
+    this.advertisingSave,
   );
 }
 

@@ -19,17 +19,20 @@ class AdvertisingHiveAdapter extends TypeAdapter<AdvertisingHive> {
     return AdvertisingHive(
       idFacilities: fields[0] as String?,
       idGallery: fields[1] as String?,
+      idSaveAd: fields[2] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AdvertisingHive obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.idFacilities)
       ..writeByte(1)
-      ..write(obj.idGallery);
+      ..write(obj.idGallery)
+      ..writeByte(2)
+      ..write(obj.idSaveAd);
   }
 
   @override

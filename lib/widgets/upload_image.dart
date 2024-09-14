@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -10,6 +9,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import '../Hive/Advertising/register_id.dart';
 
 // ignore: must_be_immutable
 class UploadImage extends StatefulWidget {

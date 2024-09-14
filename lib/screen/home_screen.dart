@@ -1,3 +1,4 @@
+import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_facilities.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
@@ -5,7 +6,6 @@ import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_event.dart';
 
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/information_recentlyAdvertising.dart';
 
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +13,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
+import '../DataFuture/advertising_save/model/advertising_save.dart';
 import '../widgets/cached_network_image.dart';
 import '../widgets/container_search.dart';
+import '../widgets/display_error.dart';
 import '../widgets/price_widget.dart';
+import 'info_myad.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   void initState() {
-    BlocProvider.of<HomeBloc>(context).add(HomeGetInitializeData());
+    context.read<HomeBloc>().add(HomeGetInitializeData());
     super.initState();
   }
 
@@ -142,18 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   if (state is HomeRequestSuccessState) ...[
                     state.hotAdvertising.fold(
-                      (l) {
-                        return SliverToBoxAdapter(
-                          child: Center(
-                            child: textWidget(
-                              l,
-                              CustomColor.black,
-                              16,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      },
+                      (error) => DisplayError(error: error),
                       (hotAdvertising) {
                         return state.advertisingGalleryDetails.fold(
                           (l) => SliverToBoxAdapter(
@@ -167,9 +159,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           (gallery) {
-                            return hotestAdvertisingBox(
-                                adHome: hotAdvertising,
-                                advertisingGallery: gallery);
+                            return state.advertisingFacilities.fold(
+                              (error) => DisplayError(error: error),
+                              (facilities) => state.advertisingSave.fold(
+                                (error) => DisplayError(error: error),
+                                (saveAd) => hotestAdvertisingBox(
+                                  adHome: hotAdvertising,
+                                  advertisingGallery: gallery,
+                                  adFacilities: facilities,
+                                  advertisingSave: saveAd,
+                                ),
+                              ),
+                            );
                           },
                         );
                       },
@@ -200,34 +201,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   if (state is HomeRequestSuccessState) ...[
                     state.recentAdvertising.fold(
-                      (l) {
-                        return SliverToBoxAdapter(
-                          child: Center(
-                            child: textWidget(
-                              l,
-                              CustomColor.black,
-                              16,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      },
+                      (error) => DisplayError(error: error),
                       (recentAdvertising) {
                         return state.advertisingGalleryDetails.fold(
-                          (l) => SliverToBoxAdapter(
-                            child: Center(
-                              child: textWidget(
-                                l,
-                                CustomColor.black,
-                                16,
-                                FontWeight.w500,
-                              ),
-                            ),
-                          ),
+                          (error) => DisplayError(error: error),
                           (gallery) {
-                            return recentlyAdvertisingBox(
-                                adHome: recentAdvertising,
-                                advertisingGallery: gallery);
+                            return state.advertisingFacilities.fold(
+                              (error) => DisplayError(error: error),
+                              (facilities) => state.advertisingSave.fold(
+                                (error) => SliverToBoxAdapter(
+                                  child: Center(
+                                    child: textWidget(
+                                      error,
+                                      CustomColor.black,
+                                      16,
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                (saveAd) => recentlyAdvertisingBox(
+                                  adHome: recentAdvertising,
+                                  advertisingGallery: gallery,
+                                  adFacilities: facilities,
+                                  advertisingSave: saveAd,
+                                ),
+                              ),
+                            );
                           },
                         );
                       },
@@ -245,7 +244,9 @@ class _HomeScreenState extends State<HomeScreen> {
 //Widget For display recently Advertising
   Widget recentlyAdvertisingBox({
     required List<RegisterFutureAd> adHome,
+    required List<AdvertisingFacilities> adFacilities,
     required List<RegisterFutureAdGallery> advertisingGallery,
+    required List<AdvertisingSave> advertisingSave,
   }) {
     return SliverList.builder(
       itemCount: adHome.length,
@@ -253,17 +254,28 @@ class _HomeScreenState extends State<HomeScreen> {
         var gallery = advertisingGallery
             .where((item) => item.id == adHome[index].idGallery)
             .toList();
+
+        // بررسی اینکه آیا آگهی در لیست ذخیره شده‌ها وجود دارد
+        bool isSaved =
+            advertisingSave.any((item) => item.idAd == adHome[index].id);
+
         return GestureDetector(
           onTap: () {
             BlocProvider.of<RecentBloc>(context)
                 .add(PostRecentEvent(adHome[index].id));
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => InformationRecentlyAdvertising(
-                    advertisingHome: adHome[index],
-                  ),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => InformatioMyAdvertising(
+                  advertisingFacilities: adFacilities[index],
+                  advertisingHome: adHome[index],
+                  advertisingSave: isSaved
+                      ? advertisingSave
+                          .firstWhere((item) => item.idAd == adHome[index].id)
+                      : null,
+                ),
+              ),
+            );
           },
           child: Container(
             width: double.maxFinite,
@@ -289,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: 111,
                   child: CachedNetworkImageWidget(
-                    imgUrl: gallery[0].images[0],
+                    imgUrl: gallery.isNotEmpty ? gallery[0].images[0] : '',
                   ),
                 ),
                 const SizedBox(
@@ -334,7 +346,9 @@ class _HomeScreenState extends State<HomeScreen> {
 //Widget For display hotest Advertising
   Widget hotestAdvertisingBox({
     required List<RegisterFutureAd> adHome,
+    required List<AdvertisingFacilities> adFacilities,
     required List<RegisterFutureAdGallery> advertisingGallery,
+    required List<AdvertisingSave> advertisingSave,
   }) {
     return SliverToBoxAdapter(
       child: SizedBox(
@@ -348,15 +362,25 @@ class _HomeScreenState extends State<HomeScreen> {
             var gallery = advertisingGallery
                 .where((item) => item.id == adHome[index].idGallery)
                 .toList();
+
+            bool isSaved =
+                advertisingSave.any((item) => item.idAd == adHome[index].id);
+
             return GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => InformationRecentlyAdvertising(
-                        advertisingHome: adHome[index],
-                      ),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InformatioMyAdvertising(
+                      advertisingFacilities: adFacilities[index],
+                      advertisingHome: adHome[index],
+                      advertisingSave: isSaved
+                          ? advertisingSave.firstWhere(
+                              (item) => item.idAd == adHome[index].id)
+                          : null,
+                    ),
+                  ),
+                );
               },
               child: Container(
                 width: 210,

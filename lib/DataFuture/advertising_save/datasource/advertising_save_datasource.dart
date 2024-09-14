@@ -1,28 +1,27 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
+import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:dio/dio.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
 import '../../add_advertising/Data/model/ad_gallery.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
-import '../model/recent_model.dart';
 
-abstract class IRecentAdItems {
+abstract class ISaveAdItemsDatasource {
   Future<List<RegisterFutureAd>> getDisplayRecentAd();
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
 
   Future<List<AdvertisingSave>> getSaveAd();
-
-  Future<List<RecentModel>> getRecentAd();
-  Future<String> postRecentAd(String adId);
+  Future<String> postSaveAd(String adId);
+  Future<String> deleteSaveAd(String adId);
 }
 
-final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
+final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   final Dio dio;
-  IRecentAdItemsDatasourceRemoot(this.dio);
+  ISaveAdItemsDatasourceRemoot(this.dio);
   @override
   Future<List<RegisterFutureAd>> getDisplayRecentAd() async {
     try {
@@ -43,26 +42,27 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   }
 
   @override
-  Future<String> postRecentAd(String adId) async {
+  Future<String> postSaveAd(String adId) async {
     try {
       Map<String, dynamic> query = {
         'filter': 'user_id="${Authmanager().getId()}" && id_ad="$adId"'
       };
 
       var response = await dio.get(
-        'collections/recent_ad_items/records',
+        'collections/save_ad_items/records',
         queryParameters: query,
       );
 
       if (response.data['items'].isEmpty) {
-        var recent = await dio.post(
-          'collections/recent_ad_items/records',
+        var save = await dio.post(
+          'collections/save_ad_items/records',
           data: {
             'user_id': Authmanager().getId(),
             'id_ad': adId,
           },
         );
-        return recent.data['id'];
+        RegisterId().saveId(save.data['id']);
+        return save.data['id'];
       }
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode ?? 0, ex.message ?? 'Error');
@@ -91,19 +91,20 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   }
 
   @override
-  Future<List<RecentModel>> getRecentAd() async {
+  Future<List<AdvertisingSave>> getSaveAd() async {
     try {
       Map<String, dynamic> query = {
         'filter': 'user_id="${Authmanager().getId()}"'
       };
 
       var response = await dio.get(
-        'collections/recent_ad_items/records',
+        'collections/save_ad_items/records',
         queryParameters: query,
       );
+
       return response.data['items']
-          .map<RecentModel>(
-              (jsonObject) => RecentModel.fromJsonObject(jsonObject))
+          .map<AdvertisingSave>(
+              (jsonObject) => AdvertisingSave.fromJsonObject(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiException(
@@ -134,17 +135,12 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   }
 
   @override
-  Future<List<AdvertisingSave>> getSaveAd() async {
+  Future<String> deleteSaveAd(String adId) async {
     try {
-      var response = await dio.get(
-        'collections/save_ad_items/records',
+      var response = await dio.delete(
+        'collections/save_ad_items/records/$adId',
       );
-
-      return response.data['items']
-          .map<AdvertisingSave>(
-            (jsonObject) => AdvertisingSave.fromJsonObject(jsonObject),
-          )
-          .toList();
+      return response.data['items'];
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');

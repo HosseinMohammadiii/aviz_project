@@ -9,7 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
-import '../screen/info_myad.dart';
+
 import 'price_widget.dart';
 
 // ignore: must_be_immutable
@@ -19,11 +19,14 @@ class AdvertisingWidget extends StatefulWidget {
     required this.advertising,
     required this.advertisingImages,
     required this.advertisingFacilities,
+    required this.screen,
     this.isDelete,
   });
   RegisterFutureAd advertising;
   String advertisingImages;
   AdvertisingFacilities advertisingFacilities;
+  Widget screen;
+
   bool? isDelete;
   @override
   State<AdvertisingWidget> createState() => _AdvertisingWidgetState();
@@ -40,10 +43,7 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InformatioMyAdvertising(
-              advertisingHome: widget.advertising,
-              advertisingFacilities: widget.advertisingFacilities,
-            ),
+            builder: (context) => widget.screen,
           ),
         );
       },

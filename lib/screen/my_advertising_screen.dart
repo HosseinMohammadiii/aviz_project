@@ -3,6 +3,7 @@ import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_sta
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/info_myad.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import '../DataFuture/advertising_save/model/advertising_save.dart';
+import '../widgets/display_error.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
   const MyAdvertisingScreen({super.key});
@@ -76,62 +79,68 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   ],
                   if (state is DisplayInfoAdvertisingStateResponse) ...[
                     state.displayAdvertising.fold(
-                      (error) => _errorMessageWidgetBloc(error),
+                      (error) => DisplayError(error: error),
                       (advertising) {
                         return state.displayAdvertisingFacilities.fold(
-                          (error) => _errorMessageWidgetBloc(error),
+                          (error) => DisplayError(error: error),
                           (facilities) {
                             return state.displayImagesAdvertising.fold(
-                              (error) => _errorMessageWidgetBloc(error),
+                              (error) => DisplayError(error: error),
                               (gallery) {
-                                return advertising.isNotEmpty
-                                    ? ListMyAdvertising(
-                                        advertising: advertising,
-                                        advertisingGallery: gallery,
-                                        advertisingFacilities: facilities,
-                                      )
-                                    : SliverFillRemaining(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            textWidget(
-                                              'اولین آگهیت رو بساز',
-                                              CustomColor.grey500,
-                                              18,
-                                              FontWeight.w700,
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                bottomNavigationKey.currentState
-                                                    ?.setPage(1);
-                                              },
-                                              child: Container(
-                                                height: 40,
-                                                width: 100,
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  color: CustomColor.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  border: Border.all(
+                                return state.displayAdvertisingSave.fold(
+                                  (error) => DisplayError(error: error),
+                                  (saveAd) => advertising.isNotEmpty
+                                      ? ListMyAdvertising(
+                                          advertising: advertising,
+                                          advertisingGallery: gallery,
+                                          advertisingFacilities: facilities,
+                                          advertisingSave: saveAd,
+                                        )
+                                      : SliverFillRemaining(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              textWidget(
+                                                'اولین آگهیت رو بساز',
+                                                CustomColor.grey500,
+                                                18,
+                                                FontWeight.w700,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  bottomNavigationKey
+                                                      .currentState
+                                                      ?.setPage(1);
+                                                },
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 100,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
                                                     color: CustomColor.red,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
+                                                    border: Border.all(
+                                                      color: CustomColor.red,
+                                                    ),
+                                                  ),
+                                                  child: textWidget(
+                                                    'ساخت آگهی',
+                                                    CustomColor.white,
+                                                    15,
+                                                    FontWeight.w700,
                                                   ),
                                                 ),
-                                                child: textWidget(
-                                                  'ساخت آگهی',
-                                                  CustomColor.white,
-                                                  15,
-                                                  FontWeight.w700,
-                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      );
+                                );
                               },
                             );
                           },
@@ -152,20 +161,6 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
       },
     );
   }
-
-//Widget For Display Error Message
-  Widget _errorMessageWidgetBloc(String error) {
-    return SliverToBoxAdapter(
-      child: Center(
-        child: textWidget(
-          error,
-          CustomColor.black,
-          16,
-          FontWeight.w500,
-        ),
-      ),
-    );
-  }
 }
 
 // ignore: must_be_immutable
@@ -175,11 +170,13 @@ class ListMyAdvertising extends StatefulWidget {
     required this.advertising,
     required this.advertisingGallery,
     required this.advertisingFacilities,
+    required this.advertisingSave,
   });
 
   List<RegisterFutureAd> advertising;
   List<RegisterFutureAdGallery> advertisingGallery;
   List<AdvertisingFacilities> advertisingFacilities;
+  List<AdvertisingSave> advertisingSave;
 
   @override
   State<ListMyAdvertising> createState() => _ListMyAdvertisingState();
@@ -223,6 +220,9 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                       .where((item) => item.id == advertisingAd.idGallery)
                       .toList();
 
+                  bool isSaved = widget.advertisingSave
+                      .any((item) => item.idAd == advertisingAd.id);
+
                   return GestureDetector(
                     onLongPress: () async {
                       setState(() {
@@ -247,6 +247,14 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                       advertisingImages: gallery[0].images[0],
                       advertisingFacilities: advertisingFacilities,
                       isDelete: isDelete[index],
+                      screen: InformatioMyAdvertising(
+                        advertisingHome: advertisingAd,
+                        advertisingFacilities: advertisingFacilities,
+                        advertisingSave: isSaved
+                            ? widget.advertisingSave.firstWhere(
+                                (item) => item.idAd == advertisingAd.id)
+                            : null,
+                      ),
                     ),
                   );
                 },

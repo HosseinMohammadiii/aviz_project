@@ -1,12 +1,13 @@
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_event.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_state.dart';
+import 'package:aviz_project/screen/info_myad.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../class/colors.dart';
-import '../widgets/text_widget.dart';
+import '../widgets/display_error.dart';
 
 class RecentUserAdItems extends StatefulWidget {
   const RecentUserAdItems({super.key});
@@ -28,34 +29,27 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        leadingWidth: double.maxFinite,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Row(
-            children: [
-              const Spacer(),
-              const Expanded(
-                flex: 2,
-                child: Text(
-                  'آگهی های بازید شده',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: CustomColor.red,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 25,
-                ),
-              ),
-            ],
+        title: const Text(
+          'آگهی های بازدید شده',
+          style: TextStyle(
+            fontSize: 18,
+            color: CustomColor.red,
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 25,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: BlocBuilder<RecentBloc, RecentState>(
@@ -75,86 +69,64 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                   ],
                   if (state is GetRecentState) ...[
                     state.getDisplayAd.fold(
-                      (error) => SliverToBoxAdapter(
-                        child: Center(
-                          child: textWidget(
-                            error,
-                            CustomColor.black,
-                            16,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                      (error) => DisplayError(error: error),
                       (ad) => state.getRecentAd.fold(
-                        (error) => SliverToBoxAdapter(
-                          child: Center(
-                            child: textWidget(
-                              error,
-                              CustomColor.black,
-                              16,
-                              FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                        (error) => DisplayError(error: error),
                         (recent) => state.advertisingFacilitiesDetails.fold(
-                          (error) => SliverToBoxAdapter(
-                            child: Center(
-                              child: textWidget(
-                                error,
-                                CustomColor.black,
-                                16,
-                                FontWeight.w500,
-                              ),
-                            ),
-                          ),
+                          (error) => DisplayError(error: error),
                           (facilities) => state.advertisingGalleryDetails.fold(
-                            (error) => SliverToBoxAdapter(
-                              child: Center(
-                                child: textWidget(
-                                  error,
-                                  CustomColor.black,
-                                  16,
-                                  FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            (adGallery) => recent.isNotEmpty
-                                ? SliverList.builder(
-                                    itemCount: recent.length,
-                                    itemBuilder: (context, index) {
-                                      var advertisingFacilities =
-                                          facilities.toList()[index];
+                            (error) => DisplayError(error: error),
+                            (adGallery) => state.advertisingSaveDetails.fold(
+                              (error) => DisplayError(error: error),
+                              (saveAd) => recent.isNotEmpty
+                                  ? SliverList.builder(
+                                      itemCount: recent.length,
+                                      itemBuilder: (context, index) {
+                                        var advertisingFacilities =
+                                            facilities.toList()[index];
+                                        var recentAd = recent.toList()[index];
 
-                                      var recentAd = recent.toList()[index];
+                                        var recentadd = ad.firstWhere(
+                                          (item) => item.id == recentAd.idAd,
+                                        );
 
-                                      var recentadd = ad
-                                          .where((item) =>
-                                              item.id == recentAd.idAd)
-                                          .toList();
+                                        var gallery = adGallery.firstWhere(
+                                          (item) =>
+                                              item.id == recentadd.idGallery,
+                                        );
 
-                                      var gallery = adGallery
-                                          .where((item) =>
-                                              item.id == recentadd[0].idGallery)
-                                          .toList();
-                                      return AdvertisingWidget(
-                                        advertising: recentadd[0],
-                                        advertisingFacilities:
-                                            advertisingFacilities,
-                                        advertisingImages: gallery[0].images[0],
-                                        isDelete: false,
-                                      );
-                                    },
-                                  )
-                                : const SliverFillRemaining(
-                                    child: Center(
-                                      child: Text(
-                                        '!هنوز از آگهی بازدید نکردی که',
-                                        style: TextStyle(
-                                          fontSize: 20,
+                                        bool isSaved = saveAd.any((item) =>
+                                            item.idAd == recentadd.id);
+
+                                        return AdvertisingWidget(
+                                          advertising: recentadd,
+                                          advertisingFacilities:
+                                              advertisingFacilities,
+                                          advertisingImages: gallery.images[0],
+                                          isDelete: false,
+                                          screen: InformatioMyAdvertising(
+                                            advertisingHome: recentadd,
+                                            advertisingFacilities:
+                                                advertisingFacilities,
+                                            advertisingSave: isSaved
+                                                ? saveAd.firstWhere((item) =>
+                                                    item.idAd == recentadd.id)
+                                                : null,
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : const SliverFillRemaining(
+                                      child: Center(
+                                        child: Text(
+                                          '!هنوز از آگهی بازدید نکردی که',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                            ),
                           ),
                         ),
                       ),

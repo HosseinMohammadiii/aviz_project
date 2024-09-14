@@ -1,33 +1,30 @@
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
-import 'package:aviz_project/DataFuture/recent/model/recent_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
 import '../../add_advertising/Data/model/ad_gallery.dart';
 
-abstract class RecentState {}
+abstract class SaveAdState {}
 
-final class GetInitializedData extends RecentState {}
+final class GetInitializedSaveData extends SaveAdState {}
 
-final class RecentLoadingState extends RecentState {}
+final class SaveLoadingState extends SaveAdState {}
 
-final class GetRecentState extends RecentState {
-  Either<String, List<RecentModel>> getRecentAd;
+final class GetSaveState extends SaveAdState {
+  Either<String, List<AdvertisingSave>> getSaveAd;
   Either<String, List<RegisterFutureAd>> getDisplayAd;
   Either<String, List<RegisterFutureAdGallery>> advertisingGalleryDetails;
   Either<String, List<AdvertisingFacilities>> advertisingFacilitiesDetails;
-  Either<String, List<AdvertisingSave>> advertisingSaveDetails;
-  GetRecentState(
-    this.getRecentAd,
+  GetSaveState(
+    this.getSaveAd,
     this.getDisplayAd,
     this.advertisingGalleryDetails,
     this.advertisingFacilitiesDetails,
-    this.advertisingSaveDetails,
   );
 }
 
-final class PostRecentState extends RecentState {
+final class PostSaveAdState extends SaveAdState {
   Either<String, String> postRecentAd;
-  PostRecentState(this.postRecentAd);
+  PostSaveAdState(this.postRecentAd);
 }

@@ -10,5 +10,8 @@ class AdvertisingHive {
   @HiveField(1)
   String? idGallery;
 
-  AdvertisingHive({this.idFacilities, this.idGallery});
+  @HiveField(2)
+  String? idSaveAd;
+
+  AdvertisingHive({this.idFacilities, this.idGallery, this.idSaveAd});
 }

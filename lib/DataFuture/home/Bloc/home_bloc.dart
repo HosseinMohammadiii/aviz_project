@@ -15,6 +15,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         var advertisingDeatail = await homeRepository.getAdvertisingDetail();
         var advertisingGalleryDeatail =
             await homeRepository.getDiplayImagesAd();
+        var advertisingFacilitiesDeatail =
+            await homeRepository.getDiplayFacilitiesAd();
+        var advertisingSaveAd = await homeRepository.getSaveAd();
         emit(
           HomeRequestSuccessState(
             getAdvertising,
@@ -22,6 +25,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             recentAdvertisingHome,
             advertisingDeatail,
             advertisingGalleryDeatail,
+            advertisingFacilitiesDeatail,
+            advertisingSaveAd,
           ),
         );
       },

@@ -24,11 +24,13 @@ class AddAdvertisingBloc
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
         var displayImages = await infoRepository.getImagesAdvertising();
         var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
+        var saveAd = await infoRepository.getSaveAd();
         emit(
           DisplayInfoAdvertisingStateResponse(
             displayAdvertising,
             displayImages,
             diplayAdFacilities,
+            saveAd,
           ),
         );
       },
@@ -119,11 +121,13 @@ class AddAdvertisingBloc
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
         var displayImages = await infoRepository.getImagesAdvertising();
         var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
+        var saveAd = await infoRepository.getSaveAd();
         emit(
           DisplayInfoAdvertisingStateResponse(
             displayAdvertising,
             displayImages,
             diplayAdFacilities,
+            saveAd,
           ),
         );
       },

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
+import '../../advertising_save/model/advertising_save.dart';
 import '../Data/model/ad_gallery.dart';
 import '../Data/model/register_future_ad.dart';
 
@@ -16,11 +17,13 @@ final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
   Either<String, List<RegisterFutureAd>> displayAdvertising;
   Either<String, List<RegisterFutureAdGallery>> displayImagesAdvertising;
   Either<String, List<AdvertisingFacilities>> displayAdvertisingFacilities;
+  Either<String, List<AdvertisingSave>> displayAdvertisingSave;
 
   DisplayInfoAdvertisingStateResponse(
     this.displayAdvertising,
     this.displayImagesAdvertising,
     this.displayAdvertisingFacilities,
+    this.displayAdvertisingSave,
   );
 }
 

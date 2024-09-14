@@ -2,6 +2,10 @@ import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'package:aviz_project/DataFuture/ad_details/Bloc/detail_ad_state.dart';
 
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
+import 'package:aviz_project/DataFuture/advertising_save/bloc/advertising_save_bloc.dart';
+import 'package:aviz_project/DataFuture/advertising_save/bloc/advertising_save_event.dart';
+import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
+import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -13,6 +17,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import '../DataFuture/home/Bloc/home_bloc.dart';
+import '../DataFuture/home/Bloc/home_event.dart';
+import '../DataFuture/recent/bloc/recent_bloc.dart';
+import '../DataFuture/recent/bloc/recent_event.dart';
 import '../class/colors.dart';
 
 import '../widgets/advertising_facilities.dart';
@@ -27,9 +37,11 @@ class InformatioMyAdvertising extends StatefulWidget {
     super.key,
     required this.advertisingHome,
     required this.advertisingFacilities,
+    this.advertisingSave,
   });
   RegisterFutureAd advertisingHome;
   AdvertisingFacilities advertisingFacilities;
+  AdvertisingSave? advertisingSave;
   @override
   State<InformatioMyAdvertising> createState() =>
       _InformatioMyAdvertisingState();
@@ -45,6 +57,9 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
   ];
 
   int indexContainer = 0;
+
+  bool isSaved = false;
+  bool isLoading = false;
 
   PageController controller =
       PageController(viewportFraction: 0.9, initialPage: 0);
@@ -76,7 +91,64 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
   @override
   void initState() {
     categoryType();
+    _checkIfSaved();
     super.initState();
+  }
+
+  void _checkIfSaved() {
+    // Check if the ad is already saved in the database
+    if (widget.advertisingSave != null) {
+      setState(() {
+        isSaved = true; // If saved, set isSaved to true
+      });
+    }
+  }
+
+  void callBlocsInistialized() {
+    context.read<HomeBloc>().add(HomeGetInitializeData());
+    context.read<RecentBloc>().add(GetInitializedDataEvent());
+    BlocProvider.of<AddAdvertisingBloc>(context)
+        .add(InitializedDisplayAdvertising());
+  }
+
+  void _toggleSaveStatus() async {
+    // Start the operation: show loading state
+    setState(() {
+      isLoading = true;
+    });
+
+    // If the ad is already saved, delete it from the database
+    if (isSaved) {
+      if (widget.advertisingSave != null) {
+        // Trigger the event to delete the saved ad using its ID
+        BlocProvider.of<SaveAdBloc>(context)
+            .add(DeleteSaveAdEvent(widget.advertisingSave!.id));
+
+        // Refresh home screen data after deletion
+        context.read<HomeBloc>().add(HomeGetInitializeData());
+        context.read<RecentBloc>().add(GetInitializedDataEvent());
+      } else {
+        // If saved ad ID is available
+        if (RegisterId().getSaveId().isNotEmpty) {
+          BlocProvider.of<SaveAdBloc>(context)
+              .add(DeleteSaveAdEvent(RegisterId().getSaveId()));
+        }
+      }
+      callBlocsInistialized();
+      await Future.delayed(const Duration(seconds: 1));
+    } else {
+      // If the ad is not saved, add it to the database
+      BlocProvider.of<SaveAdBloc>(context)
+          .add(PostSaveAdEvent(widget.advertisingHome.id));
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+    callBlocsInistialized();
+    // End the operation: stop loading and update the isSaved status
+    setState(() {
+      isLoading = false;
+      isSaved = !isSaved;
+    });
   }
 
   // Function to return category title based on categoryId
@@ -120,17 +192,23 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
           child: Row(
             children: [
               GestureDetector(
-                onTap: () {},
-                child: Image.asset('images/archive_icon.png'),
+                onTap: _toggleSaveStatus,
+                child: isLoading
+                    ? const SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: CircularProgressIndicator(),
+                      )
+                    : isSaved
+                        ? Image.asset(
+                            'images/save_full.png',
+                            scale: 5,
+                          )
+                        : Image.asset(
+                            'images/save_vacant.png',
+                            scale: 5,
+                          ),
               ),
-              const SizedBox(
-                width: 20,
-              ),
-              Image.asset('images/share_icon.png'),
-              const SizedBox(
-                width: 20,
-              ),
-              Image.asset('images/information_icon.png'),
               const Spacer(),
               GestureDetector(
                 onTap: () {

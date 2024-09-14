@@ -1,30 +1,28 @@
-import 'package:aviz_project/DataFuture/recent/datasource/recent_datasource.dart';
+import 'package:aviz_project/DataFuture/advertising_save/datasource/advertising_save_datasource.dart';
+import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../NetworkUtil/api_exeption.dart';
 import '../../ad_details/Data/model/ad_facilities.dart';
 import '../../add_advertising/Data/model/ad_gallery.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
-import '../../advertising_save/model/advertising_save.dart';
-import '../model/recent_model.dart';
 
-abstract class IRecentRepository {
+abstract class ISaveAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDisplayRecentAd();
   Future<Either<String, List<AdvertisingFacilities>>>
       getDiplayAdvertisingFacilities();
 
   Future<Either<String, List<RegisterFutureAdGallery>>> getDiplayImagesAd();
 
-  Future<Either<String, List<RecentModel>>> getRecentAd();
-
   Future<Either<String, List<AdvertisingSave>>> getSaveAd();
 
-  Future<Either<String, String>> postRecentAd(String adId);
+  Future<Either<String, String>> postSaveAd(String adId);
+  Future<Either<String, String>> deleteSaveAd(String adId);
 }
 
-final class IRecentRepositoryRemoot extends IRecentRepository {
-  final IRecentAdItems datasource;
-  IRecentRepositoryRemoot(this.datasource);
+final class ISaveAdRepositoryRemoot extends ISaveAdRepository {
+  final ISaveAdItemsDatasource datasource;
+  ISaveAdRepositoryRemoot(this.datasource);
 
   @override
   Future<Either<String, List<RegisterFutureAd>>> getDisplayRecentAd() async {
@@ -37,9 +35,9 @@ final class IRecentRepositoryRemoot extends IRecentRepository {
   }
 
   @override
-  Future<Either<String, String>> postRecentAd(String adId) async {
+  Future<Either<String, String>> postSaveAd(String adId) async {
     try {
-      var response = await datasource.postRecentAd(adId);
+      var response = await datasource.postSaveAd(adId);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
@@ -58,9 +56,9 @@ final class IRecentRepositoryRemoot extends IRecentRepository {
   }
 
   @override
-  Future<Either<String, List<RecentModel>>> getRecentAd() async {
+  Future<Either<String, List<AdvertisingSave>>> getSaveAd() async {
     try {
-      var response = await datasource.getRecentAd();
+      var response = await datasource.getSaveAd();
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
@@ -79,9 +77,9 @@ final class IRecentRepositoryRemoot extends IRecentRepository {
   }
 
   @override
-  Future<Either<String, List<AdvertisingSave>>> getSaveAd() async {
+  Future<Either<String, String>> deleteSaveAd(String adId) async {
     try {
-      var response = await datasource.getSaveAd();
+      var response = await datasource.deleteSaveAd(adId);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

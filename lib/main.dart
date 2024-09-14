@@ -2,6 +2,7 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/di.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
+import 'package:aviz_project/DataFuture/advertising_save/bloc/advertising_save_bloc.dart';
 
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
@@ -85,6 +86,11 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => RecentBloc(
+            locator.get(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SaveAdBloc(
             locator.get(),
           ),
         ),

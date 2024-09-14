@@ -4,8 +4,10 @@ import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:dio/dio.dart';
 
+import '../../../../Hive/Advertising/register_id.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
+import '../../../advertising_save/model/advertising_save.dart';
 import '../model/ad_gallery.dart';
 
 abstract class IInfoAdDatasource {
@@ -62,6 +64,8 @@ abstract class IInfoAdDatasource {
     String floorMaterial,
     String wc,
   );
+
+  Future<List<AdvertisingSave>> getSaveAd();
 }
 
 final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
@@ -294,20 +298,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
   @override
   Future<String> getDeleteAd(String id) async {
-    // try {
-    //   var responseHome = await dio.delete(
-    //     'collections/inforegisteredhomes/records/$idH',
-    //   );
-    //   if (responseHome.statusCode == 200) {
-    //     return responseHome.data['items'];
-    //   }
-    // } on DioException catch (ex) {
-    //   throw ApiException(
-    //       ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    // } catch (e) {
-    //   throw ApiException(0, 'Unknown');
-    // }
-
     try {
       var response = await dio.delete(
         'collections/inforegisteredhomes/records/$id',
@@ -442,5 +432,25 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       throw ApiException(0, 'Unknown');
     }
     return '';
+  }
+
+  @override
+  Future<List<AdvertisingSave>> getSaveAd() async {
+    try {
+      var response = await dio.get(
+        'collections/save_ad_items/records',
+      );
+
+      return response.data['items']
+          .map<AdvertisingSave>(
+            (jsonObject) => AdvertisingSave.fromJsonObject(jsonObject),
+          )
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
   }
 }
