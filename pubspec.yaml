@@ -36,9 +36,8 @@ dependencies:
   persian_number_utility: ^1.1.4
   cupertino_icons: ^1.0.2
   shamsi_date: ^1.0.2
-  shared_preferences: ^2.3.2
   connectivity_plus: ^6.0.5
-
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:

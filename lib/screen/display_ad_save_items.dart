@@ -94,7 +94,6 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems> {
                                         (item) => item.id == savedAd.idGallery,
                                       );
 
-                                      // بررسی وضعیت ذخیره شده
                                       bool isSaved = saveAd.any(
                                           (item) => item.idAd == savedAd.id);
 

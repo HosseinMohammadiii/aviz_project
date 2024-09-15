@@ -25,6 +25,6 @@ final class GetSaveState extends SaveAdState {
 }
 
 final class PostSaveAdState extends SaveAdState {
-  Either<String, String> postRecentAd;
-  PostSaveAdState(this.postRecentAd);
+  Either<String, String> postSaveAd;
+  PostSaveAdState(this.postSaveAd);
 }

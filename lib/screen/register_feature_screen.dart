@@ -107,8 +107,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     controllerView.text = stateAd.view;
 
     super.initState();
-    BlocProvider.of<AddAdvertisingBloc>(context)
-        .add(AddAdvertisingGetInitializeData());
+
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => hideOverlay(),
     );

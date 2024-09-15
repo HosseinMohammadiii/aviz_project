@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../class/colors.dart';
 import 'text_widget.dart';
 
@@ -23,8 +22,6 @@ class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AddAdvertisingBloc>(context)
-        .add(AddAdvertisingGetInitializeData());
   }
 
   @override
@@ -56,7 +53,6 @@ class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
                             } else if (index == 1) {
                               BlocProvider.of<NavigationPage>(context)
                                   .getNavItems(ViewPage.itemsBuyHome);
-                            
                             }
                           },
                           child: Container(

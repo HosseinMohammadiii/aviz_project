@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+
 import '../DataFuture/advertising_save/model/advertising_save.dart';
 import '../widgets/display_error.dart';
 
@@ -30,9 +31,10 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
   List<RegisterFutureAd> registerFutureList = [];
   @override
   void initState() {
-    super.initState();
     BlocProvider.of<AddAdvertisingBloc>(context)
         .add(InitializedDisplayAdvertising());
+
+    super.initState();
   }
 
   @override

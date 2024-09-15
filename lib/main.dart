@@ -81,7 +81,6 @@ void main() async {
         BlocProvider(
           create: (context) => AddAdvertisingBloc(
             locator.get(),
-            locator.get(),
           ),
         ),
         BlocProvider(

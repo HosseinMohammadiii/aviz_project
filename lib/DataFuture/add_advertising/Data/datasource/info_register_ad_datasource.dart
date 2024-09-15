@@ -86,26 +86,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     int floor,
     int yearBuild,
   ) async {
-    var responseHome = await dio.post(
-      'collections/home_screen/records',
-      data: {
-        'user_id': Authmanager().getId(),
-        'id_category': idCT,
-        'id_features': idFeature,
-        'province': province,
-        'id_facilities': RegisterId().getIdFacilities(),
-        'id_gallery': RegisterId().getIdGallery(),
-        'home_name': title,
-        'home_price': price,
-        'home_description': description,
-        'address': location,
-        'metr': metr,
-        'room': countRoom,
-        'floor': floor,
-        'year_build': yearBuild,
-        'is_hot': false,
-      },
-    );
     try {
       var response = await dio.post(
         'collections/inforegisteredhomes/records',
@@ -132,9 +112,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
       if (response.statusCode == 200) {
         return response.data['items'];
-      }
-      if (responseHome.statusCode == 200) {
-        return responseHome.data['items'];
       }
     } on DioException catch (ex) {
       throw ApiException(

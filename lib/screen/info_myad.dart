@@ -17,8 +17,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
-import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+
 import '../DataFuture/home/Bloc/home_bloc.dart';
 import '../DataFuture/home/Bloc/home_event.dart';
 import '../DataFuture/recent/bloc/recent_bloc.dart';
@@ -104,13 +103,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
     }
   }
 
-  void callBlocsInistialized() {
-    context.read<HomeBloc>().add(HomeGetInitializeData());
-    context.read<RecentBloc>().add(GetInitializedDataEvent());
-    BlocProvider.of<AddAdvertisingBloc>(context)
-        .add(InitializedDisplayAdvertising());
-  }
-
   void _toggleSaveStatus() async {
     // Start the operation: show loading state
     setState(() {
@@ -127,6 +119,10 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
         // Refresh home screen data after deletion
         context.read<HomeBloc>().add(HomeGetInitializeData());
         context.read<RecentBloc>().add(GetInitializedDataEvent());
+
+        // Refresh home screen data after deletion
+        context.read<HomeBloc>().add(HomeGetInitializeData());
+        context.read<RecentBloc>().add(GetInitializedDataEvent());
       } else {
         // If saved ad ID is available
         if (RegisterId().getSaveId().isNotEmpty) {
@@ -134,7 +130,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
               .add(DeleteSaveAdEvent(RegisterId().getSaveId()));
         }
       }
-      callBlocsInistialized();
+
       await Future.delayed(const Duration(seconds: 1));
     } else {
       // If the ad is not saved, add it to the database
@@ -143,7 +139,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
 
       await Future.delayed(const Duration(seconds: 1));
     }
-    callBlocsInistialized();
     // End the operation: stop loading and update the isSaved status
     setState(() {
       isLoading = false;
