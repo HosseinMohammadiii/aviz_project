@@ -1,5 +1,3 @@
-import '../../../NetworkUtil/base_url.dart';
-
 class AccountInformation {
   String id;
   String name;
@@ -7,6 +5,7 @@ class AccountInformation {
   String email;
   int phoneNumber;
   String province;
+
   AccountInformation({
     required this.id,
     required this.name,
@@ -20,9 +19,8 @@ class AccountInformation {
     return AccountInformation(
       id: jsonObject['id'],
       name: jsonObject['name'],
-      avatar:
-          '${BaseUrl.baseUrl}files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['avatar']}',
-      email: jsonObject['email_user'],
+      avatar: jsonObject['avatar'],
+      email: jsonObject['email'],
       phoneNumber: jsonObject['phone_number'],
       province: jsonObject['province'],
     );

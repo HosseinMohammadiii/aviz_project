@@ -12,9 +12,8 @@ final class AuthLoginRequest extends AuthAccountEvent {
 final class AuthRegisterRequest extends AuthAccountEvent {
   String username;
   String password;
-  String passwordConfirm;
 
-  AuthRegisterRequest(this.username, this.password, this.passwordConfirm);
+  AuthRegisterRequest(this.username, this.password);
 }
 
 final class DisplayInformationEvent extends AuthAccountEvent {}

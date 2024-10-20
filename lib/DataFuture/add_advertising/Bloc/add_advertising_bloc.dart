@@ -29,7 +29,7 @@ class AddAdvertisingBloc
     );
     on<AddInfoAdvertising>(
       (event, emit) async {
-        var registerInfo = await infoRepository.postRegisterAd(
+        await infoRepository.postRegisterAd(
           event.idCt,
           event.idFeature,
           event.province,
@@ -42,21 +42,16 @@ class AddAdvertisingBloc
           event.floor,
           event.yearBuild,
         );
-        emit(AddInfoAdvertisingStateResponse(
-          registerInfo,
-        ));
       },
     );
     on<AddImagesToGallery>(
       (event, emit) async {
-        var registerImages =
-            await infoRepository.postImagesToGallery(event.images);
-        emit(AddImagesToGalleryStateResponse(registerImages));
+        await infoRepository.postImagesToGallery(event.images);
       },
     );
     on<AddFacilitiesAdvertising>(
       (event, emit) async {
-        var registerFacilities = await infoRepository.postRegisterFacilities(
+        await infoRepository.postRegisterFacilities(
           event.elevator,
           event.parking,
           event.storeroom,
@@ -68,17 +63,12 @@ class AddAdvertisingBloc
           event.gas,
           event.floorMaterial,
           event.wc,
-        );
-        emit(
-          RegisterFacilitiesInfoAdvertising(
-            registerFacilities,
-          ),
         );
       },
     );
     on<UpdateFacilitiesData>(
       (event, emit) async {
-        var updateFacilities = await infoRepository.getUpdateAdFacilities(
+        await infoRepository.getUpdateAdFacilities(
           event.elevator,
           event.parking,
           event.storeroom,
@@ -91,25 +81,17 @@ class AddAdvertisingBloc
           event.floorMaterial,
           event.wc,
         );
-        emit(UpdateFacilitiesState(updateFacilities));
       },
     );
 
     on<DeleteAdvertisingData>(
       (event, emit) async {
-        var deleteAdvertising = await infoRepository.getDeleteAd(event.idAd);
+        await infoRepository.getDeleteAd(event.idAd);
 
-        var deleteAdGallery =
-            await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
-        var deleteAdFacilities =
-            await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
-        emit(
-          DeleteInfoAdStateResponse(
-            deleteAdvertising,
-            deleteAdGallery,
-            deleteAdFacilities,
-          ),
-        );
+        await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
+
+        await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
+
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
         var displayImages = await infoRepository.getImagesAdvertising();
         var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
@@ -127,18 +109,13 @@ class AddAdvertisingBloc
 
     on<DeleteImageData>(
       (event, emit) async {
-        var deleteAdGallery =
-            await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
-
-        emit(DeleteImageState(deleteAdGallery));
+        await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
       },
     );
 
     on<UpdateImageData>(
       (event, emit) async {
-        var updateImage =
-            await infoRepository.getUpdateAdImagesAd(event.images);
-        emit(UpdateImageState(updateImage));
+        await infoRepository.getUpdateAdImagesAd(event.images);
       },
     );
   }

@@ -27,53 +27,6 @@ final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
   );
 }
 
-final class AddInfoAdvertisingStateResponse extends AddAdvertisingState {
-  Either<String, String> registerAdvertising;
-
-  AddInfoAdvertisingStateResponse(
-    this.registerAdvertising,
-  );
-}
-
-final class AddImagesToGalleryStateResponse extends AddAdvertisingState {
-  Either<String, String> registerFutureImagesGallery;
-  AddImagesToGalleryStateResponse(this.registerFutureImagesGallery);
-}
-
-final class RegisterFacilitiesInfoAdvertising extends AddAdvertisingState {
-  Either<String, String> registerFacilitiesInfoAdvertising;
-  RegisterFacilitiesInfoAdvertising(
-    this.registerFacilitiesInfoAdvertising,
-  );
-}
-
-final class UpdateFacilitiesState extends AddAdvertisingState {
-  Either<String, String> updateFacilities;
-  UpdateFacilitiesState(this.updateFacilities);
-}
-
-final class DeleteInfoAdStateResponse extends AddAdvertisingState {
-  Either<String, String> deleteAdvertising;
-  Either<String, String> deleteAdGallery;
-  Either<String, String> deleteAdFacilities;
-
-  DeleteInfoAdStateResponse(
-    this.deleteAdvertising,
-    this.deleteAdGallery,
-    this.deleteAdFacilities,
-  );
-}
-
-final class DeleteImageState extends AddAdvertisingState {
-  Either<String, String> deleteAdGallery;
-  DeleteImageState(this.deleteAdGallery);
-}
-
-final class UpdateImageState extends AddAdvertisingState {
-  Either<String, String> updateAdGallery;
-  UpdateImageState(this.updateAdGallery);
-}
-
 class BoolState {
   final bool elevator;
   final bool parking;

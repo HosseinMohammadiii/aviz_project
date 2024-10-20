@@ -7,8 +7,7 @@ import 'package:dio/dio.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 
 abstract class IAuthenticationDatasource {
-  Future<void> register(
-      String userName, String password, String passwordConfirm);
+  Future<void> register(String userName, String password);
 
   Future<String> login(String userName, String password);
   Future<AccountInformation> getDisplayUserInfo();
@@ -25,21 +24,29 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   AuthenticationRemote(this.dio);
 
   @override
-  Future<void> register(
-      String userName, String password, String passwordConfirm) async {
+  Future<void> register(String userName, String password) async {
     try {
-      var request = await dio.post('collections/users/records', data: {
-        'username': userName,
-        'name': userName,
-        'password': password,
-        'passwordConfirm': passwordConfirm,
-      });
-      if (request.statusCode == 200) {
+      var request = await dio.post(
+        'user/registerUser',
+        data: {
+          'username': userName,
+          'password': password,
+          'password_confirm': password,
+        },
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      );
+
+      if (request.statusCode == 201) {
         await login(userName, password);
       }
     } on DioException catch (ex) {
-      throw ApiException(ex.response!.statusCode!, ex.response?.data['message'],
-          response: ex.response);
+      throw ApiException(
+        ex.response!.statusCode!,
+        ex.response?.data['message'],
+        response: ex.response,
+      );
     } catch (ex) {
       throw ApiException(0, 'لطفا برنامه را کامل بسته و مجدد باز کنید');
     }
@@ -48,20 +55,26 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   @override
   Future<String> login(String userName, String password) async {
     try {
-      var response =
-          await dio.post('collections/users/auth-with-password', data: {
-        'identity': userName,
-        'password': password,
-      });
+      var response = await dio.post(
+        'user/logIn',
+        data: {
+          'username': userName,
+          'password': password,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
       if (response.statusCode == 200) {
-        Authmanager().saveId(response.data?['record']['id']);
-        Authmanager().saveToken(response.data?['token']);
+        Authmanager().saveId(response.data?['data']['id']);
+        Authmanager().saveToken(response.data?['data']['token']);
 
-        return response.data?['token'];
+        return response.data?['data']['token'];
       }
     } on DioException catch (ex) {
-      throw ApiException(ex.response!.statusCode!, ex.response?.data['message'],
-          response: ex.response);
+      throw ApiException(
+        ex.response!.statusCode!,
+        ex.response?.data['message'],
+        response: ex.response,
+      );
     } catch (ex) {
       throw ApiException(0, 'لطفا برنامه را کامل بسته و مجدد باز کنید');
     }
@@ -72,11 +85,8 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   Future<AccountInformation> getDisplayUserInfo() async {
     try {
       var response = await dio.get(
-        'collections/users/records/${Authmanager().getId()}',
-        options: Options(
-            headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'}),
+        'usersInfo/${Authmanager().getId()}',
       );
-
       // Assuming response data is directly the user object.
       return AccountInformation.fromJson(response.data);
     } on DioException catch (ex) {
@@ -100,17 +110,18 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         'avatar': imageFile,
       });
 
-      var response = await dio.patch(
-        'collections/users/records/${Authmanager().getId()}',
+      var response = await dio.post(
+        'userupdate/${Authmanager().getId()}',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
         data: formData,
       );
+
       if (response.statusCode == 200) {
         return response.data;
       }
-      // Assuming response data is directly the user object.
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
@@ -123,15 +134,17 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   @override
   Future<String> getUpdateNameUser(String name) async {
     try {
-      var response = await dio.patch(
-        'collections/users/records/${Authmanager().getId()}',
+      var response = await dio.post(
+        'userupdate/${Authmanager().getId()}',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
         data: {
           'name': name,
         },
       );
+
       if (response.statusCode == 200) {
         return response.data;
       }
@@ -148,15 +161,17 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   @override
   Future<String> getUpdateEmailUser(String email) async {
     try {
-      var response = await dio.patch(
-        'collections/users/records/${Authmanager().getId()}',
+      var response = await dio.post(
+        'userupdate/${Authmanager().getId()}',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
         data: {
-          'email_user': email,
+          'email': email,
         },
       );
+
       if (response.statusCode == 200) {
         return response.data;
       }
@@ -173,15 +188,17 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   @override
   Future<String> getUpdatePhoneNumberUser(int phoneNumber) async {
     try {
-      var response = await dio.patch(
-        'collections/users/records/${Authmanager().getId()}',
+      var response = await dio.post(
+        'userupdate/${Authmanager().getId()}',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
         data: {
           'phone_number': phoneNumber,
         },
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
         return response.data;
       }
@@ -198,15 +215,17 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   @override
   Future<String> getUpdateProvinceUser(String province) async {
     try {
-      var response = await dio.patch(
-        'collections/users/records/${Authmanager().getId()}',
+      var response = await dio.post(
+        'userupdate/${Authmanager().getId()}',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
         data: {
           'province': province,
         },
       );
+
       if (response.statusCode == 200) {
         return response.data;
       }

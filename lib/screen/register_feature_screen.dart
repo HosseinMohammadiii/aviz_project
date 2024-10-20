@@ -1131,9 +1131,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             controllerView.text == 'شمالی') {
                           idFeature = 'nish48ruq5zsisv';
                         } else if (controllerDocument.text == 'ندارد' &&
-                            controllerView.text == '') {
-                          idFeature = 'ti012w7mmoyhmw2';
-                        } else if (controllerDocument.text == 'ندارد' &&
                             controllerView.text == 'شمالی') {
                           idFeature = 'gmxzv044ugckigz';
                         } else if (controllerDocument.text == 'ندارد' &&
@@ -1145,6 +1142,18 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         } else if (controllerDocument.text == 'ندارد' &&
                             controllerView.text == 'شرقی') {
                           idFeature = '761f4u4nm3qpuzp';
+                        } else if (controllerDocument.text == 'تک برگ' &&
+                            controllerView.text == '') {
+                          idFeature = 'oj9ecj5tleyczx8';
+                        } else if (controllerDocument.text == 'شش دانگ' &&
+                            controllerView.text == '') {
+                          idFeature = 'oqha6d4la84cy8c';
+                        } else if (controllerDocument.text == 'وقفی' &&
+                            controllerView.text == '') {
+                          idFeature = 'gdhpz7funqv0rkf';
+                        } else if (controllerDocument.text == 'ندارد' &&
+                            controllerView.text == '') {
+                          idFeature = 'ti012w7mmoyhmw2';
                         }
                         return idFeature;
                       }

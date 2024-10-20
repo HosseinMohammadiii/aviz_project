@@ -1,3 +1,3 @@
 class BaseUrl {
-  static const baseUrl = 'https://aviz.chbk.run/api/';
+  static const baseUrl = 'https://avizapp.ir/api/';
 }

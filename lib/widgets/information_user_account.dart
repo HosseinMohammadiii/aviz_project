@@ -41,7 +41,9 @@ class _InfoAccountUserState extends State<InfoAccountUser> {
             children: [
               if (state is DisplayInformationState) ...[
                 state.displayUserInformation.fold(
-                  (error) => Text(error),
+                  (error) {
+                    return Text(error);
+                  },
                   (userInfo) => Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -107,6 +107,18 @@ class _AdvertisingFacilitiesWidgetState
         document = 'ندارد';
         view = 'شرقی';
         break;
+      case 'gdhpz7funqv0rkf':
+        document = 'وقفی';
+        view = 'نامشخص';
+        break;
+      case 'oqha6d4la84cy8c':
+        document = 'شش دانگ';
+        view = 'نامشخص';
+        break;
+      case 'oj9ecj5tleyczx8':
+        document = 'تک برگ';
+        view = 'نامشخص';
+        break;
     }
   }
 

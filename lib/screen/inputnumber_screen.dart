@@ -190,7 +190,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
             isShowErrorText = false;
           });
         } else if (state is AuthResponseState) {
-          state.reponse.fold(
+          state.response.fold(
             (l) async {
               // Show error message if login fails
               setState(() {

@@ -7,8 +7,7 @@ import '../datasource/register_login_datasource.dart';
 import '../model/account.dart';
 
 abstract class IAuthRepository {
-  Future<Either<String, String>> register(
-      String username, String password, String passwordConfirm);
+  Future<Either<String, String>> register(String username, String password);
 
   Future<Either<String, String>> login(String username, String password);
 
@@ -30,9 +29,9 @@ class AuthencticationRepository extends IAuthRepository {
   AuthencticationRepository(this._datasource);
   @override
   Future<Either<String, String>> register(
-      String username, String password, String passwordConfirm) async {
+      String username, String password) async {
     try {
-      await _datasource.register(username, password, passwordConfirm);
+      await _datasource.register(username, password);
       return right('ثبت نام انجام شد!');
     } on ApiException catch (ex) {
       return left(ex.message ?? 'خطا محتوای متنی ندارد');

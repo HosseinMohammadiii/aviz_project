@@ -360,6 +360,9 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                                           widget.advertising[i].idGallery,
                                     ),
                                   );
+                              context.read<AddAdvertisingBloc>().add(
+                                    InitializedDisplayAdvertising(),
+                                  );
                             }
                             Navigator.pop(context);
                           } else {
@@ -371,6 +374,9 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                                           selectedAdIds[i].idFacilities,
                                       idAdGallery: selectedAdIds[i].idGallery,
                                     ),
+                                  );
+                              context.read<AddAdvertisingBloc>().add(
+                                    InitializedDisplayAdvertising(),
                                   );
                             }
                             Navigator.pop(context);

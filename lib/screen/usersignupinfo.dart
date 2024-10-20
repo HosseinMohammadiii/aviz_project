@@ -158,14 +158,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 2.4,
                 ),
+
                 BlocConsumer<AuthAccountBloc, AuthAccountState>(
                   listener: (context, state) {
                     if (state is AuthResponseState) {
-                      state.reponse.fold(
+                      state.response.fold(
                         (error) {
                           var snackbar = SnackBar(
                             content: Text(
                               error,
+                              textDirection: TextDirection.rtl,
                               style: const TextStyle(fontSize: 14),
                             ),
                             backgroundColor: Colors.black,
@@ -179,7 +181,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           final Box<UserLogin> userLogin =
                               Hive.box('user_login');
                           final String? token = userLogin.get(1)?.token;
-
                           if (token != null && token.isNotEmpty) {
                             Navigator.pushReplacement(
                               context,
@@ -283,7 +284,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           AuthRegisterRequest(
             _userNameController.text,
             _passwordController.text,
-            _passwordConfirmController.text,
           ),
         );
       },

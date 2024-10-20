@@ -110,7 +110,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 &&
+          RegisterId().getIdGallery().isNotEmpty) {
+        print('Shoooood');
         return response.data['items'];
       }
     } on DioException catch (ex) {

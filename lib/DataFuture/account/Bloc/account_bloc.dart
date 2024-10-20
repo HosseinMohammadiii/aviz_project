@@ -15,7 +15,6 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
         emit(
           AuthResponseState(loginRequest),
         );
-        // emit(AuthLoadingState());
       },
     );
     on<AuthRegisterRequest>(
@@ -23,13 +22,11 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
         var registerRequest = await _repository.register(
           event.username,
           event.password,
-          event.passwordConfirm,
         );
 
         emit(
           AuthResponseState(registerRequest),
         );
-        emit(AuthLoadingState());
       },
     );
 
