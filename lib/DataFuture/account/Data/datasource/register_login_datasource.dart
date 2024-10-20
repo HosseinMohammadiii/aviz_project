@@ -198,7 +198,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
           'phone_number': phoneNumber,
         },
       );
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         return response.data;
       }
