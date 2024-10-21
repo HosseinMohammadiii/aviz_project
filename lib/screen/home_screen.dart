@@ -254,6 +254,9 @@ class _HomeScreenState extends State<HomeScreen> {
         var gallery = advertisingGallery
             .where((item) => item.id == adHome[index].idGallery)
             .toList();
+        var facilities = adFacilities
+            .where((item) => item.id == adHome[index].idFacilities)
+            .toList();
 
         // بررسی اینکه آیا آگهی در لیست ذخیره شده‌ها وجود دارد
         bool isSaved =
@@ -267,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => InformatioMyAdvertising(
-                  advertisingFacilities: adFacilities[index],
+                  advertisingFacilities: facilities[0],
                   advertisingHome: adHome[index],
                   advertisingSave: isSaved
                       ? advertisingSave

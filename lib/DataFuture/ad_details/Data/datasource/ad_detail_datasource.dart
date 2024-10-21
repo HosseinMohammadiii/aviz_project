@@ -19,7 +19,7 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
     try {
       Map<String, dynamic> query = {'filter': 'id="$id"'};
       var response = await dio.get(
-        'collections/features/records',
+        'features',
         queryParameters: query,
       );
       return response.data['items']
@@ -39,7 +39,7 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
     try {
       Map<String, dynamic> query = {'filter': 'id="$id"'};
       var response = await dio.get(
-        'collections/facilities/records',
+        'facilities',
         queryParameters: query,
       );
 
@@ -58,9 +58,9 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
   @override
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd(String id) async {
     try {
-      Map<String, dynamic> query = {'filter': 'id="$id"'};
+      Map<String, dynamic> query = {'filter': 'id=$id'};
       var response = await dio.get(
-        'collections/advertising_gallery/records',
+        'advertising_gallery',
         queryParameters: query,
       );
       return response.data['items']

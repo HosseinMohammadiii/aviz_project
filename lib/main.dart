@@ -19,8 +19,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
-import 'screen/account_screen.dart';
-import 'screen/user_account_informatio.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {

@@ -112,7 +112,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
       if (response.statusCode == 200 &&
           RegisterId().getIdGallery().isNotEmpty) {
-        print('Shoooood');
         return response.data['items'];
       }
     } on DioException catch (ex) {
@@ -210,7 +209,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
     try {
       var response = await dio.get(
-        'collections/advertising_gallery/records',
+        'advertising_gallery',
         options: Options(
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
@@ -232,16 +231,19 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   @override
   Future<List<RegisterFutureAd>> getDiplayAdvertising() async {
     try {
+      print('This');
       Map<String, String> qParams = {
-        'filter': 'user_id="${Authmanager().getId()}"'
+        'filter': 'user_id=${Authmanager().getId()}'
       };
+
       var response = await dio.get(
-        'collections/inforegisteredhomes/records',
+        'advertising_home',
         queryParameters: qParams,
         options: Options(
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
+      // print(response.data);
       return response.data['items']
           .map<RegisterFutureAd>(
               (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
@@ -258,11 +260,13 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
     try {
       var response = await dio.get(
-        'collections/facilities/records',
+        'facilities',
         options: Options(
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
+      print(response.data['items']);
+
       return response.data['items']
           .map<AdvertisingFacilities>(
               (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
@@ -417,7 +421,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<List<AdvertisingSave>> getSaveAd() async {
     try {
       var response = await dio.get(
-        'collections/save_ad_items/records',
+        'adsave',
       );
 
       return response.data['items']

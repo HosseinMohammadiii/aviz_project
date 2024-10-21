@@ -278,7 +278,7 @@ final class InfoAdRepository extends IInfoAdRepository {
       var response = await datasource.getSaveAd();
       return right(response);
     } on ApiException catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
+      return left(ex.message = 'خطا محتوای متنی 66');
     }
   }
 }

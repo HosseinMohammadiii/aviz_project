@@ -27,7 +27,7 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   Future<List<RegisterFutureAd>> getDisplayRecentAd() async {
     try {
       var recent = await dio.get(
-        'collections/inforegisteredhomes/records',
+        'advertising_home',
       );
 
       return recent.data['items']
@@ -50,13 +50,13 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
       };
 
       var response = await dio.get(
-        'collections/recent_ad_items/records',
+        'recentad',
         queryParameters: query,
       );
 
       if (response.data['items'].isEmpty) {
         var recent = await dio.post(
-          'collections/recent_ad_items/records',
+          'recentad',
           data: {
             'user_id': Authmanager().getId(),
             'id_ad': adId,
@@ -76,7 +76,7 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
     try {
       var response = await dio.get(
-        'collections/facilities/records',
+        'facilities',
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -98,7 +98,7 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
       };
 
       var response = await dio.get(
-        'collections/recent_ad_items/records',
+        'recentad',
         queryParameters: query,
       );
       return response.data['items']
@@ -117,7 +117,7 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
     try {
       var response = await dio.get(
-        'collections/advertising_gallery/records',
+        'advertising_gallery',
       );
 
       return response.data['items']
@@ -137,7 +137,7 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   Future<List<AdvertisingSave>> getSaveAd() async {
     try {
       var response = await dio.get(
-        'collections/save_ad_items/records',
+        'adsave',
       );
 
       return response.data['items']

@@ -26,7 +26,7 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   Future<List<RegisterFutureAd>> getDisplayRecentAd() async {
     try {
       var recent = await dio.get(
-        'collections/inforegisteredhomes/records',
+        'advertising_home',
       );
 
       return recent.data['items']
@@ -49,13 +49,13 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
       };
 
       var response = await dio.get(
-        'collections/save_ad_items/records',
+        'adsave',
         queryParameters: query,
       );
 
       if (response.data['items'].isEmpty) {
         var save = await dio.post(
-          'collections/save_ad_items/records',
+          'adsave',
           data: {
             'user_id': Authmanager().getId(),
             'id_ad': adId,
@@ -76,7 +76,7 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
     try {
       var response = await dio.get(
-        'collections/facilities/records',
+        'facilities',
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -98,7 +98,7 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
       };
 
       var response = await dio.get(
-        'collections/save_ad_items/records',
+        'adsave',
         queryParameters: query,
       );
 
@@ -118,7 +118,7 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
     try {
       var response = await dio.get(
-        'collections/advertising_gallery/records',
+        'advertising_gallery',
       );
 
       return response.data['items']
@@ -138,7 +138,7 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   Future<String> deleteSaveAd(String adId) async {
     try {
       var response = await dio.delete(
-        'collections/save_ad_items/records/$adId',
+        'adsave/$adId',
       );
       return response.data['items'];
     } on DioException catch (ex) {

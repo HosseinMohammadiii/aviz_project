@@ -23,10 +23,10 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   @override
   Future<List<RegisterFutureAd>> getHotAdvertising() async {
     try {
-      Map<String, dynamic> query = {'filter': 'is_hot=true'};
+      // Map<String, dynamic> query = {'filter': 'is_hot=true'};
       var response = await dio.get(
-        'collections/inforegisteredhomes/records',
-        queryParameters: query,
+        'advertising_home',
+        //queryParameters: query,
       );
 
       return response.data['items']
@@ -45,9 +45,9 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   @override
   Future<List<RegisterFutureAd>> getRecentAdvertising() async {
     try {
-      Map<String, dynamic> query = {'sort': "created"};
+      Map<String, dynamic> query = {'sort': "updated"};
       var response = await dio.get(
-        'collections/inforegisteredhomes/records',
+        'advertising_home',
         queryParameters: query,
       );
 
@@ -68,7 +68,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   Future<List<RegisterFutureAd>> getAdvertising() async {
     try {
       var response = await dio.get(
-        'collections/inforegisteredhomes/records',
+        'advertising_home',
       );
       return response.data['items']
           .map<RegisterFutureAd>(
@@ -87,7 +87,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   Future<List<AdvertisingFeatures>> getAdvertisinFeatures() async {
     try {
       var response = await dio.get(
-        'collections/features/records',
+        'features',
       );
       return response.data['items']
           .map<AdvertisingFeatures>(
@@ -106,7 +106,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities() async {
     try {
       var response = await dio.get(
-        'collections/facilities/records',
+        'facilities',
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -124,7 +124,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
     try {
       var response = await dio.get(
-        'collections/advertising_gallery/records',
+        'advertising_gallery',
       );
       return response.data['items']
           .map<RegisterFutureAdGallery>(
@@ -143,7 +143,7 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   Future<List<AdvertisingSave>> getSaveAd() async {
     try {
       var response = await dio.get(
-        'collections/save_ad_items/records',
+        'adsave',
       );
 
       return response.data['items']
