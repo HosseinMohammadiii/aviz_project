@@ -44,8 +44,10 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   @override
   Future<String> postSaveAd(String adId) async {
     try {
+      // print();
+
       Map<String, dynamic> query = {
-        'filter': 'user_id="${Authmanager().getId()}" && id_ad="$adId"'
+        'filter': 'user_id=${Authmanager().getId()} & id_ad=$adId'
       };
 
       var response = await dio.get(
@@ -60,8 +62,13 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
             'user_id': Authmanager().getId(),
             'id_ad': adId,
           },
+          options: Options(
+            contentType: Headers.formUrlEncodedContentType,
+          ),
         );
-        RegisterId().saveId(save.data['id']);
+        // print(RegisterId().getSaveId());
+        RegisterId().saveId(save.data['data']['id']);
+
         return save.data['id'];
       }
     } on DioException catch (ex) {
@@ -139,7 +146,11 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
     try {
       var response = await dio.delete(
         'adsave/$adId',
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
       );
+      print('Delete 200');
       return response.data['items'];
     } on DioException catch (ex) {
       throw ApiException(

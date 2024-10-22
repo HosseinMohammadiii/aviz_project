@@ -9,8 +9,10 @@ class RegisterId {
   void clearID() {
     adHive.idFacilities = null;
     adHive.idGallery = null;
+    adHive.idSaveAd = null;
     adBox.put(1, adHive);
     adBox.put(2, adHive);
+    adBox.put(3, adHive);
   }
 
   void saveIdFacilities(String id) {

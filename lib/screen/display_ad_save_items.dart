@@ -9,14 +9,15 @@ import '../class/colors.dart';
 import '../widgets/advertising_widget.dart';
 import '../widgets/display_error.dart';
 
-class DisplayAdSaveItems extends StatefulWidget {
+class DisplayAdSaveItems extends StatefulWidget with RouteAware {
   const DisplayAdSaveItems({super.key});
 
   @override
   State<DisplayAdSaveItems> createState() => _DisplayAdSaveItemsState();
 }
 
-class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems> {
+class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
+    with RouteAware {
   @override
   void initState() {
     context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
@@ -80,8 +81,6 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems> {
                                 ? SliverList.builder(
                                     itemCount: saveAd.length,
                                     itemBuilder: (context, index) {
-                                      var advertisingFacilities =
-                                          facilities.toList()[index];
                                       var saveAdvertising =
                                           saveAd.toList()[index];
 
@@ -90,8 +89,10 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems> {
                                             item.id == saveAdvertising.idAd,
                                       );
 
-                                      var gallery = adGallery.firstWhere(
-                                        (item) => item.id == savedAd.idGallery,
+                                      var advertisingFacilities =
+                                          facilities.firstWhere(
+                                        (item) =>
+                                            item.id == savedAd.idFacilities,
                                       );
 
                                       bool isSaved = saveAd.any(
@@ -101,7 +102,7 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems> {
                                         advertising: savedAd,
                                         advertisingFacilities:
                                             advertisingFacilities,
-                                        advertisingImages: gallery.images[0],
+                                        advertisingImages: savedAd.images[0],
                                         isDelete: false,
                                         screen: InformatioMyAdvertising(
                                           advertisingHome: savedAd,

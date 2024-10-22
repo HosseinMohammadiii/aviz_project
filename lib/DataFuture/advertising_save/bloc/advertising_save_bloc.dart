@@ -30,19 +30,19 @@ class SaveAdBloc extends Bloc<SaveAdEvent, SaveAdState> {
     on<DeleteSaveAdEvent>(
       (event, emit) async {
         await repository.deleteSaveAd(event.id);
-        emit(SaveLoadingState());
-        var displaySaveAd = await repository.getSaveAd();
-        var displayAdvertising = await repository.getDisplayRecentAd();
-        var advertisingFacilities =
-            await repository.getDiplayAdvertisingFacilities();
-        var advertisingGallery = await repository.getDiplayImagesAd();
+        //  emit(SaveLoadingState());
+        // var displaySaveAd = await repository.getSaveAd();
+        // var displayAdvertising = await repository.getDisplayRecentAd();
+        // var advertisingFacilities =
+        //     await repository.getDiplayAdvertisingFacilities();
+        // var advertisingGallery = await repository.getDiplayImagesAd();
 
-        emit(GetSaveState(
-          displaySaveAd,
-          displayAdvertising,
-          advertisingGallery,
-          advertisingFacilities,
-        ));
+        // emit(GetSaveState(
+        //   displaySaveAd,
+        //   displayAdvertising,
+        //   advertisingGallery,
+        //   advertisingFacilities,
+        // ));
       },
     );
   }

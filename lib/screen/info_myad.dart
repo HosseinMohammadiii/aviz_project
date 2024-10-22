@@ -31,7 +31,7 @@ import '../widgets/text_widget.dart';
 import 'dart:ui' as ui;
 
 // ignore: must_be_immutable
-class InformatioMyAdvertising extends StatefulWidget {
+class InformatioMyAdvertising extends StatefulWidget with RouteAware {
   InformatioMyAdvertising({
     super.key,
     required this.advertisingHome,
@@ -46,7 +46,35 @@ class InformatioMyAdvertising extends StatefulWidget {
       _InformatioMyAdvertisingState();
 }
 
-class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
+class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
+    with RouteAware {
+//   @override
+//   void didChangeDependencies() {
+//     super.didChangeDependencies();
+//     final route = ModalRoute.of(context);
+//     if (route is PageRoute) {
+//       routeObserver.subscribe(this, route);
+//     }
+//   }
+
+//   @override
+//   void dispose() {
+//     routeObserver.unsubscribe(this);
+//     super.dispose();
+//   }
+
+//   @override
+//   void didPush() {
+//     print('صفحه جدید به جلو هل داده شد');
+//   }
+
+//   @override
+//   void didPop() {
+// //    context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
+
+//     print('صفحه قبلی بسته شد');
+//   }
+
   //List for display information horizontal category
   List<ContainerInfo> listText = [
     ContainerInfo('مشخصات', true, 0),
@@ -58,7 +86,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
   int indexContainer = 0;
 
   bool isSaved = false;
-  bool isLoading = false;
 
   PageController controller =
       PageController(viewportFraction: 0.9, initialPage: 0);
@@ -89,59 +116,44 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
 
   @override
   void initState() {
+    RegisterId().clearID();
     categoryType();
     _checkIfSaved();
     super.initState();
   }
 
   void _checkIfSaved() {
-    // Check if the ad is already saved in the database
     if (widget.advertisingSave != null) {
       setState(() {
-        isSaved = true; // If saved, set isSaved to true
+        isSaved = true;
       });
     }
   }
 
   void _toggleSaveStatus() async {
-    // Start the operation: show loading state
-    setState(() {
-      isLoading = true;
-    });
+    if (RegisterId().getSaveId().isEmpty && isSaved) {
+      BlocProvider.of<SaveAdBloc>(context)
+          .add(DeleteSaveAdEvent(widget.advertisingSave!.id));
 
-    // If the ad is already saved, delete it from the database
-    if (isSaved) {
-      if (widget.advertisingSave != null) {
-        // Trigger the event to delete the saved ad using its ID
-        BlocProvider.of<SaveAdBloc>(context)
-            .add(DeleteSaveAdEvent(widget.advertisingSave!.id));
+      context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
+      context.read<HomeBloc>().add(HomeGetInitializeData());
+      context.read<RecentBloc>().add(GetInitializedDataEvent());
+    } else if (isSaved && RegisterId().getSaveId().isNotEmpty) {
+      BlocProvider.of<SaveAdBloc>(context)
+          .add(DeleteSaveAdEvent(RegisterId().getSaveId()));
 
-        // Refresh home screen data after deletion
-        context.read<HomeBloc>().add(HomeGetInitializeData());
-        context.read<RecentBloc>().add(GetInitializedDataEvent());
+      RegisterId().clearID();
 
-        // Refresh home screen data after deletion
-        context.read<HomeBloc>().add(HomeGetInitializeData());
-        context.read<RecentBloc>().add(GetInitializedDataEvent());
-      } else {
-        // If saved ad ID is available
-        if (RegisterId().getSaveId().isNotEmpty) {
-          BlocProvider.of<SaveAdBloc>(context)
-              .add(DeleteSaveAdEvent(RegisterId().getSaveId()));
-        }
-      }
-
-      await Future.delayed(const Duration(seconds: 1));
+      context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
+      context.read<HomeBloc>().add(HomeGetInitializeData());
+      context.read<RecentBloc>().add(GetInitializedDataEvent());
     } else {
-      // If the ad is not saved, add it to the database
       BlocProvider.of<SaveAdBloc>(context)
           .add(PostSaveAdEvent(widget.advertisingHome.id));
-
-      await Future.delayed(const Duration(seconds: 1));
+      context.read<HomeBloc>().add(HomeGetInitializeData());
     }
-    // End the operation: stop loading and update the isSaved status
+
     setState(() {
-      isLoading = false;
       isSaved = !isSaved;
     });
   }
@@ -188,21 +200,15 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising> {
             children: [
               GestureDetector(
                 onTap: _toggleSaveStatus,
-                child: isLoading
-                    ? const SizedBox(
-                        height: 22,
-                        width: 22,
-                        child: CircularProgressIndicator(),
+                child: isSaved
+                    ? Image.asset(
+                        'images/save_full.png',
+                        scale: 5,
                       )
-                    : isSaved
-                        ? Image.asset(
-                            'images/save_full.png',
-                            scale: 5,
-                          )
-                        : Image.asset(
-                            'images/save_vacant.png',
-                            scale: 5,
-                          ),
+                    : Image.asset(
+                        'images/save_vacant.png',
+                        scale: 5,
+                      ),
               ),
               const Spacer(),
               GestureDetector(

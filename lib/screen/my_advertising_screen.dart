@@ -215,11 +215,8 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                 itemBuilder: (context, index) {
                   var advertisingAd = widget.advertising.toList()[index];
 
-                  var advertisingFacilities =
-                      widget.advertisingFacilities.toList()[index];
-
-                  var gallery = widget.advertisingGallery
-                      .where((item) => item.id == advertisingAd.idGallery)
+                  var advertisingFacilities = widget.advertisingFacilities
+                      .where((item) => item.id == advertisingAd.idFacilities)
                       .toList();
 
                   bool isSaved = widget.advertisingSave
@@ -246,12 +243,12 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                     },
                     child: AdvertisingWidget(
                       advertising: advertisingAd,
-                      advertisingImages: gallery[0].images[0],
-                      advertisingFacilities: advertisingFacilities,
+                      advertisingImages: advertisingAd.images[0],
+                      advertisingFacilities: advertisingFacilities[0],
                       isDelete: isDelete[index],
                       screen: InformatioMyAdvertising(
                         advertisingHome: advertisingAd,
-                        advertisingFacilities: advertisingFacilities,
+                        advertisingFacilities: advertisingFacilities[0],
                         advertisingSave: isSaved
                             ? widget.advertisingSave.firstWhere(
                                 (item) => item.idAd == advertisingAd.id)

@@ -14,6 +14,8 @@ class RegisterFutureAd {
   int countRoom;
   int floor;
   int yearBiuld;
+  List<String> images;
+
   RegisterFutureAd({
     required this.id,
     required this.created,
@@ -30,11 +32,15 @@ class RegisterFutureAd {
     required this.countRoom,
     required this.floor,
     required this.yearBiuld,
+    required this.images,
   });
 
   factory RegisterFutureAd.fromJson(Map<String, dynamic> jsonObject) {
+    List<String> images = (jsonObject['images'] as List<dynamic>).map((images) {
+      return '$images';
+    }).toList();
     return RegisterFutureAd(
-      id: jsonObject['id'],
+      id: jsonObject['ad_id'],
       created: jsonObject['created'],
       idFacilities: jsonObject['id_facilities'],
       idFeatures: jsonObject['id_features'],
@@ -49,6 +55,7 @@ class RegisterFutureAd {
       homeprice: jsonObject['price'],
       description: jsonObject['description'],
       province: jsonObject['province'],
+      images: images,
     );
   }
 }
