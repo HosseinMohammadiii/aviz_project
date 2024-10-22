@@ -231,7 +231,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   @override
   Future<List<RegisterFutureAd>> getDiplayAdvertising() async {
     try {
-      print('This');
       Map<String, String> qParams = {
         'filter': 'user_id=${Authmanager().getId()}'
       };
@@ -243,7 +242,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
-      // print(response.data);
+
       return response.data['items']
           .map<RegisterFutureAd>(
               (jsonObject) => RegisterFutureAd.fromJson(jsonObject))
@@ -265,7 +264,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
-      print(response.data['items']);
 
       return response.data['items']
           .map<AdvertisingFacilities>(
