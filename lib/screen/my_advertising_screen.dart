@@ -216,7 +216,8 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                   var advertisingAd = widget.advertising.toList()[index];
 
                   var advertisingFacilities = widget.advertisingFacilities
-                      .where((item) => item.id == advertisingAd.idFacilities)
+                      .where((item) =>
+                          item.id == widget.advertising[index].idFacilities)
                       .toList();
 
                   bool isSaved = widget.advertisingSave

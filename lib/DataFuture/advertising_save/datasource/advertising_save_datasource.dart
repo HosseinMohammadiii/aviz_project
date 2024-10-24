@@ -150,7 +150,6 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
           contentType: Headers.formUrlEncodedContentType,
         ),
       );
-      print('Delete 200');
       return response.data['items'];
     } on DioException catch (ex) {
       throw ApiException(

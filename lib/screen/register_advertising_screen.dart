@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
@@ -277,7 +276,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           stateAd.yearBuild!.toInt(),
                         ),
                       );
-                      RegisterId().saveIdGallery('');
                       // Reset the information stored in RegisterInfoAdCubit
                       context.read<RegisterInfoAdCubit>().resetInfoAdSet();
                       // Reset the state of BoolStateCubit

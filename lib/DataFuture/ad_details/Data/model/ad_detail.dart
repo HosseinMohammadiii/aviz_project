@@ -11,8 +11,8 @@ class AdvertisingFeatures {
   factory AdvertisingFeatures.fromJson(Map<String, dynamic> jsonObject) {
     return AdvertisingFeatures(
       id: jsonObject['id'],
-      document: jsonObject['document'],
-      direction: jsonObject['direction'],
+      document: jsonObject['document'] ?? "",
+      direction: jsonObject['direction'] ?? "",
     );
   }
 }

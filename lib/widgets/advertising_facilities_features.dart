@@ -211,6 +211,21 @@ class _AdvertisingFacilitiesWidgetState
                 },
               ),
             ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                textWidget(
+                  'امکانات',
+                  CustomColor.black,
+                  16,
+                  FontWeight.w700,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Image.asset('images/clipboard.png'),
+              ],
+            ),
             if (state is AdDetailRequestSuccessState) ...[
               state.advertisingFacilitiesList.fold(
                 (error) => Center(

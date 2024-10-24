@@ -24,7 +24,7 @@ import '../DataFuture/recent/bloc/recent_bloc.dart';
 import '../DataFuture/recent/bloc/recent_event.dart';
 import '../class/colors.dart';
 
-import '../widgets/advertising_facilities.dart';
+import '../widgets/advertising_facilities_features.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/box_attention.dart';
 import '../widgets/text_widget.dart';
@@ -117,9 +117,9 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
   @override
   void initState() {
     RegisterId().clearID();
-    categoryType();
     _checkIfSaved();
     super.initState();
+    categoryType();
   }
 
   void _checkIfSaved() {

@@ -88,7 +88,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   ) async {
     try {
       var response = await dio.post(
-        'collections/inforegisteredhomes/records',
+        'advertising_home',
         data: {
           'user_id': Authmanager().getId(),
           'id_category': idCT,
@@ -106,6 +106,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'year_build': yearBuild,
         },
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
@@ -139,7 +140,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   ) async {
     try {
       var response = await dio.post(
-        'collections/facilities/records',
+        'facilities',
         data: {
           'elevator': elevator,
           'parking': parking,
@@ -154,12 +155,13 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'wc': wc,
         },
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
 
       if (response.statusCode == 200) {
-        RegisterId().saveIdFacilities(response.data['id']);
+        RegisterId().saveIdFacilities(response.data['data']['id']);
         return response.data['items'];
       }
     } on DioException catch (ex) {
@@ -182,18 +184,19 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       }
 
       FormData formData = FormData.fromMap({
-        'images': imageFiles,
+        'images[]': imageFiles,
       });
       var response = await dio.post(
-        'collections/advertising_gallery/records',
+        'advertising_gallery',
         data: formData,
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
 
       if (response.statusCode == 200) {
-        RegisterId().saveIdGallery(response.data['id']);
+        RegisterId().saveIdGallery(response.data['data']['id']);
         return response.data['items'];
       }
     } on DioException catch (ex) {
