@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aviz_project/widgets/advertising_box.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,8 @@ class _ContainerSearchState extends State<ContainerSearch> {
       SearchWithQueryData(query: widget.textEditingController.text),
     );
   }
+
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +87,14 @@ class _ContainerSearchState extends State<ContainerSearch> {
               widget.focusNode.unfocus();
             },
             onChanged: (value) {
-              context.read<SearchBloc>().add(SearchWithQueryData(query: value));
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 500), () {
+                context
+                    .read<SearchBloc>()
+                    .add(SearchWithQueryData(query: value));
+
+                // print(SearchWithQueryData(query: value).query);
+              });
             },
           ),
         ),
@@ -93,51 +104,52 @@ class _ContainerSearchState extends State<ContainerSearch> {
           builder: (context, state) {
             return CustomScrollView(
               slivers: [
-                if (state is SearchRequestSuccessState) ...[
-                  state.searchResult.fold(
-                      (l) => SliverToBoxAdapter(
-                            child: Center(
-                              child: textWidget(
-                                l,
-                                CustomColor.black,
-                                16,
-                                FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                      (adHome) => state.advertisingGalleryDetails.fold(
-                            (l) => SliverToBoxAdapter(
-                              child: Center(
-                                child: textWidget(
-                                  l,
-                                  CustomColor.black,
-                                  16,
-                                  FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            (r) {
-                              return SliverList.builder(
-                                itemCount: adHome.length,
-                                itemBuilder: (context, index) {
-                                  var gallery = r
-                                      .where((item) =>
-                                          item.id == adHome[index].idGallery)
-                                      .toList();
-                                  return AdvertisingSearchWidget(
-                                    advertisingHome: adHome[index],
-                                    adGallery: gallery[0],
-                                  );
-                                },
-                              );
-                            },
-                          ))
-                ],
                 if (state is SearchLoadingState) ...[
-                  const SliverToBoxAdapter(
+                  const SliverFillRemaining(
                     child: Center(
                       child: CircularProgressIndicator(),
                     ),
+                  ),
+                ],
+                if (state is SearchRequestSuccessState) ...[
+                  state.searchResult.fold(
+                    (l) => SliverToBoxAdapter(
+                      child: Center(
+                        child: textWidget(
+                          l,
+                          CustomColor.black,
+                          16,
+                          FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    (adHome) {
+                      return Visibility(
+                        visible: adHome.isNotEmpty,
+                        replacement: const SliverFillRemaining(
+                          child: Center(
+                            child: Text(
+                              '.نتیجه ای یافت نشد',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: CustomColor.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        child: SliverList.builder(
+                          itemCount: adHome.length,
+                          itemBuilder: (context, index) {
+                            return AdvertisingSearchWidget(
+                              advertisingHome: adHome[index],
+                              adGallery: adHome[index].images[0],
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ],
               ],

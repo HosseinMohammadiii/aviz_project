@@ -251,14 +251,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliverList.builder(
       itemCount: adHome.length,
       itemBuilder: (context, index) {
-        var gallery = advertisingGallery
-            .where((item) => item.id == adHome[index].idGallery)
-            .toList();
         var facilities = adFacilities
             .where((item) => item.id == adHome[index].idFacilities)
             .toList();
 
-        // بررسی اینکه آیا آگهی در لیست ذخیره شده‌ها وجود دارد
         bool isSaved =
             advertisingSave.any((item) => item.idAd == adHome[index].id);
 
@@ -304,7 +300,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: 111,
                   child: CachedNetworkImageWidget(
-                    imgUrl: gallery.isNotEmpty ? gallery[0].images[0] : '',
+                    imgUrl: adHome[index].images.isNotEmpty
+                        ? adHome[index].images[0]
+                        : '',
                   ),
                 ),
                 const SizedBox(
@@ -362,8 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(right: 16),
           itemCount: adHome.length,
           itemBuilder: (context, index) {
-            var gallery = advertisingGallery
-                .where((item) => item.id == adHome[index].idGallery)
+            var facilities = adFacilities
+                .where((item) => item.id == adHome[index].idFacilities)
                 .toList();
 
             bool isSaved =
@@ -375,7 +373,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => InformatioMyAdvertising(
-                      advertisingFacilities: adFacilities[index],
+                      advertisingFacilities: facilities[0],
                       advertisingHome: adHome[index],
                       advertisingSave: isSaved
                           ? advertisingSave.firstWhere(
@@ -407,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     CachedNetworkImageWidget(
-                      imgUrl: gallery[0].images[0],
+                      imgUrl: adHome[index].images[0],
                     ),
                     Text(
                       adHome[index].titlehome,
