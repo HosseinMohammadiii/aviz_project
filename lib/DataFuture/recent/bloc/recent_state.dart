@@ -4,7 +4,6 @@ import 'package:aviz_project/DataFuture/recent/model/recent_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
-import '../../add_advertising/Data/model/ad_gallery.dart';
 
 abstract class RecentState {}
 
@@ -15,13 +14,11 @@ final class RecentLoadingState extends RecentState {}
 final class GetRecentState extends RecentState {
   Either<String, List<RecentModel>> getRecentAd;
   Either<String, List<RegisterFutureAd>> getDisplayAd;
-  Either<String, List<RegisterFutureAdGallery>> advertisingGalleryDetails;
   Either<String, List<AdvertisingFacilities>> advertisingFacilitiesDetails;
   Either<String, List<AdvertisingSave>> advertisingSaveDetails;
   GetRecentState(
     this.getRecentAd,
     this.getDisplayAd,
-    this.advertisingGalleryDetails,
     this.advertisingFacilitiesDetails,
     this.advertisingSaveDetails,
   );

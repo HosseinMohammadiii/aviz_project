@@ -13,13 +13,11 @@ class RecentBloc extends Bloc<RecentEvent, RecentState> {
       var displayAdvertising = await repository.getDisplayRecentAd();
       var advertisingFacilities =
           await repository.getDiplayAdvertisingFacilities();
-      var advertisingGallery = await repository.getDiplayImagesAd();
       var advertisingSave = await repository.getSaveAd();
 
       emit(GetRecentState(
         displayRecetAd,
         displayAdvertising,
-        advertisingGallery,
         advertisingFacilities,
         advertisingSave,
       ));

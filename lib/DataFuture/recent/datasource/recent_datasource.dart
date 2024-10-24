@@ -4,13 +4,11 @@ import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.
 import 'package:dio/dio.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
-import '../../add_advertising/Data/model/ad_gallery.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
 import '../model/recent_model.dart';
 
 abstract class IRecentAdItems {
   Future<List<RegisterFutureAd>> getDisplayRecentAd();
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
 
@@ -46,7 +44,7 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   Future<String> postRecentAd(String adId) async {
     try {
       Map<String, dynamic> query = {
-        'filter': 'user_id="${Authmanager().getId()}" && id_ad="$adId"'
+        'filter': 'user_id="${Authmanager().getId()}" & id_ad="$adId"',
       };
 
       var response = await dio.get(
@@ -61,8 +59,12 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
             'user_id': Authmanager().getId(),
             'id_ad': adId,
           },
+          options: Options(
+            contentType: Headers.formUrlEncodedContentType,
+            headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+          ),
         );
-        return recent.data['id'];
+        return recent.data;
       }
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode ?? 0, ex.message ?? 'Error');
@@ -104,26 +106,6 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
       return response.data['items']
           .map<RecentModel>(
               (jsonObject) => RecentModel.fromJsonObject(jsonObject))
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiException(0, 'Unknown');
-    }
-  }
-
-  @override
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
-    try {
-      var response = await dio.get(
-        'advertising_gallery',
-      );
-
-      return response.data['items']
-          .map<RegisterFutureAdGallery>(
-            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
-          )
           .toList();
     } on DioException catch (ex) {
       throw ApiException(

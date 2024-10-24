@@ -70,67 +70,62 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                   if (state is GetRecentState) ...[
                     state.getDisplayAd.fold(
                       (error) => DisplayError(error: error),
-                      (ad) => state.getRecentAd.fold(
+                      (advertising) => state.getRecentAd.fold(
                         (error) => DisplayError(error: error),
                         (recent) => state.advertisingFacilitiesDetails.fold(
                           (error) => DisplayError(error: error),
-                          (facilities) => state.advertisingGalleryDetails.fold(
+                          (facilities) => state.advertisingSaveDetails.fold(
                             (error) => DisplayError(error: error),
-                            (adGallery) => state.advertisingSaveDetails.fold(
-                              (error) => DisplayError(error: error),
-                              (saveAd) => recent.isNotEmpty
-                                  ? SliverList.builder(
-                                      itemCount: recent.length,
-                                      itemBuilder: (context, index) {
-                                        var advertisingFacilities =
-                                            facilities.toList()[index];
-                                        var recentAd = recent.toList()[index];
+                            (saveAd) => recent.isNotEmpty
+                                ? SliverList.builder(
+                                    itemCount: recent.length,
+                                    itemBuilder: (context, index) {
+                                      var recentAd = advertising.firstWhere(
+                                        (item) => item.id == recent[index].idAd,
+                                      );
+                                      var advertisingFacilities = facilities
+                                          .where(
+                                            (item) =>
+                                                item.id ==
+                                                recentAd.idFacilities,
+                                          )
+                                          .toList();
 
-                                        var recentadd = ad.firstWhere(
-                                          (item) => item.id == recentAd.idAd,
-                                        );
+                                      bool isSaved = saveAd.any(
+                                          (item) => item.idAd == recentAd.id);
 
-                                        var gallery = adGallery.firstWhere(
-                                          (item) =>
-                                              item.id == recentadd.idGallery,
-                                        );
-
-                                        bool isSaved = saveAd.any((item) =>
-                                            item.idAd == recentadd.id);
-
-                                        return AdvertisingWidget(
-                                          advertising: recentadd,
+                                      return AdvertisingWidget(
+                                        advertising: recentAd,
+                                        advertisingFacilities:
+                                            advertisingFacilities[0],
+                                        advertisingImages: recentAd.images[0],
+                                        isDelete: false,
+                                        screen: InformatioMyAdvertising(
+                                          advertisingHome: recentAd,
                                           advertisingFacilities:
-                                              advertisingFacilities,
-                                          advertisingImages: gallery.images[0],
-                                          isDelete: false,
-                                          screen: InformatioMyAdvertising(
-                                            advertisingHome: recentadd,
-                                            advertisingFacilities:
-                                                advertisingFacilities,
-                                            advertisingSave: isSaved
-                                                ? saveAd.firstWhere((item) =>
-                                                    item.idAd == recentadd.id)
-                                                : null,
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  : const SliverFillRemaining(
-                                      child: Center(
-                                        child: Text(
-                                          '!هنوز از آگهی بازدید نکردی که',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
+                                              advertisingFacilities[0],
+                                          advertisingSave: isSaved
+                                              ? saveAd.firstWhere((item) =>
+                                                  item.idAd == recentAd.id)
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : const SliverFillRemaining(
+                                    child: Center(
+                                      child: Text(
+                                        '!هنوز از آگهی بازدید نکردی که',
+                                        style: TextStyle(
+                                          fontSize: 20,
                                         ),
                                       ),
                                     ),
-                            ),
+                                  ),
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ],
               ),

@@ -20,9 +20,9 @@ class AccountInformation {
       id: jsonObject['id'],
       name: jsonObject['name'],
       avatar: jsonObject['avatar'],
-      email: jsonObject['email'],
+      email: jsonObject['email'] ?? "",
       phoneNumber: jsonObject['phone_number'],
-      province: jsonObject['province'],
+      province: jsonObject['province'] ?? "",
     );
   }
 }

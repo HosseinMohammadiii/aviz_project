@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../NetworkUtil/api_exeption.dart';
 import '../../ad_details/Data/model/ad_facilities.dart';
-import '../../add_advertising/Data/model/ad_gallery.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
 import '../../advertising_save/model/advertising_save.dart';
 import '../model/recent_model.dart';
@@ -12,8 +11,6 @@ abstract class IRecentRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDisplayRecentAd();
   Future<Either<String, List<AdvertisingFacilities>>>
       getDiplayAdvertisingFacilities();
-
-  Future<Either<String, List<RegisterFutureAdGallery>>> getDiplayImagesAd();
 
   Future<Either<String, List<RecentModel>>> getRecentAd();
 
@@ -61,17 +58,6 @@ final class IRecentRepositoryRemoot extends IRecentRepository {
   Future<Either<String, List<RecentModel>>> getRecentAd() async {
     try {
       var response = await datasource.getRecentAd();
-      return right(response);
-    } on ApiException catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
-
-  @override
-  Future<Either<String, List<RegisterFutureAdGallery>>>
-      getDiplayImagesAd() async {
-    try {
-      var response = await datasource.getDiplayImagesAd();
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
