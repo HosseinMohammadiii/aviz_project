@@ -92,8 +92,6 @@ class _ContainerSearchState extends State<ContainerSearch> {
                 context
                     .read<SearchBloc>()
                     .add(SearchWithQueryData(query: value));
-
-                // print(SearchWithQueryData(query: value).query);
               });
             },
           ),

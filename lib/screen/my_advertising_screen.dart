@@ -31,8 +31,8 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
   List<RegisterFutureAd> registerFutureList = [];
   @override
   void initState() {
-    BlocProvider.of<AddAdvertisingBloc>(context)
-        .add(InitializedDisplayAdvertising());
+    // BlocProvider.of<AddAdvertisingBloc>(context)
+    //     .add(InitializedDisplayAdvertising());
 
     super.initState();
   }

@@ -6,6 +6,8 @@ import 'package:aviz_project/DataFuture/advertising_save/datasource/advertising_
 import 'package:aviz_project/DataFuture/advertising_save/repository/advertising_save_repository.dart';
 import 'package:aviz_project/DataFuture/home/Data/datasource/home_datasource.dart';
 import 'package:aviz_project/DataFuture/home/Data/repository/home_repository.dart';
+import 'package:aviz_project/DataFuture/province/Data/datasource/province_datasource.dart';
+import 'package:aviz_project/DataFuture/province/Data/repository/province_repository.dart';
 import 'package:aviz_project/DataFuture/recent/datasource/recent_datasource.dart';
 import 'package:aviz_project/DataFuture/recent/repository/recent_repository.dart';
 import 'package:aviz_project/DataFuture/search/Data/dataSource/search_datasource.dart';
@@ -61,6 +63,9 @@ Future<void> getInInit() async {
       locator.get(),
     ),
   );
+  locator.registerFactory<IProvinceDatasource>(
+    () => ProvinceDatasourceRemoot(),
+  );
   //locator Repository
 
   locator.registerFactory<IHomeRepository>(
@@ -100,6 +105,11 @@ Future<void> getInInit() async {
   locator.registerFactory<ISaveAdRepository>(
     () => ISaveAdRepositoryRemoot(
       locator.get(),
+    ),
+  );
+  locator.registerFactory<IProvinceRepository>(
+    () => ProvinceRepositoryRemoot(
+      ProvinceDatasourceRemoot(),
     ),
   );
 }

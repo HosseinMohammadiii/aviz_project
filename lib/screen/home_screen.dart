@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   void initState() {
-    context.read<HomeBloc>().add(HomeGetInitializeData());
+    //context.read<HomeBloc>().add(HomeGetInitializeData());
     super.initState();
   }
 

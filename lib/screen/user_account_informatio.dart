@@ -6,7 +6,7 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/search_provinces.dart';
+import 'package:aviz_project/screen/screen_province.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -421,8 +421,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        SearchProvincesScreen(),
+                                    builder: (context) => ScreenProvince(
+                                      isCities: false,
+                                    ),
                                   ),
                                 );
                               },

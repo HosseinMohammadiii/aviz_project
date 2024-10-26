@@ -5,6 +5,9 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/advertising_save/bloc/advertising_save_bloc.dart';
 
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
+import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
+import 'package:aviz_project/DataFuture/province/Bloc/province_bloc.dart';
+import 'package:aviz_project/DataFuture/province/Bloc/province_event.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
@@ -19,6 +22,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
+import 'DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {
@@ -91,6 +95,9 @@ void main() async {
             locator.get(),
           ),
         ),
+        BlocProvider(
+          create: (context) => ProvinceBloc(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -104,6 +111,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<HomeBloc>().add(HomeGetInitializeData());
+    context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
+    context.read<ProvinceBloc>().add(ProvinceInitializedData());
     return MaterialApp(
       navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
@@ -167,3 +177,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+//BottomNavigationScreen()
