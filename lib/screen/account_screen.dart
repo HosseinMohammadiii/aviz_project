@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/NetworkUtil/authmanager.dart';
-import '../DataFuture/recent/bloc/recent_event.dart';
 import 'recent_user_ad_items.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -18,12 +17,6 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  @override
-  void initState() {
-    BlocProvider.of<RecentBloc>(context).add(GetInitializedDataEvent());
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RecentBloc, RecentState>(
