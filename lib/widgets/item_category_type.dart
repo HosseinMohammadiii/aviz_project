@@ -19,10 +19,7 @@ class ItemsCategoryType extends StatefulWidget {
 }
 
 class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {

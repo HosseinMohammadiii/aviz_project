@@ -231,7 +231,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             floor: null,
             yearBuild: null,
             idCt: '',
-            address: '',
+            province: '',
             title: '',
             description: '',
             price: null,
@@ -239,7 +239,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             idFeature: '',
             document: '',
             view: '',
-            province: '',
+            city: '',
           ),
         );
 
@@ -257,7 +257,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final String? idFeature,
     final String? document,
     final String? view,
-    final String? province,
+    final String? city,
   }) {
     emit(state.copyWith(
       metr: metr,
@@ -265,7 +265,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       floor: floor,
       yearBuild: yearBuild,
       idCt: idCt,
-      address: address,
+      province: address,
       title: title,
       description: description,
       price: price,
@@ -273,7 +273,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       idFeature: idFeature,
       document: document,
       view: view,
-      province: province,
+      city: city,
     ));
   }
 
@@ -285,7 +285,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         floor: null,
         yearBuild: null,
         idCt: '',
-        address: '',
+        province: '',
         title: '',
         description: '',
         price: null,
@@ -293,7 +293,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         idFeature: '',
         document: '',
         view: '',
-        province: '',
+        city: '',
       ),
     );
   }

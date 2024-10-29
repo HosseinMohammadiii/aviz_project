@@ -104,7 +104,7 @@ class RegisterInfoAd {
   final num? floor;
   final num? yearBuild;
   final String idCt;
-  final String address;
+  String province;
   String title;
   String description;
   num? price;
@@ -112,7 +112,7 @@ class RegisterInfoAd {
   final String idFeature;
   String document;
   String view;
-  final String province;
+  String city;
 
   RegisterInfoAd({
     required this.metr,
@@ -120,7 +120,7 @@ class RegisterInfoAd {
     required this.floor,
     required this.yearBuild,
     required this.idCt,
-    required this.address,
+    required this.province,
     required this.title,
     required this.description,
     required this.price,
@@ -128,7 +128,7 @@ class RegisterInfoAd {
     required this.idFeature,
     required this.document,
     required this.view,
-    required this.province,
+    required this.city,
   });
   RegisterInfoAd copyWith({
     final num? metr,
@@ -136,7 +136,7 @@ class RegisterInfoAd {
     final num? floor,
     final num? yearBuild,
     final String? idCt,
-    final String? address,
+    final String? province,
     final String? title,
     final String? description,
     final num? price,
@@ -144,7 +144,7 @@ class RegisterInfoAd {
     final String? idFeature,
     final String? document,
     final String? view,
-    final String? province,
+    final String? city,
   }) {
     return RegisterInfoAd(
       metr: metr ?? this.metr,
@@ -152,7 +152,7 @@ class RegisterInfoAd {
       floor: floor ?? this.floor,
       yearBuild: yearBuild ?? this.yearBuild,
       idCt: idCt ?? this.idCt,
-      address: address ?? this.address,
+      province: province ?? this.province,
       title: title ?? this.title,
       description: description ?? this.description,
       price: price ?? this.price,
@@ -160,7 +160,7 @@ class RegisterInfoAd {
       idFeature: idFeature ?? this.idFeature,
       document: document ?? this.document,
       view: view ?? this.view,
-      province: province ?? this.province,
+      city: city ?? this.city,
     );
   }
 }

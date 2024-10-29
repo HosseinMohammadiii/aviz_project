@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/account/Data/model/account.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/display_error.dart';
 import '../widgets/text_widget.dart';
@@ -155,12 +156,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
         );
       },
     );
-  }
-
-  @override
-  void initState() {
-    BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());
-    super.initState();
   }
 
   @override
@@ -422,7 +417,18 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ScreenProvince(
-                                      isCities: false,
+                                      onChanged: () {
+                                        final provinceName = context
+                                            .read<RegisterInfoAdCubit>()
+                                            .state;
+                                        context.read<AuthAccountBloc>().add(
+                                              UpdateProvinceUserEvent(
+                                                provinceName.province,
+                                              ),
+                                            );
+                                        provinceName.province = '';
+                                        Navigator.pop(context);
+                                      },
                                     ),
                                   ),
                                 );

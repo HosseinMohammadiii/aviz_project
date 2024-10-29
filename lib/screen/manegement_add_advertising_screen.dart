@@ -57,7 +57,7 @@ class _ManagementAddAdvertisingScreenState
 
             case ViewPage.registerHomeLocation:
               return LocatioUpload(
-                address: stateAd.address,
+                address: stateAd.province,
               );
 
             case ViewPage.registerHomeAdvertising:

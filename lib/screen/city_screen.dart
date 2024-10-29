@@ -7,6 +7,7 @@ import 'package:aviz_project/widgets/provinceandcity_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/province/Bloc/province_bloc.dart';
 import '../DataFuture/province/Bloc/province_state.dart';
 import '../DataFuture/province/model/province.dart';
@@ -18,9 +19,9 @@ import '../widgets/selectprovincebutton_widget.dart';
 class CityScreen extends StatefulWidget {
   CityScreen({
     super.key,
-    required this.city,
+    required this.onChanged,
   });
-  String city;
+  Function() onChanged;
 
   @override
   State<CityScreen> createState() => _CityScreenState();
@@ -30,6 +31,8 @@ class _CityScreenState extends State<CityScreen> {
   final TextEditingController citiesController = TextEditingController();
 
   final FocusNode citiesFocusNode = FocusNode();
+
+  String city = '';
 
   bool isSelectProvinces = false;
   bool isSearch = false;
@@ -41,8 +44,11 @@ class _CityScreenState extends State<CityScreen> {
 
   @override
   void initState() {
+    final provinceName = context.read<RegisterInfoAdCubit>().state;
     BlocProvider.of<ProvinceBloc>(context)
-        .add(ProvinceInitializedData(city: widget.city));
+        .add(ProvinceInitializedData(city: provinceName.province));
+
+    city = provinceName.province;
     super.initState();
   }
 
@@ -142,7 +148,7 @@ class _CityScreenState extends State<CityScreen> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'تمام شهر های ${widget.city}',
+                                        'تمام شهر های $city',
                                         style: const TextStyle(
                                           fontSize: 15,
                                           color: CustomColor.black,
@@ -179,13 +185,20 @@ class _CityScreenState extends State<CityScreen> {
                             itemCount:
                                 isSearch ? searchCities.length : city.length,
                             itemBuilder: (context, index) {
-                              return PRovinceAndCitiesWidget(
+                              return ProvinceAndCitiesWidget(
                                 province: isSearch ? searchCities : city,
                                 index: index,
                                 onTap: () {
                                   setState(() {
                                     isSelectProvinces = true;
                                   });
+                                  final cityName =
+                                      context.read<RegisterInfoAdCubit>().state;
+
+                                  citiesController.text = isSearch
+                                      ? searchCities[index].name
+                                      : city[index].name;
+                                  cityName.city = citiesController.text;
                                 },
                               );
                             },
@@ -196,10 +209,9 @@ class _CityScreenState extends State<CityScreen> {
                   ],
                 ),
                 SelectProvinceAndCityButton(
-                  provincesController: citiesController,
                   isSelectProvinces: isSelectProvinces,
                   onChanges: () {
-                    Navigator.pop(context);
+                    widget.onChanged();
                   },
                 ),
               ],

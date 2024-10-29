@@ -266,7 +266,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           stateAd.idCt,
                           stateAd.idFeature,
                           stateAd.province,
-                          stateAd.address,
+                          stateAd.province,
                           stateAd.title,
                           stateAd.description,
                           stateAd.price!,

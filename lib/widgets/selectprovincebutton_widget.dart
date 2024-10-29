@@ -5,12 +5,10 @@ import '../class/colors.dart';
 class SelectProvinceAndCityButton extends StatelessWidget {
   const SelectProvinceAndCityButton({
     super.key,
-    required this.provincesController,
     required this.isSelectProvinces,
     required this.onChanges,
   });
 
-  final TextEditingController provincesController;
   final bool isSelectProvinces;
 
   final Function() onChanges;

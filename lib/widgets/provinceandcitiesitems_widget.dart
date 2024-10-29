@@ -4,8 +4,8 @@ import '../DataFuture/province/model/province.dart';
 import '../class/colors.dart';
 
 // ignore: must_be_immutable
-class PRovinceAndCitiesWidget extends StatelessWidget {
-  PRovinceAndCitiesWidget({
+class ProvinceAndCitiesWidget extends StatelessWidget {
+  ProvinceAndCitiesWidget({
     super.key,
     required this.province,
     required this.index,

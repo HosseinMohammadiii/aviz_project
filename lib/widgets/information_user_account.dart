@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
-import '../DataFuture/account/Bloc/account_event.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
 import '../screen/user_account_informatio.dart';
 
@@ -20,12 +19,6 @@ class InfoAccountUser extends StatefulWidget {
 }
 
 class _InfoAccountUserState extends State<InfoAccountUser> {
-  @override
-  void initState() {
-    BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthAccountBloc, AuthAccountState>(

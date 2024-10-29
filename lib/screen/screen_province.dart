@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import 'package:aviz_project/DataFuture/province/Bloc/province_bloc.dart';
 import 'package:aviz_project/DataFuture/province/Bloc/province_state.dart';
 import 'package:aviz_project/DataFuture/province/model/province.dart';
-import 'package:aviz_project/screen/city_screen.dart';
 import 'package:aviz_project/widgets/display_error.dart';
 import 'package:aviz_project/widgets/provinceandcitiesitems_widget.dart';
 import 'package:aviz_project/widgets/provinceandcity_appbar.dart';
@@ -11,17 +11,15 @@ import 'package:aviz_project/widgets/provinceandcity_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../DataFuture/account/Bloc/account_bloc.dart';
-import '../DataFuture/account/Bloc/account_event.dart';
 import '../widgets/selectprovincebutton_widget.dart';
 
 // ignore: must_be_immutable
 class ScreenProvince extends StatefulWidget {
   ScreenProvince({
     super.key,
-    required this.isCities,
+    required this.onChanged,
   });
-  bool isCities;
+  Function() onChanged;
   @override
   State<ScreenProvince> createState() => _ScreenProvinceState();
 }
@@ -123,30 +121,22 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                             padding: const EdgeInsets.only(bottom: 80),
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return PRovinceAndCitiesWidget(
+                              final provinceName =
+                                  context.read<RegisterInfoAdCubit>().state;
+
+                              return ProvinceAndCitiesWidget(
                                 province: isSearch ? searchProvinces : province,
                                 index: index,
                                 onTap: () {
                                   setState(() {
-                                    if (!widget.isCities) {
-                                      isSelectProvinces = true;
-                                    }
+                                    isSelectProvinces = true;
+
                                     provincesController.text = isSearch
                                         ? searchProvinces[index].name
                                         : province[index].name;
+                                    provinceName.province =
+                                        provincesController.text;
                                   });
-                                  if (widget.isCities) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CityScreen(
-                                          city: isSearch
-                                              ? searchProvinces[index].name
-                                              : provinces![index].name,
-                                        ),
-                                      ),
-                                    );
-                                  }
                                 },
                               );
                             },
@@ -158,15 +148,9 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                 ],
               ),
               SelectProvinceAndCityButton(
-                provincesController: provincesController,
                 isSelectProvinces: isSelectProvinces,
                 onChanges: () {
-                  context.read<AuthAccountBloc>().add(
-                        UpdateProvinceUserEvent(
-                          provincesController.text,
-                        ),
-                      );
-                  Navigator.pop(context);
+                  widget.onChanged();
                 },
               ),
             ],
