@@ -175,9 +175,7 @@ class MyApp extends StatelessWidget {
         );
       },
       home: Authmanager().isLogin()
-          ? RegisterHomeFeatureScreen(
-              title: '',
-            )
+          ? BottomNavigationScreen()
           : const LogInScreen(),
     );
   }

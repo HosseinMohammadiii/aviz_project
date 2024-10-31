@@ -216,8 +216,7 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                   var advertisingAd = widget.advertising.toList()[index];
 
                   var advertisingFacilities = widget.advertisingFacilities
-                      .where((item) =>
-                          item.id == widget.advertising[index].idFacilities)
+                      .where((item) => item.id == advertisingAd.idFacilities)
                       .toList();
 
                   bool isSaved = widget.advertisingSave
@@ -276,14 +275,21 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
         children: [
           GestureDetector(
             onTap: () {
+              // setState(() {
+              //   isSelect = !isSelect;
+              //   if (isSelect) {
+              //     isDelete = List<bool>.filled(widget.advertising.length, true);
+              //   } else {
+              //     isDelete =
+              //         List<bool>.filled(widget.advertising.length, false);
+              //   }
+              //   context.read<BoolStateCubit>().state.isDelete = isSelect;
+              // });
+
               setState(() {
                 isSelect = !isSelect;
-                if (isSelect) {
-                  isDelete = List<bool>.filled(widget.advertising.length, true);
-                } else {
-                  isDelete =
-                      List<bool>.filled(widget.advertising.length, false);
-                }
+                isDelete =
+                    List<bool>.filled(widget.advertising.length, isSelect);
                 context.read<BoolStateCubit>().state.isDelete = isSelect;
               });
             },
@@ -311,91 +317,132 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    alignment: Alignment.center,
-                    actionsAlignment: MainAxisAlignment.center,
-                    backgroundColor: CustomColor.bluegrey50,
-                    title: const Text(
-                      'آیا آگهی مورد نظر حذف شود؟',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'SM',
-                        fontSize: 20,
-                        color: CustomColor.black,
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'OK'),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStatePropertyAll(CustomColor.grey500),
-                        ),
-                        child: Text(
-                          'خیر',
-                          style: TextStyle(
-                            color: CustomColor.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'SM',
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          //Create Ring For Delete All Ad Selected to Delete
-                          if (isDelete.every((element) => element)) {
-                            for (var i = 0;
-                                i < widget.advertising.length;
-                                i++) {
-                              context.read<AddAdvertisingBloc>().add(
-                                    DeleteAdvertisingData(
-                                      idAd: widget.advertising[i].id,
-                                      idAdFacilities:
-                                          widget.advertising[i].idFacilities,
-                                      idAdGallery:
-                                          widget.advertising[i].idGallery,
-                                    ),
-                                  );
-                              context.read<AddAdvertisingBloc>().add(
-                                    InitializedDisplayAdvertising(),
-                                  );
-                            }
-                            Navigator.pop(context);
-                          } else {
-                            for (var i = 0; i < selectedAdIds.length; i++) {
-                              context.read<AddAdvertisingBloc>().add(
-                                    DeleteAdvertisingData(
-                                      idAd: selectedAdIds[i].id,
-                                      idAdFacilities:
-                                          selectedAdIds[i].idFacilities,
-                                      idAdGallery: selectedAdIds[i].idGallery,
-                                    ),
-                                  );
-                              context.read<AddAdvertisingBloc>().add(
-                                    InitializedDisplayAdvertising(),
-                                  );
-                            }
-                            Navigator.pop(context);
-                          }
-                        },
-                        style: const ButtonStyle(
-                          backgroundColor:
-                              WidgetStatePropertyAll(CustomColor.red),
-                        ),
-                        child: Text(
-                          'بله',
-                          style: TextStyle(
-                            color: CustomColor.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'SM',
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ],
+                  return CustomDeleteDialog(
+                    title: 'title',
+                    onConfirm: () async {
+                      List<Map<String, String>> idsToDelete =
+                          isDelete.every((element) => element)
+                              ? widget.advertising
+                                  .map((ad) => {
+                                        'ad_id': ad.id,
+                                        'id_facilities': ad.idFacilities,
+                                        'id_gallery': ad.idGallery,
+                                      })
+                                  .toList()
+                              : selectedAdIds
+                                  .map((ad) => {
+                                        'ad_id': ad.id,
+                                        'id_facilities': ad.idFacilities,
+                                        'id_gallery': ad.idGallery,
+                                      })
+                                  .toList();
+
+                      for (var id in idsToDelete) {
+                        context
+                            .read<AddAdvertisingBloc>()
+                            .add(DeleteAdvertisingData(
+                              idAd: id['ad_id']!,
+                              idAdFacilities: id['id_facilities']!,
+                              idAdGallery: id['id_gallery']!,
+                            ));
+                      }
+
+                      context
+                          .read<AddAdvertisingBloc>()
+                          .add(InitializedDisplayAdvertising());
+                      Navigator.pop(context);
+                    },
+                    onCancel: () {
+                      Navigator.pop(context, 'OK');
+                    },
                   );
+                  // return AlertDialog(
+                  //   alignment: Alignment.center,
+                  //   actionsAlignment: MainAxisAlignment.center,
+                  //   backgroundColor: CustomColor.bluegrey50,
+                  //   title: const Text(
+                  //     'آیا آگهی مورد نظر حذف شود؟',
+                  //     textAlign: TextAlign.center,
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.w700,
+                  //       fontFamily: 'SM',
+                  //       fontSize: 20,
+                  //       color: CustomColor.black,
+                  //     ),
+                  //   ),
+                  //   actions: [
+                  //     TextButton(
+                  //       onPressed: () {
+                  //         Navigator.pop(context, 'OK');
+                  //       },
+                  //       style: ButtonStyle(
+                  //         backgroundColor:
+                  //             WidgetStatePropertyAll(CustomColor.grey500),
+                  //       ),
+                  //       child: Text(
+                  //         'خیر',
+                  //         style: TextStyle(
+                  //           color: CustomColor.white,
+                  //           fontWeight: FontWeight.bold,
+                  //           fontFamily: 'SM',
+                  //           fontSize: 18,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     TextButton(
+                  //       onPressed: () {
+                  //         //Create Ring For Delete All Ad Selected to Delete
+                  //         if (isDelete.every((element) => element)) {
+                  //           for (var i = 0;
+                  //               i < widget.advertising.length;
+                  //               i++) {
+                  //             context.read<AddAdvertisingBloc>().add(
+                  //                   DeleteAdvertisingData(
+                  //                     idAd: widget.advertising[i].id,
+                  //                     idAdFacilities:
+                  //                         widget.advertising[i].idFacilities,
+                  //                     idAdGallery:
+                  //                         widget.advertising[i].idGallery,
+                  //                   ),
+                  //                 );
+                  //           }
+                  //           context.read<AddAdvertisingBloc>().add(
+                  //                 InitializedDisplayAdvertising(),
+                  //               );
+                  //           Navigator.pop(context);
+                  //         } else {
+                  //           for (var i = 0; i < selectedAdIds.length; i++) {
+                  //             context.read<AddAdvertisingBloc>().add(
+                  //                   DeleteAdvertisingData(
+                  //                     idAd: selectedAdIds[i].id,
+                  //                     idAdFacilities:
+                  //                         selectedAdIds[i].idFacilities,
+                  //                     idAdGallery: selectedAdIds[i].idGallery,
+                  //                   ),
+                  //                 );
+                  //           }
+                  //           // context.read<AddAdvertisingBloc>().add(
+                  //           //       InitializedDisplayAdvertising(),
+                  //           //     );
+                  //           Navigator.pop(context);
+                  //         }
+                  //       },
+                  //       style: const ButtonStyle(
+                  //         backgroundColor:
+                  //             WidgetStatePropertyAll(CustomColor.red),
+                  //       ),
+                  //       child: Text(
+                  //         'بله',
+                  //         style: TextStyle(
+                  //           color: CustomColor.white,
+                  //           fontWeight: FontWeight.bold,
+                  //           fontFamily: 'SM',
+                  //           fontSize: 18,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // );
                 },
               );
               setState(() {});
@@ -408,6 +455,35 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomDeleteDialog extends StatelessWidget {
+  final String title;
+  final VoidCallback onConfirm;
+  final VoidCallback onCancel;
+
+  CustomDeleteDialog({
+    required this.title,
+    required this.onConfirm,
+    required this.onCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      actions: [
+        TextButton(
+          onPressed: onCancel,
+          child: Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: onConfirm,
+          child: Text('Delete'),
+        ),
+      ],
     );
   }
 }

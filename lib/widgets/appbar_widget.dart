@@ -1,4 +1,5 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
+import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../Bloc/bloc_page_number/page_n_bloc_state.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 
 class AppBarWidget extends StatefulWidget {
   const AppBarWidget({super.key});
@@ -44,6 +46,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                             case ViewPage.itemsBuyHome:
                               // case ViewPage.itemsBuyBusinessPlace:
                               // case ViewPage.itemsRentBusinessPlace:
+                              print('itemsBuyHome');
                               context
                                   .read<NavigationPage>()
                                   .getNavItems(ViewPage.category);
@@ -54,12 +57,18 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                               context
                                   .read<NavigationPage>()
                                   .getNavItems(ViewPage.itemsRentHome);
+
                               context
                                   .read<RegisterInfoAdCubit>()
                                   .resetInfoAdSet();
                               context.read<BoolStateCubit>().reset();
                               break;
                             case ViewPage.registerDetialsBuyHomeAdvertising:
+                              context.read<AddAdvertisingBloc>().add(
+                                    DeleteFacilitiesData(
+                                        idAdFacilities:
+                                            RegisterId().getIdFacilities()),
+                                  );
                               context
                                   .read<NavigationPage>()
                                   .getNavItems(ViewPage.itemsBuyHome);
@@ -87,6 +96,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                             case ViewPage.registerHomeAdvertising:
                               context.read<NavigationPage>().getNavItems(
                                   ViewPage.registerDetialsBuyHomeAdvertising);
+                              context.read<BoolStateCubit>().state.isUpdate =
+                                  true;
 
                               break;
 

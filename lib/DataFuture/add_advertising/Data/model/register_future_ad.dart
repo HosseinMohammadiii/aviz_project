@@ -5,10 +5,10 @@ class RegisterFutureAd {
   String idFeatures;
   String idFacilities;
   String idGallery;
-  String location;
   String titlehome;
   String description;
   String province;
+  String city;
   int homeprice;
   int metr;
   int countRoom;
@@ -23,10 +23,10 @@ class RegisterFutureAd {
     required this.idFeatures,
     required this.idFacilities,
     required this.idGallery,
-    required this.location,
     required this.titlehome,
     required this.description,
     required this.province,
+    required this.city,
     required this.homeprice,
     required this.metr,
     required this.countRoom,
@@ -47,7 +47,6 @@ class RegisterFutureAd {
       categoryId: jsonObject['id_category'],
       idGallery: jsonObject['id_gallery'],
       titlehome: jsonObject['title'],
-      location: jsonObject['location'],
       metr: jsonObject['metr'],
       countRoom: jsonObject['count_room'],
       floor: jsonObject['floor'],
@@ -55,6 +54,7 @@ class RegisterFutureAd {
       homeprice: jsonObject['price'],
       description: jsonObject['description'],
       province: jsonObject['province'],
+      city: jsonObject['city'],
       images: images,
     );
   }

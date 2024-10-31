@@ -106,7 +106,11 @@ class AddAdvertisingBloc
         );
       },
     );
-
+    on<DeleteFacilitiesData>(
+      (event, emit) async {
+        await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
+      },
+    );
     on<DeleteImageData>(
       (event, emit) async {
         await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
@@ -249,7 +253,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final num? floor,
     final num? yearBuild,
     final String? idCt,
-    final String? address,
+    final String? province,
     final String? title,
     final String? description,
     final num? price,
@@ -265,7 +269,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       floor: floor,
       yearBuild: yearBuild,
       idCt: idCt,
-      province: address,
+      province: province,
       title: title,
       description: description,
       price: price,

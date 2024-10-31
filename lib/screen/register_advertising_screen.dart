@@ -266,7 +266,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           stateAd.idCt,
                           stateAd.idFeature,
                           stateAd.province,
-                          stateAd.province,
+                          stateAd.city,
                           stateAd.title,
                           stateAd.description,
                           stateAd.price!,
@@ -276,14 +276,17 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           stateAd.yearBuild!.toInt(),
                         ),
                       );
+
+                      //Initialized Ad User Data
+                      context
+                          .read<AddAdvertisingBloc>()
+                          .add(InitializedDisplayAdvertising());
                       // Reset the information stored in RegisterInfoAdCubit
                       context.read<RegisterInfoAdCubit>().resetInfoAdSet();
                       // Reset the state of BoolStateCubit
                       context.read<BoolStateCubit>().reset();
                       // Navigate back to the first page
                       context.read<NavigationPage>().backFirstPAge();
-
-                      // RegisterId().clearID();
                     }
                   },
                   'ثبت آگهی',

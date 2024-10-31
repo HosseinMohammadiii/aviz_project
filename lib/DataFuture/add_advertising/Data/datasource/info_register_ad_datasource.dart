@@ -16,7 +16,7 @@ abstract class IInfoAdDatasource {
     String idCT,
     String idFeature,
     String province,
-    String location,
+    String city,
     String title,
     String description,
     num price,
@@ -77,7 +77,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     String idCT,
     String idFeature,
     String province,
-    String location,
+    String city,
     String title,
     String description,
     num price,
@@ -94,12 +94,12 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'id_category': idCT,
           'id_features': idFeature,
           'province': province,
+          'city': city,
           'id_facilities': RegisterId().getIdFacilities(),
           'id_gallery': RegisterId().getIdGallery(),
           'title': title,
           'price': price,
           'description': description,
-          'location': location,
           'metr': metr,
           'count_room': countRoom,
           'floor': floor,
@@ -284,8 +284,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<String> getDeleteAd(String id) async {
     try {
       var response = await dio.delete(
-        'collections/inforegisteredhomes/records/$id',
+        'advertising_home/$id',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
@@ -302,8 +303,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<String> getDeleteAdFacilities(String id) async {
     try {
       var response = await dio.delete(
-        'collections/facilities/records/$id',
+        'facilities/$id',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
@@ -323,8 +325,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<String> getDeleteAdImagesAd(String id) async {
     try {
       var response = await dio.delete(
-        'collections/advertising_gallery/records/$id',
+        'advertising_gallery/$id',
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
@@ -352,8 +355,8 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     String wc,
   ) async {
     try {
-      var response = await dio.patch(
-        'collections/facilities/records/${RegisterId().getIdFacilities()}',
+      var response = await dio.post(
+        'facilities/${RegisterId().getIdFacilities()}',
         data: {
           'elevator': elevator,
           'parking': parking,
@@ -368,6 +371,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'wc': wc,
         },
         options: Options(
+          contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
@@ -399,7 +403,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         'images': imageFiles,
       });
       var response = await dio.patch(
-        'collections/advertising_gallery/records/${RegisterId().getIdGallery()}',
+        'advertising_gallery/${RegisterId().getIdGallery()}',
         options: Options(
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),

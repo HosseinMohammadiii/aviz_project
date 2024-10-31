@@ -96,14 +96,20 @@ final class UpdateFacilitiesData extends InfoAdvertisingEvent {
 
 final class DeleteAdvertisingData extends InfoAdvertisingEvent {
   String idAd;
-  String? idHome;
   String idAdFacilities;
   String idAdGallery;
   DeleteAdvertisingData({
     required this.idAd,
-    this.idHome,
     required this.idAdFacilities,
     required this.idAdGallery,
+  });
+}
+
+final class DeleteFacilitiesData extends InfoAdvertisingEvent {
+  String idAdFacilities;
+
+  DeleteFacilitiesData({
+    required this.idAdFacilities,
   });
 }
 
