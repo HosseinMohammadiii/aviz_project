@@ -268,6 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) => InformatioMyAdvertising(
                   advertisingFacilities: facilities[0],
                   advertisingHome: adHome[index],
+                  isDelete: false,
                   advertisingSave: isSaved
                       ? advertisingSave
                           .firstWhere((item) => item.idAd == adHome[index].id)
@@ -373,6 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => InformatioMyAdvertising(
+                      isDelete: false,
                       advertisingFacilities: facilities[0],
                       advertisingHome: adHome[index],
                       advertisingSave: isSaved

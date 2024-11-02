@@ -2,12 +2,10 @@ import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
-import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 
 import 'price_widget.dart';
@@ -20,14 +18,12 @@ class AdvertisingWidget extends StatefulWidget {
     required this.advertisingImages,
     required this.advertisingFacilities,
     required this.screen,
-    this.isDelete,
   });
   RegisterFutureAd advertising;
   String advertisingImages;
   AdvertisingFacilities advertisingFacilities;
   Widget screen;
 
-  bool? isDelete;
   @override
   State<AdvertisingWidget> createState() => _AdvertisingWidgetState();
 }
@@ -126,35 +122,6 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                   ),
                 ),
               ],
-            ),
-            Positioned(
-              bottom: 16,
-              child: GestureDetector(
-                onTap: () {
-                  context.read<BoolStateCubit>().state.isDelete = false;
-                },
-                child: AnimatedSize(
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.easeIn,
-                  child: Container(
-                    width: widget.isDelete! ? 25 : 0,
-                    height: widget.isDelete! ? 25 : 0,
-                    decoration: const BoxDecoration(
-                      color: CustomColor.red,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(8),
-                        bottomLeft: Radius.circular(8),
-                      ),
-                    ),
-                    child: widget.isDelete!
-                        ? Icon(
-                            Icons.check_rounded,
-                            color: CustomColor.white,
-                          )
-                        : null,
-                  ),
-                ),
-              ),
             ),
           ],
         ),

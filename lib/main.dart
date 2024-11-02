@@ -24,7 +24,6 @@ import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
 import 'DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'screen/register_feature_screen.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {
@@ -113,7 +112,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeBloc>().add(HomeGetInitializeData());
+    //context.read<HomeBloc>().add(HomeGetInitializeData());
     context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
     context.read<ProvinceBloc>().add(ProvinceInitializedData());
     BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());

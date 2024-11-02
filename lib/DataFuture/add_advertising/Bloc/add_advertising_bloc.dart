@@ -91,7 +91,7 @@ class AddAdvertisingBloc
         await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
 
         await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
-
+        emit(AddAdvertisingLoading());
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
         var displayImages = await infoRepository.getImagesAdvertising();
         var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
@@ -137,7 +137,6 @@ class BoolStateCubit extends Cubit<BoolState> {
           water: false,
           electricity: false,
           gas: false,
-          isDelete: false,
           isUpdate: false,
           floorMaterial: '',
           fIndex: 1,
@@ -216,7 +215,6 @@ class BoolStateCubit extends Cubit<BoolState> {
       water: false,
       electricity: false,
       gas: false,
-      isDelete: false,
       isUpdate: false,
       floorMaterial: '',
       fIndex: 1,

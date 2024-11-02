@@ -103,8 +103,8 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                                         advertisingFacilities:
                                             advertisingFacilities,
                                         advertisingImages: savedAd.images[0],
-                                        isDelete: false,
                                         screen: InformatioMyAdvertising(
+                                          isDelete: false,
                                           advertisingHome: savedAd,
                                           advertisingFacilities:
                                               advertisingFacilities,

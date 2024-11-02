@@ -99,8 +99,8 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                                         advertisingFacilities:
                                             advertisingFacilities[0],
                                         advertisingImages: recentAd.images[0],
-                                        isDelete: false,
                                         screen: InformatioMyAdvertising(
+                                          isDelete: false,
                                           advertisingHome: recentAd,
                                           advertisingFacilities:
                                               advertisingFacilities[0],

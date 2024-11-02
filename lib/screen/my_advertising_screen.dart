@@ -185,18 +185,6 @@ class ListMyAdvertising extends StatefulWidget {
 }
 
 class _ListMyAdvertisingState extends State<ListMyAdvertising> {
-  List<bool> isDelete = [];
-  bool isSelect = false;
-  List<RegisterFutureAd> selectedAdIds = [];
-
-  @override
-  void initState() {
-    isDelete = List<bool>.filled(widget.advertising.length, false);
-    context.read<BoolStateCubit>().state.isDelete = false;
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -204,10 +192,6 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
         builder: (context, state) {
           return Column(
             children: [
-              Visibility(
-                visible: context.read<BoolStateCubit>().state.isDelete,
-                child: widgetIsDeleteBox(context),
-              ),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -222,38 +206,18 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                   bool isSaved = widget.advertisingSave
                       .any((item) => item.idAd == advertisingAd.id);
 
-                  return GestureDetector(
-                    onLongPress: () async {
-                      setState(() {
-                        isDelete[index] = !isDelete[index];
-                        if (isDelete[index]) {
-                          selectedAdIds.add(advertisingAd);
-                        } else {
-                          selectedAdIds.remove(advertisingAd);
-                        }
-
-                        context.read<BoolStateCubit>().state.isDelete =
-                            isDelete.contains(true);
-                        if (isDelete.every((element) => element)) {
-                          isSelect = true;
-                        } else {
-                          isSelect = false;
-                        }
-                      });
-                    },
-                    child: AdvertisingWidget(
-                      advertising: advertisingAd,
-                      advertisingImages: advertisingAd.images[0],
+                  return AdvertisingWidget(
+                    advertising: advertisingAd,
+                    advertisingImages: advertisingAd.images[0],
+                    advertisingFacilities: advertisingFacilities[0],
+                    screen: InformatioMyAdvertising(
+                      isDelete: true,
+                      advertisingHome: advertisingAd,
                       advertisingFacilities: advertisingFacilities[0],
-                      isDelete: isDelete[index],
-                      screen: InformatioMyAdvertising(
-                        advertisingHome: advertisingAd,
-                        advertisingFacilities: advertisingFacilities[0],
-                        advertisingSave: isSaved
-                            ? widget.advertisingSave.firstWhere(
-                                (item) => item.idAd == advertisingAd.id)
-                            : null,
-                      ),
+                      advertisingSave: isSaved
+                          ? widget.advertisingSave.firstWhere(
+                              (item) => item.idAd == advertisingAd.id)
+                          : null,
                     ),
                   );
                 },
@@ -262,228 +226,6 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
           );
         },
       ),
-    );
-  }
-
-  Widget widgetIsDeleteBox(
-    BuildContext context,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              // setState(() {
-              //   isSelect = !isSelect;
-              //   if (isSelect) {
-              //     isDelete = List<bool>.filled(widget.advertising.length, true);
-              //   } else {
-              //     isDelete =
-              //         List<bool>.filled(widget.advertising.length, false);
-              //   }
-              //   context.read<BoolStateCubit>().state.isDelete = isSelect;
-              // });
-
-              setState(() {
-                isSelect = !isSelect;
-                isDelete =
-                    List<bool>.filled(widget.advertising.length, isSelect);
-                context.read<BoolStateCubit>().state.isDelete = isSelect;
-              });
-            },
-            child: Icon(
-              Icons.check_box_rounded,
-              size: 32,
-              color: isDelete.every((element) => element)
-                  ? CustomColor.red
-                  : CustomColor.grey350,
-            ),
-          ),
-          Text(
-            'انتخاب همه',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w900,
-              color: isDelete.every((element) => element)
-                  ? CustomColor.red
-                  : CustomColor.pink,
-            ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () async {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return CustomDeleteDialog(
-                    title: 'title',
-                    onConfirm: () async {
-                      List<Map<String, String>> idsToDelete =
-                          isDelete.every((element) => element)
-                              ? widget.advertising
-                                  .map((ad) => {
-                                        'ad_id': ad.id,
-                                        'id_facilities': ad.idFacilities,
-                                        'id_gallery': ad.idGallery,
-                                      })
-                                  .toList()
-                              : selectedAdIds
-                                  .map((ad) => {
-                                        'ad_id': ad.id,
-                                        'id_facilities': ad.idFacilities,
-                                        'id_gallery': ad.idGallery,
-                                      })
-                                  .toList();
-
-                      for (var id in idsToDelete) {
-                        context
-                            .read<AddAdvertisingBloc>()
-                            .add(DeleteAdvertisingData(
-                              idAd: id['ad_id']!,
-                              idAdFacilities: id['id_facilities']!,
-                              idAdGallery: id['id_gallery']!,
-                            ));
-                      }
-
-                      context
-                          .read<AddAdvertisingBloc>()
-                          .add(InitializedDisplayAdvertising());
-                      Navigator.pop(context);
-                    },
-                    onCancel: () {
-                      Navigator.pop(context, 'OK');
-                    },
-                  );
-                  // return AlertDialog(
-                  //   alignment: Alignment.center,
-                  //   actionsAlignment: MainAxisAlignment.center,
-                  //   backgroundColor: CustomColor.bluegrey50,
-                  //   title: const Text(
-                  //     'آیا آگهی مورد نظر حذف شود؟',
-                  //     textAlign: TextAlign.center,
-                  //     style: TextStyle(
-                  //       fontWeight: FontWeight.w700,
-                  //       fontFamily: 'SM',
-                  //       fontSize: 20,
-                  //       color: CustomColor.black,
-                  //     ),
-                  //   ),
-                  //   actions: [
-                  //     TextButton(
-                  //       onPressed: () {
-                  //         Navigator.pop(context, 'OK');
-                  //       },
-                  //       style: ButtonStyle(
-                  //         backgroundColor:
-                  //             WidgetStatePropertyAll(CustomColor.grey500),
-                  //       ),
-                  //       child: Text(
-                  //         'خیر',
-                  //         style: TextStyle(
-                  //           color: CustomColor.white,
-                  //           fontWeight: FontWeight.bold,
-                  //           fontFamily: 'SM',
-                  //           fontSize: 18,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     TextButton(
-                  //       onPressed: () {
-                  //         //Create Ring For Delete All Ad Selected to Delete
-                  //         if (isDelete.every((element) => element)) {
-                  //           for (var i = 0;
-                  //               i < widget.advertising.length;
-                  //               i++) {
-                  //             context.read<AddAdvertisingBloc>().add(
-                  //                   DeleteAdvertisingData(
-                  //                     idAd: widget.advertising[i].id,
-                  //                     idAdFacilities:
-                  //                         widget.advertising[i].idFacilities,
-                  //                     idAdGallery:
-                  //                         widget.advertising[i].idGallery,
-                  //                   ),
-                  //                 );
-                  //           }
-                  //           context.read<AddAdvertisingBloc>().add(
-                  //                 InitializedDisplayAdvertising(),
-                  //               );
-                  //           Navigator.pop(context);
-                  //         } else {
-                  //           for (var i = 0; i < selectedAdIds.length; i++) {
-                  //             context.read<AddAdvertisingBloc>().add(
-                  //                   DeleteAdvertisingData(
-                  //                     idAd: selectedAdIds[i].id,
-                  //                     idAdFacilities:
-                  //                         selectedAdIds[i].idFacilities,
-                  //                     idAdGallery: selectedAdIds[i].idGallery,
-                  //                   ),
-                  //                 );
-                  //           }
-                  //           // context.read<AddAdvertisingBloc>().add(
-                  //           //       InitializedDisplayAdvertising(),
-                  //           //     );
-                  //           Navigator.pop(context);
-                  //         }
-                  //       },
-                  //       style: const ButtonStyle(
-                  //         backgroundColor:
-                  //             WidgetStatePropertyAll(CustomColor.red),
-                  //       ),
-                  //       child: Text(
-                  //         'بله',
-                  //         style: TextStyle(
-                  //           color: CustomColor.white,
-                  //           fontWeight: FontWeight.bold,
-                  //           fontFamily: 'SM',
-                  //           fontSize: 18,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // );
-                },
-              );
-              setState(() {});
-            },
-            child: const Icon(
-              Icons.delete_rounded,
-              size: 32,
-              color: CustomColor.red,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomDeleteDialog extends StatelessWidget {
-  final String title;
-  final VoidCallback onConfirm;
-  final VoidCallback onCancel;
-
-  CustomDeleteDialog({
-    required this.title,
-    required this.onConfirm,
-    required this.onCancel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(title),
-      actions: [
-        TextButton(
-          onPressed: onCancel,
-          child: Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: onConfirm,
-          child: Text('Delete'),
-        ),
-      ],
     );
   }
 }

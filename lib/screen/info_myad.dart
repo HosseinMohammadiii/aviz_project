@@ -18,10 +18,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../DataFuture/ad_details/Bloc/detail_ad_event.dart';
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/home/Bloc/home_bloc.dart';
 import '../DataFuture/home/Bloc/home_event.dart';
-import '../DataFuture/recent/bloc/recent_bloc.dart';
-import '../DataFuture/recent/bloc/recent_event.dart';
 import '../class/colors.dart';
 
 import '../widgets/advertising_facilities_features.dart';
@@ -37,10 +37,12 @@ class InformatioMyAdvertising extends StatefulWidget with RouteAware {
     required this.advertisingHome,
     required this.advertisingFacilities,
     this.advertisingSave,
+    required this.isDelete,
   });
   RegisterFutureAd advertisingHome;
   AdvertisingFacilities advertisingFacilities;
   AdvertisingSave? advertisingSave;
+  final bool isDelete;
   @override
   State<InformatioMyAdvertising> createState() =>
       _InformatioMyAdvertisingState();
@@ -137,7 +139,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
 
       context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
       context.read<HomeBloc>().add(HomeGetInitializeData());
-      context.read<RecentBloc>().add(GetInitializedDataEvent());
     } else if (isSaved && RegisterId().getSaveId().isNotEmpty) {
       BlocProvider.of<SaveAdBloc>(context)
           .add(DeleteSaveAdEvent(RegisterId().getSaveId()));
@@ -146,7 +147,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
 
       context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
       context.read<HomeBloc>().add(HomeGetInitializeData());
-      context.read<RecentBloc>().add(GetInitializedDataEvent());
     } else {
       BlocProvider.of<SaveAdBloc>(context)
           .add(PostSaveAdEvent(widget.advertisingHome.id));
@@ -210,6 +210,88 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                         scale: 5,
                       ),
               ),
+              const SizedBox(
+                width: 6,
+              ),
+              Visibility(
+                visible: widget.isDelete,
+                child: GestureDetector(
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          alignment: Alignment.center,
+                          actionsAlignment: MainAxisAlignment.center,
+                          backgroundColor: CustomColor.bluegrey50,
+                          title: const Text(
+                            'آیا آگهی مورد نظر حذف شود؟',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'SM',
+                              fontSize: 20,
+                              color: CustomColor.black,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, 'OK');
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    WidgetStatePropertyAll(CustomColor.grey500),
+                              ),
+                              child: Text(
+                                'خیر',
+                                style: TextStyle(
+                                  color: CustomColor.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'SM',
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                context
+                                    .read<AddAdvertisingBloc>()
+                                    .add(DeleteAdvertisingData(
+                                      idAd: widget.advertisingHome.id,
+                                      idAdFacilities:
+                                          widget.advertisingHome.idFacilities,
+                                      idAdGallery:
+                                          widget.advertisingHome.idGallery,
+                                    ));
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              style: const ButtonStyle(
+                                backgroundColor:
+                                    WidgetStatePropertyAll(CustomColor.red),
+                              ),
+                              child: Text(
+                                'بله',
+                                style: TextStyle(
+                                  color: CustomColor.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'SM',
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Image.asset(
+                    'images/delete.png',
+                    scale: 4.5,
+                  ),
+                ),
+              ),
               const Spacer(),
               GestureDetector(
                 onTap: () {
@@ -247,7 +329,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         textWidget(
-                          '${_createADTime(DateTime.parse(widget.advertisingHome.created))} در ${widget.advertisingHome.province}',
+                          '${_createADTime(DateTime.parse(widget.advertisingHome.created))} در ${widget.advertisingHome.province}،${widget.advertisingHome.city}',
                           CustomColor.grey500,
                           14,
                           FontWeight.w400,

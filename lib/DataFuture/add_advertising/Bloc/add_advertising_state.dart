@@ -37,7 +37,6 @@ class BoolState {
   final bool water;
   final bool electricity;
   final bool gas;
-  bool isDelete;
   bool isUpdate;
   final String floorMaterial;
   int fIndex;
@@ -54,7 +53,6 @@ class BoolState {
     required this.water,
     required this.electricity,
     required this.gas,
-    required this.isDelete,
     required this.isUpdate,
     required this.floorMaterial,
     required this.fIndex,
@@ -72,7 +70,6 @@ class BoolState {
       bool? water,
       bool? electricity,
       bool? gas,
-      bool? isDelete,
       bool? isUpdate,
       String? floorMaterial,
       int? fIndex,
@@ -88,7 +85,6 @@ class BoolState {
       water: water ?? this.water,
       electricity: electricity ?? this.electricity,
       gas: gas ?? this.gas,
-      isDelete: isDelete ?? this.isDelete,
       isUpdate: isUpdate ?? this.isUpdate,
       floorMaterial: floorMaterial ?? this.floorMaterial,
       fIndex: fIndex ?? this.fIndex,
