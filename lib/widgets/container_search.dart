@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:aviz_project/screen/info_myad.dart';
 import 'package:aviz_project/widgets/advertising_box.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -140,9 +141,22 @@ class _ContainerSearchState extends State<ContainerSearch> {
                         child: SliverList.builder(
                           itemCount: adHome.length,
                           itemBuilder: (context, index) {
-                            return AdvertisingSearchWidget(
-                              advertisingHome: adHome[index],
-                              adGallery: adHome[index].images[0],
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          InformatioMyAdvertising(
+                                        advertisingHome: adHome[index],
+                                        isDelete: false,
+                                      ),
+                                    ));
+                              },
+                              child: AdvertisingSearchWidget(
+                                advertisingHome: adHome[index],
+                                adGallery: adHome[index].images[0],
+                              ),
                             );
                           },
                         ),

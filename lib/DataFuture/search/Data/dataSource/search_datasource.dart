@@ -5,6 +5,7 @@ import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISearchDataSource {
   Future<List<RegisterFutureAd>> getSearchResult(String query);
+  Future<String> getexistsAdvertising(String id);
 }
 
 class SearchRemootDataSorce extends ISearchDataSource {
@@ -24,6 +25,23 @@ class SearchRemootDataSorce extends ISearchDataSource {
             (jsonObject) => RegisterFutureAd.fromJson(jsonObject),
           )
           .toList();
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<String> getexistsAdvertising(String id) async {
+    try {
+      Map<String, dynamic> query = {'filter': 'ad_id=$id'};
+      var response = await dio.get(
+        'advertising_home',
+        queryParameters: query,
+      );
+      return response.data['items'][0]['ad_id'];
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');

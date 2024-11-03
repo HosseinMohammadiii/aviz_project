@@ -106,8 +106,6 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                                         screen: InformatioMyAdvertising(
                                           isDelete: false,
                                           advertisingHome: savedAd,
-                                          advertisingFacilities:
-                                              advertisingFacilities,
                                           advertisingSave: isSaved
                                               ? saveAd.firstWhere((item) =>
                                                   item.idAd == savedAd.id)

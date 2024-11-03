@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   void initState() {
-    //context.read<HomeBloc>().add(HomeGetInitializeData());
     super.initState();
   }
 
@@ -119,117 +118,109 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                'مشاهده همه',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              const Spacer(),
-                              Text(
-                                'آویز های داغ',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // SliverPadding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 15),
+                  //   sliver: SliverToBoxAdapter(
+                  //     child: Column(
+                  //       children: [
+                  //         Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //           children: [
+                  //             Text(
+                  //               'مشاهده همه',
+                  //               style: Theme.of(context).textTheme.titleMedium,
+                  //             ),
+                  //             const Spacer(),
+                  //             Text(
+                  //               'آویز های داغ',
+                  //               style: Theme.of(context).textTheme.titleLarge,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         const SizedBox(height: 10),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // if (state is HomeRequestSuccessState) ...[
+                  //   state.hotAdvertising.fold(
+                  //     (error) => DisplayError(error: error),
+                  //     (hotAdvertising) {
+                  //       return state.advertisingGalleryDetails.fold(
+                  //         (l) => SliverToBoxAdapter(
+                  //           child: Center(
+                  //             child: textWidget(
+                  //               l,
+                  //               CustomColor.black,
+                  //               16,
+                  //               FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         (gallery) {
+                  //           return state.advertisingFacilities.fold(
+                  //             (error) => DisplayError(error: error),
+                  //             (facilities) => state.advertisingSave.fold(
+                  //               (error) => DisplayError(error: error),
+                  //               (saveAd) => hotestAdvertisingBox(
+                  //                 adHome: hotAdvertising,
+                  //                 advertisingGallery: gallery,
+                  //                 adFacilities: facilities,
+                  //                 advertisingSave: saveAd,
+                  //               ),
+                  //             ),
+                  //           );
+                  //         },
+                  //       );
+                  //     },
+                  //   ),
+                  // ],
+                  // const SliverToBoxAdapter(
+                  //   child: SizedBox(
+                  //     height: 20,
+                  //   ),
+                  // ),
+                  // SliverToBoxAdapter(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //     children: [
+                  //       Text(
+                  //         'مشاهده همه',
+                  //         style: Theme.of(context).textTheme.titleMedium,
+                  //       ),
+                  //       const SizedBox(
+                  //         width: 130,
+                  //       ),
+                  //       Text(
+                  //         'آویز های اخیر',
+                  //         style: Theme.of(context).textTheme.titleLarge,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   if (state is HomeRequestSuccessState) ...[
-                    state.hotAdvertising.fold(
+                    state.getAdvertising.fold(
                       (error) => DisplayError(error: error),
-                      (hotAdvertising) {
-                        return state.advertisingGalleryDetails.fold(
-                          (l) => SliverToBoxAdapter(
+                      (ad) => state.advertisingFacilities.fold(
+                        (error) => DisplayError(error: error),
+                        (facilities) => state.advertisingSave.fold(
+                          (error) => SliverToBoxAdapter(
                             child: Center(
                               child: textWidget(
-                                l,
+                                error,
                                 CustomColor.black,
                                 16,
                                 FontWeight.w500,
                               ),
                             ),
                           ),
-                          (gallery) {
-                            return state.advertisingFacilities.fold(
-                              (error) => DisplayError(error: error),
-                              (facilities) => state.advertisingSave.fold(
-                                (error) => DisplayError(error: error),
-                                (saveAd) => hotestAdvertisingBox(
-                                  adHome: hotAdvertising,
-                                  advertisingGallery: gallery,
-                                  adFacilities: facilities,
-                                  advertisingSave: saveAd,
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 20,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'مشاهده همه',
-                          style: Theme.of(context).textTheme.titleMedium,
+                          (saveAd) => recentlyAdvertisingBox(
+                            adHome: ad,
+                            adFacilities: facilities,
+                            advertisingSave: saveAd,
+                          ),
                         ),
-                        const SizedBox(
-                          width: 130,
-                        ),
-                        Text(
-                          'آویز های اخیر',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (state is HomeRequestSuccessState) ...[
-                    state.recentAdvertising.fold(
-                      (error) => DisplayError(error: error),
-                      (recentAdvertising) {
-                        return state.advertisingGalleryDetails.fold(
-                          (error) => DisplayError(error: error),
-                          (gallery) {
-                            return state.advertisingFacilities.fold(
-                              (error) => DisplayError(error: error),
-                              (facilities) => state.advertisingSave.fold(
-                                (error) => SliverToBoxAdapter(
-                                  child: Center(
-                                    child: textWidget(
-                                      error,
-                                      CustomColor.black,
-                                      16,
-                                      FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                (saveAd) => recentlyAdvertisingBox(
-                                  adHome: recentAdvertising,
-                                  advertisingGallery: gallery,
-                                  adFacilities: facilities,
-                                  advertisingSave: saveAd,
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
+                      ),
                     ),
                   ],
                 ],
@@ -245,16 +236,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget recentlyAdvertisingBox({
     required List<RegisterFutureAd> adHome,
     required List<AdvertisingFacilities> adFacilities,
-    required List<RegisterFutureAdGallery> advertisingGallery,
     required List<AdvertisingSave> advertisingSave,
   }) {
     return SliverList.builder(
       itemCount: adHome.length,
       itemBuilder: (context, index) {
-        var facilities = adFacilities
-            .where((item) => item.id == adHome[index].idFacilities)
-            .toList();
-
         bool isSaved =
             advertisingSave.any((item) => item.idAd == adHome[index].id);
 
@@ -266,7 +252,6 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => InformatioMyAdvertising(
-                  advertisingFacilities: facilities[0],
                   advertisingHome: adHome[index],
                   isDelete: false,
                   advertisingSave: isSaved
@@ -361,10 +346,6 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(right: 16),
           itemCount: adHome.length,
           itemBuilder: (context, index) {
-            var facilities = adFacilities
-                .where((item) => item.id == adHome[index].idFacilities)
-                .toList();
-
             bool isSaved =
                 advertisingSave.any((item) => item.idAd == adHome[index].id);
 
@@ -375,7 +356,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(
                     builder: (context) => InformatioMyAdvertising(
                       isDelete: false,
-                      advertisingFacilities: facilities[0],
                       advertisingHome: adHome[index],
                       advertisingSave: isSaved
                           ? advertisingSave.firstWhere(

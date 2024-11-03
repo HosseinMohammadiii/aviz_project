@@ -10,21 +10,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (event, emit) async {
         emit(HomeLoadingState());
         var getAdvertising = await homeRepository.getAdvertising();
-        var hotAdvertisingHome = await homeRepository.getHotAdvertising();
-        var recentAdvertisingHome = await homeRepository.getRecentAdvertising();
-        var advertisingDeatail = await homeRepository.getAdvertisingDetail();
-        var advertisingGalleryDeatail =
-            await homeRepository.getDiplayImagesAd();
+
         var advertisingFacilitiesDeatail =
             await homeRepository.getDiplayFacilitiesAd();
         var advertisingSaveAd = await homeRepository.getSaveAd();
+
         emit(
           HomeRequestSuccessState(
             getAdvertising,
-            hotAdvertisingHome,
-            recentAdvertisingHome,
-            advertisingDeatail,
-            advertisingGalleryDeatail,
             advertisingFacilitiesDeatail,
             advertisingSaveAd,
           ),

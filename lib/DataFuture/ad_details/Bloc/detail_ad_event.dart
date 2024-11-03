@@ -5,7 +5,13 @@ abstract class UserAdEvent {}
 class AdFeaturesGetInitializeData extends AdFeaturesEvent {
   String facilitiesId;
   String idFeatures;
+
   AdFeaturesGetInitializeData(this.facilitiesId, this.idFeatures);
+}
+
+class AdExistsGetInitializeData extends AdFeaturesEvent {
+  String id;
+  AdExistsGetInitializeData(this.id);
 }
 
 class AdGalleryImagesDataEvent extends UserAdEvent {

@@ -102,8 +102,6 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                                         screen: InformatioMyAdvertising(
                                           isDelete: false,
                                           advertisingHome: recentAd,
-                                          advertisingFacilities:
-                                              advertisingFacilities[0],
                                           advertisingSave: isSaved
                                               ? saveAd.firstWhere((item) =>
                                                   item.idAd == recentAd.id)

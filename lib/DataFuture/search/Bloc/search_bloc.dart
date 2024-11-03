@@ -11,7 +11,25 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         emit(SearchLoadingState());
         var searchResult = await searchRepository.search(event.query);
 
-        emit(SearchRequestSuccessState(searchResult));
+        emit(SearchRequestSuccessState(
+          searchResult,
+        ));
+      },
+    );
+  }
+}
+
+class AdExistsBloc extends Bloc<SearchEvent, SearchState> {
+  final ISearchRepository searchRepository;
+  AdExistsBloc(this.searchRepository) : super(SearchInitialState()) {
+    on<SearchWithIdData>(
+      (event, emit) async {
+        emit(SearchLoadingState());
+        var getExist = await searchRepository.getExistsAd(event.id);
+
+        emit(SearchExistsRequestSuccessState(
+          getExist,
+        ));
       },
     );
   }

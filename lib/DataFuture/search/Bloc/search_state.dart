@@ -11,4 +11,9 @@ final class SearchRequestSuccessState extends SearchState {
   SearchRequestSuccessState(this.searchResult);
 }
 
+final class SearchExistsRequestSuccessState extends SearchState {
+  Either<String, String> getExistAd;
+  SearchExistsRequestSuccessState(this.getExistAd);
+}
+
 final class SearchLoadingState extends SearchState {}

@@ -6,6 +6,7 @@ import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISearchRepository {
   Future<Either<String, List<RegisterFutureAd>>> search(String query);
+  Future<Either<String, String>> getExistsAd(String id);
 }
 
 class SearchRepository extends ISearchRepository {
@@ -18,6 +19,16 @@ class SearchRepository extends ISearchRepository {
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'آگهی مورد نظر وجود ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, String>> getExistsAd(String id) async {
+    try {
+      var response = await dataSource.getexistsAdvertising(id);
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
 }

@@ -213,7 +213,6 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                     screen: InformatioMyAdvertising(
                       isDelete: true,
                       advertisingHome: advertisingAd,
-                      advertisingFacilities: advertisingFacilities[0],
                       advertisingSave: isSaved
                           ? widget.advertisingSave.firstWhere(
                               (item) => item.idAd == advertisingAd.id)

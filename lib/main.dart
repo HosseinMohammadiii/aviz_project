@@ -99,6 +99,11 @@ void main() async {
         BlocProvider(
           create: (context) => ProvinceBloc(),
         ),
+        BlocProvider(
+          create: (context) => AdExistsBloc(
+            locator.get(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -112,7 +117,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //context.read<HomeBloc>().add(HomeGetInitializeData());
+    context.read<HomeBloc>().add(HomeGetInitializeData());
     context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
     context.read<ProvinceBloc>().add(ProvinceInitializedData());
     BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());
