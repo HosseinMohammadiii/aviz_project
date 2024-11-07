@@ -13,13 +13,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         var advertisingFacilitiesDeatail =
             await homeRepository.getDiplayFacilitiesAd();
-        var advertisingSaveAd = await homeRepository.getSaveAd();
 
         emit(
           HomeRequestSuccessState(
             getAdvertising,
             advertisingFacilitiesDeatail,
-            advertisingSaveAd,
           ),
         );
       },

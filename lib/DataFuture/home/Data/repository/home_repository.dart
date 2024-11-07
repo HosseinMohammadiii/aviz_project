@@ -4,12 +4,10 @@ import 'package:dartz/dartz.dart';
 
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/register_future_ad.dart';
-import '../../../advertising_save/model/advertising_save.dart';
 
 abstract class IHomeRepository {
   Future<Either<String, List<RegisterFutureAd>>> getAdvertising();
   Future<Either<String, List<AdvertisingFacilities>>> getDiplayFacilitiesAd();
-  Future<Either<String, List<AdvertisingSave>>> getSaveAd();
 }
 
 class HomeRepository extends IHomeRepository {
@@ -32,16 +30,6 @@ class HomeRepository extends IHomeRepository {
       getDiplayFacilitiesAd() async {
     try {
       var response = await dataSoure.getDiplayAdvertisingFacilities();
-      return right(response);
-    } on ApiException catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
-
-  @override
-  Future<Either<String, List<AdvertisingSave>>> getSaveAd() async {
-    try {
-      var response = await dataSoure.getSaveAd();
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

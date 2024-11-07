@@ -203,22 +203,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       (error) => DisplayError(error: error),
                       (ad) => state.advertisingFacilities.fold(
                         (error) => DisplayError(error: error),
-                        (facilities) => state.advertisingSave.fold(
-                          (error) => SliverToBoxAdapter(
-                            child: Center(
-                              child: textWidget(
-                                error,
-                                CustomColor.black,
-                                16,
-                                FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          (saveAd) => recentlyAdvertisingBox(
-                            adHome: ad,
-                            adFacilities: facilities,
-                            advertisingSave: saveAd,
-                          ),
+                        (facilities) => recentlyAdvertisingBox(
+                          adHome: ad,
+                          adFacilities: facilities,
                         ),
                       ),
                     ),
@@ -235,7 +222,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget recentlyAdvertisingBox({
     required List<RegisterFutureAd> adHome,
     required List<AdvertisingFacilities> adFacilities,
-    required List<AdvertisingSave> advertisingSave,
   }) {
     return SliverList.builder(
       itemCount: adHome.length,
