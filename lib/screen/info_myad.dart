@@ -117,7 +117,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
 
   @override
   void initState() {
-    RegisterId().clearSaveID();
     context.read<AdExistsBloc>().add(
           SearchWithIdData(
             id: widget.advertisingHome.id,

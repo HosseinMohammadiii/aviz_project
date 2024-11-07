@@ -9,10 +9,8 @@ class RegisterId {
   void clearID() {
     adHive.idFacilities = null;
     adHive.idGallery = null;
-    adHive.idSaveAd = null;
     adBox.put(1, adHive);
     adBox.put(2, adHive);
-    adBox.put(3, adHive);
   }
 
   void saveIdFacilities(String id) {
@@ -40,11 +38,5 @@ class RegisterId {
 
   String getSaveId() {
     return adBox.get(3)?.idSaveAd ?? '';
-  }
-
-  void clearSaveID() {
-    adHive.idSaveAd = null;
-
-    adBox.put(3, adHive);
   }
 }
