@@ -6,7 +6,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
-import '../../../advertising_save/model/advertising_save.dart';
 import '../model/ad_gallery.dart';
 
 abstract class IInfoAdRepository {
@@ -63,8 +62,6 @@ abstract class IInfoAdRepository {
     String floorMaterial,
     String wc,
   );
-
-  Future<Either<String, List<AdvertisingSave>>> getSaveAd();
 }
 
 final class InfoAdRepository extends IInfoAdRepository {
@@ -269,16 +266,6 @@ final class InfoAdRepository extends IInfoAdRepository {
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطال محتوای متنی ندارد');
-    }
-  }
-
-  @override
-  Future<Either<String, List<AdvertisingSave>>> getSaveAd() async {
-    try {
-      var response = await datasource.getSaveAd();
-      return right(response);
-    } on ApiException catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
 }

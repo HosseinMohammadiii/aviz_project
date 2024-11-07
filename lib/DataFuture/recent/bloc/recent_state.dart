@@ -1,5 +1,4 @@
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
-import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
 import 'package:aviz_project/DataFuture/recent/model/recent_model.dart';
 import 'package:dartz/dartz.dart';
 
@@ -15,12 +14,10 @@ final class GetRecentState extends RecentState {
   Either<String, List<RecentModel>> getRecentAd;
   Either<String, List<RegisterFutureAd>> getDisplayAd;
   Either<String, List<AdvertisingFacilities>> advertisingFacilitiesDetails;
-  Either<String, List<AdvertisingSave>> advertisingSaveDetails;
   GetRecentState(
     this.getRecentAd,
     this.getDisplayAd,
     this.advertisingFacilitiesDetails,
-    this.advertisingSaveDetails,
   );
 }
 

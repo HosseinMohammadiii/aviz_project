@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import '../../../../Hive/Advertising/register_id.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
-import '../../../advertising_save/model/advertising_save.dart';
 import '../model/ad_gallery.dart';
 
 abstract class IInfoAdDatasource {
@@ -64,8 +63,6 @@ abstract class IInfoAdDatasource {
     String floorMaterial,
     String wc,
   );
-
-  Future<List<AdvertisingSave>> getSaveAd();
 }
 
 final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
@@ -420,25 +417,5 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       throw ApiException(0, 'Unknown');
     }
     return '';
-  }
-
-  @override
-  Future<List<AdvertisingSave>> getSaveAd() async {
-    try {
-      var response = await dio.get(
-        'adsave',
-      );
-
-      return response.data['items']
-          .map<AdvertisingSave>(
-            (jsonObject) => AdvertisingSave.fromJsonObject(jsonObject),
-          )
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiException(0, 'Unknown');
-    }
   }
 }

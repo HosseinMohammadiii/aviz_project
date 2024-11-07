@@ -1,6 +1,5 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
 import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
-import 'package:aviz_project/DataFuture/advertising_save/model/advertising_save.dart';
 import 'package:dio/dio.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
@@ -11,8 +10,6 @@ abstract class IRecentAdItems {
   Future<List<RegisterFutureAd>> getDisplayRecentAd();
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
-
-  Future<List<AdvertisingSave>> getSaveAd();
 
   Future<List<RecentModel>> getRecentAd();
   Future<String> postRecentAd(String adId);
@@ -106,26 +103,6 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
       return response.data['items']
           .map<RecentModel>(
               (jsonObject) => RecentModel.fromJsonObject(jsonObject))
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiException(0, 'Unknown');
-    }
-  }
-
-  @override
-  Future<List<AdvertisingSave>> getSaveAd() async {
-    try {
-      var response = await dio.get(
-        'adsave',
-      );
-
-      return response.data['items']
-          .map<AdvertisingSave>(
-            (jsonObject) => AdvertisingSave.fromJsonObject(jsonObject),
-          )
           .toList();
     } on DioException catch (ex) {
       throw ApiException(

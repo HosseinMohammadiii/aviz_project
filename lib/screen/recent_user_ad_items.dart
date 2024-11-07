@@ -74,46 +74,42 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                         (error) => DisplayError(error: error),
                         (recent) => state.advertisingFacilitiesDetails.fold(
                           (error) => DisplayError(error: error),
-                          (facilities) => state.advertisingSaveDetails.fold(
-                            (error) => DisplayError(error: error),
-                            (saveAd) => recent.isNotEmpty
-                                ? SliverList.builder(
-                                    itemCount: recent.length,
-                                    itemBuilder: (context, index) {
-                                      var recentAd = advertising.firstWhere(
-                                        (item) => item.id == recent[index].idAd,
-                                      );
-                                      var advertisingFacilities = facilities
-                                          .where(
-                                            (item) =>
-                                                item.id ==
-                                                recentAd.idFacilities,
-                                          )
-                                          .toList();
+                          (facilities) => recent.isNotEmpty
+                              ? SliverList.builder(
+                                  itemCount: recent.length,
+                                  itemBuilder: (context, index) {
+                                    var recentAd = advertising.firstWhere(
+                                      (item) => item.id == recent[index].idAd,
+                                    );
+                                    var advertisingFacilities = facilities
+                                        .where(
+                                          (item) =>
+                                              item.id == recentAd.idFacilities,
+                                        )
+                                        .toList();
 
-                                      return AdvertisingWidget(
-                                        advertising: recentAd,
-                                        advertisingFacilities:
-                                            advertisingFacilities[0],
-                                        advertisingImages: recentAd.images[0],
-                                        screen: InformatioMyAdvertising(
-                                          isDelete: false,
-                                          advertisingHome: recentAd,
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : const SliverFillRemaining(
-                                    child: Center(
-                                      child: Text(
-                                        '!هنوز از آگهی بازدید نکردی که',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
+                                    return AdvertisingWidget(
+                                      advertising: recentAd,
+                                      advertisingFacilities:
+                                          advertisingFacilities[0],
+                                      advertisingImages: recentAd.images[0],
+                                      screen: InformatioMyAdvertising(
+                                        isDelete: false,
+                                        advertisingHome: recentAd,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : const SliverFillRemaining(
+                                  child: Center(
+                                    child: Text(
+                                      '!هنوز از آگهی بازدید نکردی که',
+                                      style: TextStyle(
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ),
-                          ),
+                                ),
                         ),
                       ),
                     ),
