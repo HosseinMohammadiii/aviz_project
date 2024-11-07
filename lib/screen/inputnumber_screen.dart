@@ -9,6 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import '../DataFuture/home/Bloc/home_bloc.dart';
+import '../DataFuture/home/Bloc/home_event.dart';
+import '../DataFuture/province/Bloc/province_bloc.dart';
+import '../DataFuture/province/Bloc/province_event.dart';
 import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../class/dialog.dart';
@@ -218,6 +224,13 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                   builder: (context) => BottomNavigationScreen(),
                 ),
               );
+              context.read<HomeBloc>().add(HomeGetInitializeData());
+              context
+                  .read<AddAdvertisingBloc>()
+                  .add(InitializedDisplayAdvertising());
+              context.read<ProvinceBloc>().add(ProvinceInitializedData());
+              BlocProvider.of<AuthAccountBloc>(context)
+                  .add(DisplayInformationEvent());
             },
           );
         }

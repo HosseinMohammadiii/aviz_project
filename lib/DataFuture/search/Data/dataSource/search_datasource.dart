@@ -5,7 +5,7 @@ import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISearchDataSource {
   Future<List<RegisterFutureAd>> getSearchResult(String query);
-  Future<String> getexistsAdvertising(String id);
+  Future<String> getExistsAdvertising(String id);
 }
 
 class SearchRemootDataSorce extends ISearchDataSource {
@@ -34,7 +34,7 @@ class SearchRemootDataSorce extends ISearchDataSource {
   }
 
   @override
-  Future<String> getexistsAdvertising(String id) async {
+  Future<String> getExistsAdvertising(String id) async {
     try {
       Map<String, dynamic> query = {'filter': 'ad_id=$id'};
       var response = await dio.get(

@@ -73,58 +73,46 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                       (error) => DisplayError(error: error),
                       (ad) => state.advertisingFacilitiesDetails.fold(
                         (error) => DisplayError(error: error),
-                        (facilities) => state.advertisingGalleryDetails.fold(
+                        (facilities) => state.getSaveAd.fold(
                           (error) => DisplayError(error: error),
-                          (adGallery) => state.getSaveAd.fold(
-                            (error) => DisplayError(error: error),
-                            (saveAd) => saveAd.isNotEmpty
-                                ? SliverList.builder(
-                                    itemCount: saveAd.length,
-                                    itemBuilder: (context, index) {
-                                      var saveAdvertising =
-                                          saveAd.toList()[index];
+                          (saveAd) => saveAd.isNotEmpty
+                              ? SliverList.builder(
+                                  itemCount: saveAd.length,
+                                  itemBuilder: (context, index) {
+                                    var saveAdvertising =
+                                        saveAd.toList()[index];
 
-                                      var savedAd = ad.firstWhere(
-                                        (item) =>
-                                            item.id == saveAdvertising.idAd,
-                                      );
+                                    var savedAd = ad.firstWhere(
+                                      (item) => item.id == saveAdvertising.idAd,
+                                    );
 
-                                      var advertisingFacilities =
-                                          facilities.firstWhere(
-                                        (item) =>
-                                            item.id == savedAd.idFacilities,
-                                      );
+                                    var advertisingFacilities =
+                                        facilities.firstWhere(
+                                      (item) => item.id == savedAd.idFacilities,
+                                    );
 
-                                      bool isSaved = saveAd.any(
-                                          (item) => item.idAd == savedAd.id);
-
-                                      return AdvertisingWidget(
-                                        advertising: savedAd,
-                                        advertisingFacilities:
-                                            advertisingFacilities,
-                                        advertisingImages: savedAd.images[0],
-                                        screen: InformatioMyAdvertising(
-                                          isDelete: false,
-                                          advertisingHome: savedAd,
-                                          advertisingSave: isSaved
-                                              ? saveAd.firstWhere((item) =>
-                                                  item.idAd == savedAd.id)
-                                              : null,
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : const SliverFillRemaining(
-                                    child: Center(
-                                      child: Text(
-                                        '!هنوز آگهی ذخیره نکردی که',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
+                                    return AdvertisingWidget(
+                                      advertising: savedAd,
+                                      advertisingFacilities:
+                                          advertisingFacilities,
+                                      advertisingImages: savedAd.images[0],
+                                      screen: InformatioMyAdvertising(
+                                        isDelete: false,
+                                        advertisingHome: savedAd,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : const SliverFillRemaining(
+                                  child: Center(
+                                    child: Text(
+                                      '!هنوز آگهی ذخیره نکردی که',
+                                      style: TextStyle(
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ),
-                          ),
+                                ),
                         ),
                       ),
                     ),

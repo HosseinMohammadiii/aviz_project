@@ -41,4 +41,10 @@ class RegisterId {
   String getSaveId() {
     return adBox.get(3)?.idSaveAd ?? '';
   }
+
+  void clearSaveID() {
+    adHive.idSaveAd = null;
+
+    adBox.put(3, adHive);
+  }
 }

@@ -25,7 +25,7 @@ class AdExistsBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchWithIdData>(
       (event, emit) async {
         emit(SearchLoadingState());
-        var getExist = await searchRepository.getExistsAd(event.id);
+        var getExist = await searchRepository.getExistsAd(event.id ?? '');
 
         emit(SearchExistsRequestSuccessState(
           getExist,

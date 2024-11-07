@@ -121,6 +121,7 @@ class MyApp extends StatelessWidget {
     context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
     context.read<ProvinceBloc>().add(ProvinceInitializedData());
     BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());
+
     return MaterialApp(
       navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,

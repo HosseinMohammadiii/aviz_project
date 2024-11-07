@@ -5,18 +5,17 @@ import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:dio/dio.dart';
 
 import '../../ad_details/Data/model/ad_facilities.dart';
-import '../../add_advertising/Data/model/ad_gallery.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISaveAdItemsDatasource {
   Future<List<RegisterFutureAd>> getDisplayRecentAd();
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
 
   Future<List<AdvertisingSave>> getSaveAd();
   Future<String> postSaveAd(String adId);
   Future<String> deleteSaveAd(String adId);
+  Future<String> existsSaveAd(String userId, String id);
 }
 
 final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
@@ -44,8 +43,6 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   @override
   Future<String> postSaveAd(String adId) async {
     try {
-      // print();
-
       Map<String, dynamic> query = {
         'filter': 'user_id=${Authmanager().getId()} & id_ad=$adId'
       };
@@ -66,10 +63,9 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
             contentType: Headers.formUrlEncodedContentType,
           ),
         );
-        // print(RegisterId().getSaveId());
         RegisterId().saveId(save.data['data']['id']);
 
-        return save.data['id'];
+        return save.data['data']['id'];
       }
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode ?? 0, ex.message ?? 'Error');
@@ -122,17 +118,15 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   }
 
   @override
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
+  Future<String> deleteSaveAd(String adId) async {
     try {
-      var response = await dio.get(
-        'advertising_gallery',
+      await dio.delete(
+        'adsave/$adId',
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
       );
-
-      return response.data['items']
-          .map<RegisterFutureAdGallery>(
-            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
-          )
-          .toList();
+      return '';
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
@@ -142,18 +136,24 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   }
 
   @override
-  Future<String> deleteSaveAd(String adId) async {
+  Future<String> existsSaveAd(String userId, String id) async {
     try {
-      var response = await dio.delete(
-        'adsave/$adId',
-        options: Options(
-          contentType: Headers.formUrlEncodedContentType,
-        ),
+      Map<String, dynamic> query = {'filter': 'user_id=$userId & id_ad=$id'};
+      var response = await dio.get(
+        'adsave',
+        queryParameters: query,
       );
-      return response.data['items'];
+
+      if (response.data['items'].isNotEmpty) {
+        return response.data['items'][0]['id_ad']; // برگرداندن آیدی ذخیره شده
+      } else {
+        return ''; // اگر آگهی ذخیره نشده باشد
+      }
     } on DioException catch (ex) {
       throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+        ex.response?.statusCode ?? 0,
+        ex.response?.statusMessage ?? 'Error',
+      );
     } catch (e) {
       throw ApiException(0, 'Unknown');
     }

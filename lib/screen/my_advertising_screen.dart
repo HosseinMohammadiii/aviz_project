@@ -203,9 +203,6 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                       .where((item) => item.id == advertisingAd.idFacilities)
                       .toList();
 
-                  bool isSaved = widget.advertisingSave
-                      .any((item) => item.idAd == advertisingAd.id);
-
                   return AdvertisingWidget(
                     advertising: advertisingAd,
                     advertisingImages: advertisingAd.images[0],
@@ -213,10 +210,6 @@ class _ListMyAdvertisingState extends State<ListMyAdvertising> {
                     screen: InformatioMyAdvertising(
                       isDelete: true,
                       advertisingHome: advertisingAd,
-                      advertisingSave: isSaved
-                          ? widget.advertisingSave.firstWhere(
-                              (item) => item.idAd == advertisingAd.id)
-                          : null,
                     ),
                   );
                 },

@@ -232,7 +232,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-//Widget For display recently Advertising
   Widget recentlyAdvertisingBox({
     required List<RegisterFutureAd> adHome,
     required List<AdvertisingFacilities> adFacilities,
@@ -241,23 +240,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliverList.builder(
       itemCount: adHome.length,
       itemBuilder: (context, index) {
-        bool isSaved =
-            advertisingSave.any((item) => item.idAd == adHome[index].id);
-
         return GestureDetector(
           onTap: () {
             BlocProvider.of<RecentBloc>(context)
                 .add(PostRecentEvent(adHome[index].id));
+
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => InformatioMyAdvertising(
                   advertisingHome: adHome[index],
                   isDelete: false,
-                  advertisingSave: isSaved
-                      ? advertisingSave
-                          .firstWhere((item) => item.idAd == adHome[index].id)
-                      : null,
                 ),
               ),
             );
@@ -281,7 +274,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 111,
@@ -346,9 +338,6 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(right: 16),
           itemCount: adHome.length,
           itemBuilder: (context, index) {
-            bool isSaved =
-                advertisingSave.any((item) => item.idAd == adHome[index].id);
-
             return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -357,10 +346,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => InformatioMyAdvertising(
                       isDelete: false,
                       advertisingHome: adHome[index],
-                      advertisingSave: isSaved
-                          ? advertisingSave.firstWhere(
-                              (item) => item.idAd == adHome[index].id)
-                          : null,
                     ),
                   ),
                 );

@@ -91,9 +91,6 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                                           )
                                           .toList();
 
-                                      bool isSaved = saveAd.any(
-                                          (item) => item.idAd == recentAd.id);
-
                                       return AdvertisingWidget(
                                         advertising: recentAd,
                                         advertisingFacilities:
@@ -102,10 +99,6 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                                         screen: InformatioMyAdvertising(
                                           isDelete: false,
                                           advertisingHome: recentAd,
-                                          advertisingSave: isSaved
-                                              ? saveAd.firstWhere((item) =>
-                                                  item.idAd == recentAd.id)
-                                              : null,
                                         ),
                                       );
                                     },

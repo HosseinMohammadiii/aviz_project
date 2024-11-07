@@ -13,36 +13,40 @@ class SaveAdBloc extends Bloc<SaveAdEvent, SaveAdState> {
       var displayAdvertising = await repository.getDisplayRecentAd();
       var advertisingFacilities =
           await repository.getDiplayAdvertisingFacilities();
-      var advertisingGallery = await repository.getDiplayImagesAd();
 
       emit(GetSaveState(
         displaySaveAd,
         displayAdvertising,
-        advertisingGallery,
         advertisingFacilities,
       ));
     });
+    on<GetInitializedExistsSaveDataEvent>(
+      (event, emit) async {
+        emit(SaveLoadingState());
+        var existsSaveAd = await repository.getSaveAd();
+        emit(GetExistsSaveState(existsSaveAd));
+      },
+    );
     on<PostSaveAdEvent>(
       (event, emit) async {
-        await repository.postSaveAd(event.id);
+        emit(SaveLoadingState());
+        var postSaveAd = await repository.postSaveAd(event.id);
+        emit(PostSaveAdState(postSaveAd));
       },
     );
     on<DeleteSaveAdEvent>(
       (event, emit) async {
-        await repository.deleteSaveAd(event.id);
-        //  emit(SaveLoadingState());
-        // var displaySaveAd = await repository.getSaveAd();
-        // var displayAdvertising = await repository.getDisplayRecentAd();
-        // var advertisingFacilities =
-        //     await repository.getDiplayAdvertisingFacilities();
-        // var advertisingGallery = await repository.getDiplayImagesAd();
-
-        // emit(GetSaveState(
-        //   displaySaveAd,
-        //   displayAdvertising,
-        //   advertisingGallery,
-        //   advertisingFacilities,
-        // ));
+        emit(SaveLoadingState());
+        var deleteSaveAd = await repository.deleteSaveAd(event.id);
+        emit(DeleteSaveAdState(deleteSaveAd));
+      },
+    );
+    on<ExistsSaveAdEvent>(
+      (event, emit) async {
+        emit(SaveLoadingState());
+        var existsSaveAd =
+            await repository.existsSaveAd(event.userId, event.id);
+        emit(ExistsSaveAdState(existsSaveAd));
       },
     );
   }

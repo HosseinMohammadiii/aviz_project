@@ -1,6 +1,7 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
 import 'package:dio/dio.dart';
 
+import '../../../NetworkUtil/authmanager.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/register_future_ad.dart';
 import '../../../advertising_save/model/advertising_save.dart';
@@ -20,6 +21,10 @@ class HomeRemoteDataSource extends IHomeDataSoure {
     try {
       var response = await dio.get(
         'advertising_home',
+        options: Options(
+          // contentType: Headers.formUrlEncodedContentType,
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<RegisterFutureAd>(
@@ -39,6 +44,10 @@ class HomeRemoteDataSource extends IHomeDataSoure {
     try {
       var response = await dio.get(
         'facilities',
+        options: Options(
+          // contentType: Headers.formUrlEncodedContentType,
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -57,6 +66,10 @@ class HomeRemoteDataSource extends IHomeDataSoure {
     try {
       var response = await dio.get(
         'adsave',
+        options: Options(
+          // contentType: Headers.formUrlEncodedContentType,
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return response.data['items']

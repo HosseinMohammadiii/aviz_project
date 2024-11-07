@@ -7,6 +7,6 @@ final class SearchWithQueryData extends SearchEvent {
 }
 
 final class SearchWithIdData extends SearchEvent {
-  String id;
+  String? id;
   SearchWithIdData({required this.id});
 }

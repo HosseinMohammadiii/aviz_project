@@ -25,7 +25,7 @@ class SearchRepository extends ISearchRepository {
   @override
   Future<Either<String, String>> getExistsAd(String id) async {
     try {
-      var response = await dataSource.getexistsAdvertising(id);
+      var response = await dataSource.getExistsAdvertising(id);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
