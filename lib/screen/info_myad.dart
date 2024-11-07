@@ -153,6 +153,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
             widget.advertisingHome.id,
           ),
         );
+    context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
   }
 
   // Function to return category title based on categoryId
