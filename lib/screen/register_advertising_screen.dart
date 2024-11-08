@@ -271,6 +271,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           stateAd.description,
                           stateAd.price!,
                           stateAd.metr!.toInt(),
+                          stateAd.buildingMetr!.toInt(),
                           stateAd.countRoom!.toInt(),
                           stateAd.floor!.toInt(),
                           stateAd.yearBuild!.toInt(),

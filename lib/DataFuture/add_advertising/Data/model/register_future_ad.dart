@@ -11,6 +11,7 @@ class RegisterFutureAd {
   String city;
   int homeprice;
   int metr;
+  int buildingMetr;
   int countRoom;
   int floor;
   int yearBiuld;
@@ -29,6 +30,7 @@ class RegisterFutureAd {
     required this.city,
     required this.homeprice,
     required this.metr,
+    required this.buildingMetr,
     required this.countRoom,
     required this.floor,
     required this.yearBiuld,
@@ -48,6 +50,7 @@ class RegisterFutureAd {
       idGallery: jsonObject['id_gallery'],
       titlehome: jsonObject['title'],
       metr: jsonObject['metr'],
+      buildingMetr: jsonObject['buildingmetr'],
       countRoom: jsonObject['count_room'],
       floor: jsonObject['floor'],
       yearBiuld: jsonObject['year_build'],

@@ -38,6 +38,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   final TextEditingController controllerCounRoom = TextEditingController();
   final TextEditingController controllerMetr = TextEditingController();
+  final TextEditingController controllerBuildingMetr = TextEditingController();
   final TextEditingController controllerYearBuild = TextEditingController();
   final TextEditingController controllerFloor = TextEditingController();
   final TextEditingController controllerView = TextEditingController();
@@ -79,6 +80,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
   var _scrollViewController = FixedExtentScrollController();
 
   ValueNotifier<int>? metrValueNotifier;
+  ValueNotifier<int>? buildingMetrValueNotifier;
   ValueNotifier<int>? countRoomValueNotifier;
   ValueNotifier<int>? floorValueNotifier;
 
@@ -105,18 +107,22 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     yearLength = endYear.year - currentYear.year + 1;
     year = currentYear.year;
     itemYear = List.generate(yearLength, (index) {});
+
     final stateAd = context.read<RegisterInfoAdCubit>().state;
 
     province = stateAd.province;
     city = stateAd.city;
     controllerCounRoom.text = stateAd.countRoom.toString();
     controllerMetr.text = stateAd.metr.toString();
+    controllerBuildingMetr.text = stateAd.buildingMetr.toString();
     controllerYearBuild.text = stateAd.yearBuild.toString();
     controllerFloor.text = stateAd.floor.toString();
     controllerDocument.text = stateAd.document;
     controllerView.text = stateAd.view;
     metrValueNotifier =
         ValueNotifier<int>(int.tryParse(controllerMetr.text) ?? 0);
+    buildingMetrValueNotifier =
+        ValueNotifier<int>(int.tryParse(controllerBuildingMetr.text) ?? 0);
     countRoomValueNotifier =
         ValueNotifier<int>(int.tryParse(controllerCounRoom.text) ?? 0);
     floorValueNotifier =
@@ -133,6 +139,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         duration: const Duration(seconds: 1),
       ));
     }
+
+    bool result =
+        !['اجاره خانه', 'اجاره ویلا', 'فروش خانه', 'فروش ویلا'].contains(title);
 
     return Scaffold(
       body: SafeArea(
@@ -247,7 +256,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                 if (province.isNotEmpty) {
                                   final cityName =
                                       context.read<RegisterInfoAdCubit>().state;
-
+                                  cityName.city = '';
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -257,7 +266,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                           setState(() {
                                             city = cityName.city;
                                           });
-                                          cityName.city = '';
+
                                           Navigator.pop(context);
                                         },
                                       ),
@@ -276,7 +285,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                 () {
                               final stateAd =
                                   context.read<RegisterInfoAdCubit>().state;
-
+                              stateAd.province = '';
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -285,7 +294,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                       setState(() {
                                         province = stateAd.province;
                                       });
-                                      stateAd.province = '';
+
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -318,7 +327,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              selectDocument(
+                              selectBox(
                                 title: 'تعداد اتاق',
                                 color: controllerCounRoom.text != 'null' &&
                                         controllerCounRoom.text != '0'
@@ -330,295 +339,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                           0;
                                   showDialog(
                                     context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor: CustomColor.grey350,
-                                      alignment: Alignment.center,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 5),
-                                          widgetSliderMeterFeature(
-                                            listenable: countRoomValueNotifier!,
-                                            onchanged: (newValue) {
-                                              countRoomValueNotifier!.value =
-                                                  newValue.toInt();
-                                            },
-                                            max: 8,
-                                          ),
-                                          ValueListenableBuilder<int>(
-                                            valueListenable:
-                                                countRoomValueNotifier!,
-                                            builder: (context, value, _) {
-                                              return Text(
-                                                '(${value.toString()})اتاق',
-                                                textDirection:
-                                                    TextDirection.rtl,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .apply(
-                                                      fontSizeDelta: 4,
-                                                      bodyColor:
-                                                          CustomColor.bluegrey,
-                                                    )
-                                                    .titleMedium,
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pop(context, 'OK');
-                                              controllerCounRoom.text =
-                                                  countRoomValueNotifier!.value
-                                                      .toString();
-                                              setState(
-                                                () {},
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 60,
-                                              height: 35,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: CustomColor.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: textWidget(
-                                                'تایید',
-                                                CustomColor.bluegrey,
-                                                18,
-                                                FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onTapPlus: () {
-                                  int count =
-                                      int.tryParse(controllerCounRoom.text) ??
-                                          0;
-                                  setState(() {
-                                    if (count >= 8) {
-                                      return;
-                                    }
-                                    count++;
-                                    controllerCounRoom.text = count.toString();
-                                    countRoomValueNotifier!.value = count;
-                                  });
-                                },
-                                onTapMinus: () {
-                                  int count =
-                                      int.tryParse(controllerCounRoom.text) ??
-                                          0;
-
-                                  if (count <= 0) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    count--;
-
-                                    controllerCounRoom.text = count.toString();
-                                    countRoomValueNotifier!.value = count;
-                                  });
-                                },
-                                valueSelected:
-                                    controllerCounRoom.text != 'null' &&
-                                            controllerCounRoom.text != '0'
-                                        ? controllerCounRoom.text
-                                        : 'تعیین',
-                              ),
-                              selectDocument(
-                                title: 'متراژ',
-                                color: controllerMetr.text != 'null' &&
-                                        controllerMetr.text != '0'
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () {
-                                  metrValueNotifier!.value =
-                                      int.tryParse(controllerMetr.text) ?? 0;
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor: CustomColor.grey350,
-                                      alignment: Alignment.center,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 5),
-                                          widgetSliderMeterFeature(
-                                            listenable: metrValueNotifier!,
-                                            onchanged: (newValue) {
-                                              metrValueNotifier!.value =
-                                                  newValue.toInt();
-                                            },
-                                            max: 1000,
-                                          ),
-                                          ValueListenableBuilder<int>(
-                                            valueListenable: metrValueNotifier!,
-                                            builder: (context, value, _) {
-                                              return Text(
-                                                '(${value.toString()})متر',
-                                                textDirection:
-                                                    TextDirection.rtl,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .apply(
-                                                      fontSizeDelta: 4,
-                                                      bodyColor:
-                                                          CustomColor.bluegrey,
-                                                    )
-                                                    .titleMedium,
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pop(context, 'OK');
-                                              controllerMetr.text =
-                                                  metrValueNotifier!.value
-                                                      .toString();
-                                              setState(
-                                                () {},
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 60,
-                                              height: 35,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: CustomColor.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: textWidget(
-                                                'تایید',
-                                                CustomColor.bluegrey,
-                                                18,
-                                                FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onTapPlus: () {
-                                  int metr =
-                                      int.tryParse(controllerMetr.text) ?? 0;
-                                  setState(() {
-                                    if (metr >= 1000) {
-                                      return;
-                                    }
-                                    metr++;
-                                    controllerMetr.text = metr.toString();
-                                    metrValueNotifier!.value = metr;
-                                  });
-                                },
-                                onTapMinus: () {
-                                  int metr =
-                                      int.tryParse(controllerMetr.text) ?? 0;
-
-                                  if (metr <= 0) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    metr--;
-
-                                    controllerMetr.text = metr.toString();
-                                    metrValueNotifier!.value = metr;
-                                  });
-                                },
-                                valueSelected: controllerMetr.text != 'null' &&
-                                        controllerMetr.text != '0'
-                                    ? controllerMetr.text
-                                    : 'تعیین',
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              selectDocument(
-                                title: 'سال ساخت',
-                                color: controllerYearBuild.text != 'null'
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () async {
-                                  await showDialog(
-                                    context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        backgroundColor: CustomColor.grey350,
-                                        alignment: Alignment.center,
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'سال ساخت را انتخاب کنید',
-                                              style: TextStyle(
-                                                color: CustomColor.bluegrey,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            _boxListWheelYears(),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                onTapPlus: () {
-                                  setState(() {
-                                    if (year == Jalali.now().year) {
-                                      return;
-                                    }
-                                    year++;
-                                    controllerYearBuild.text = year.toString();
-                                  });
-                                },
-                                onTapMinus: () {
-                                  if (year <= 1340) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    year--;
-
-                                    controllerYearBuild.text = year.toString();
-                                  });
-                                },
-                                valueSelected:
-                                    controllerYearBuild.text != 'null'
-                                        ? controllerYearBuild.text
-                                        : 'انتخاب',
-                              ),
-                              selectDocument(
-                                title: 'طبقه',
-                                color: controllerFloor.text != 'null' &&
-                                        controllerFloor.text != '0'
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      floorValueNotifier!.value =
-                                          int.tryParse(controllerFloor.text) ??
-                                              0;
+                                      final stateAd = context
+                                          .read<RegisterInfoAdCubit>()
+                                          .state;
                                       return AlertDialog(
                                         backgroundColor: CustomColor.grey350,
                                         alignment: Alignment.center,
@@ -629,21 +353,22 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                           children: [
                                             const SizedBox(height: 5),
                                             widgetSliderMeterFeature(
-                                              listenable: floorValueNotifier!,
+                                              listenable:
+                                                  countRoomValueNotifier!,
                                               onchanged: (newValue) {
-                                                floorValueNotifier!.value =
+                                                countRoomValueNotifier!.value =
                                                     newValue.toInt();
                                               },
-                                              max: 30,
+                                              max: 8,
                                             ),
                                             ValueListenableBuilder<int>(
                                               valueListenable:
-                                                  floorValueNotifier!,
+                                                  countRoomValueNotifier!,
                                               builder: (context, value, _) {
                                                 return Text(
-                                                  '(${value.toString()})طبقه',
+                                                  '(${value.toString()})اتاق',
                                                   textDirection:
-                                                      TextDirection.ltr,
+                                                      TextDirection.rtl,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .apply(
@@ -659,9 +384,13 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                             GestureDetector(
                                               onTap: () {
                                                 Navigator.pop(context, 'OK');
-                                                controllerFloor.text =
-                                                    floorValueNotifier!.value
+                                                controllerCounRoom.text =
+                                                    countRoomValueNotifier!
+                                                        .value
                                                         .toString();
+                                                stateAd.countRoom =
+                                                    countRoomValueNotifier!
+                                                        .value;
                                                 setState(
                                                   () {},
                                                 );
@@ -690,42 +419,181 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                   );
                                 },
                                 onTapPlus: () {
-                                  int floor =
-                                      int.tryParse(controllerFloor.text) ?? 0;
+                                  final stateAd =
+                                      context.read<RegisterInfoAdCubit>().state;
+                                  int count =
+                                      int.tryParse(controllerCounRoom.text) ??
+                                          0;
                                   setState(() {
-                                    if (floor >= 30) {
+                                    if (count >= 8) {
                                       return;
                                     }
-                                    floor++;
-                                    controllerFloor.text = floor.toString();
-                                    floorValueNotifier!.value = floor;
+                                    count++;
+                                    controllerCounRoom.text = count.toString();
+                                    countRoomValueNotifier!.value = count;
+                                    stateAd.countRoom =
+                                        countRoomValueNotifier!.value;
                                   });
                                 },
                                 onTapMinus: () {
-                                  int floor =
-                                      int.tryParse(controllerFloor.text) ?? 0;
+                                  final stateAd =
+                                      context.read<RegisterInfoAdCubit>().state;
+                                  int count =
+                                      int.tryParse(controllerCounRoom.text) ??
+                                          0;
 
-                                  if (floor <= 0) {
+                                  if (count <= 0) {
                                     return;
                                   }
                                   setState(() {
-                                    floor--;
+                                    count--;
 
-                                    controllerFloor.text = floor.toString();
-                                    floorValueNotifier!.value = floor;
+                                    controllerCounRoom.text = count.toString();
+                                    countRoomValueNotifier!.value = count;
+                                    stateAd.countRoom =
+                                        countRoomValueNotifier!.value;
                                   });
                                 },
-                                valueSelected: controllerFloor.text != 'null' &&
-                                        controllerFloor.text != '0'
-                                    ? controllerFloor.text
-                                    : 'تعیین',
+                                valueSelected:
+                                    controllerCounRoom.text != 'null' &&
+                                            controllerCounRoom.text != '0'
+                                        ? controllerCounRoom.text
+                                        : 'تعیین',
+                              ),
+                              selectMetrAndDisplay(),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              selectYearBuildAndDisplay(),
+                              Visibility(
+                                visible: result,
+                                replacement: selectBuildingMetrAndDisplay(),
+                                child: selectBox(
+                                  title: 'طبقه',
+                                  color: controllerFloor.text != 'null' &&
+                                          controllerFloor.text != '0'
+                                      ? CustomColor.black
+                                      : CustomColor.grey500,
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        floorValueNotifier!.value =
+                                            int.tryParse(
+                                                    controllerFloor.text) ??
+                                                0;
+                                        return AlertDialog(
+                                          backgroundColor: CustomColor.grey350,
+                                          alignment: Alignment.center,
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              const SizedBox(height: 5),
+                                              widgetSliderMeterFeature(
+                                                listenable: floorValueNotifier!,
+                                                onchanged: (newValue) {
+                                                  floorValueNotifier!.value =
+                                                      newValue.toInt();
+                                                },
+                                                max: 30,
+                                              ),
+                                              ValueListenableBuilder<int>(
+                                                valueListenable:
+                                                    floorValueNotifier!,
+                                                builder: (context, value, _) {
+                                                  return Text(
+                                                    '(${value.toString()})طبقه',
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .apply(
+                                                          fontSizeDelta: 4,
+                                                          bodyColor: CustomColor
+                                                              .bluegrey,
+                                                        )
+                                                        .titleMedium,
+                                                  );
+                                                },
+                                              ),
+                                              const SizedBox(height: 5),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context, 'OK');
+                                                  controllerFloor.text =
+                                                      floorValueNotifier!.value
+                                                          .toString();
+                                                  setState(
+                                                    () {},
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: 60,
+                                                  height: 35,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: CustomColor.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  child: textWidget(
+                                                    'تایید',
+                                                    CustomColor.bluegrey,
+                                                    18,
+                                                    FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  onTapPlus: () {
+                                    int floor =
+                                        int.tryParse(controllerFloor.text) ?? 0;
+                                    setState(() {
+                                      if (floor >= 30) {
+                                        return;
+                                      }
+                                      floor++;
+                                      controllerFloor.text = floor.toString();
+                                      floorValueNotifier!.value = floor;
+                                    });
+                                  },
+                                  onTapMinus: () {
+                                    int floor =
+                                        int.tryParse(controllerFloor.text) ?? 0;
+
+                                    if (floor <= 0) {
+                                      return;
+                                    }
+                                    setState(() {
+                                      floor--;
+
+                                      controllerFloor.text = floor.toString();
+                                      floorValueNotifier!.value = floor;
+                                    });
+                                  },
+                                  valueSelected:
+                                      controllerFloor.text != 'null' &&
+                                              controllerFloor.text != '0'
+                                          ? controllerFloor.text
+                                          : 'تعیین',
+                                ),
                               ),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              selectDocument(
+                              selectBox(
                                 title: 'جهت ساختمان',
                                 color: controllerView.text.isNotEmpty
                                     ? CustomColor.black
@@ -859,143 +727,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                     ? 'انتخاب'
                                     : controllerView.text,
                               ),
-                              selectDocument(
-                                title: 'سند',
-                                color: controllerDocument.text.isNotEmpty
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                isIconShow: false,
-                                onTap: () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        backgroundColor: CustomColor.grey350,
-                                        alignment: Alignment.center,
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'سند',
-                                              style: TextStyle(
-                                                color: CustomColor.bluegrey,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              height: 150,
-                                              child: ListWheelScrollView
-                                                  .useDelegate(
-                                                controller:
-                                                    _scrollDocumentController,
-                                                itemExtent: 50,
-                                                squeeze: 0.7,
-                                                childDelegate:
-                                                    ListWheelChildBuilderDelegate(
-                                                  childCount: document.length,
-                                                  builder: (context, index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        final stateAd = context
-                                                            .read<
-                                                                RegisterInfoAdCubit>()
-                                                            .state;
-                                                        setState(() {
-                                                          controllerDocument
-                                                                  .text =
-                                                              document[index];
-                                                          stateAd.document =
-                                                              controllerDocument
-                                                                  .text;
-
-                                                          //Display Scroll Item last Value selected
-                                                          _scrollDocumentController =
-                                                              FixedExtentScrollController(
-                                                                  initialItem:
-                                                                      index);
-
-                                                          //Navigator Pop For When Selected Item
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        width: 100,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              controllerDocument
-                                                                          .text ==
-                                                                      document[
-                                                                          index]
-                                                                  ? CustomColor
-                                                                      .red
-                                                                  : CustomColor
-                                                                      .white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          document[index],
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .apply(
-                                                                    fontSizeDelta:
-                                                                        8,
-                                                                    bodyColor: controllerDocument.text ==
-                                                                            document[
-                                                                                index]
-                                                                        ? CustomColor
-                                                                            .white
-                                                                        : CustomColor
-                                                                            .bluegrey,
-                                                                  )
-                                                                  .titleMedium,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                onTapPlus: () {
-                                  setState(() {
-                                    if (indexDocument != 2) {
-                                      indexDocument++;
-                                      controllerDocument.text =
-                                          document[indexDocument];
-                                    }
-                                  });
-                                },
-                                onTapMinus: () {
-                                  setState(() {
-                                    if (indexDocument != 0) {
-                                      indexDocument--;
-                                      controllerDocument.text =
-                                          document[indexDocument];
-                                    }
-                                  });
-                                },
-                                valueSelected:
-                                    controllerDocument.text.isNotEmpty
-                                        ? controllerDocument.text
-                                        : 'انتخاب',
-                              ),
+                              selectDocumnetAndDisplay(),
                             ],
                           ),
                         ],
@@ -1006,315 +738,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              selectDocument(
-                                title: 'سال ساخت',
-                                color: controllerYearBuild.text != 'null'
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        backgroundColor: CustomColor.grey350,
-                                        alignment: Alignment.center,
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'سال ساخت را انتخاب کنید',
-                                              style: TextStyle(
-                                                color: CustomColor.bluegrey,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            _boxListWheelYears(),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                onTapPlus: () {
-                                  setState(() {
-                                    if (year == Jalali.now().year) {
-                                      return;
-                                    }
-                                    year++;
-                                    controllerYearBuild.text = year.toString();
-                                  });
-                                },
-                                onTapMinus: () {
-                                  if (year <= 1340) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    year--;
-
-                                    controllerYearBuild.text = year.toString();
-                                  });
-                                },
-                                valueSelected:
-                                    controllerYearBuild.text != 'null'
-                                        ? controllerYearBuild.text
-                                        : 'انتخاب',
-                              ),
-                              selectDocument(
-                                title: 'متراژ',
-                                color: controllerMetr.text != 'null' &&
-                                        controllerMetr.text != '0'
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () {
-                                  metrValueNotifier!.value =
-                                      int.tryParse(controllerMetr.text) ?? 0;
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor: CustomColor.grey350,
-                                      alignment: Alignment.center,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 5),
-                                          widgetSliderMeterFeature(
-                                            listenable: metrValueNotifier!,
-                                            onchanged: (newValue) {
-                                              metrValueNotifier!.value =
-                                                  newValue.toInt();
-                                            },
-                                            max: 1000,
-                                          ),
-                                          ValueListenableBuilder<int>(
-                                            valueListenable: metrValueNotifier!,
-                                            builder: (context, value, _) {
-                                              return Text(
-                                                '(${value.toString()})متر',
-                                                textDirection:
-                                                    TextDirection.rtl,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .apply(
-                                                      fontSizeDelta: 4,
-                                                      bodyColor:
-                                                          CustomColor.bluegrey,
-                                                    )
-                                                    .titleMedium,
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pop(context, 'OK');
-                                              controllerMetr.text =
-                                                  metrValueNotifier!.value
-                                                      .toString();
-                                              setState(
-                                                () {},
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 60,
-                                              height: 35,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: CustomColor.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: textWidget(
-                                                'تایید',
-                                                CustomColor.bluegrey,
-                                                18,
-                                                FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onTapPlus: () {
-                                  int metr =
-                                      int.tryParse(controllerMetr.text) ?? 0;
-                                  setState(() {
-                                    if (metr >= 1000) {
-                                      return;
-                                    }
-                                    metr++;
-                                    controllerMetr.text = metr.toString();
-                                    metrValueNotifier!.value = metr;
-                                  });
-                                },
-                                onTapMinus: () {
-                                  int metr =
-                                      int.tryParse(controllerMetr.text) ?? 0;
-
-                                  if (metr <= 0) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    metr--;
-
-                                    controllerMetr.text = metr.toString();
-                                    metrValueNotifier!.value = metr;
-                                  });
-                                },
-                                valueSelected: controllerMetr.text != 'null' &&
-                                        controllerMetr.text != '0'
-                                    ? controllerMetr.text
-                                    : 'تعیین',
-                              ),
+                              selectYearBuildAndDisplay(),
+                              selectMetrAndDisplay(),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              selectDocument(
-                                title: 'سند',
-                                color: controllerDocument.text.isNotEmpty
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        backgroundColor: CustomColor.grey350,
-                                        alignment: Alignment.center,
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'سند',
-                                              style: TextStyle(
-                                                color: CustomColor.bluegrey,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              height: 150,
-                                              child: ListWheelScrollView
-                                                  .useDelegate(
-                                                controller:
-                                                    _scrollDocumentController,
-                                                itemExtent: 50,
-                                                squeeze: 0.7,
-                                                childDelegate:
-                                                    ListWheelChildBuilderDelegate(
-                                                  childCount: document.length,
-                                                  builder: (context, index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        final stateAd = context
-                                                            .read<
-                                                                RegisterInfoAdCubit>()
-                                                            .state;
-                                                        setState(() {
-                                                          controllerDocument
-                                                                  .text =
-                                                              document[index];
-                                                          stateAd.document =
-                                                              controllerDocument
-                                                                  .text;
-
-                                                          //Display Scroll Item last Value selected
-                                                          _scrollDocumentController =
-                                                              FixedExtentScrollController(
-                                                                  initialItem:
-                                                                      index);
-
-                                                          //Navigator Pop For When Selected Item
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        width: 100,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              controllerDocument
-                                                                          .text ==
-                                                                      document[
-                                                                          index]
-                                                                  ? CustomColor
-                                                                      .red
-                                                                  : CustomColor
-                                                                      .white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          document[index],
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .apply(
-                                                                    fontSizeDelta:
-                                                                        8,
-                                                                    bodyColor: controllerDocument.text ==
-                                                                            document[
-                                                                                index]
-                                                                        ? CustomColor
-                                                                            .white
-                                                                        : CustomColor
-                                                                            .bluegrey,
-                                                                  )
-                                                                  .titleMedium,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                onTapPlus: () {
-                                  setState(() {
-                                    if (indexDocument != 3) {
-                                      indexDocument++;
-                                      controllerDocument.text =
-                                          document[indexDocument];
-                                    }
-                                  });
-                                },
-                                onTapMinus: () {
-                                  setState(() {
-                                    if (indexDocument > 0) {
-                                      indexDocument--;
-                                      controllerDocument.text =
-                                          document[indexDocument];
-                                    }
-                                  });
-                                },
-                                valueSelected:
-                                    controllerDocument.text.isNotEmpty
-                                        ? controllerDocument.text
-                                        : 'انتخاب',
-                              ),
+                              selectDocumnetAndDisplay(),
                             ],
                           ),
                         ],
@@ -1444,6 +875,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                               city.isEmpty ||
                               controllerCounRoom.text.isEmpty ||
                               controllerMetr.text.isEmpty ||
+                              controllerBuildingMetr.text.isEmpty ||
                               controllerYearBuild.text.isEmpty ||
                               controllerFloor.text.isEmpty ||
                               controllerDocument.text.isEmpty ||
@@ -1451,6 +883,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                           : province.isEmpty ||
                               city.isEmpty ||
                               controllerMetr.text.isEmpty ||
+                              controllerBuildingMetr.text.isEmpty ||
                               controllerYearBuild.text.isEmpty ||
                               controllerDocument.text.isEmpty) {
                         displayDialog(
@@ -1459,6 +892,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                       }
                       try {
                         num metr = num.tryParse(controllerMetr.text) ?? 0;
+                        num buildingMetr =
+                            num.tryParse(controllerBuildingMetr.text) ?? 0;
                         num countRoom =
                             num.tryParse(controllerCounRoom.text) ?? 0;
                         num floor = num.tryParse(controllerFloor.text) ?? 0;
@@ -1467,6 +902,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
                         context.read<RegisterInfoAdCubit>().setParametrInfoAd(
                               metr: metr,
+                              buildingMetr: buildingMetr,
                               countRoom: countRoom,
                               floor: floor,
                               yearBuild: yearBuild,
@@ -1587,141 +1023,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     );
   }
 
-//Widget For Display Widget widgetBoxYearBuildFeature And Change Number Year
-  Widget widgetBoxYearBuildFeature(
-    BuildContext context,
-    Widget widget,
-    TextEditingController controller,
-    String title,
-  ) {
-    int year = int.tryParse(controllerYearBuild.text) ?? 1340;
-    if (controllerYearBuild.text == 'null') {
-      controllerYearBuild.text = '';
-    }
-
-    return GestureDetector(
-      onTap: () async {
-        await showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                backgroundColor: CustomColor.grey350,
-                alignment: Alignment.center,
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: CustomColor.bluegrey,
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    widget,
-                  ],
-                ),
-              );
-            });
-      },
-      child: Stack(
-        alignment: Alignment.centerRight,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Container(
-              width: 159,
-              height: 48,
-              padding: const EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: CustomColor.grey350,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (year == Jalali.now().year) {
-                              return;
-                            }
-                            year++;
-                            controllerYearBuild.text = year.toString();
-                          });
-                        },
-                        child: const Icon(
-                          Icons.arrow_drop_up_rounded,
-                          color: CustomColor.red,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if (year <= 1340) {
-                            return;
-                          }
-                          setState(() {
-                            year--;
-
-                            controllerYearBuild.text = year.toString();
-                          });
-                        },
-                        child: const Icon(
-                          Icons.arrow_drop_down_rounded,
-                          color: CustomColor.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 110,
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      controller: controllerYearBuild,
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontFamily: 'SN',
-                        fontSize: 16,
-                        color: CustomColor.black,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      decoration: const InputDecoration(
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                      onChanged: (val) {
-                        if (val.isNotEmpty) {
-                          setState(() {
-                            year = int.parse(val);
-                            controllerYearBuild.text = val;
-                          });
-                        } else {
-                          val = '';
-                          year = 0;
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            width: 140,
-            height: 48,
-            color: Colors.transparent,
-          ),
-        ],
-      ),
-    );
-  }
-
 //Widget For Display ListWheel Years Build
   Widget _boxListWheelYears() {
     return SizedBox(
@@ -1740,7 +1041,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                 setState(() {
                   year = itemYear;
                   controllerYearBuild.text = year.toString();
-
+                  final stateAd = context.read<RegisterInfoAdCubit>().state;
+                  stateAd.yearBuild = year;
                   _scrollYearController =
                       FixedExtentScrollController(initialItem: index);
 
@@ -1777,8 +1079,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     );
   }
 
-//Widget For Select Document
-  Widget selectDocument({
+//Widget For Select RoomCount , Floor & Building Direction
+  Widget selectBox({
     required String title,
     required Function() onTap,
     required Function() onTapPlus,
@@ -1840,6 +1142,533 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: color,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+//Widget For Select And Display Metr
+  Widget selectMetrAndDisplay() {
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        textWidget(
+          'متراژ زمین',
+          CustomColor.grey500,
+          14,
+          FontWeight.w600,
+        ),
+        GestureDetector(
+          onTap: () {
+            metrValueNotifier!.value = int.tryParse(controllerMetr.text) ?? 0;
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: CustomColor.grey350,
+                alignment: Alignment.center,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 5),
+                    widgetSliderMeterFeature(
+                      listenable: metrValueNotifier!,
+                      onchanged: (newValue) {
+                        metrValueNotifier!.value = newValue.toInt();
+                      },
+                      max: 1000,
+                    ),
+                    ValueListenableBuilder<int>(
+                      valueListenable: metrValueNotifier!,
+                      builder: (context, value, _) {
+                        return Text(
+                          '(${value.toString()})متر',
+                          textDirection: TextDirection.rtl,
+                          style: Theme.of(context)
+                              .textTheme
+                              .apply(
+                                fontSizeDelta: 4,
+                                bodyColor: CustomColor.bluegrey,
+                              )
+                              .titleMedium,
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 5),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context, 'OK');
+                        controllerMetr.text =
+                            metrValueNotifier!.value.toString();
+                        stateAd.metr = metrValueNotifier!.value;
+                        setState(
+                          () {},
+                        );
+                      },
+                      child: Container(
+                        width: 60,
+                        height: 35,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: CustomColor.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: textWidget(
+                          'تایید',
+                          CustomColor.bluegrey,
+                          18,
+                          FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          child: Container(
+            width: 159,
+            height: 48,
+            padding: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: CustomColor.grey350,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        int metr = int.tryParse(controllerMetr.text) ?? 0;
+                        setState(() {
+                          if (metr >= 1000) {
+                            return;
+                          }
+                          metr++;
+                          controllerMetr.text = metr.toString();
+                          metrValueNotifier!.value = metr;
+                          stateAd.metr = metrValueNotifier!.value;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.arrow_drop_up_rounded,
+                        color: CustomColor.red,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        int metr = int.tryParse(controllerMetr.text) ?? 0;
+
+                        if (metr <= 0) {
+                          return;
+                        }
+                        setState(() {
+                          metr--;
+
+                          controllerMetr.text = metr.toString();
+                          metrValueNotifier!.value = metr;
+                          stateAd.metr = metrValueNotifier!.value;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: CustomColor.red,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  controllerMetr.text != 'null' && controllerMetr.text != '0'
+                      ? controllerMetr.text
+                      : 'تعیین',
+                  style: TextStyle(
+                    fontFamily: 'SN',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: controllerMetr.text != 'null' &&
+                            controllerMetr.text != '0'
+                        ? CustomColor.black
+                        : CustomColor.grey500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+//Widget For Select And Display BuildingMetr
+  Widget selectBuildingMetrAndDisplay() {
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        textWidget(
+          'متراژ بنا',
+          CustomColor.grey500,
+          14,
+          FontWeight.w600,
+        ),
+        GestureDetector(
+          onTap: () {
+            buildingMetrValueNotifier!.value =
+                int.tryParse(controllerBuildingMetr.text) ?? 0;
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: CustomColor.grey350,
+                alignment: Alignment.center,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 5),
+                    widgetSliderMeterFeature(
+                      listenable: buildingMetrValueNotifier!,
+                      onchanged: (newValue) {
+                        buildingMetrValueNotifier!.value = newValue.toInt();
+                      },
+                      max: 1000,
+                    ),
+                    ValueListenableBuilder<int>(
+                      valueListenable: buildingMetrValueNotifier!,
+                      builder: (context, value, _) {
+                        return Text(
+                          '(${value.toString()})متر',
+                          textDirection: TextDirection.rtl,
+                          style: Theme.of(context)
+                              .textTheme
+                              .apply(
+                                fontSizeDelta: 4,
+                                bodyColor: CustomColor.bluegrey,
+                              )
+                              .titleMedium,
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 5),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context, 'OK');
+                        controllerBuildingMetr.text =
+                            buildingMetrValueNotifier!.value.toString();
+                        stateAd.buildingMetr = buildingMetrValueNotifier!.value;
+                        setState(
+                          () {},
+                        );
+                      },
+                      child: Container(
+                        width: 60,
+                        height: 35,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: CustomColor.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: textWidget(
+                          'تایید',
+                          CustomColor.bluegrey,
+                          18,
+                          FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          child: Container(
+            width: 159,
+            height: 48,
+            padding: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: CustomColor.grey350,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        int buildingMetr =
+                            int.tryParse(controllerBuildingMetr.text) ?? 0;
+                        setState(() {
+                          if (buildingMetr >= 1000) {
+                            return;
+                          }
+                          buildingMetr++;
+                          controllerBuildingMetr.text = buildingMetr.toString();
+                          buildingMetrValueNotifier!.value = buildingMetr;
+                          stateAd.buildingMetr =
+                              buildingMetrValueNotifier!.value;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.arrow_drop_up_rounded,
+                        color: CustomColor.red,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        int buildingMetr =
+                            int.tryParse(controllerBuildingMetr.text) ?? 0;
+
+                        if (buildingMetr <= 0) {
+                          return;
+                        }
+                        setState(() {
+                          buildingMetr--;
+
+                          controllerBuildingMetr.text = buildingMetr.toString();
+                          buildingMetrValueNotifier!.value = buildingMetr;
+                          stateAd.buildingMetr =
+                              buildingMetrValueNotifier!.value;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: CustomColor.red,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  controllerBuildingMetr.text != 'null' &&
+                          controllerBuildingMetr.text != '0'
+                      ? controllerBuildingMetr.text
+                      : 'تعیین',
+                  style: TextStyle(
+                    fontFamily: 'SN',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: controllerBuildingMetr.text != 'null' &&
+                            controllerBuildingMetr.text != '0'
+                        ? CustomColor.black
+                        : CustomColor.grey500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+//Widget For Select And Display Document
+  Widget selectDocumnetAndDisplay() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        textWidget(
+          'سند',
+          CustomColor.grey500,
+          14,
+          FontWeight.w600,
+        ),
+        GestureDetector(
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: CustomColor.grey350,
+                  alignment: Alignment.center,
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'سند',
+                        style: TextStyle(
+                          color: CustomColor.bluegrey,
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      SizedBox(
+                        height: 150,
+                        child: ListWheelScrollView.useDelegate(
+                          controller: _scrollDocumentController,
+                          itemExtent: 50,
+                          squeeze: 0.7,
+                          childDelegate: ListWheelChildBuilderDelegate(
+                            childCount: document.length,
+                            builder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  final stateAd =
+                                      context.read<RegisterInfoAdCubit>().state;
+                                  setState(() {
+                                    controllerDocument.text = document[index];
+                                    stateAd.document = controllerDocument.text;
+
+                                    //Display Scroll Item last Value selected
+                                    _scrollDocumentController =
+                                        FixedExtentScrollController(
+                                            initialItem: index);
+
+                                    //Navigator Pop For When Selected Item
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: controllerDocument.text ==
+                                            document[index]
+                                        ? CustomColor.red
+                                        : CustomColor.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    document[index],
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .apply(
+                                          fontSizeDelta: 8,
+                                          bodyColor: controllerDocument.text ==
+                                                  document[index]
+                                              ? CustomColor.white
+                                              : CustomColor.bluegrey,
+                                        )
+                                        .titleMedium,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          child: Container(
+            width: 159,
+            height: 48,
+            padding: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: CustomColor.grey350,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  controllerDocument.text.isNotEmpty
+                      ? controllerDocument.text
+                      : 'انتخاب',
+                  style: TextStyle(
+                    fontFamily: 'SN',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: controllerDocument.text.isNotEmpty
+                        ? CustomColor.black
+                        : CustomColor.grey500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+//Widget For Select And Display YearBuild
+  Widget selectYearBuildAndDisplay() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        textWidget(
+          'سال ساخت',
+          CustomColor.grey500,
+          14,
+          FontWeight.w600,
+        ),
+        GestureDetector(
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: CustomColor.grey350,
+                  alignment: Alignment.center,
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'سال ساخت را انتخاب کنید',
+                        style: TextStyle(
+                          color: CustomColor.bluegrey,
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _boxListWheelYears(),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          child: Container(
+            width: 159,
+            height: 48,
+            padding: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: CustomColor.grey350,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  controllerYearBuild.text != 'null'
+                      ? controllerYearBuild.text
+                      : 'انتخاب',
+                  style: TextStyle(
+                    fontFamily: 'SN',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: controllerYearBuild.text != 'null'
+                        ? CustomColor.black
+                        : CustomColor.grey500,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

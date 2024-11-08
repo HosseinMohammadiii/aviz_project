@@ -89,23 +89,25 @@ class BoolState {
 }
 
 class RegisterInfoAd {
-  final num? metr;
-  final num? countRoom;
-  final num? floor;
-  final num? yearBuild;
-  final String idCt;
+  num? metr;
+  num? buildingMetr;
+  num? countRoom;
+  num? floor;
+  num? yearBuild;
+  String idCt;
   String province;
   String title;
   String description;
   num? price;
-  final List<File>? images;
-  final String idFeature;
+  List<File>? images;
+  String idFeature;
   String document;
   String view;
   String city;
 
   RegisterInfoAd({
     required this.metr,
+    required this.buildingMetr,
     required this.countRoom,
     required this.floor,
     required this.yearBuild,
@@ -122,6 +124,7 @@ class RegisterInfoAd {
   });
   RegisterInfoAd copyWith({
     final num? metr,
+    final num? buildingMetr,
     final num? countRoom,
     final num? floor,
     final num? yearBuild,
@@ -138,6 +141,7 @@ class RegisterInfoAd {
   }) {
     return RegisterInfoAd(
       metr: metr ?? this.metr,
+      buildingMetr: buildingMetr ?? this.buildingMetr,
       countRoom: countRoom ?? this.countRoom,
       floor: floor ?? this.floor,
       yearBuild: yearBuild ?? this.yearBuild,

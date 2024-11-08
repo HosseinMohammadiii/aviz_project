@@ -127,7 +127,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           RegisterId().setProvince(
                                               provinceAndCity.province);
-
                                           provinceAndCity.province = '';
                                         },
                                       ),

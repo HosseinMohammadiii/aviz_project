@@ -34,6 +34,7 @@ class AddAdvertisingBloc
           event.description,
           event.price,
           event.metr,
+          event.buildingMetr,
           event.countRoom,
           event.floor,
           event.yearBuild,
@@ -221,6 +222,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       : super(
           RegisterInfoAd(
             metr: null,
+            buildingMetr: null,
             countRoom: null,
             floor: null,
             yearBuild: null,
@@ -239,6 +241,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
 
   void setParametrInfoAd({
     final num? metr,
+    final num? buildingMetr,
     final num? countRoom,
     final num? floor,
     final num? yearBuild,
@@ -255,6 +258,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
   }) {
     emit(state.copyWith(
       metr: metr,
+      buildingMetr: buildingMetr,
       countRoom: countRoom,
       floor: floor,
       yearBuild: yearBuild,
@@ -275,6 +279,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     emit(
       RegisterInfoAd(
         metr: null,
+        buildingMetr: null,
         countRoom: null,
         floor: null,
         yearBuild: null,

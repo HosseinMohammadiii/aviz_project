@@ -19,6 +19,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
   String description;
   num price;
   int metr;
+  int buildingMetr;
   int countRoom;
   int floor;
   int yearBuild;
@@ -32,6 +33,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
     this.description,
     this.price,
     this.metr,
+    this.buildingMetr,
     this.countRoom,
     this.floor,
     this.yearBuild,

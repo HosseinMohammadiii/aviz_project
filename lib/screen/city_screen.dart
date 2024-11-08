@@ -185,28 +185,31 @@ class _CityScreenState extends State<CityScreen> {
                         (error) => DisplayError(error: error),
                         (city) {
                           cities = city;
-                          return SliverList.builder(
-                            itemCount:
-                                isSearch ? searchCities.length : city.length,
-                            itemBuilder: (context, index) {
-                              return ProvinceAndCitiesWidget(
-                                province: isSearch ? searchCities : city,
-                                index: index,
-                                onTap: () {
-                                  setState(() {
-                                    isSelectProvinces = true;
-                                    final cityName = context
-                                        .read<RegisterInfoAdCubit>()
-                                        .state;
+                          return SliverPadding(
+                            padding: const EdgeInsets.only(bottom: 80),
+                            sliver: SliverList.builder(
+                              itemCount:
+                                  isSearch ? searchCities.length : city.length,
+                              itemBuilder: (context, index) {
+                                return ProvinceAndCitiesWidget(
+                                  province: isSearch ? searchCities : city,
+                                  index: index,
+                                  onTap: () {
+                                    setState(() {
+                                      isSelectProvinces = true;
+                                      final cityName = context
+                                          .read<RegisterInfoAdCubit>()
+                                          .state;
 
-                                    citiesController.text = isSearch
-                                        ? searchCities[index].name
-                                        : city[index].name;
-                                    cityName.city = citiesController.text;
-                                  });
-                                },
-                              );
-                            },
+                                      citiesController.text = isSearch
+                                          ? searchCities[index].name
+                                          : city[index].name;
+                                      cityName.city = citiesController.text;
+                                    });
+                                  },
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
