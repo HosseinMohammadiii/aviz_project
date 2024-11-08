@@ -4,13 +4,17 @@ import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_state.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_event.dart';
+import 'package:aviz_project/Hive/Advertising/register_id.dart';
 
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/city_screen.dart';
+import 'package:aviz_project/screen/screen_province.dart';
 
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../DataFuture/advertising_save/model/advertising_save.dart';
@@ -89,8 +93,72 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              GestureDetector(
+                                onTap: () {
+                                  final provinceAndCity =
+                                      context.read<RegisterInfoAdCubit>().state;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ScreenProvince(
+                                        isCity: true,
+                                        onChanged: () {},
+                                        onChangedCity: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CityScreen(
+                                                  onChanged: () {
+                                                    RegisterId().setCity(
+                                                        provinceAndCity.city);
+                                                    context.read<HomeBloc>().add(
+                                                        HomeGetInitializeData());
+                                                    provinceAndCity.city = '';
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  province: RegisterId()
+                                                      .getProvince(),
+                                                ),
+                                              ));
+
+                                          RegisterId().setProvince(
+                                              provinceAndCity.province);
+
+                                          provinceAndCity.province = '';
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.location_on_outlined),
+                                    SizedBox(
+                                      width: RegisterId().getCity().isEmpty
+                                          ? null
+                                          : 120,
+                                      child: Text(
+                                        RegisterId().getCity().isNotEmpty
+                                            ? "| ${RegisterId().getProvince()}،${RegisterId().getCity()}"
+                                            : "| ${RegisterId().getProvince()}",
+                                        style: TextStyle(
+                                          fontFamily: 'SN',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: CustomColor.grey500,
+                                        ),
+                                        textDirection: TextDirection.rtl,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
                               Text(
                                 textDirection: TextDirection.rtl,
                                 'جستوجو...',

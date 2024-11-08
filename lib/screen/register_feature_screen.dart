@@ -127,6 +127,13 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void showMessage(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 1),
+      ));
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -237,22 +244,28 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             _selectProvonceAndCity(
                               city.isEmpty ? 'انتخاب شهر' : city,
                               () {
-                                final cityName =
-                                    context.read<RegisterInfoAdCubit>().state;
+                                if (province.isNotEmpty) {
+                                  final cityName =
+                                      context.read<RegisterInfoAdCubit>().state;
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CityScreen(
-                                      onChanged: () {
-                                        setState(() {
-                                          city = cityName.city;
-                                        });
-                                        Navigator.pop(context);
-                                      },
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CityScreen(
+                                        province: province,
+                                        onChanged: () {
+                                          setState(() {
+                                            city = cityName.city;
+                                          });
+                                          cityName.city = '';
+                                          Navigator.pop(context);
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                } else {
+                                  showMessage('ابتدا استان را انتخاب کنید');
+                                }
                               },
                               city.isEmpty
                                   ? CustomColor.grey500
@@ -272,6 +285,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                       setState(() {
                                         province = stateAd.province;
                                       });
+                                      stateAd.province = '';
                                       Navigator.pop(context);
                                     },
                                   ),

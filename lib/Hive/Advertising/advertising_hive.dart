@@ -12,6 +12,16 @@ class AdvertisingHive {
 
   @HiveField(2)
   String? idSaveAd;
+  @HiveField(3)
+  String? province;
+  @HiveField(4)
+  String? city;
 
-  AdvertisingHive({this.idFacilities, this.idGallery, this.idSaveAd});
+  AdvertisingHive({
+    this.idFacilities,
+    this.idGallery,
+    this.idSaveAd,
+    this.province,
+    this.city,
+  });
 }

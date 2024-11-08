@@ -8,7 +8,7 @@ import '../../ad_details/Data/model/ad_facilities.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISaveAdItemsDatasource {
-  Future<List<RegisterFutureAd>> getDisplayRecentAd();
+  Future<List<RegisterFutureAd>> getDisplayAd();
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
 
@@ -22,7 +22,7 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   final Dio dio;
   ISaveAdItemsDatasourceRemoot(this.dio);
   @override
-  Future<List<RegisterFutureAd>> getDisplayRecentAd() async {
+  Future<List<RegisterFutureAd>> getDisplayAd() async {
     try {
       var recent = await dio.get(
         'advertising_home',

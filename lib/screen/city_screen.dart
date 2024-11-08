@@ -20,7 +20,9 @@ class CityScreen extends StatefulWidget {
   CityScreen({
     super.key,
     required this.onChanged,
+    required this.province,
   });
+  String province;
   Function() onChanged;
 
   @override
@@ -44,11 +46,10 @@ class _CityScreenState extends State<CityScreen> {
 
   @override
   void initState() {
-    final provinceName = context.read<RegisterInfoAdCubit>().state;
     BlocProvider.of<ProvinceBloc>(context)
-        .add(ProvinceInitializedData(city: provinceName.province));
+        .add(ProvinceInitializedData(city: widget.province));
 
-    city = provinceName.province;
+    city = widget.province;
     super.initState();
   }
 
@@ -135,8 +136,11 @@ class _CityScreenState extends State<CityScreen> {
                               InkWell(
                                 splashColor: CustomColor.grey350,
                                 onTap: () {
+                                  final cityName =
+                                      context.read<RegisterInfoAdCubit>().state;
                                   setState(() {
                                     isSelectProvinces = true;
+                                    cityName.city = '';
                                   });
                                 },
                                 child: Padding(
@@ -191,14 +195,15 @@ class _CityScreenState extends State<CityScreen> {
                                 onTap: () {
                                   setState(() {
                                     isSelectProvinces = true;
-                                  });
-                                  final cityName =
-                                      context.read<RegisterInfoAdCubit>().state;
+                                    final cityName = context
+                                        .read<RegisterInfoAdCubit>()
+                                        .state;
 
-                                  citiesController.text = isSearch
-                                      ? searchCities[index].name
-                                      : city[index].name;
-                                  cityName.city = citiesController.text;
+                                    citiesController.text = isSearch
+                                        ? searchCities[index].name
+                                        : city[index].name;
+                                    cityName.city = citiesController.text;
+                                  });
                                 },
                               );
                             },

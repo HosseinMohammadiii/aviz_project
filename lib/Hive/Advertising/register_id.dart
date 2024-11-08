@@ -39,4 +39,22 @@ class RegisterId {
   String getSaveId() {
     return adBox.get(3)?.idSaveAd ?? '';
   }
+
+  void setProvince(String province) {
+    adHive.province = province;
+    adBox.put(4, adHive);
+  }
+
+  String getProvince() {
+    return adBox.get(4)?.province ?? '';
+  }
+
+  void setCity(String city) {
+    adHive.city = city;
+    adBox.put(5, adHive);
+  }
+
+  String getCity() {
+    return adBox.get(5)?.city ?? '';
+  }
 }

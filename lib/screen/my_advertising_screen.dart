@@ -1,6 +1,5 @@
 import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_facilities.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
-import 'package:aviz_project/DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/info_myad.dart';
@@ -23,19 +22,6 @@ class MyAdvertisingScreen extends StatefulWidget {
 }
 
 class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
-  TextEditingController controller = TextEditingController();
-  List<bool> isDelete = [];
-  bool delete = false;
-
-  List<RegisterFutureAd> registerFutureList = [];
-  @override
-  void initState() {
-    // BlocProvider.of<AddAdvertisingBloc>(context)
-    //     .add(InitializedDisplayAdvertising());
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
@@ -85,69 +71,63 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                         return state.displayAdvertisingFacilities.fold(
                           (error) => DisplayError(error: error),
                           (facilities) {
-                            return state.displayImagesAdvertising.fold(
-                              (error) => DisplayError(error: error),
-                              (gallery) {
-                                return advertising.isNotEmpty
-                                    ? ListMyAdvertising(
-                                        advertising: advertising,
-                                        advertisingGallery: gallery,
-                                        advertisingFacilities: facilities,
-                                      )
-                                    : SliverFillRemaining(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            textWidget(
-                                              'اولین آگهیت رو بساز',
-                                              CustomColor.grey500,
-                                              18,
-                                              FontWeight.w700,
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                bottomNavigationKey.currentState
-                                                    ?.setPage(1);
-                                              },
-                                              child: Container(
-                                                height: 40,
-                                                width: 100,
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  color: CustomColor.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  border: Border.all(
-                                                    color: CustomColor.red,
-                                                  ),
-                                                ),
-                                                child: textWidget(
-                                                  'ساخت آگهی',
-                                                  CustomColor.white,
-                                                  15,
-                                                  FontWeight.w700,
-                                                ),
+                            return advertising.isNotEmpty
+                                ? ListMyAdvertising(
+                                    advertising: advertising,
+                                    advertisingFacilities: facilities,
+                                  )
+                                : SliverFillRemaining(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        textWidget(
+                                          'اولین آگهیت رو بساز',
+                                          CustomColor.grey500,
+                                          18,
+                                          FontWeight.w700,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            bottomNavigationKey.currentState
+                                                ?.setPage(1);
+                                          },
+                                          child: Container(
+                                            height: 40,
+                                            width: 100,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: CustomColor.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              border: Border.all(
+                                                color: CustomColor.red,
                                               ),
                                             ),
-                                          ],
+                                            child: textWidget(
+                                              'ساخت آگهی',
+                                              CustomColor.white,
+                                              15,
+                                              FontWeight.w700,
+                                            ),
+                                          ),
                                         ),
-                                      );
-                              },
-                            );
+                                      ],
+                                    ),
+                                  );
                           },
                         );
                       },
-                    )
-                  ],
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 50,
                     ),
-                  ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 50,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -163,12 +143,10 @@ class ListMyAdvertising extends StatefulWidget {
   ListMyAdvertising({
     super.key,
     required this.advertising,
-    required this.advertisingGallery,
     required this.advertisingFacilities,
   });
 
   List<RegisterFutureAd> advertising;
-  List<RegisterFutureAdGallery> advertisingGallery;
   List<AdvertisingFacilities> advertisingFacilities;
 
   @override

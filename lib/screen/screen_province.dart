@@ -18,8 +18,12 @@ class ScreenProvince extends StatefulWidget {
   ScreenProvince({
     super.key,
     required this.onChanged,
+    this.isCity,
+    this.onChangedCity,
   });
+  bool? isCity;
   Function() onChanged;
+  Function()? onChangedCity;
   @override
   State<ScreenProvince> createState() => _ScreenProvinceState();
 }
@@ -150,6 +154,9 @@ class _ScreenProvinceState extends State<ScreenProvince> {
               SelectProvinceAndCityButton(
                 isSelectProvinces: isSelectProvinces,
                 onChanges: () {
+                  if (widget.isCity != null && widget.isCity == true) {
+                    widget.onChangedCity!();
+                  }
                   widget.onChanged();
                 },
               ),

@@ -14,12 +14,10 @@ class AddAdvertisingBloc
       (event, emit) async {
         emit(AddAdvertisingLoading());
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
-        var displayImages = await infoRepository.getImagesAdvertising();
         var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
         emit(
           DisplayInfoAdvertisingStateResponse(
             displayAdvertising,
-            displayImages,
             diplayAdFacilities,
           ),
         );
@@ -91,12 +89,10 @@ class AddAdvertisingBloc
         await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
         emit(AddAdvertisingLoading());
         var displayAdvertising = await infoRepository.getDiplayAdvertising();
-        var displayImages = await infoRepository.getImagesAdvertising();
         var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
         emit(
           DisplayInfoAdvertisingStateResponse(
             displayAdvertising,
-            displayImages,
             diplayAdFacilities,
           ),
         );

@@ -10,7 +10,7 @@ class SaveAdBloc extends Bloc<SaveAdEvent, SaveAdState> {
     on<GetInitializedSaveDataEvent>((event, emit) async {
       emit(SaveLoadingState());
       var displaySaveAd = await repository.getSaveAd();
-      var displayAdvertising = await repository.getDisplayRecentAd();
+      var displayAdvertising = await repository.getDisplayAd();
       var advertisingFacilities =
           await repository.getDiplayAdvertisingFacilities();
 

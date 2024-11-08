@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import '../../../../Hive/Advertising/register_id.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
-import '../model/ad_gallery.dart';
 
 abstract class IInfoAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAdvertising();
@@ -26,7 +25,6 @@ abstract class IInfoAdDatasource {
   );
   Future<String> getDeleteAd(String id);
 
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd();
   Future<String> postImagesToGallery(
     List<File> images,
   );
@@ -203,29 +201,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
       throw ApiException(0, 'Unknown');
     }
     return '';
-  }
-
-  @override
-  Future<List<RegisterFutureAdGallery>> getDiplayImagesAd() async {
-    try {
-      var response = await dio.get(
-        'advertising_gallery',
-        options: Options(
-          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
-        ),
-      );
-
-      return response.data['items']
-          .map<RegisterFutureAdGallery>(
-            (jsonObject) => RegisterFutureAdGallery.fromJson(jsonObject),
-          )
-          .toList();
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiException(0, 'Unknown');
-    }
   }
 
   @override

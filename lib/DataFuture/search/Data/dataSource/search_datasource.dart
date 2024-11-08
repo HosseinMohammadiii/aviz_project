@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../../../Hive/Advertising/register_id.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../add_advertising/Data/model/register_future_ad.dart';
 
@@ -14,7 +15,10 @@ class SearchRemootDataSorce extends ISearchDataSource {
   @override
   Future<List<RegisterFutureAd>> getSearchResult(String query) async {
     try {
-      Map<String, dynamic> queryPromotion = {'filter': 'title~"$query"'};
+      Map<String, dynamic> queryPromotion = {
+        'filter':
+            'title~"$query"&province=${RegisterId().getProvince()}&city=${RegisterId().getCity()}'
+      };
       var response = await dio.get(
         'advertising_home',
         queryParameters: queryPromotion,

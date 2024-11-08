@@ -1,6 +1,7 @@
 import 'package:aviz_project/DataFuture/NetworkUtil/api_exeption.dart';
 import 'package:dio/dio.dart';
 
+import '../../../../Hive/Advertising/register_id.dart';
 import '../../../NetworkUtil/authmanager.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/register_future_ad.dart';
@@ -17,8 +18,13 @@ class HomeRemoteDataSource extends IHomeDataSoure {
   @override
   Future<List<RegisterFutureAd>> getAdvertising() async {
     try {
+      Map<String, dynamic> query = {
+        'filter':
+            'province=${RegisterId().getProvince()}&city=${RegisterId().getCity()}'
+      };
       var response = await dio.get(
         'advertising_home',
+        queryParameters: query,
         options: Options(
           // contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},

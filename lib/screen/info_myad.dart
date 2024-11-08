@@ -152,7 +152,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
             widget.advertisingHome.id,
           ),
         );
-    context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
   }
 
   // Function to return category title based on categoryId
@@ -207,7 +206,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
               });
             },
           );
-          // isError = state.getExistAd.isLeft();
         }
       },
       builder: (context, state) {
@@ -227,9 +225,9 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                         state.getSaveAd.fold(
                           (l) {},
                           (r) {
-                            bool isSaved = r.any((item) =>
+                            bool isSavedAd = r.any((item) =>
                                 item.idAd == widget.advertisingHome.id);
-                            saveId = isSaved
+                            saveId = isSavedAd
                                 ? r
                                     .firstWhere((item) =>
                                         item.idAd == widget.advertisingHome.id)

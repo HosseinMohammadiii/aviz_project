@@ -7,7 +7,7 @@ import '../../ad_details/Data/model/ad_facilities.dart';
 import '../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISaveAdRepository {
-  Future<Either<String, List<RegisterFutureAd>>> getDisplayRecentAd();
+  Future<Either<String, List<RegisterFutureAd>>> getDisplayAd();
   Future<Either<String, List<AdvertisingFacilities>>>
       getDiplayAdvertisingFacilities();
 
@@ -23,9 +23,9 @@ final class ISaveAdRepositoryRemoot extends ISaveAdRepository {
   ISaveAdRepositoryRemoot(this.datasource);
 
   @override
-  Future<Either<String, List<RegisterFutureAd>>> getDisplayRecentAd() async {
+  Future<Either<String, List<RegisterFutureAd>>> getDisplayAd() async {
     try {
-      var response = await datasource.getDisplayRecentAd();
+      var response = await datasource.getDisplayAd();
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

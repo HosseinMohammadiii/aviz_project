@@ -6,7 +6,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
 import '../../../ad_details/Data/model/ad_facilities.dart';
-import '../model/ad_gallery.dart';
 
 abstract class IInfoAdRepository {
   Future<Either<String, List<RegisterFutureAd>>> getDiplayAdvertising();
@@ -25,7 +24,6 @@ abstract class IInfoAdRepository {
   );
   Future<Either<String, String>> getDeleteAd(String id);
 
-  Future<Either<String, List<RegisterFutureAdGallery>>> getImagesAdvertising();
   Future<Either<String, String>> postImagesToGallery(
     List<File> images,
   );
@@ -156,17 +154,6 @@ final class InfoAdRepository extends IInfoAdRepository {
       } else {
         return left('خطایی پیش آمده! ');
       }
-    } on ApiException catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
-
-  @override
-  Future<Either<String, List<RegisterFutureAdGallery>>>
-      getImagesAdvertising() async {
-    try {
-      var response = await datasource.getDiplayImagesAd();
-      return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
