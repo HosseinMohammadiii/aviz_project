@@ -65,7 +65,10 @@ class _ContainerSearchState extends State<ContainerSearch> {
               color: CustomColor.grey500,
             ),
             decoration: InputDecoration(
-              suffixIcon: Image.asset('images/search-normal.png'),
+              suffixIcon: Image.asset(
+                'images/search_icon.png',
+                scale: 2.5,
+              ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: CustomColor.grey350,
@@ -76,7 +79,7 @@ class _ContainerSearchState extends State<ContainerSearch> {
                   color: CustomColor.grey350,
                 ),
               ),
-              hintText: '...جستوجو',
+              hintText: 'جستوجو',
               hintStyle: TextStyle(
                 fontFamily: 'SN',
                 fontSize: 16,

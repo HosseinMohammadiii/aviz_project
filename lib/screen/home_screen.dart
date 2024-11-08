@@ -136,23 +136,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.location_on_outlined),
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      color: CustomColor.grey500,
+                                    ),
                                     SizedBox(
                                       width: RegisterId().getCity().isEmpty
                                           ? null
                                           : 120,
                                       child: Text(
                                         RegisterId().getCity().isNotEmpty
-                                            ? "| ${RegisterId().getProvince()}،${RegisterId().getCity()}"
-                                            : "| ${RegisterId().getProvince()}",
-                                        style: TextStyle(
+                                            ? "${RegisterId().getProvince()}،${RegisterId().getCity()}"
+                                            : RegisterId().getProvince(),
+                                        style: const TextStyle(
                                           fontFamily: 'SN',
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
-                                          color: CustomColor.grey500,
+                                          color: CustomColor.black,
                                         ),
                                         textDirection: TextDirection.rtl,
                                         overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text(
+                                      '|',
+                                      style: TextStyle(
+                                        fontFamily: 'SN',
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w400,
+                                        color: CustomColor.grey500,
                                       ),
                                     ),
                                   ],
@@ -161,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               const Spacer(),
                               Text(
                                 textDirection: TextDirection.rtl,
-                                'جستوجو...',
+                                'جستوجو در آگهی ها',
                                 style: TextStyle(
                                   fontFamily: 'SN',
                                   fontSize: 16,
@@ -172,7 +187,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              Image.asset('images/search-normal.png'),
+                              Image.asset(
+                                'images/search_icon.png',
+                                scale: 2.5,
+                              ),
                             ],
                           ),
                         ),
