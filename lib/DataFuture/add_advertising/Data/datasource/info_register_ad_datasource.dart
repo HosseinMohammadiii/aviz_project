@@ -18,6 +18,7 @@ abstract class IInfoAdDatasource {
     String title,
     String description,
     num price,
+    int rentPrice,
     int metr,
     int buildingMetr,
     int countRoom,
@@ -30,9 +31,6 @@ abstract class IInfoAdDatasource {
     List<File> images,
   );
   Future<String> getDeleteAdImagesAd(String id);
-  Future<String> getUpdateAdImagesAd(
-    List<File> images,
-  );
 
   Future<List<AdvertisingFacilities>> getDiplayAdvertisingFacilities();
   Future<String> postRegisterFacilities(
@@ -66,6 +64,7 @@ abstract class IInfoAdDatasource {
 
 final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Dio dio;
+
   InfoAdDatasourceRemmot(this.dio);
 
   @override
@@ -77,6 +76,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
     String title,
     String description,
     num price,
+    int rentPrice,
     int metr,
     int buildingMetr,
     int countRoom,
@@ -96,6 +96,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'id_gallery': RegisterId().getIdGallery(),
           'title': title,
           'price': price,
+          'rent_price': rentPrice,
           'description': description,
           'metr': metr,
           'buildingmetr': buildingMetr,
@@ -160,7 +161,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
       if (response.statusCode == 200) {
         RegisterId().saveIdFacilities(response.data['data']['id']);
-        return response.data['items'];
+        return response.data['data']['id'];
       }
     } on DioException catch (ex) {
       throw ApiException(
@@ -172,7 +173,9 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   }
 
   @override
-  Future<String> postImagesToGallery(List<File> images) async {
+  Future<String> postImagesToGallery(
+    List<File> images,
+  ) async {
     try {
       List<MultipartFile> imageFiles = [];
       for (var image in images) {
@@ -195,13 +198,13 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
       if (response.statusCode == 200) {
         RegisterId().saveIdGallery(response.data['data']['id']);
-        return response.data['items'];
+        return response.data['data']['id'];
       }
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
     } catch (e) {
-      throw ApiException(0, 'Unknown');
+      throw ApiException(0, 'خطای ناشناس');
     }
     return '';
   }
@@ -350,41 +353,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
-      if (response.statusCode == 200) {
-        return response.data['items'];
-      }
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiException(0, 'Unknown');
-    }
-    return '';
-  }
-
-  @override
-  Future<String> getUpdateAdImagesAd(
-    List<File> images,
-  ) async {
-    try {
-      List<MultipartFile> imageFiles = [];
-      for (var image in images) {
-        String fileName = image.path.split('/').last;
-        imageFiles
-            .add(await MultipartFile.fromFile(image.path, filename: fileName));
-      }
-
-      FormData formData = FormData.fromMap({
-        'images': imageFiles,
-      });
-      var response = await dio.patch(
-        'advertising_gallery/${RegisterId().getIdGallery()}',
-        options: Options(
-          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
-        ),
-        data: formData,
-      );
-
       if (response.statusCode == 200) {
         return response.data['items'];
       }

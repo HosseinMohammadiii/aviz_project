@@ -24,7 +24,8 @@ class MyAdvertisingScreen extends StatefulWidget {
 class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
+    return BlocConsumer<AddAdvertisingBloc, AddAdvertisingState>(
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
@@ -49,6 +50,7 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
               ),
             ),
             body: RefreshIndicator(
+              color: CustomColor.normalRed,
               onRefresh: () async {
                 context
                     .read<AddAdvertisingBloc>()
@@ -60,7 +62,9 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   if (state is AddAdvertisingLoading) ...[
                     const SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       ),
                     ),
                   ],

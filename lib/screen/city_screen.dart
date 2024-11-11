@@ -123,7 +123,9 @@ class _CityScreenState extends State<CityScreen> {
                     if (state is ProvinceLoadindState) ...[
                       const SliverFillRemaining(
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: CustomColor.normalRed,
+                          ),
                         ),
                       ),
                     ],

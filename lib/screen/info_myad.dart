@@ -280,6 +280,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                               height: 20,
                               width: 20,
                               child: CircularProgressIndicator(
+                                color: CustomColor.normalRed,
                                 strokeWidth: 3,
                               ),
                             )
@@ -389,6 +390,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
           ),
           body: SafeArea(
             child: RefreshIndicator(
+              color: CustomColor.normalRed,
               onRefresh: () async {
                 context.read<AdExistsBloc>().add(
                       SearchWithIdData(
@@ -406,7 +408,9 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: state is SearchLoadingState
                     ? const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       )
                     : state is SearchExistsRequestSuccessState
                         ? state.getExistAd.fold(
@@ -950,7 +954,10 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
                                                     (context, url, error) =>
                                                         const Center(
                                                   child:
-                                                      CircularProgressIndicator(),
+                                                      CircularProgressIndicator(
+                                                    color:
+                                                        CustomColor.normalRed,
+                                                  ),
                                                 ),
                                                 placeholder: (context, url) =>
                                                     Center(
@@ -978,7 +985,9 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
                                     imageUrl: allImages[index],
                                     errorWidget: (context, url, error) =>
                                         const Center(
-                                      child: CircularProgressIndicator(),
+                                      child: CircularProgressIndicator(
+                                        color: CustomColor.normalRed,
+                                      ),
                                     ),
                                     placeholder: (context, url) => Center(
                                       child: Shimmer.fromColors(

@@ -16,6 +16,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 import '../class/checkconnection.dart';
+import '../class/scaffoldmessage.dart';
 import 'screen_province.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
@@ -133,12 +134,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void showMessage(String message) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-      ));
-    }
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
 
     bool result =
         !['اجاره خانه', 'اجاره ویلا', 'فروش خانه', 'فروش ویلا'].contains(title);
@@ -273,7 +269,11 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                     ),
                                   );
                                 } else {
-                                  showMessage('ابتدا استان را انتخاب کنید');
+                                  showMessage(
+                                    'ابتدا استان را انتخاب کنید',
+                                    context,
+                                    1,
+                                  );
                                 }
                               },
                               city.isEmpty
@@ -283,8 +283,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             _selectProvonceAndCity(
                                 province.isEmpty ? 'انتخاب استان' : province,
                                 () {
-                              final stateAd =
-                                  context.read<RegisterInfoAdCubit>().state;
                               stateAd.province = '';
                               Navigator.push(
                                 context,
@@ -340,9 +338,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      final stateAd = context
-                                          .read<RegisterInfoAdCubit>()
-                                          .state;
                                       return AlertDialog(
                                         backgroundColor: CustomColor.grey350,
                                         alignment: Alignment.center,
@@ -419,8 +414,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                   );
                                 },
                                 onTapPlus: () {
-                                  final stateAd =
-                                      context.read<RegisterInfoAdCubit>().state;
                                   int count =
                                       int.tryParse(controllerCounRoom.text) ??
                                           0;
@@ -436,8 +429,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                   });
                                 },
                                 onTapMinus: () {
-                                  final stateAd =
-                                      context.read<RegisterInfoAdCubit>().state;
                                   int count =
                                       int.tryParse(controllerCounRoom.text) ??
                                           0;
@@ -635,10 +626,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                                   builder: (context, index) {
                                                     return GestureDetector(
                                                       onTap: () {
-                                                        final stateAd = context
-                                                            .read<
-                                                                RegisterInfoAdCubit>()
-                                                            .state;
                                                         setState(() {
                                                           controllerView.text =
                                                               view[index];
@@ -1025,6 +1012,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
 //Widget For Display ListWheel Years Build
   Widget _boxListWheelYears() {
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
+
     return SizedBox(
       height: 150,
       child: ListWheelScrollView.useDelegate(
@@ -1041,7 +1030,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                 setState(() {
                   year = itemYear;
                   controllerYearBuild.text = year.toString();
-                  final stateAd = context.read<RegisterInfoAdCubit>().state;
                   stateAd.yearBuild = year;
                   _scrollYearController =
                       FixedExtentScrollController(initialItem: index);
@@ -1480,6 +1468,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
 //Widget For Select And Display Document
   Widget selectDocumnetAndDisplay() {
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -1522,8 +1511,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             builder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  final stateAd =
-                                      context.read<RegisterInfoAdCubit>().state;
                                   setState(() {
                                     controllerDocument.text = document[index];
                                     stateAd.document = controllerDocument.text;

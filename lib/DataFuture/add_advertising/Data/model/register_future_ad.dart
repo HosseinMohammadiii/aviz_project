@@ -10,6 +10,7 @@ class RegisterFutureAd {
   String province;
   String city;
   int homeprice;
+  int rentPrice;
   int metr;
   int buildingMetr;
   int countRoom;
@@ -29,6 +30,7 @@ class RegisterFutureAd {
     required this.province,
     required this.city,
     required this.homeprice,
+    required this.rentPrice,
     required this.metr,
     required this.buildingMetr,
     required this.countRoom,
@@ -55,6 +57,7 @@ class RegisterFutureAd {
       floor: jsonObject['floor'],
       yearBiuld: jsonObject['year_build'],
       homeprice: jsonObject['price'],
+      rentPrice: jsonObject['rent_price'],
       description: jsonObject['description'],
       province: jsonObject['province'],
       city: jsonObject['city'],

@@ -56,6 +56,7 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
         child: BlocBuilder<SaveAdBloc, SaveAdState>(
           builder: (context, state) {
             return RefreshIndicator(
+              color: CustomColor.normalRed,
               onRefresh: () async {
                 context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
               },
@@ -64,7 +65,9 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                   if (state is SaveLoadingState) ...[
                     const SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       ),
                     ),
                   ],

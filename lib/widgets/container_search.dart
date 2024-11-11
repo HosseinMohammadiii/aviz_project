@@ -109,7 +109,9 @@ class _ContainerSearchState extends State<ContainerSearch> {
                 if (state is SearchLoadingState) ...[
                   const SliverFillRemaining(
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: CustomColor.normalRed,
+                      ),
                     ),
                   ),
                 ],

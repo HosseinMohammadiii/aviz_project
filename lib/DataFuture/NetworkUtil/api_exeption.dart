@@ -9,6 +9,9 @@ class ApiException implements Exception {
     //   return;
     // }
 
+    if (code == 413) {
+      message = 'حجم تصویر بیشتر از 1 مگابایت است!';
+    }
     if (message == "User already exists.") {
       message = 'نام‌کاربری قبلا ثبت شده است!';
     }

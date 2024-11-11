@@ -33,6 +33,7 @@ class AddAdvertisingBloc
           event.title,
           event.description,
           event.price,
+          event.rentPrice,
           event.metr,
           event.buildingMetr,
           event.countRoom,
@@ -43,7 +44,9 @@ class AddAdvertisingBloc
     );
     on<AddImagesToGallery>(
       (event, emit) async {
-        await infoRepository.postImagesToGallery(event.images);
+        emit(AddAdvertisingImageLoading());
+        var postImage = await infoRepository.postImagesToGallery(event.images);
+        emit(PostImageAdState(postImage));
       },
     );
     on<AddFacilitiesAdvertising>(
@@ -102,17 +105,6 @@ class AddAdvertisingBloc
     on<DeleteFacilitiesData>(
       (event, emit) async {
         await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
-      },
-    );
-    on<DeleteImageData>(
-      (event, emit) async {
-        await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
-      },
-    );
-
-    on<UpdateImageData>(
-      (event, emit) async {
-        await infoRepository.getUpdateAdImagesAd(event.images);
       },
     );
   }
@@ -221,6 +213,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
   RegisterInfoAdCubit()
       : super(
           RegisterInfoAd(
+            uploadProgress: null,
             metr: null,
             buildingMetr: null,
             countRoom: null,
@@ -231,6 +224,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
             title: '',
             description: '',
             price: null,
+            rentPrice: null,
             images: [],
             idFeature: '',
             document: '',
@@ -240,6 +234,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         );
 
   void setParametrInfoAd({
+    final bool? uploadProgress,
     final num? metr,
     final num? buildingMetr,
     final num? countRoom,
@@ -250,6 +245,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final String? title,
     final String? description,
     final num? price,
+    final num? rentPrice,
     final List<File>? images,
     final String? idFeature,
     final String? document,
@@ -257,6 +253,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final String? city,
   }) {
     emit(state.copyWith(
+      uploadProgress: uploadProgress,
       metr: metr,
       buildingMetr: buildingMetr,
       countRoom: countRoom,
@@ -267,6 +264,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       title: title,
       description: description,
       price: price,
+      rentPrice: rentPrice,
       images: images,
       idFeature: idFeature,
       document: document,
@@ -288,6 +286,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         title: '',
         description: '',
         price: null,
+        rentPrice: null,
         images: [],
         idFeature: '',
         document: '',

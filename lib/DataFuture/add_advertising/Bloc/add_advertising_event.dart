@@ -18,6 +18,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
   String title;
   String description;
   num price;
+  int rentPrice;
   int metr;
   int buildingMetr;
   int countRoom;
@@ -32,6 +33,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
     this.title,
     this.description,
     this.price,
+    this.rentPrice,
     this.metr,
     this.buildingMetr,
     this.countRoom,
@@ -113,14 +115,4 @@ final class DeleteFacilitiesData extends InfoAdvertisingEvent {
   DeleteFacilitiesData({
     required this.idAdFacilities,
   });
-}
-
-final class DeleteImageData extends InfoAdvertisingEvent {
-  String idAdGallery;
-  DeleteImageData(this.idAdGallery);
-}
-
-final class UpdateImageData extends InfoAdvertisingEvent {
-  List<File> images;
-  UpdateImageData(this.images);
 }

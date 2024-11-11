@@ -209,7 +209,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   if (state is AuthLoadingState) ...[
                     const SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       ),
                     ),
                   ],

@@ -55,6 +55,7 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
         child: BlocBuilder<RecentBloc, RecentState>(
           builder: (context, state) {
             return RefreshIndicator(
+              color: CustomColor.normalRed,
               onRefresh: () async {
                 context.read<RecentBloc>().add(GetInitializedDataEvent());
               },
@@ -63,7 +64,9 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                   if (state is RecentLoadingState) ...[
                     const SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       ),
                     ),
                   ],

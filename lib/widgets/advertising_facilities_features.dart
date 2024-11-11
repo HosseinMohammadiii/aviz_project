@@ -145,7 +145,9 @@ class _AdvertisingFacilitiesWidgetState
             ),
             if (state is AdDetailLoadingState) ...[
               const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: CustomColor.normalRed,
+                ),
               ),
             ],
             if (state is AdDetailRequestSuccessState) ...[

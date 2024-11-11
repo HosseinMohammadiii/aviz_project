@@ -17,6 +17,7 @@ abstract class IInfoAdRepository {
     String title,
     String description,
     num price,
+    int rentPrice,
     int metr,
     int buildingMetr,
     int countRoom,
@@ -28,9 +29,7 @@ abstract class IInfoAdRepository {
   Future<Either<String, String>> postImagesToGallery(
     List<File> images,
   );
-  Future<Either<String, String>> getUpdateAdImagesAd(
-    List<File> images,
-  );
+
   Future<Either<String, String>> getDeleteAdImagesAd(String id);
 
   Future<Either<String, List<AdvertisingFacilities>>> getDiplayAdFacilities();
@@ -76,6 +75,7 @@ final class InfoAdRepository extends IInfoAdRepository {
     String title,
     String description,
     num price,
+    int rentPrice,
     int metr,
     int buildingMetr,
     int countRoom,
@@ -91,6 +91,7 @@ final class InfoAdRepository extends IInfoAdRepository {
         title,
         description,
         price,
+        rentPrice,
         metr,
         buildingMetr,
         countRoom,
@@ -147,18 +148,17 @@ final class InfoAdRepository extends IInfoAdRepository {
   }
 
   @override
-  Future<Either<String, String>> postImagesToGallery(List<File> images) async {
+  Future<Either<String, String>> postImagesToGallery(
+    List<File> images,
+  ) async {
     try {
-      var response = await datasource.postImagesToGallery(
+      await datasource.postImagesToGallery(
         images,
       );
-      if (response.isNotEmpty) {
-        return right(response);
-      } else {
-        return left('خطایی پیش آمده! ');
-      }
+
+      return right('عملیات با موفقیت انجام شد');
     } on ApiException catch (ex) {
-      return left(ex.message = 'خطا محتوای متنی ندارد');
+      return left(ex.message ?? 'حجم تصویر بیشتر از 1 مگابایت است!');
     }
   }
 
@@ -210,18 +210,6 @@ final class InfoAdRepository extends IInfoAdRepository {
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');
-    }
-  }
-
-  @override
-  Future<Either<String, String>> getUpdateAdImagesAd(
-    List<File> images,
-  ) async {
-    try {
-      var response = await datasource.getUpdateAdImagesAd(images);
-      return right(response);
-    } on ApiException catch (ex) {
-      return left(ex.message = 'خطال محتوای متنی ندارد');
     }
   }
 

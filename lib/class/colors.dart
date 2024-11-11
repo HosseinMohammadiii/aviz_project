@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomColor {
   static const Color red = Color(0xffE60023);
   static const Color pink = Color(0xffff6269);
+  static const Color normalRed = Color(0xffe57373);
   static const Color grey = Color(0xffF9FAFB);
   static const Color black = Colors.black;
 

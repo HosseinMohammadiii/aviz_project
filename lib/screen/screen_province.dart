@@ -11,6 +11,7 @@ import 'package:aviz_project/widgets/provinceandcity_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../class/colors.dart';
 import '../widgets/selectprovincebutton_widget.dart';
 
 // ignore: must_be_immutable
@@ -106,7 +107,9 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                   if (state is ProvinceLoadindState) ...[
                     const SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       ),
                     ),
                   ],

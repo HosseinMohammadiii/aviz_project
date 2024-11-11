@@ -24,6 +24,7 @@ import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
 import 'DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import 'screen/register_advertising_screen.dart';
 import 'screen/register_feature_screen.dart';
 import 'widgets/buttomnavigationbar.dart';
 
@@ -186,4 +187,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// RegisterHomeFeatureScreen(title: '',)  BottomNavigationScreen()
+// RegisterHomeFeatureScreen(title: '',)  BottomNavigationScreen()   RegisterAdvertising()

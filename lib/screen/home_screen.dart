@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           return SafeArea(
             child: RefreshIndicator(
+              color: CustomColor.normalRed,
               onRefresh: () async {
                 context.read<HomeBloc>().add(HomeGetInitializeData());
               },
@@ -142,10 +143,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SizedBox(
                                       width: RegisterId().getCity().isEmpty
                                           ? null
-                                          : 120,
+                                          : 75,
                                       child: Text(
                                         RegisterId().getCity().isNotEmpty
-                                            ? "${RegisterId().getProvince()}،${RegisterId().getCity()}"
+                                            ? RegisterId().getCity()
                                             : RegisterId().getProvince(),
                                         style: const TextStyle(
                                           fontFamily: 'SN',
@@ -199,7 +200,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state is HomeLoadingState) ...[
                     const SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: CustomColor.normalRed,
+                        ),
                       ),
                     ),
                   ],

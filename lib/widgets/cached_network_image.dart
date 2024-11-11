@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../class/colors.dart';
+
 class CachedNetworkImageWidget extends StatelessWidget {
   const CachedNetworkImageWidget({
     super.key,
@@ -18,7 +20,9 @@ class CachedNetworkImageWidget extends StatelessWidget {
         fit: BoxFit.cover,
         imageUrl: imgUrl,
         errorWidget: (context, url, error) => const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: CustomColor.normalRed,
+          ),
         ),
         placeholder: (context, url) => Center(
           child: Shimmer.fromColors(

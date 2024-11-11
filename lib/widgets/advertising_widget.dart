@@ -74,7 +74,9 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                     width: 107,
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) => const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: CustomColor.normalRed,
+                      ),
                     ),
                     placeholder: (context, url) => Center(
                       child: Shimmer.fromColors(

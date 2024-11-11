@@ -15,6 +15,7 @@ class TextFieldBox extends StatefulWidget {
     this.controller,
     this.isShowPassword,
     this.enable = false,
+    this.isPrice,
     required this.textInputAction,
   });
   String hint;
@@ -25,6 +26,7 @@ class TextFieldBox extends StatefulWidget {
   TextInputAction textInputAction;
   bool? isShowPassword;
   bool enable = false;
+  bool? isPrice;
 
   @override
   State<TextFieldBox> createState() => _TextFieldBoxState();
@@ -33,6 +35,7 @@ class TextFieldBox extends StatefulWidget {
 class _TextFieldBoxState extends State<TextFieldBox> {
   @override
   Widget build(BuildContext context) {
+    final stateAd = context.read<RegisterInfoAdCubit>().state;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
@@ -91,11 +94,9 @@ class _TextFieldBoxState extends State<TextFieldBox> {
               ),
             ),
             onTapOutside: (event) {
-              widget.focusNode.unfocus();
+              FocusScope.of(context).unfocus();
             },
             onChanged: (value) {
-              final stateAd = context.read<RegisterInfoAdCubit>().state;
-
               setState(() {
                 switch (widget.hint) {
                   case 'عنوان آویز را وارد کنید':
@@ -114,12 +115,5 @@ class _TextFieldBoxState extends State<TextFieldBox> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    widget.focusNode.dispose();
-    widget.controller?.dispose();
-    super.dispose();
   }
 }

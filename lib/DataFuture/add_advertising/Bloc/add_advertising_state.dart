@@ -11,6 +11,8 @@ final class AddAdvertisingInitializedData extends AddAdvertisingState {}
 
 final class AddAdvertisingLoading extends AddAdvertisingState {}
 
+final class AddAdvertisingImageLoading extends AddAdvertisingState {}
+
 final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
   Either<String, List<RegisterFutureAd>> displayAdvertising;
   Either<String, List<AdvertisingFacilities>> displayAdvertisingFacilities;
@@ -19,6 +21,11 @@ final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {
     this.displayAdvertising,
     this.displayAdvertisingFacilities,
   );
+}
+
+final class PostImageAdState extends AddAdvertisingState {
+  Either<String, String> postImage;
+  PostImageAdState(this.postImage);
 }
 
 class BoolState {
@@ -89,16 +96,19 @@ class BoolState {
 }
 
 class RegisterInfoAd {
+  bool? uploadProgress;
+  bool? stateRentHome;
   num? metr;
   num? buildingMetr;
   num? countRoom;
   num? floor;
   num? yearBuild;
+  num? price;
+  num? rentPrice;
   String idCt;
   String province;
   String title;
   String description;
-  num? price;
   List<File>? images;
   String idFeature;
   String document;
@@ -106,6 +116,8 @@ class RegisterInfoAd {
   String city;
 
   RegisterInfoAd({
+    this.uploadProgress,
+    this.stateRentHome,
     required this.metr,
     required this.buildingMetr,
     required this.countRoom,
@@ -116,6 +128,7 @@ class RegisterInfoAd {
     required this.title,
     required this.description,
     required this.price,
+    required this.rentPrice,
     required this.images,
     required this.idFeature,
     required this.document,
@@ -123,6 +136,8 @@ class RegisterInfoAd {
     required this.city,
   });
   RegisterInfoAd copyWith({
+    final bool? uploadProgress,
+    final bool? stateRentHome,
     final num? metr,
     final num? buildingMetr,
     final num? countRoom,
@@ -133,6 +148,7 @@ class RegisterInfoAd {
     final String? title,
     final String? description,
     final num? price,
+    final num? rentPrice,
     final List<File>? images,
     final String? idFeature,
     final String? document,
@@ -140,6 +156,8 @@ class RegisterInfoAd {
     final String? city,
   }) {
     return RegisterInfoAd(
+      uploadProgress: uploadProgress ?? this.uploadProgress,
+      stateRentHome: stateRentHome ?? this.stateRentHome,
       metr: metr ?? this.metr,
       buildingMetr: buildingMetr ?? this.buildingMetr,
       countRoom: countRoom ?? this.countRoom,
@@ -150,6 +168,7 @@ class RegisterInfoAd {
       title: title ?? this.title,
       description: description ?? this.description,
       price: price ?? this.price,
+      rentPrice: rentPrice ?? this.rentPrice,
       images: images ?? this.images,
       idFeature: idFeature ?? this.idFeature,
       document: document ?? this.document,

@@ -87,7 +87,10 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
                                                     (context, url, error) =>
                                                         const Center(
                                                   child:
-                                                      CircularProgressIndicator(),
+                                                      CircularProgressIndicator(
+                                                    color:
+                                                        CustomColor.normalRed,
+                                                  ),
                                                 ),
                                                 placeholder: (context, url) =>
                                                     Center(
@@ -115,7 +118,9 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
                                     imageUrl: allImages[index],
                                     errorWidget: (context, url, error) =>
                                         const Center(
-                                      child: CircularProgressIndicator(),
+                                      child: CircularProgressIndicator(
+                                        color: CustomColor.normalRed,
+                                      ),
                                     ),
                                     placeholder: (context, url) => Center(
                                       child: Shimmer.fromColors(
