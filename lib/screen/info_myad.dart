@@ -9,12 +9,10 @@ import 'package:aviz_project/DataFuture/search/Bloc/search_event.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_state.dart';
 import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/extension/price_extension.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
@@ -28,6 +26,7 @@ import '../class/colors.dart';
 import '../widgets/advertising_facilities_features.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/box_attention.dart';
+import '../widgets/interactiveimage.dart';
 import '../widgets/text_widget.dart';
 import 'dart:ui' as ui;
 
@@ -275,21 +274,23 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                     },
                     builder: (context, state) => GestureDetector(
                       onTap: _toggleSaveStatus,
-                      child: state is SaveLoadingState
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: CustomColor.normalRed,
-                                strokeWidth: 3,
-                              ),
-                            )
-                          : Image.asset(
-                              isSaved
-                                  ? 'images/save_full.png'
-                                  : 'images/save_vacant.png',
-                              scale: 5,
-                            ),
+                      child: isError
+                          ? const SizedBox.shrink()
+                          : state is SaveLoadingState
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: CustomColor.normalRed,
+                                    strokeWidth: 3,
+                                  ),
+                                )
+                              : Image.asset(
+                                  isSaved
+                                      ? 'images/save_full.png'
+                                      : 'images/save_vacant.png',
+                                  scale: 5,
+                                ),
                     ),
                   ),
                   const SizedBox(
@@ -904,125 +905,78 @@ class _AdvertisingGalleryImagesState extends State<AdvertisingGalleryImages> {
   Widget build(BuildContext context) {
     return BlocBuilder<AdImagesHomeBloc, AdImagesState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            if (state is UserAdvertisingImageDataState) ...[
-              state.displayImageAdvertising.fold(
-                (error) => Center(
-                  child: textWidget(
-                    error,
-                    CustomColor.black,
-                    16,
-                    FontWeight.w500,
+        return Container(
+          height: 160,
+          width: double.infinity,
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (state is AdImagesLoadingState) ...[
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: CustomColor.normalRed,
                   ),
                 ),
-                (r) {
-                  // Combine all images into a single list from all items
-                  List<String> allImages =
-                      r.expand((item) => item.images).toList();
-
-                  return SizedBox(
-                    height: 160,
-                    width: double.infinity,
-                    child: PageView.builder(
-                      itemCount: allImages.length,
-                      controller: widget.controller,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          contentPadding: EdgeInsets.zero,
-                                          content: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: InteractiveViewer(
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                imageUrl: allImages[index],
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color:
-                                                        CustomColor.normalRed,
-                                                  ),
-                                                ),
-                                                placeholder: (context, url) =>
-                                                    Center(
-                                                  child: Shimmer.fromColors(
-                                                    baseColor:
-                                                        const Color(0xffE1E1E1),
-                                                    highlightColor:
-                                                        const Color(0xffF3F3F2),
-                                                    child: Container(
-                                                      color: Colors.blue,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: CachedNetworkImage(
-                                    height: 110,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    imageUrl: allImages[index],
-                                    errorWidget: (context, url, error) =>
-                                        const Center(
-                                      child: CircularProgressIndicator(
-                                        color: CustomColor.normalRed,
-                                      ),
-                                    ),
-                                    placeholder: (context, url) => Center(
-                                      child: Shimmer.fromColors(
-                                        baseColor: const Color(0xffE1E1E1),
-                                        highlightColor: const Color(0xffF3F3F2),
-                                        child: const SizedBox(),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 12,
-                                  child: SmoothPageIndicator(
-                                    controller: widget.controller,
-                                    count: allImages.length,
-                                    effect: const ExpandingDotsEffect(
-                                      expansionFactor: 5,
-                                      dotHeight: 8,
-                                      dotWidth: 8,
-                                      dotColor: Colors.white,
-                                      activeDotColor: CustomColor.red,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+              ],
+              if (state is UserAdvertisingImageDataState) ...[
+                state.displayImageAdvertising.fold(
+                  (error) => Center(
+                    child: textWidget(
+                      error,
+                      CustomColor.black,
+                      16,
+                      FontWeight.w500,
                     ),
-                  );
-                },
-              ),
+                  ),
+                  (r) {
+                    // Combine all images into a single list from all items
+                    List<String> allImages =
+                        r.expand((item) => item.images).toList();
+
+                    return Expanded(
+                      child: PageView.builder(
+                        itemCount: allImages.length,
+                        controller: widget.controller,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Stack(
+                                fit: StackFit.expand,
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  InterActiveImageWidget(
+                                    allImages: allImages,
+                                    index: index,
+                                  ),
+                                  Positioned(
+                                    bottom: 12,
+                                    child: SmoothPageIndicator(
+                                      controller: widget.controller,
+                                      count: allImages.length,
+                                      effect: const ExpandingDotsEffect(
+                                        expansionFactor: 5,
+                                        dotHeight: 8,
+                                        dotWidth: 8,
+                                        dotColor: Colors.white,
+                                        activeDotColor: CustomColor.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
             ],
-          ],
+          ),
         );
       },
     );

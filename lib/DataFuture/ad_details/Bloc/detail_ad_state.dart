@@ -30,6 +30,8 @@ final class AdFacilitiesFuturesDataState extends AdFeaturesState {
 
 final class AdImagesInitializeState extends AdImagesState {}
 
+final class AdImagesLoadingState extends AdImagesState {}
+
 class AdGalleryImagesDataState extends AdImagesState {
   Either<String, List<RegisterFutureAdGallery>> displayImagesAdvertising;
 

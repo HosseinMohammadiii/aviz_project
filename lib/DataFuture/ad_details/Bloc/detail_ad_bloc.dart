@@ -28,12 +28,14 @@ class AdImagesHomeBloc extends Bloc<UserAdEvent, AdImagesState> {
   AdImagesHomeBloc(this.repository) : super(AdImagesInitializeState()) {
     on<AdGalleryImagesDataEvent>(
       (event, emit) async {
+        emit(AdImagesLoadingState());
         var adGallery = await repository.getDiplayImagesAd(event.id);
         emit(AdGalleryImagesDataState(adGallery));
       },
     );
     on<AdImageListHomeEvent>(
       (event, emit) async {
+        emit(AdImagesLoadingState());
         var adGallery = await repository.getDiplayImagesAd(event.id);
         emit(UserAdvertisingImageDataState(adGallery));
       },

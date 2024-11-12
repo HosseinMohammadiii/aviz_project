@@ -26,7 +26,6 @@ class HomeRemoteDataSource extends IHomeDataSoure {
         'advertising_home',
         queryParameters: query,
         options: Options(
-          // contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
@@ -49,7 +48,6 @@ class HomeRemoteDataSource extends IHomeDataSoure {
       var response = await dio.get(
         'facilities',
         options: Options(
-          // contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
         ),
       );
