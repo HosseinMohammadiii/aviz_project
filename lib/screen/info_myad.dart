@@ -586,6 +586,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                                 _changeBoxContainer(
                                   indexContainer,
                                   widget.advertisingHome,
+                                  categoryTitle,
                                 ),
                                 const SliverToBoxAdapter(
                                   child: SizedBox(
@@ -612,6 +613,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
 _changeBoxContainer(
   int index,
   RegisterFutureAd adHome,
+  String categoryType,
 ) {
   switch (index) {
     case 0:
@@ -620,7 +622,10 @@ _changeBoxContainer(
 
     case 1:
       return SliverToBoxAdapter(
-          child: PriceInfoWidget(advertisingHome: adHome));
+          child: PriceInfoWidget(
+        advertisingHome: adHome,
+        categoryType: categoryType,
+      ));
     case 2:
       return SliverToBoxAdapter(
         child: AdvertisingFacilitiesWidget(
@@ -768,8 +773,10 @@ class PriceInfoWidget extends StatefulWidget {
   PriceInfoWidget({
     super.key,
     required this.advertisingHome,
+    required this.categoryType,
   });
   RegisterFutureAd advertisingHome;
+  final String categoryType;
   @override
   State<PriceInfoWidget> createState() => _PriceInfoWidgetState();
 }
@@ -777,6 +784,8 @@ class PriceInfoWidget extends StatefulWidget {
 class _PriceInfoWidgetState extends State<PriceInfoWidget> {
   @override
   Widget build(BuildContext context) {
+    bool result = ['اجاره خانه', 'اجاره ویلا', 'اجاره آپارتمان']
+        .contains(widget.categoryType);
     return Container(
       height: 96,
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -793,7 +802,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
               SizedBox(
                 width: 100,
                 child: Text(
-                  priceChanged(widget.advertisingHome),
+                  priceChanged(widget.advertisingHome, result),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: CustomColor.black,
@@ -805,7 +814,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
                 ),
               ),
               textWidget(
-                'قیمت هر متر:',
+                result ? 'ودیعه:' : 'قیمت هر متر:',
                 CustomColor.black,
                 16,
                 FontWeight.w700,
@@ -835,7 +844,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
                 ),
               ),
               textWidget(
-                'قیمت کل:',
+                result ? 'اجاره ماهانه:' : 'قیمت کل:',
                 CustomColor.black,
                 16,
                 FontWeight.w700,
@@ -848,9 +857,13 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
   }
 
   //Function to calculate the price per meter of the house
-  priceChanged(RegisterFutureAd adHome) {
+  priceChanged(RegisterFutureAd adHome, bool result) {
     NumberFormat currencyFormat =
         NumberFormat.currency(locale: 'fa-IR', symbol: '');
+    if (result) {
+      var priceChange = currencyFormat.format(adHome.rentPrice);
+      return priceChange;
+    }
 
     var priceChange = currencyFormat.format(adHome.homeprice / adHome.metr);
     return priceChange;
