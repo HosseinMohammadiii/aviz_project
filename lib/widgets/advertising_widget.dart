@@ -118,8 +118,7 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
                         height: 10,
                       ),
                       PriceWidget(
-                          context: context,
-                          adPrice: widget.advertising.homeprice),
+                          context: context, adPrice: widget.advertising),
                     ],
                   ),
                 ),
