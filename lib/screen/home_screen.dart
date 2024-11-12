@@ -94,25 +94,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                         isCity: true,
                                         onChanged: () {},
                                         onChangedCity: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CityScreen(
-                                                  onChanged: () {
-                                                    RegisterId().setCity(
-                                                        provinceAndCity.city);
-                                                    context.read<HomeBloc>().add(
-                                                        HomeGetInitializeData());
-                                                    provinceAndCity.city = '';
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  province: RegisterId()
-                                                      .getProvince(),
-                                                ),
-                                              ));
-
+                                          if (provinceAndCity.province != '') {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CityScreen(
+                                                    onChanged: () {
+                                                      RegisterId().setCity(
+                                                          provinceAndCity.city);
+                                                      context.read<HomeBloc>().add(
+                                                          HomeGetInitializeData());
+                                                      provinceAndCity.city = '';
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    province: RegisterId()
+                                                        .getProvince(),
+                                                  ),
+                                                ));
+                                          }
                                           RegisterId().setProvince(
                                               provinceAndCity.province);
                                           provinceAndCity.province = '';
@@ -127,23 +128,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Icons.location_on_outlined,
                                       color: CustomColor.grey500,
                                     ),
-                                    SizedBox(
-                                      width: RegisterId().getCity().isEmpty
-                                          ? null
-                                          : 75,
-                                      child: Text(
-                                        RegisterId().getCity().isNotEmpty
-                                            ? RegisterId().getCity()
-                                            : RegisterId().getProvince(),
-                                        style: const TextStyle(
-                                          fontFamily: 'SN',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          color: CustomColor.black,
-                                        ),
-                                        textDirection: TextDirection.rtl,
-                                        overflow: TextOverflow.ellipsis,
+                                    Text(
+                                      RegisterId().getCity().isNotEmpty
+                                          ? RegisterId().getCity()
+                                          : RegisterId().getProvince(),
+                                      style: const TextStyle(
+                                        fontFamily: 'SN',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: CustomColor.black,
                                       ),
+                                      textDirection: TextDirection.rtl,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(
                                       width: 3,

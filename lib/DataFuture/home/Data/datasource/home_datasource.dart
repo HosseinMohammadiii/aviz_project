@@ -20,7 +20,8 @@ class HomeRemoteDataSource extends IHomeDataSoure {
     try {
       Map<String, dynamic> query = {
         'filter':
-            'province=${RegisterId().getProvince()}&city=${RegisterId().getCity()}'
+            'province=${RegisterId().getProvince()}&city=${RegisterId().getCity()}',
+        'sort': 'updated'
       };
       var response = await dio.get(
         'advertising_home',

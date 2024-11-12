@@ -263,8 +263,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                           setState(() {
                                             city = cityName.city;
                                           });
-
-                                          Navigator.pop(context);
+                                          if (city.isNotEmpty) {
+                                            Navigator.pop(context);
+                                          }
                                         },
                                       ),
                                     ),
@@ -293,8 +294,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                       setState(() {
                                         province = stateAd.province;
                                       });
-
-                                      Navigator.pop(context);
+                                      if (province.isNotEmpty) {
+                                        Navigator.pop(context);
+                                      }
                                     },
                                   ),
                                 ),
