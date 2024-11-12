@@ -38,101 +38,112 @@ class InterActiveImageWidget extends StatelessWidget {
         }
 
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) {
-            return Dialog(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: FutureBuilder<Size>(
-                  future: getImageSize(allImages[index]),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return const Center(child: Text('خطا در بارگذاری تصویر'));
-                    } else if (snapshot.hasData) {
-                      final imageSize = snapshot.data!;
-                      final dialogHeight =
-                          (imageSize.height / imageSize.width) *
-                              MediaQuery.of(context).size.width;
+            return Stack(
+              children: [
+                Dialog(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: FutureBuilder<Size>(
+                      future: getImageSize(allImages[index]),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return const Center(
+                              child: Text('خطا در بارگذاری تصویر'));
+                        } else if (snapshot.hasData) {
+                          final imageSize = snapshot.data!;
+                          final dialogHeight =
+                              (imageSize.height / imageSize.width) *
+                                  MediaQuery.of(context).size.width;
 
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: dialogHeight,
-                        child: InteractiveViewer(
-                          child: PageView.builder(
-                            itemCount: allImages.length,
-                            controller: controller2,
-                            itemBuilder: (context, index) => Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: CachedNetworkImage(
-                                    fit: BoxFit.fill,
-                                    imageUrl: allImages[index],
-                                    errorWidget: (context, url, error) =>
-                                        const Center(
-                                      child: CircularProgressIndicator(
-                                          color: Colors.red),
-                                    ),
-                                    placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator(
-                                          color: Colors.grey),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 1,
-                                  right: 1,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: Container(
-                                      width: 32,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(18),
-                                        color: CustomColor.grey500
-                                            .withOpacity(0.8),
-                                        border: Border.all(
-                                            width: 2, color: CustomColor.pink),
-                                      ),
-                                      child: Icon(
-                                        Icons.close_rounded,
-                                        color: CustomColor.white,
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: dialogHeight,
+                            child: InteractiveViewer(
+                              child: PageView.builder(
+                                itemCount: allImages.length,
+                                controller: controller2,
+                                itemBuilder: (context, index) => Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.fill,
+                                        imageUrl: allImages[index],
+                                        errorWidget: (context, url, error) =>
+                                            const Center(
+                                          child: CircularProgressIndicator(
+                                              color: Colors.red),
+                                        ),
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                          child: CircularProgressIndicator(
+                                              color: Colors.grey),
+                                        ),
                                       ),
                                     ),
-                                    color: Colors.red,
-                                  ),
+                                  ],
                                 ),
-                                Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  bottom: 4,
-                                  child: Center(
-                                    child: SmoothPageIndicator(
-                                      controller: controller2,
-                                      count: allImages.length,
-                                      effect: const ExpandingDotsEffect(
-                                        expansionFactor: 5,
-                                        dotHeight: 8,
-                                        dotWidth: 8,
-                                        dotColor: Colors.white,
-                                        activeDotColor: CustomColor.red,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
                 ),
-              ),
+                Visibility(
+                  visible: allImages.isNotEmpty && allImages.length != 1,
+                  child: Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 8,
+                    child: Center(
+                      child: SmoothPageIndicator(
+                        controller: controller2,
+                        count: allImages.length,
+                        effect: const ExpandingDotsEffect(
+                          expansionFactor: 5,
+                          dotHeight: 8,
+                          dotWidth: 8,
+                          dotColor: Colors.white,
+                          activeDotColor: CustomColor.red,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    padding: const EdgeInsets.only(left: 6),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: CustomColor.grey500.withOpacity(0.8),
+                        border: Border.all(width: 2, color: CustomColor.pink),
+                      ),
+                      child: Icon(
+                        Icons.close_rounded,
+                        color: CustomColor.white,
+                      ),
+                    ),
+                    color: Colors.red,
+                  ),
+                ),
+              ],
             );
           },
         );

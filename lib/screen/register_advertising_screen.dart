@@ -28,6 +28,9 @@ class RegisterAdvertising extends StatefulWidget {
 }
 
 class _RegisterAdvertisingState extends State<RegisterAdvertising> {
+  //This Variable for Set Number to persian number
+  final formatter = NumberFormat('#,###', 'fa');
+
   final TextEditingController controllertitle = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
   final TextEditingController controllerPrice = TextEditingController();
@@ -51,7 +54,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   @override
   void initState() {
     final stateAd = context.read<RegisterInfoAdCubit>().state;
-    final formatter = NumberFormat('#,###', 'fa');
 
     controllertitle.text = stateAd.title;
     controllerDescription.text = stateAd.description;
@@ -117,9 +119,6 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   Widget build(BuildContext context) {
     //This Variable is Used for RegisterInfoAdCubit Modes
     final stateAd = context.read<RegisterInfoAdCubit>().state;
-
-    //This Variable for Set Number to persian number
-    final formatter = NumberFormat('#,###', 'fa');
 
     // Widget to display a bottom sheet for selecting images from the camera or gallery
     Future showPicker({

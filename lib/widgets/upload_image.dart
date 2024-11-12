@@ -92,22 +92,54 @@ class _UploadImageState extends State<UploadImage> {
                               GestureDetector(
                                 onTap: () {
                                   showDialog(
+                                    barrierDismissible: false,
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        contentPadding: EdgeInsets.zero,
-                                        content: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: InteractiveViewer(
-                                            child: Image.file(
-                                              widget.fileImage![index],
-                                              key: ValueKey(widget
-                                                  .fileImage![index].path),
-                                              fit: BoxFit.fill,
+                                      return Stack(
+                                        children: [
+                                          AlertDialog(
+                                            contentPadding: EdgeInsets.zero,
+                                            content: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: InteractiveViewer(
+                                                child: Image.file(
+                                                  widget.fileImage![index],
+                                                  key: ValueKey(widget
+                                                      .fileImage![index].path),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          Positioned(
+                                            top: 1,
+                                            right: 1,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              icon: Container(
+                                                width: 32,
+                                                height: 32,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                  color: CustomColor.grey500
+                                                      .withOpacity(0.8),
+                                                  border: Border.all(
+                                                      width: 2,
+                                                      color: CustomColor.pink),
+                                                ),
+                                                child: Icon(
+                                                  Icons.close_rounded,
+                                                  color: CustomColor.white,
+                                                ),
+                                              ),
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   );
