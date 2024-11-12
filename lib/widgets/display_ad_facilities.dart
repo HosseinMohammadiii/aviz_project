@@ -38,7 +38,7 @@ class DisplayAdFacilities extends StatelessWidget {
             ),
             _dottedLineWidget(),
           ],
-          if (facilities.parking == true) ...[
+          if (facilities.parking) ...[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               child: textWidget(

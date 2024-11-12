@@ -22,12 +22,18 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
   PageController pageControllerWC = PageController(initialPage: 1);
   PageController pageControllerFM = PageController(initialPage: 1);
 
-  List<ClassSwitchBox> propertiesTxt = [
+  List<ClassSwitchBox> propertiesTxtRentApartement = [
     ClassSwitchBox('آسانسور', false),
     ClassSwitchBox('پارکینگ', false),
     ClassSwitchBox('انباری', false),
     ClassSwitchBox('بالکن', false),
     ClassSwitchBox('پنت هاوس', false),
+  ];
+  List<ClassSwitchBox> propertiesTxtRentHome = [
+    ClassSwitchBox('آسانسور', false),
+    ClassSwitchBox('پارکینگ', false),
+    ClassSwitchBox('انباری', false),
+    ClassSwitchBox('بالکن', false),
     ClassSwitchBox('دوبلکس', false),
   ];
   List<ClassSwitchBox> propertiesLandTxt = [
@@ -41,12 +47,18 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
   @override
   void initState() {
     final state = context.read<BoolStateCubit>().state;
-    propertiesTxt = [
+    propertiesTxtRentApartement = [
       ClassSwitchBox('آسانسور', state.elevator),
       ClassSwitchBox('پارکینگ', state.parking),
       ClassSwitchBox('انباری', state.storeroom),
       ClassSwitchBox('بالکن', state.balcony),
       ClassSwitchBox('پنت هاوس', state.penthouse),
+    ];
+    propertiesTxtRentHome = [
+      ClassSwitchBox('آسانسور', state.elevator),
+      ClassSwitchBox('پارکینگ', state.parking),
+      ClassSwitchBox('انباری', state.storeroom),
+      ClassSwitchBox('بالکن', state.balcony),
       ClassSwitchBox('دوبلکس', state.duplex),
     ];
 
@@ -71,23 +83,33 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
               SliverList.builder(
                 itemCount: widget.title == 'فروش زمین'
                     ? propertiesLandTxt.length
-                    : propertiesTxt.length,
+                    : widget.title == 'اجاره آپارتمان' ||
+                            widget.title == 'فروش آپارتمان'
+                        ? propertiesTxtRentApartement.length
+                        : propertiesTxtRentHome.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        if (widget.title != 'فروش زمین') {
-                          propertiesTxt[index].switchBool =
-                              !propertiesTxt[index].switchBool;
+                        if (widget.title == 'اجاره آپارتمان' ||
+                            widget.title == 'فروش آپارتمان') {
+                          propertiesTxtRentApartement[index].switchBool =
+                              !propertiesTxtRentApartement[index].switchBool;
                           context.read<BoolStateCubit>().updateBool(
-                              propertiesTxt[index].txt,
-                              propertiesTxt[index].switchBool);
-                        } else {
+                              propertiesTxtRentApartement[index].txt,
+                              propertiesTxtRentApartement[index].switchBool);
+                        } else if (widget.title == 'فروش زمین') {
                           propertiesLandTxt[index].switchBool =
                               !propertiesLandTxt[index].switchBool;
                           context.read<BoolStateCubit>().updateBool(
                               propertiesLandTxt[index].txt,
                               propertiesLandTxt[index].switchBool);
+                        } else {
+                          propertiesTxtRentHome[index].switchBool =
+                              !propertiesTxtRentHome[index].switchBool;
+                          context.read<BoolStateCubit>().updateBool(
+                              propertiesTxtRentHome[index].txt,
+                              propertiesTxtRentHome[index].switchBool);
                         }
                       });
                     },
@@ -111,7 +133,11 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                                 Colors.transparent),
                             value: widget.title == 'فروش زمین'
                                 ? propertiesLandTxt[index].switchBool
-                                : propertiesTxt[index].switchBool,
+                                : widget.title == 'اجاره آپارتمان' ||
+                                        widget.title == 'فروش آپارتمان'
+                                    ? propertiesTxtRentApartement[index]
+                                        .switchBool
+                                    : propertiesTxtRentHome[index].switchBool,
                             onChanged: (value) {
                               setState(() {
                                 if (widget.title == 'فروش زمین') {
@@ -119,11 +145,20 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
 
                                   context.read<BoolStateCubit>().updateBool(
                                       propertiesLandTxt[index].txt, value);
-                                } else {
-                                  propertiesTxt[index].switchBool = value;
+                                } else if (widget.title == 'اجاره آپارتمان' ||
+                                    widget.title == 'فروش آپارتمان') {
+                                  propertiesTxtRentApartement[index]
+                                      .switchBool = value;
 
                                   context.read<BoolStateCubit>().updateBool(
-                                      propertiesTxt[index].txt, value);
+                                      propertiesTxtRentApartement[index].txt,
+                                      value);
+                                } else {
+                                  propertiesTxtRentHome[index].switchBool =
+                                      value;
+
+                                  context.read<BoolStateCubit>().updateBool(
+                                      propertiesTxtRentHome[index].txt, value);
                                 }
                               });
                             },
@@ -131,7 +166,10 @@ class _ItemsSwitchboxState extends State<ItemsSwitchbox> {
                           textWidget(
                             widget.title == 'فروش زمین'
                                 ? propertiesLandTxt[index].txt
-                                : propertiesTxt[index].txt,
+                                : widget.title == 'اجاره آپارتمان' ||
+                                        widget.title == 'فروش آپارتمان'
+                                    ? propertiesTxtRentApartement[index].txt
+                                    : propertiesTxtRentHome[index].txt,
                             CustomColor.black,
                             16,
                             FontWeight.w400,

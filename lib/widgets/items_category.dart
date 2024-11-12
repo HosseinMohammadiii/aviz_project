@@ -7,7 +7,7 @@ import '../class/colors.dart';
 import 'text_widget.dart';
 
 class ItemSelectCategory extends StatefulWidget {
-  ItemSelectCategory({
+  const ItemSelectCategory({
     super.key,
     required this.title,
   });

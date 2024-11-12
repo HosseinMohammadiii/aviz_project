@@ -87,6 +87,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   void initState() {
+    print(widget.title);
     var state = context.read<StatusModeBloc>().state;
     switch (state.statusMode) {
       case StatusMode.apartment:
@@ -939,9 +940,20 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             ),
                           );
                         }
+                        if (title == 'اجاره آپارتمان' ||
+                            title == 'اجاره خانه' ||
+                            title == 'اجاره ویلا') {
+                          context.read<RegisterInfoAdCubit>().setParametrInfoAd(
+                                stateRentHome: true,
+                              );
 
-                        BlocProvider.of<NavigationPage>(context)
-                            .getNavItems(ViewPage.registerHomeAdvertising);
+                          BlocProvider.of<NavigationPage>(context).getNavItems(
+                              ViewPage.registerRentHomeAdvertising);
+                          print(stateAd.stateRentHome);
+                        } else {
+                          BlocProvider.of<NavigationPage>(context)
+                              .getNavItems(ViewPage.registerHomeAdvertising);
+                        }
                       } catch (e) {
                         displayDialog(
                             'لطفاً مقدار عددی معتبر وارد کنید', context);

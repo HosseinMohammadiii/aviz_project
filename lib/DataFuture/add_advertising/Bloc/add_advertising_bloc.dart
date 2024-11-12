@@ -215,6 +215,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
           RegisterInfoAd(
             uploadProgress: null,
             metr: null,
+            stateRentHome: null,
             buildingMetr: null,
             countRoom: null,
             floor: null,
@@ -235,6 +236,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
 
   void setParametrInfoAd({
     final bool? uploadProgress,
+    final bool? stateRentHome,
     final num? metr,
     final num? buildingMetr,
     final num? countRoom,
@@ -254,6 +256,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
   }) {
     emit(state.copyWith(
       uploadProgress: uploadProgress,
+      stateRentHome: stateRentHome,
       metr: metr,
       buildingMetr: buildingMetr,
       countRoom: countRoom,
@@ -277,6 +280,7 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     emit(
       RegisterInfoAd(
         metr: null,
+        stateRentHome: null,
         buildingMetr: null,
         countRoom: null,
         floor: null,

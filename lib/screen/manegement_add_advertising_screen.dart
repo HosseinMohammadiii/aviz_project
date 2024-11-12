@@ -40,10 +40,10 @@ class _ManagementAddAdvertisingScreenState
               return const ItemsCategoryType();
 
             case ViewPage.itemsRentHome:
-              return ItemSelectCategory(title: 'اجاره');
+              return const ItemSelectCategory(title: 'اجاره');
 
             case ViewPage.itemsBuyHome:
-              return ItemSelectCategory(title: 'فروش');
+              return const ItemSelectCategory(title: 'فروش');
 
             case ViewPage.registerDetialsRentHomeAdvertising:
               return const RegisterHomeFeatureScreen(
@@ -61,7 +61,9 @@ class _ManagementAddAdvertisingScreenState
               );
 
             case ViewPage.registerHomeAdvertising:
-            case ViewPage.registerBusinessAdvertising:
+              return const RegisterAdvertising();
+
+            case ViewPage.registerRentHomeAdvertising:
               return const RegisterAdvertising();
 
             default:

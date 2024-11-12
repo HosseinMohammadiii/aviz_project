@@ -44,9 +44,6 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                             //Switching the status when we are on the ad items category page to a category step.
                             case ViewPage.itemsRentHome:
                             case ViewPage.itemsBuyHome:
-                              // case ViewPage.itemsBuyBusinessPlace:
-                              // case ViewPage.itemsRentBusinessPlace:
-                              print('itemsBuyHome');
                               context
                                   .read<NavigationPage>()
                                   .getNavItems(ViewPage.category);
@@ -87,11 +84,6 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
                               break;
 
-                            // case ViewPage.registerBusinessLocation:
-                            //   BlocProvider.of<NavigationPage>(context)
-                            //       .getNavItems(ViewPage.itemsRentBusinessPlace);
-                            //   break;
-
                             //Switching the status when we are on the ad final information registration page to a previous step.
                             case ViewPage.registerHomeAdvertising:
                               context.read<NavigationPage>().getNavItems(
@@ -101,10 +93,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
                               break;
 
-                            // case ViewPage.registerBusinessAdvertising:
-                            //   BlocProvider.of<NavigationPage>(context)
-                            //       .getNavItems(ViewPage.registerBusinessLocation);
-                            //   break;
+                            case ViewPage.registerRentHomeAdvertising:
+                              context.read<NavigationPage>().getNavItems(
+                                  ViewPage.registerDetialsRentHomeAdvertising);
+                              context.read<BoolStateCubit>().state.isUpdate =
+                                  true;
+
+                              break;
 
                             //Switching the status when we are not in a stage.
                             default:
@@ -164,19 +159,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         index = 2;
         break;
 
-      // case ViewPage.itemsRentBusinessPlace:
-      // case ViewPage.itemsBuyBusinessPlace:
       case ViewPage.registerDetialsRentHomeAdvertising:
       case ViewPage.registerDetialsBuyHomeAdvertising:
         index = 3;
         break;
 
-      // case ViewPage.registerHomeLocation:
-      //   // case ViewPage.registerBusinessLocation:
-      //   index = 4;
-      //   break;
       case ViewPage.registerHomeAdvertising:
-      case ViewPage.registerBusinessAdvertising:
+      case ViewPage.registerRentHomeAdvertising:
         index = 4;
         break;
 

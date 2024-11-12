@@ -18,7 +18,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
   String title;
   String description;
   num price;
-  int rentPrice;
+  num rentPrice;
   int metr;
   int buildingMetr;
   int countRoom;

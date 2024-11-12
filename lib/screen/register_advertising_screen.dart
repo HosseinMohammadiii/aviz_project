@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/class/scaffoldmessage.dart';
 import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
@@ -52,11 +51,23 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   @override
   void initState() {
     final stateAd = context.read<RegisterInfoAdCubit>().state;
+    final formatter = NumberFormat('#,###', 'fa');
 
     controllertitle.text = stateAd.title;
     controllerDescription.text = stateAd.description;
     controllerPrice.text =
         stateAd.price.toString() == 'null' ? '' : stateAd.price.toString();
+    controllerRentPrice.text = stateAd.rentPrice.toString() == 'null'
+        ? ''
+        : stateAd.rentPrice.toString();
+    formattedAmount2 = stateAd.price.toString() == 'null'
+        ? ''
+        : '${formatter.format(stateAd.price)} تومان';
+    formattedAmount1 = stateAd.rentPrice.toString() == 'null'
+        ? ''
+        : '${formatter.format(stateAd.rentPrice)} تومان';
+    priceLength1 = stateAd.rentPrice == null ? 0 : stateAd.rentPrice!.toInt();
+    priceLength2 = stateAd.price == null ? 0 : stateAd.price!.toInt();
 
     super.initState();
   }
@@ -76,8 +87,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
         }
       }
       Navigator.of(context).pop(); // Close the bottom sheet
+      FocusScope.of(context).unfocus();
     });
-
+    priceFocusNude.unfocus();
+    rentFocusNude.unfocus();
+    titleFocusNude.unfocus();
+    descriptionFocusNude.unfocus();
     return gallery;
   }
 
@@ -100,7 +115,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
 
   @override
   Widget build(BuildContext context) {
+    //This Variable is Used for RegisterInfoAdCubit Modes
     final stateAd = context.read<RegisterInfoAdCubit>().state;
+
+    //This Variable for Set Number to persian number
+    final formatter = NumberFormat('#,###', 'fa');
+
     // Widget to display a bottom sheet for selecting images from the camera or gallery
     Future showPicker({
       required BuildContext context,
@@ -164,8 +184,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   stateAd.city,
                   stateAd.title,
                   stateAd.description,
-                  priceLength2,
-                  priceLength1,
+                  stateAd.price!,
+                  stateAd.rentPrice!,
                   stateAd.metr!.toInt(),
                   stateAd.buildingMetr!.toInt(),
                   stateAd.countRoom!.toInt(),
@@ -253,7 +273,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       const TextTitleSection(
                           txt: 'قیمت', img: 'images/money_icon.png'),
                       Visibility(
-                        visible: stateAd.stateRentHome ?? true,
+                        //visible: stateAd.stateRentHome == true ? false : true,
+                        visible: false,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -270,6 +291,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                                     formattedAmount2 =
                                         '${formatter.format(convertedNumber)} تومان';
                                   });
+                                  stateAd.price = convertedNumber;
                                 } else {
                                   setState(() {
                                     formattedAmount2 = '';
@@ -278,7 +300,9 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                               },
                             ),
                             Text(
-                              formattedAmount2 != '' ? formattedAmount2 : '',
+                              stateAd.price.toString() == 'null'
+                                  ? ''
+                                  : stateAd.price.toString(),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: formattedAmount2 != ''
@@ -290,7 +314,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         ),
                       ),
                       Visibility(
-                        visible: stateAd.stateRentHome ?? false,
+                        // visible: stateAd.stateRentHome ?? false,
+                        visible: true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -308,12 +333,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                                 if (value.isNotEmpty) {
                                   var convertedNumber = int.parse(value);
                                   priceLength1 = convertedNumber;
-                                  final formatter = NumberFormat('#,###', 'fa');
 
                                   setState(() {
                                     formattedAmount1 =
                                         '${formatter.format(convertedNumber)} تومان';
                                   });
+                                  stateAd.rentPrice = num.tryParse(value) ?? 0;
                                 } else {
                                   setState(() {
                                     formattedAmount1 = '';
@@ -354,12 +379,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                                 if (value.isNotEmpty) {
                                   var convertedNumber = int.parse(value);
                                   priceLength2 = convertedNumber;
-                                  final formatter = NumberFormat('#,###', 'fa');
 
                                   setState(() {
                                     formattedAmount2 =
                                         '${formatter.format(convertedNumber)} تومان';
                                   });
+                                  stateAd.price = num.tryParse(value) ?? 0;
                                 } else {
                                   setState(() {
                                     formattedAmount2 = '';
@@ -390,7 +415,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         visible: stateAd.uploadProgress ?? true,
                         child: GestureDetector(
                           onTap: () async {
-                            //Check Internet Connection Befor Register Information Ad in the Database
+                            //Checking Internet Connection Befor Register Information Ad in the Database
                             if (!await checkInternetConnection(context)) {
                               return;
                             }
@@ -414,25 +439,31 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                               }
                             }
 
-                            // Check if no images have been selected
+                            // Checking if no images have been selected
                             if (stateAd.images!.isEmpty) {
                               // Display a dialog prompting the user to select an image
-                              displayDialog(
-                                  'لطفا عکس مورد نظر را انتخاب کنید', context);
+
+                              showMessage(
+                                'لطفا عکس مورد نظر را انتخاب کنید',
+                                context,
+                                2,
+                              );
                             }
-                            // Check if any of the required text fields are empty
-                            else if (controllertitle.text.isEmpty ||
-                                controllerDescription.text.isEmpty ||
-                                controllerPrice.text.isEmpty) {
+                            // Checking if any of the required text fields are empty
+                            else if (stateAd.stateRentHome == true
+                                ? controllertitle.text.isEmpty ||
+                                    controllerDescription.text.isEmpty ||
+                                    controllerPrice.text.isEmpty ||
+                                    controllerRentPrice.text.isEmpty
+                                : controllertitle.text.isEmpty ||
+                                    controllerDescription.text.isEmpty ||
+                                    controllerPrice.text.isEmpty) {
                               // Display a dialog prompting the user to fill in all fields
-                              displayDialog(
-                                  'لطفا تمام فیلد ها را کامل کنید', context);
-                            } else if (stateAd.stateRentHome == true) {
-                              if (priceLength1 < 1000000 ||
-                                  priceLength2 < 100000) {
-                                displayDialog(
-                                    'لطفا قیمت صحیح وارد کنید', context);
-                              }
+                              showMessage(
+                                'لطفا تمام فیلد ها را کامل کنید',
+                                context,
+                                2,
+                              );
                             } else {
                               BlocProvider.of<AddAdvertisingBloc>(context)
                                   .add(AddImagesToGallery(stateAd.images!));

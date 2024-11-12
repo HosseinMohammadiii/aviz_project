@@ -46,9 +46,8 @@ class NavigationPage extends Cubit<NavigationState> {
       case ViewPage.registerHomeAdvertising:
         emit(NavigationState(ViewPage.registerHomeAdvertising));
         break;
-
-      case ViewPage.registerBusinessAdvertising:
-        emit(NavigationState(ViewPage.registerBusinessAdvertising));
+      case ViewPage.registerRentHomeAdvertising:
+        emit(NavigationState(ViewPage.registerRentHomeAdvertising));
         break;
 
       case ViewPage.registerBusinessLocation:
@@ -85,14 +84,6 @@ class StatusModeBloc extends Cubit<StatusModeState> {
 
       case StatusMode.buyLand:
         emit(StatusModeState(StatusMode.buyLand));
-        break;
-
-      case StatusMode.rentBusinessPlace:
-        emit(StatusModeState(StatusMode.rentBusinessPlace));
-        break;
-
-      case StatusMode.buyBusinessPlace:
-        emit(StatusModeState(StatusMode.buyBusinessPlace));
         break;
 
       default:

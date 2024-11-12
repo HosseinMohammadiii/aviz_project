@@ -17,10 +17,8 @@ enum ViewPage {
   registerBusinessLocation,
   registerDetialsBuyHomeAdvertising,
   registerDetialsRentHomeAdvertising,
-  registerDetialsRentBusinessAdvertising,
-  registerDetialsBuyBusinessAdvertising,
   registerHomeAdvertising,
-  registerBusinessAdvertising,
+  registerRentHomeAdvertising,
 }
 
 final class StatusModeState {
@@ -32,7 +30,5 @@ enum StatusMode {
   apartment,
   home,
   villa,
-  rentBusinessPlace,
   buyLand,
-  buyBusinessPlace,
 }
