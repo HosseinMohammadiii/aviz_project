@@ -32,16 +32,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  get ui => null;
-
-  FocusNode focusNode = FocusNode();
-
-  final TextEditingController textEditingController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,10 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ContainerSearch(
-                                  textEditingController: textEditingController,
-                                  focusNode: focusNode,
-                                ),
+                                builder: (context) => const ContainerSearch(),
                               ));
                         },
                         child: Container(

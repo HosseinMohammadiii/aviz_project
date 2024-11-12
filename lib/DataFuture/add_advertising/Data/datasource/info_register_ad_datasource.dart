@@ -213,7 +213,8 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   Future<List<RegisterFutureAd>> getDiplayAdvertising() async {
     try {
       Map<String, String> qParams = {
-        'filter': 'user_id=${Authmanager().getId()}'
+        'filter': 'user_id=${Authmanager().getId()}',
+        'sort': 'updated'
       };
 
       var response = await dio.get(

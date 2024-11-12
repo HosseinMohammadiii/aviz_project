@@ -92,8 +92,9 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
   @override
   Future<List<RecentModel>> getRecentAd() async {
     try {
-      Map<String, dynamic> query = {
-        'filter': 'user_id="${Authmanager().getId()}"'
+      Map<String, String> query = {
+        'filter': 'user_id=${Authmanager().getId()}',
+        'sort': 'updated'
       };
 
       var response = await dio.get(

@@ -126,11 +126,6 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                         );
                       },
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 50,
-                      ),
-                    ),
                   ],
                 ],
               ),
@@ -160,37 +155,25 @@ class ListMyAdvertising extends StatefulWidget {
 class _ListMyAdvertisingState extends State<ListMyAdvertising> {
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
-        builder: (context, state) {
-          return Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.advertising.length,
-                itemBuilder: (context, index) {
-                  var advertisingAd = widget.advertising.toList()[index];
+    return SliverList.builder(
+      itemCount: widget.advertising.length,
+      itemBuilder: (context, index) {
+        var advertisingAd = widget.advertising.toList()[index];
 
-                  var advertisingFacilities = widget.advertisingFacilities
-                      .where((item) => item.id == advertisingAd.idFacilities)
-                      .toList();
+        var advertisingFacilities = widget.advertisingFacilities
+            .where((item) => item.id == advertisingAd.idFacilities)
+            .toList();
 
-                  return AdvertisingWidget(
-                    advertising: advertisingAd,
-                    advertisingImages: advertisingAd.images[0],
-                    advertisingFacilities: advertisingFacilities[0],
-                    screen: InformatioMyAdvertising(
-                      isDelete: true,
-                      advertisingHome: advertisingAd,
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
+        return AdvertisingWidget(
+          advertising: advertisingAd,
+          advertisingImages: advertisingAd.images[0],
+          advertisingFacilities: advertisingFacilities[0],
+          screen: InformatioMyAdvertising(
+            isDelete: true,
+            advertisingHome: advertisingAd,
+          ),
+        );
+      },
     );
   }
 }

@@ -14,12 +14,7 @@ import '../class/colors.dart';
 class ContainerSearch extends StatefulWidget {
   const ContainerSearch({
     super.key,
-    required this.textEditingController,
-    required this.focusNode,
   });
-
-  final TextEditingController textEditingController;
-  final FocusNode focusNode;
 
   @override
   State<ContainerSearch> createState() => _ContainerSearchState();
@@ -27,15 +22,13 @@ class ContainerSearch extends StatefulWidget {
 
 class _ContainerSearchState extends State<ContainerSearch> {
   get ui => null;
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<SearchBloc>(context).add(
-      SearchWithQueryData(query: widget.textEditingController.text),
-    );
-  }
 
   Timer? _debounce;
+  @override
+  void initState() {
+    context.read<SearchBloc>().add(SearchWithQueryData(query: ''));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +44,12 @@ class _ContainerSearchState extends State<ContainerSearch> {
             borderRadius: BorderRadius.circular(4),
           ),
           child: TextField(
-            controller: widget.textEditingController,
             autofocus: true,
             keyboardType: TextInputType.text,
             textAlign: TextAlign.end,
             textInputAction: TextInputAction.search,
             textDirection: ui?.TextDirection.ltr,
             textAlignVertical: TextAlignVertical.center,
-            focusNode: widget.focusNode,
             style: TextStyle(
               fontFamily: 'SN',
               fontSize: 18,
@@ -88,7 +79,7 @@ class _ContainerSearchState extends State<ContainerSearch> {
               ),
             ),
             onTapOutside: (event) {
-              widget.focusNode.unfocus();
+              FocusScope.of(context).unfocus();
             },
             onChanged: (value) {
               if (_debounce?.isActive ?? false) _debounce!.cancel();

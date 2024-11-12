@@ -96,8 +96,9 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
   @override
   Future<List<AdvertisingSave>> getSaveAd() async {
     try {
-      Map<String, dynamic> query = {
-        'filter': 'user_id="${Authmanager().getId()}"'
+      Map<String, String> query = {
+        'filter': 'user_id=${Authmanager().getId()}',
+        'sort': 'updated'
       };
 
       var response = await dio.get(

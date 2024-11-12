@@ -17,7 +17,8 @@ class SearchRemootDataSorce extends ISearchDataSource {
     try {
       Map<String, dynamic> queryPromotion = {
         'filter':
-            'title~"$query"&province=${RegisterId().getProvince()}&city=${RegisterId().getCity()}'
+            'title~"$query"&province=${RegisterId().getProvince()}&city=${RegisterId().getCity()}',
+        'sort': 'updated'
       };
       var response = await dio.get(
         'advertising_home',
