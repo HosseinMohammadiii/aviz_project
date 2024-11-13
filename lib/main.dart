@@ -119,7 +119,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<HomeBloc>().add(HomeGetInitializeData());
+    context.read<HomeBloc>().add(HomeGetInitializeData());
     context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
     context.read<ProvinceBloc>().add(ProvinceInitializedData());
     BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());

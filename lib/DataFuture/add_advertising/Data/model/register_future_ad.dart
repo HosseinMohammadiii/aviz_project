@@ -9,6 +9,7 @@ class RegisterFutureAd {
   String description;
   String province;
   String city;
+  String phoneNumber;
   int homeprice;
   int rentPrice;
   int metr;
@@ -29,6 +30,7 @@ class RegisterFutureAd {
     required this.description,
     required this.province,
     required this.city,
+    required this.phoneNumber,
     required this.homeprice,
     required this.rentPrice,
     required this.metr,
@@ -61,6 +63,7 @@ class RegisterFutureAd {
       description: jsonObject['description'],
       province: jsonObject['province'],
       city: jsonObject['city'],
+      phoneNumber: jsonObject['phone_number'],
       images: images,
     );
   }

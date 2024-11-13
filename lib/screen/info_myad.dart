@@ -209,6 +209,9 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
       },
       builder: (context, state) {
         return Scaffold(
+          bottomNavigationBar: ButtonWidget(
+            advertising: widget.advertisingHome,
+          ),
           appBar: AppBar(
             elevation: 0,
             scrolledUnderElevation: 0,
@@ -587,14 +590,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                                   indexContainer,
                                   widget.advertisingHome,
                                   categoryTitle,
-                                ),
-                                const SliverToBoxAdapter(
-                                  child: SizedBox(
-                                    height: 25,
-                                  ),
-                                ),
-                                const SliverToBoxAdapter(
-                                  child: ButtonWidget(),
                                 ),
                               ],
                             ),
