@@ -1,3 +1,4 @@
+import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_facilities.dart';
 import 'package:aviz_project/DataFuture/search/Data/dataSource/search_datasource.dart';
 import 'package:dartz/dartz.dart';
 
@@ -6,6 +7,7 @@ import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISearchRepository {
   Future<Either<String, List<RegisterFutureAd>>> search(String query);
+  Future<Either<String, List<AdvertisingFacilities>>> adFacilities();
   Future<Either<String, String>> getExistsAd(String id);
 }
 
@@ -26,6 +28,16 @@ class SearchRepository extends ISearchRepository {
   Future<Either<String, String>> getExistsAd(String id) async {
     try {
       var response = await dataSource.getExistsAdvertising(id);
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message = 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<AdvertisingFacilities>>> adFacilities() async {
+    try {
+      var response = await dataSource.getAdFacilities();
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message = 'خطا محتوای متنی ندارد');

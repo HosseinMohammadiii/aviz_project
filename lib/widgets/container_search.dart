@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:aviz_project/screen/info_myad.dart';
-import 'package:aviz_project/widgets/advertising_box.dart';
-import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:aviz_project/widgets/advertising_widget.dart';
+import 'package:aviz_project/widgets/display_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,54 +108,42 @@ class _ContainerSearchState extends State<ContainerSearch> {
                 ],
                 if (state is SearchRequestSuccessState) ...[
                   state.searchResult.fold(
-                    (l) => SliverToBoxAdapter(
-                      child: Center(
-                        child: textWidget(
-                          l,
-                          CustomColor.black,
-                          16,
-                          FontWeight.w500,
-                        ),
-                      ),
-                    ),
+                    (error) => DisplayError(error: error),
                     (adHome) {
-                      return Visibility(
-                        visible: adHome.isNotEmpty,
-                        replacement: const SliverFillRemaining(
-                          child: Center(
-                            child: Text(
-                              '.نتیجه ای یافت نشد',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: CustomColor.black,
+                      return state.adFacilities.fold(
+                        (error) => DisplayError(error: error),
+                        (facilities) {
+                          return Visibility(
+                            visible: adHome.isNotEmpty,
+                            replacement: const SliverFillRemaining(
+                              child: Center(
+                                child: Text(
+                                  '.نتیجه ای یافت نشد',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: CustomColor.black,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        child: SliverList.builder(
-                          itemCount: adHome.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          InformatioMyAdvertising(
-                                        advertisingHome: adHome[index],
-                                        isDelete: false,
-                                      ),
-                                    ));
+                            child: SliverList.builder(
+                              itemCount: adHome.length,
+                              itemBuilder: (context, index) {
+                                return AdvertisingWidget(
+                                  advertising: adHome[index],
+                                  advertisingFacilities: facilities[index],
+                                  screen: InformatioMyAdvertising(
+                                    advertisingHome: adHome[index],
+                                    isDelete: false,
+                                  ),
+                                  advertisingImages: adHome[index].images[0],
+                                );
                               },
-                              child: AdvertisingSearchWidget(
-                                advertisingHome: adHome[index],
-                                adGallery: adHome[index].images[0],
-                              ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),

@@ -10,9 +10,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       (event, emit) async {
         emit(SearchLoadingState());
         var searchResult = await searchRepository.search(event.query);
+        var adFacilities = await searchRepository.adFacilities();
 
         emit(SearchRequestSuccessState(
           searchResult,
+          adFacilities,
         ));
       },
     );

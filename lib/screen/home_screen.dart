@@ -11,13 +11,14 @@ import 'package:aviz_project/screen/city_screen.dart';
 import 'package:aviz_project/screen/screen_province.dart';
 
 import 'package:aviz_project/widgets/text_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../class/checkconnection.dart';
-import '../widgets/cached_network_image.dart';
 import '../widgets/container_search.dart';
 import '../widgets/display_error.dart';
 import '../widgets/price_widget.dart';
@@ -215,6 +216,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  //Widget for Display Advertising Image
+  Widget _displayAdvertisingImage({
+    required final String imgUrl,
+  }) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: CachedNetworkImage(
+        height: 110,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        imageUrl: imgUrl,
+        errorWidget: (context, url, error) => const Center(
+          child: CircularProgressIndicator(
+            color: CustomColor.normalRed,
+          ),
+        ),
+        placeholder: (context, url) => Center(
+          child: Shimmer.fromColors(
+            baseColor: const Color(0xffE1E1E1),
+            highlightColor: const Color(0xffF3F3F2),
+            child: Container(
+              height: 110,
+              width: double.infinity,
+              color: CustomColor.grey350,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget recentlyAdvertisingBox({
     required List<RegisterFutureAd> adHome,
     required List<AdvertisingFacilities> adFacilities,
@@ -262,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SizedBox(
                   width: 111,
-                  child: CachedNetworkImageWidget(
+                  child: _displayAdvertisingImage(
                     imgUrl: adHome[index].images.isNotEmpty
                         ? adHome[index].images[0]
                         : '',

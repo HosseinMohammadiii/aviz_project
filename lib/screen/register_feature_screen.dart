@@ -7,7 +7,6 @@ import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/city_screen.dart';
 import 'package:aviz_project/widgets/items_switchbox.dart';
-import 'package:aviz_project/widgets/text_title_section.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,7 @@ import 'package:shamsi_date/shamsi_date.dart';
 
 import '../class/checkconnection.dart';
 import '../class/scaffoldmessage.dart';
+import '../widgets/text_title_section.dart';
 import 'screen_province.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
@@ -148,7 +148,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    const TextTitleSection(
+                    textTitleSections(
                         txt: 'مشخصات کلی', img: 'images/category-2.png'),
                     BlocBuilder<StatusModeBloc, StatusModeState>(
                       builder: (context, state) {
@@ -324,7 +324,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     const SizedBox(
                       height: 14,
                     ),
-                    const TextTitleSection(
+                    textTitleSections(
                         txt: 'ویژگی ها', img: 'images/clipboard.png'),
                     Visibility(
                       visible: title == 'فروش زمین',
@@ -756,7 +756,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                     const SizedBox(
                       height: 14,
                     ),
-                    const TextTitleSection(
+                    textTitleSections(
                         txt: 'امکانات', img: 'images/magicpen.png'),
                   ],
                 ),

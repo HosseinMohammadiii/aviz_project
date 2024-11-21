@@ -2,10 +2,13 @@ import 'package:dio/dio.dart';
 
 import '../../../../Hive/Advertising/register_id.dart';
 import '../../../NetworkUtil/api_exeption.dart';
+import '../../../NetworkUtil/authmanager.dart';
+import '../../../ad_details/Data/model/ad_facilities.dart';
 import '../../../add_advertising/Data/model/register_future_ad.dart';
 
 abstract class ISearchDataSource {
   Future<List<RegisterFutureAd>> getSearchResult(String query);
+  Future<List<AdvertisingFacilities>> getAdFacilities();
   Future<String> getExistsAdvertising(String id);
 }
 
@@ -47,6 +50,27 @@ class SearchRemootDataSorce extends ISearchDataSource {
         queryParameters: query,
       );
       return response.data['items'][0]['ad_id'];
+    } on DioException catch (ex) {
+      throw ApiException(
+          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
+    } catch (e) {
+      throw ApiException(0, 'Unknown');
+    }
+  }
+
+  @override
+  Future<List<AdvertisingFacilities>> getAdFacilities() async {
+    try {
+      var response = await dio.get(
+        'facilities',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
+      );
+      return response.data['items']
+          .map<AdvertisingFacilities>(
+              (jsonObject) => AdvertisingFacilities.fromJson(jsonObject))
+          .toList();
     } on DioException catch (ex) {
       throw ApiException(
           ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');

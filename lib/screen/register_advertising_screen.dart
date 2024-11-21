@@ -317,7 +317,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                     runSpacing: 12,
                     alignment: WrapAlignment.end,
                     children: [
-                      const TextTitleSection(
+                      textTitleSections(
                           txt: 'تصویر آویز', img: 'images/camera_icon.png'),
                       UploadImage(
                         fileImage: stateAd.images,
@@ -347,7 +347,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           );
                         },
                       ),
-                      const TextTitleSection(
+                      textTitleSections(
                           txt: 'عنوان آویز', img: 'images/edit2_icon.png'),
                       TextFieldBox(
                         hint: 'عنوان آویز را وارد کنید',
@@ -357,7 +357,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         controller: controllertitle,
                         textInputAction: TextInputAction.next,
                       ),
-                      const TextTitleSection(
+                      textTitleSections(
                           txt: 'توضیحات', img: 'images/clipboard_icon.png'),
                       TextFieldBox(
                         hint: '... توضیحات آویز را وارد کنید',
@@ -367,7 +367,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         controller: controllerDescription,
                         textInputAction: TextInputAction.next,
                       ),
-                      const TextTitleSection(
+                      textTitleSections(
                           txt: 'قیمت', img: 'images/money_icon.png'),
                       Visibility(
                         visible: stateAd.stateRentHome ?? true,
