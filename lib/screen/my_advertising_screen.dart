@@ -93,8 +93,6 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            // bottomNavigationKey.currentState
-                                            //     ?.onItemTapped(1);
                                             Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(

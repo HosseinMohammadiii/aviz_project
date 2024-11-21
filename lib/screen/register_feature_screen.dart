@@ -175,11 +175,14 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                         }
                         return GestureDetector(
                           onTap: () {
-                            BlocProvider.of<NavigationPage>(context)
-                                .backFirstPAge();
+                            // Reset the information stored in RegisterInfoAdCubit
                             context
                                 .read<RegisterInfoAdCubit>()
                                 .resetInfoAdSet();
+                            // Reset the state of BoolStateCubit
+                            context.read<BoolStateCubit>().reset();
+                            // Navigate back to the first page
+                            context.read<NavigationPage>().backFirstPAge();
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
