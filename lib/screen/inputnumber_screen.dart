@@ -6,6 +6,7 @@ import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
@@ -13,11 +14,10 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/home/Bloc/home_bloc.dart';
 import '../DataFuture/home/Bloc/home_event.dart';
-import '../DataFuture/province/Bloc/province_bloc.dart';
-import '../DataFuture/province/Bloc/province_event.dart';
+
 import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
-import '../class/dialog.dart';
+import '../class/scaffoldmessage.dart';
 import '../widgets/buttomnavigationbar.dart';
 
 class InputNumberScreen extends StatefulWidget {
@@ -202,16 +202,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
               setState(() {
                 isShowErrorText = true;
               });
-              var snackbar = const SnackBar(
-                content: Text(
-                  'نام کاربری یا رمز عبور اشتباه است',
-                  style: TextStyle(fontSize: 14),
-                ),
-                backgroundColor: Colors.black,
-                behavior: SnackBarBehavior.floating,
-                duration: Duration(seconds: 1),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              showMessage(MessageSnackBar.errorLogIn, context, 1);
             },
             (r) {
               // Hide error message if login is successful
@@ -228,7 +219,7 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
               context
                   .read<AddAdvertisingBloc>()
                   .add(InitializedDisplayAdvertising());
-              context.read<ProvinceBloc>().add(ProvinceInitializedData());
+
               BlocProvider.of<AuthAccountBloc>(context)
                   .add(DisplayInformationEvent());
             },
@@ -247,7 +238,8 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
             // Validate input fields
             if (userNameController.text.isEmpty ||
                 passwordController.text.isEmpty) {
-              displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+              showMessage(MessageSnackBar.compeletFields, context, 2);
+
               return;
             }
             if (!checkForInvalidCharacters()) {
@@ -255,21 +247,23 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
               return;
             }
             if (userNameController.text.length < 3) {
-              displayDialog('نام کاربری باید بیش از 3 حرف باشد', context);
+              showMessage(MessageSnackBar.checkUserName, context, 2);
               return;
             }
             if (passwordController.text.length < 8) {
-              displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
+              showMessage(MessageSnackBar.checkPassword, context, 2);
               return;
             }
 
-            // Trigger login event
-            BlocProvider.of<AuthAccountBloc>(context).add(
-              AuthLoginRequest(
-                userNameController.text,
-                passwordController.text,
-              ),
-            );
+            if (state is! AuthLoadingState) {
+              // Trigger login event
+              BlocProvider.of<AuthAccountBloc>(context).add(
+                AuthLoginRequest(
+                  userNameController.text,
+                  passwordController.text,
+                ),
+              );
+            }
           },
           child: Container(
             height: 40,
@@ -281,20 +275,30 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                 color: CustomColor.red,
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
-                Text(
-                  'ورود',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: CustomColor.grey,
-                    fontSize: 16,
-                    fontFamily: 'SN',
-                    fontWeight: FontWeight.w600,
+                Visibility(
+                  visible: state is! AuthLoadingState,
+                  replacement: LoadingIndicator(
+                    indicatorType: Indicator.ballPulse,
+                    strokeWidth: 10,
+                    colors: [
+                      CustomColor.white,
+                    ],
+                  ),
+                  child: const Text(
+                    'ورود',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: CustomColor.grey,
+                      fontSize: 16,
+                      fontFamily: 'SN',
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],

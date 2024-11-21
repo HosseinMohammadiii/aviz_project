@@ -5,15 +5,15 @@ import 'package:dartz/dartz.dart';
 import '../datasource/province_datasource.dart';
 
 abstract class IProvinceRepository {
-  Future<Either<String, List<ProvinceModel>>> provices(String province);
-  Future<Either<String, List<ProvinceModel>>> provicesCities(String city);
+  Future<Either<String, List<ProvinceModel>>> provices(String? province);
+  Future<Either<String, List<ProvinceModel>>> provicesCities(String? city);
 }
 
 final class ProvinceRepositoryRemoot extends IProvinceRepository {
   IProvinceDatasource datasource;
   ProvinceRepositoryRemoot(this.datasource);
   @override
-  Future<Either<String, List<ProvinceModel>>> provices(String province) async {
+  Future<Either<String, List<ProvinceModel>>> provices(String? province) async {
     try {
       var response = await datasource.provices(province);
 
@@ -25,7 +25,7 @@ final class ProvinceRepositoryRemoot extends IProvinceRepository {
 
   @override
   Future<Either<String, List<ProvinceModel>>> provicesCities(
-      String city) async {
+      String? city) async {
     try {
       var response = await datasource.provicesCities(city);
 

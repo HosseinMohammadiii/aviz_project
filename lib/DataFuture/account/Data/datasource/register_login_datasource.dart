@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/account/Data/model/account.dart';
 import 'package:dio/dio.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
+import '../../../../class/firebase_messsaging.dart';
 import '../../../NetworkUtil/api_exeption.dart';
 
 abstract class IAuthenticationDatasource {
@@ -54,6 +56,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
 
   @override
   Future<String> login(String userName, String password) async {
+    Jalali dt = Jalali.now();
     try {
       var response = await dio.post(
         'user/logIn',
@@ -66,6 +69,8 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       if (response.statusCode == 200) {
         Authmanager().saveId(response.data?['data']['id']);
         Authmanager().saveToken(response.data?['data']['token']);
+        showLocalNotification('آویز',
+            '${dt.year}.${dt.month}.${dt.day} ${dt.hour}:${dt.minute} . ${response.data?['data']['name']} خوش آمدید');
 
         return response.data?['data']['token'];
       }
@@ -120,7 +125,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       );
 
       if (response.statusCode == 200) {
-        return response.data;
+        return response.data['data']['avatar'];
       }
     } on DioException catch (ex) {
       throw ApiException(
@@ -146,7 +151,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       );
 
       if (response.statusCode == 200) {
-        return response.data;
+        return response.data['data']['name'];
       }
       // Assuming response data is directly the user object.
     } on DioException catch (ex) {
@@ -173,7 +178,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       );
 
       if (response.statusCode == 200) {
-        return response.data;
+        return response.data['data']['email'];
       }
       // Assuming response data is directly the user object.
     } on DioException catch (ex) {
@@ -200,7 +205,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       );
 
       if (response.statusCode == 200) {
-        return response.data;
+        return response.data['data']['phone_number'];
       }
       // Assuming response data is directly the user object.
     } on DioException catch (ex) {
@@ -227,7 +232,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       );
 
       if (response.statusCode == 200) {
-        return response.data;
+        return response.data['data']['province'];
       }
       // Assuming response data is directly the user object.
     } on DioException catch (ex) {

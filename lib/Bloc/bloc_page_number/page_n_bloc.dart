@@ -23,18 +23,6 @@ class NavigationPage extends Cubit<NavigationState> {
         emit(NavigationState(ViewPage.itemsBuyHome));
         break;
 
-      case ViewPage.itemsRentBusinessPlace:
-        emit(NavigationState(ViewPage.itemsRentBusinessPlace));
-        break;
-
-      case ViewPage.itemsBuyBusinessPlace:
-        emit(NavigationState(ViewPage.itemsBuyBusinessPlace));
-        break;
-
-      case ViewPage.registerHomeLocation:
-        emit(NavigationState(ViewPage.registerHomeLocation));
-        break;
-
       case ViewPage.registerDetialsBuyHomeAdvertising:
         emit(NavigationState(ViewPage.registerDetialsBuyHomeAdvertising));
         break;
@@ -48,10 +36,6 @@ class NavigationPage extends Cubit<NavigationState> {
         break;
       case ViewPage.registerRentHomeAdvertising:
         emit(NavigationState(ViewPage.registerRentHomeAdvertising));
-        break;
-
-      case ViewPage.registerBusinessLocation:
-        emit(NavigationState(ViewPage.registerBusinessLocation));
         break;
 
       case ViewPage.backScreen:

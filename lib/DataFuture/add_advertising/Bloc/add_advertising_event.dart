@@ -14,7 +14,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
   String idCt;
   String idFeature;
   String province;
-  String location;
+  String city;
   String title;
   String description;
   num price;
@@ -29,7 +29,7 @@ class AddInfoAdvertising extends InfoAdvertisingEvent {
     this.idCt,
     this.idFeature,
     this.province,
-    this.location,
+    this.city,
     this.title,
     this.description,
     this.price,

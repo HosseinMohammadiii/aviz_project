@@ -4,7 +4,6 @@ import 'package:aviz_project/DataFuture/add_advertising/Data/model/register_futu
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/info_myad.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
-import 'package:aviz_project/widgets/buttomnavigationbar.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 
+import '../widgets/buttomnavigationbar.dart';
 import '../widgets/display_error.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
@@ -27,29 +27,26 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
     return BlocConsumer<AddAdvertisingBloc, AddAdvertisingState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              scrolledUnderElevation: 0,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              flexibleSpace: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    textWidget(
-                      'آگهی های من',
-                      CustomColor.red,
-                      16,
-                      FontWeight.w500,
-                    ),
-                    Image.asset('images/icon_home_active.png'),
-                  ],
+        return Scaffold(
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                textWidget(
+                  'آگهی های من',
+                  CustomColor.red,
+                  16,
+                  FontWeight.w500,
                 ),
-              ),
+                Image.asset('images/icon_home_active.png'),
+              ],
             ),
-            body: RefreshIndicator(
+          ),
+          body: SafeArea(
+            child: RefreshIndicator(
               color: CustomColor.normalRed,
               onRefresh: () async {
                 context
@@ -96,8 +93,17 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            bottomNavigationKey.currentState
-                                                ?.setPage(1);
+                                            // bottomNavigationKey.currentState
+                                            //     ?.onItemTapped(1);
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BottomNavigationScreen(
+                                                  index: 1,
+                                                ),
+                                              ),
+                                            );
                                           },
                                           child: Container(
                                             height: 40,

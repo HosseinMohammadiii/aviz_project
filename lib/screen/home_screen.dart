@@ -15,9 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
-import '../DataFuture/add_advertising/Data/model/ad_gallery.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
-import '../DataFuture/advertising_save/model/advertising_save.dart';
+import '../class/checkconnection.dart';
 import '../widgets/cached_network_image.dart';
 import '../widgets/container_search.dart';
 import '../widgets/display_error.dart';
@@ -62,7 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         horizontal: 15, vertical: 10),
                     sliver: SliverToBoxAdapter(
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          if (!await checkInternetConnection(context)) {
+                            return;
+                          }
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -84,7 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  if (!await checkInternetConnection(context)) {
+                                    return;
+                                  }
                                   final provinceAndCity =
                                       context.read<RegisterInfoAdCubit>().state;
                                   Navigator.push(
@@ -189,86 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                  // SliverPadding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  //   sliver: SliverToBoxAdapter(
-                  //     child: Column(
-                  //       children: [
-                  //         Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //           children: [
-                  //             Text(
-                  //               'مشاهده همه',
-                  //               style: Theme.of(context).textTheme.titleMedium,
-                  //             ),
-                  //             const Spacer(),
-                  //             Text(
-                  //               'آویز های داغ',
-                  //               style: Theme.of(context).textTheme.titleLarge,
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         const SizedBox(height: 10),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // if (state is HomeRequestSuccessState) ...[
-                  //   state.hotAdvertising.fold(
-                  //     (error) => DisplayError(error: error),
-                  //     (hotAdvertising) {
-                  //       return state.advertisingGalleryDetails.fold(
-                  //         (l) => SliverToBoxAdapter(
-                  //           child: Center(
-                  //             child: textWidget(
-                  //               l,
-                  //               CustomColor.black,
-                  //               16,
-                  //               FontWeight.w500,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         (gallery) {
-                  //           return state.advertisingFacilities.fold(
-                  //             (error) => DisplayError(error: error),
-                  //             (facilities) => state.advertisingSave.fold(
-                  //               (error) => DisplayError(error: error),
-                  //               (saveAd) => hotestAdvertisingBox(
-                  //                 adHome: hotAdvertising,
-                  //                 advertisingGallery: gallery,
-                  //                 adFacilities: facilities,
-                  //                 advertisingSave: saveAd,
-                  //               ),
-                  //             ),
-                  //           );
-                  //         },
-                  //       );
-                  //     },
-                  //   ),
-                  // ],
-                  // const SliverToBoxAdapter(
-                  //   child: SizedBox(
-                  //     height: 20,
-                  //   ),
-                  // ),
-                  // SliverToBoxAdapter(
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //     children: [
-                  //       Text(
-                  //         'مشاهده همه',
-                  //         style: Theme.of(context).textTheme.titleMedium,
-                  //       ),
-                  //       const SizedBox(
-                  //         width: 130,
-                  //       ),
-                  //       Text(
-                  //         'آویز های اخیر',
-                  //         style: Theme.of(context).textTheme.titleLarge,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   if (state is HomeRequestSuccessState) ...[
                     state.getAdvertising.fold(
                       (error) => DisplayError(error: error),
@@ -298,7 +223,10 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: adHome.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () {
+          onTap: () async {
+            if (!await checkInternetConnection(context)) {
+              return;
+            }
             BlocProvider.of<RecentBloc>(context)
                 .add(PostRecentEvent(adHome[index].id));
 
@@ -375,77 +303,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       },
-    );
-  }
-
-//Widget For display hotest Advertising
-  Widget hotestAdvertisingBox({
-    required List<RegisterFutureAd> adHome,
-    required List<AdvertisingFacilities> adFacilities,
-    required List<RegisterFutureAdGallery> advertisingGallery,
-    required List<AdvertisingSave> advertisingSave,
-  }) {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 250,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          reverse: true,
-          padding: const EdgeInsets.only(right: 16),
-          itemCount: adHome.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InformatioMyAdvertising(
-                      isDelete: false,
-                      advertisingHome: adHome[index],
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                width: 210,
-                height: 240,
-                padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.only(left: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: CustomColor.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: CustomColor.black,
-                      blurRadius: 40,
-                      spreadRadius: -35,
-                      offset: Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CachedNetworkImageWidget(
-                      imgUrl: adHome[index].images[0],
-                    ),
-                    Text(
-                      adHome[index].titlehome,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Text(
-                      adHome[index].description,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    PriceWidget(context: context, adPrice: adHome[index]),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 }

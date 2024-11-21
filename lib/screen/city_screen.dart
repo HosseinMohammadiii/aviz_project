@@ -21,9 +21,11 @@ class CityScreen extends StatefulWidget {
     super.key,
     required this.onChanged,
     required this.province,
+    this.isAllCities = true,
   });
   String province;
   Function() onChanged;
+  bool? isAllCities;
 
   @override
   State<CityScreen> createState() => _CityScreenState();
@@ -33,8 +35,6 @@ class _CityScreenState extends State<CityScreen> {
   final TextEditingController citiesController = TextEditingController();
 
   final FocusNode citiesFocusNode = FocusNode();
-
-  String city = '';
 
   bool isSelectProvinces = false;
   bool isSearch = false;
@@ -49,7 +49,6 @@ class _CityScreenState extends State<CityScreen> {
     BlocProvider.of<ProvinceBloc>(context)
         .add(ProvinceInitializedData(city: widget.province));
 
-    city = widget.province;
     super.initState();
   }
 
@@ -135,50 +134,55 @@ class _CityScreenState extends State<CityScreen> {
                           visible: !isSearch,
                           child: Column(
                             children: [
-                              InkWell(
-                                splashColor: CustomColor.grey350,
-                                onTap: () {
-                                  final cityName =
-                                      context.read<RegisterInfoAdCubit>().state;
-                                  setState(() {
-                                    isSelectProvinces = true;
-                                    cityName.city = '';
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'تمام شهر های $city',
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          color: CustomColor.black,
+                              if (widget.isAllCities!) ...[
+                                InkWell(
+                                  splashColor: CustomColor.grey350,
+                                  onTap: () {
+                                    final cityName = context
+                                        .read<RegisterInfoAdCubit>()
+                                        .state;
+                                    setState(() {
+                                      isSelectProvinces = true;
+                                      cityName.city = '';
+                                      citiesController.text =
+                                          'تمام شهر های ${widget.province}';
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'تمام شهر های ${widget.province}',
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: CustomColor.black,
+                                          ),
                                         ),
-                                      ),
-                                      const Icon(
-                                        Icons.location_on_outlined,
-                                        size: 18,
-                                        color: CustomColor.red,
-                                      ),
-                                    ],
+                                        const Icon(
+                                          Icons.location_on_outlined,
+                                          size: 18,
+                                          color: CustomColor.red,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 2,
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: Divider(
-                                  thickness: 1,
-                                  height: 5,
+                                const SizedBox(
+                                  height: 2,
                                 ),
-                              ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Divider(
+                                    thickness: 1,
+                                    height: 5,
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                         ),

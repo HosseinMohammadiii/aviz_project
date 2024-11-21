@@ -23,77 +23,60 @@ class ButtonWidget extends StatelessWidget {
           barrierColor: Colors.transparent,
           isScrollControlled: true,
           builder: (context) {
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: DraggableScrollableSheet(
-                    initialChildSize: 0.8,
-                    minChildSize: 0.7,
-                    maxChildSize: 0.8,
-                    builder: (context, scrollController) {
-                      return Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12),
-                          ),
-                        ),
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 30,
-                                height: 6,
-                                margin:
-                                    const EdgeInsets.only(bottom: 20, top: 10),
-                                alignment: Alignment.topRight,
-                                decoration: BoxDecoration(
-                                  color: CustomColor.grey300,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              Text(
-                                'اطلاعات تماس',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: CustomColor.grey500,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const Divider(
-                                thickness: 1,
-                              ),
-                              callInformation(
-                                onTap: () {
-                                  callAction(advertising.phoneNumber, context);
-                                },
-                                callInfo:
-                                    '${advertising.phoneNumber} :تماس تلفنی با ',
-                                icon: Icons.phone_enabled_outlined,
-                              ),
-                              callInformation(
-                                onTap: () {
-                                  smsAction(advertising.phoneNumber, context);
-                                },
-                                callInfo:
-                                    '${advertising.phoneNumber} :ارسال پیامک به',
-                                icon: Icons.message_rounded,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+            return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
                   ),
-                );
-              },
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 30,
+                      height: 6,
+                      margin: const EdgeInsets.only(bottom: 20, top: 10),
+                      alignment: Alignment.topRight,
+                      decoration: BoxDecoration(
+                        color: CustomColor.grey300,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    Text(
+                      'اطلاعات تماس',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: CustomColor.grey500,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    callInformation(
+                      onTap: () {
+                        callAction(advertising.phoneNumber, context);
+                      },
+                      callInfo: '${advertising.phoneNumber} :تماس تلفنی با ',
+                      icon: Icons.phone_enabled_outlined,
+                    ),
+                    callInformation(
+                      onTap: () {
+                        smsAction(advertising.phoneNumber, context);
+                      },
+                      callInfo: '${advertising.phoneNumber} :ارسال پیامک به',
+                      icon: Icons.message_rounded,
+                    ),
+                  ],
+                ),
+              ),
             );
           },
         );
@@ -135,7 +118,7 @@ class ButtonWidget extends StatelessWidget {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      showMessage('مجدد تلاش کنید', context, 1);
+      showMessage(MessageSnackBar.tryAgain, context, 1);
     }
   }
 
@@ -148,7 +131,7 @@ class ButtonWidget extends StatelessWidget {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      showMessage('مجدد تلاش کنید', context, 1);
+      showMessage(MessageSnackBar.tryAgain, context, 1);
     }
   }
 

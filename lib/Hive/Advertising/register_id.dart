@@ -7,10 +7,7 @@ class RegisterId {
   final Box<AdvertisingHive> adBox = Hive.box('ad_hive');
 
   void clearID() {
-    adHive.idFacilities = null;
-    adHive.idGallery = null;
-    adBox.put(1, adHive);
-    adBox.put(2, adHive);
+    adBox.clear();
   }
 
   void saveIdFacilities(String id) {
@@ -56,5 +53,14 @@ class RegisterId {
 
   String getCity() {
     return adBox.get(5)?.city ?? '';
+  }
+
+  void setPhoneNumber(String phoneNumber) {
+    adHive.phoneNumber = phoneNumber;
+    adBox.put(6, adHive);
+  }
+
+  String getPhoneNumber() {
+    return adBox.get(6)?.phoneNumber ?? '';
   }
 }

@@ -6,9 +6,7 @@ import 'package:aviz_project/widgets/item_category_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../widgets/items_category.dart';
-import 'locatin_upload_screen.dart';
 import 'register_advertising_screen.dart';
 
 class ManagementAddAdvertisingScreen extends StatefulWidget {
@@ -31,45 +29,41 @@ class _ManagementAddAdvertisingScreenState
         leadingWidth: double.maxFinite,
         leading: const AppBarWidget(),
       ),
-      body: BlocBuilder<NavigationPage, NavigationState>(
-        builder: (context, state) {
-          final stateAd = context.read<RegisterInfoAdCubit>().state;
+      body: SafeArea(
+        child: BlocBuilder<NavigationPage, NavigationState>(
+          builder: (context, state) {
+            switch (state.viewPage) {
+              case ViewPage.category:
+                return const ItemsCategoryType();
 
-          switch (state.viewPage) {
-            case ViewPage.category:
-              return const ItemsCategoryType();
+              case ViewPage.itemsRentHome:
+                return const ItemSelectCategory(title: 'اجاره');
 
-            case ViewPage.itemsRentHome:
-              return const ItemSelectCategory(title: 'اجاره');
+              case ViewPage.itemsBuyHome:
+                return const ItemSelectCategory(title: 'فروش');
 
-            case ViewPage.itemsBuyHome:
-              return const ItemSelectCategory(title: 'فروش');
+              case ViewPage.registerDetialsRentHomeAdvertising:
+                return const RegisterHomeFeatureScreen(
+                  title: 'اجاره',
+                );
 
-            case ViewPage.registerDetialsRentHomeAdvertising:
-              return const RegisterHomeFeatureScreen(
-                title: 'اجاره',
-              );
+              case ViewPage.registerDetialsBuyHomeAdvertising:
+                return const RegisterHomeFeatureScreen(
+                  title: 'فروش',
+                );
 
-            case ViewPage.registerDetialsBuyHomeAdvertising:
-              return const RegisterHomeFeatureScreen(
-                title: 'فروش',
-              );
+              case ViewPage.registerHomeAdvertising:
+                return const RegisterAdvertising();
 
-            case ViewPage.registerHomeLocation:
-              return LocatioUpload(
-                address: stateAd.province,
-              );
+              case ViewPage.registerRentHomeAdvertising:
+                return const RegisterAdvertising();
 
-            case ViewPage.registerHomeAdvertising:
-              return const RegisterAdvertising();
-
-            case ViewPage.registerRentHomeAdvertising:
-              return const RegisterAdvertising();
-
-            default:
-              return const ItemsCategoryType();
-          }
-        },
+              default:
+                return const ItemsCategoryType();
+            }
+          },
+        ),
+        // child: Text('data'),
       ),
     );
   }

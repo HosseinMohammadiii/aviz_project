@@ -87,7 +87,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   void initState() {
-    print(widget.title);
     var state = context.read<StatusModeBloc>().state;
     switch (state.statusMode) {
       case StatusMode.apartment:
@@ -258,6 +257,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => CityScreen(
+                                        isAllCities: false,
                                         province: province,
                                         onChanged: () {
                                           setState(() {
@@ -272,7 +272,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                   );
                                 } else {
                                   showMessage(
-                                    'ابتدا استان را انتخاب کنید',
+                                    MessageSnackBar.checkInputProvince,
                                     context,
                                     1,
                                   );
@@ -284,7 +284,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                             ),
                             _selectProvonceAndCity(
                                 province.isEmpty ? 'انتخاب استان' : province,
-                                () {
+                                () async {
+                              if (!await checkInternetConnection(context)) {
+                                return;
+                              }
                               stateAd.province = '';
                               Navigator.push(
                                 context,

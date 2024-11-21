@@ -12,8 +12,8 @@ class ProvinceBloc extends Bloc<ProvinceEvent, ProvinceState> {
     on<ProvinceInitializedData>(
       (event, emit) async {
         emit(ProvinceLoadindState());
-        var province = await repository.provices(event.province ?? "");
-        var cities = await repository.provicesCities(event.city ?? "");
+        var province = await repository.provices(event.province);
+        var cities = await repository.provicesCities(event.city);
 
         emit(ProvinceRsultSuccessResponse(province, cities));
       },

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "807035455736",
+    "project_id": "aviz-project",
+    "storage_bucket": "aviz-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807035455736:android:88644b4563303ad687530d",
+        "android_client_info": {
+          "package_name": "com.example.aviz_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgQ8h1R_HNR367iZoBzo6q5HLYewMe3-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

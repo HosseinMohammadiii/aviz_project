@@ -1,5 +1,5 @@
 class NavigationState {
-  final ViewPage viewPage;
+  ViewPage viewPage;
 
   NavigationState(
     this.viewPage,
@@ -8,13 +8,9 @@ class NavigationState {
 
 enum ViewPage {
   backScreen,
-  category, //All Items Category
-  itemsBuyHome, //Different Types of House Sales
-  itemsRentHome, //Different Types of House Rent
-  itemsBuyBusinessPlace, //Different Types of BusinessPlace Sales
-  itemsRentBusinessPlace, //Different Types of BusinessPlace Rent
-  registerHomeLocation,
-  registerBusinessLocation,
+  category,
+  itemsBuyHome,
+  itemsRentHome,
   registerDetialsBuyHomeAdvertising,
   registerDetialsRentHomeAdvertising,
   registerHomeAdvertising,

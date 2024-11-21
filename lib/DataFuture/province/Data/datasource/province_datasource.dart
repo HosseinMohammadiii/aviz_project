@@ -3,22 +3,22 @@ import 'package:aviz_project/DataFuture/province/model/province.dart';
 import 'package:dio/dio.dart';
 
 abstract class IProvinceDatasource {
-  Future<List<ProvinceModel>> provices(String province);
-  Future<List<ProvinceModel>> provicesCities(String city);
+  Future<List<ProvinceModel>> provices(String? province);
+  Future<List<ProvinceModel>> provicesCities(String? city);
 }
 
 final class ProvinceDatasourceRemoot extends IProvinceDatasource {
   Dio dio = Dio(BaseOptions(baseUrl: 'https://iran-locations-api.ir/api/'));
 
   @override
-  Future<List<ProvinceModel>> provices(String province) async {
+  Future<List<ProvinceModel>> provices(String? province) async {
     try {
-      Map<String, dynamic> query = {'state': province};
-
+      Map<String, dynamic> query = {'state': province ?? ''};
       var response = await dio.get(
         'v1/fa/states',
         queryParameters: query,
       );
+
       return response.data
           .map<ProvinceModel>(
             (jsonObject) => ProvinceModel.fromJson(jsonObject),
@@ -32,7 +32,7 @@ final class ProvinceDatasourceRemoot extends IProvinceDatasource {
   }
 
   @override
-  Future<List<ProvinceModel>> provicesCities(String city) async {
+  Future<List<ProvinceModel>> provicesCities(String? city) async {
     try {
       Map<String, dynamic> query = {'state': city};
 
@@ -40,7 +40,7 @@ final class ProvinceDatasourceRemoot extends IProvinceDatasource {
         'v1/fa/cities',
         queryParameters: query,
       );
-      if (city.isNotEmpty) {
+      if (city != '') {
         return response.data[0]['cities']
             .map<ProvinceModel>(
               (jsonObject) => ProvinceModel.fromJson(jsonObject),

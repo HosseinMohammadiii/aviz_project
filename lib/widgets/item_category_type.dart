@@ -19,76 +19,76 @@ class ItemsCategoryType extends StatefulWidget {
 }
 
 class _ItemsCategoryTypeState extends State<ItemsCategoryType> {
-
-
   @override
   Widget build(BuildContext context) {
     List txt1 = [
       'اجاره مسکونی',
       'فروش مسکونی',
-      // 'اجاره دفاتر اداری و تجاری',
-      // 'فروش دفاتر اداری و تجاری',
     ];
     return BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
       builder: (context, state) {
-        return CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.3,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      itemCount: txt1.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (index == 0) {
-                              BlocProvider.of<NavigationPage>(context)
-                                  .getNavItems(ViewPage.itemsRentHome);
-                            } else if (index == 1) {
-                              BlocProvider.of<NavigationPage>(context)
-                                  .getNavItems(ViewPage.itemsBuyHome);
-                            }
-                          },
-                          child: Container(
-                            height: 40,
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: CustomColor.grey350),
-                              borderRadius: BorderRadius.circular(4),
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.3,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        itemCount: txt1.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (index == 0) {
+                                BlocProvider.of<NavigationPage>(context)
+                                    .getNavItems(ViewPage.itemsRentHome);
+                              } else if (index == 1) {
+                                BlocProvider.of<NavigationPage>(context)
+                                    .getNavItems(ViewPage.itemsBuyHome);
+                              }
+                            },
+                            child: Container(
+                              height: 40,
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: CustomColor.grey350),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Icon(
+                                    Icons.arrow_back_ios_rounded,
+                                    color: CustomColor.red,
+                                  ),
+                                  const Spacer(),
+                                  textWidget(
+                                    txt1[index],
+                                    CustomColor.black,
+                                    16,
+                                    FontWeight.w500,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(
-                                  Icons.arrow_back_ios_rounded,
-                                  color: CustomColor.red,
-                                ),
-                                const Spacer(),
-                                textWidget(
-                                  txt1[index],
-                                  CustomColor.black,
-                                  16,
-                                  FontWeight.w500,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

@@ -92,6 +92,7 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
           'id_features': idFeature,
           'province': province,
           'city': city,
+          'phone_number': RegisterId().getPhoneNumber(),
           'id_facilities': RegisterId().getIdFacilities(),
           'id_gallery': RegisterId().getIdGallery(),
           'title': title,

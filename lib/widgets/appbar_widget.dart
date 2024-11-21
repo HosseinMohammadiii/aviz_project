@@ -75,15 +75,6 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                               context.read<BoolStateCubit>().reset();
                               break;
 
-                            //Switching the status when we are on the ad location registration page to a previous step.
-                            case ViewPage.registerHomeLocation:
-                              context.read<NavigationPage>().getNavItems(
-                                  ViewPage.registerDetialsBuyHomeAdvertising);
-                              context.read<BoolStateCubit>().state.isUpdate =
-                                  true;
-
-                              break;
-
                             //Switching the status when we are on the ad final information registration page to a previous step.
                             case ViewPage.registerHomeAdvertising:
                               context.read<NavigationPage>().getNavItems(

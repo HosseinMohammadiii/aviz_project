@@ -1,4 +1,4 @@
-import 'package:aviz_project/class/dialog.dart';
+import 'package:aviz_project/class/scaffoldmessage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +9,10 @@ Future<bool> checkInternetConnection(BuildContext context) async {
 
   // Return false if there is no connection
   if (connectivityResult.contains(ConnectivityResult.none)) {
-    displayDialog('لطفاً اتصال اینترنت خود را بررسی کنید', context);
+    showMessage(MessageSnackBar.internet, context, 2);
     return false;
   } else if (connectivityResult.contains(ConnectivityResult.vpn)) {
-    displayDialog('لطفا VPN خود را خاموش کنید', context);
+    showMessage(MessageSnackBar.vpnInternet, context, 2);
     return false;
   }
   // Otherwise, return true

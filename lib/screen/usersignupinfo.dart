@@ -2,19 +2,26 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/class/dialog.dart';
-// import 'package:aviz_project/screen/confirmationnumber_screen.dart';
+import 'package:aviz_project/class/scaffoldmessage.dart';
 import 'package:aviz_project/screen/inputnumber_screen.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
+import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
+import '../DataFuture/home/Bloc/home_bloc.dart';
+import '../DataFuture/home/Bloc/home_event.dart';
+import '../Hive/Advertising/register_id.dart';
 import '../Hive/UsersLogin/user_login.dart';
 import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/buttomnavigationbar.dart';
+import 'city_screen.dart';
+import 'screen_province.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -35,12 +42,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   String errorText = '';
   bool isShowErrorText = false;
-// Function to check for invalid characters in the username input
+  // Function to check for invalid characters in the username input
   bool checkForInvalidCharacters() {
-// Combine invalidCharacters and allCharacters
+    // Combine invalidCharacters and allCharacters
     final allInvalidChars = invalidCharacters + allCharacters;
 
-// Check if the username contains any of the invalid characters
+    // Check if the username contains any of the invalid characters
     for (String character in allInvalidChars) {
       if (_userNameController.text.contains(character)) {
         setState(() {
@@ -51,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
 
-// If no invalid characters are found, clear the error text
+    // If no invalid characters are found, clear the error text
     setState(() {
       errorText = ''; // No invalid characters found
       isShowErrorText = false;
@@ -182,26 +189,67 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Hive.box('user_login');
                           final String? token = userLogin.get(1)?.token;
                           if (token != null && token.isNotEmpty) {
+                            final provinceAndCity =
+                                context.read<RegisterInfoAdCubit>().state;
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BottomNavigationScreen(),
+                                builder: (context) => ScreenProvince(
+                                  isShowIcon: false,
+                                  isCity: true,
+                                  onChanged: () {},
+                                  onChangedCity: () {
+                                    if (provinceAndCity.province != '') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CityScreen(
+                                              onChanged: () {
+                                                RegisterId().setCity(
+                                                    provinceAndCity.city);
+                                                context.read<HomeBloc>().add(
+                                                    HomeGetInitializeData());
+                                                provinceAndCity.city = '';
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BottomNavigationScreen(),
+                                                  ),
+                                                );
+                                              },
+                                              province:
+                                                  RegisterId().getProvince(),
+                                            ),
+                                          ));
+                                    }
+                                    RegisterId()
+                                        .setProvince(provinceAndCity.province);
+                                    provinceAndCity.province = '';
+                                  },
+                                ),
                               ),
                             );
+                            context
+                                .read<HomeBloc>()
+                                .add(HomeGetInitializeData());
+                            context
+                                .read<AddAdvertisingBloc>()
+                                .add(InitializedDisplayAdvertising());
+
+                            BlocProvider.of<AuthAccountBloc>(context)
+                                .add(DisplayInformationEvent());
                           } else {
                             // Handle error: Token not available
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('لطفا مجدد تلاش کنید')),
-                            );
+                            showMessage(MessageSnackBar.tryAgain, context, 1);
                           }
                         },
                       );
                     }
                   },
                   builder: (context, state) {
-                    return buttonSignUp();
+                    return buttonSignUp(state);
                   },
                 ),
 
@@ -243,8 +291,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-//Widget For Button SignUp
-  Widget buttonSignUp() {
+  //Widget For Button SignUp
+  Widget buttonSignUp(AuthAccountState state) {
     return GestureDetector(
       onTap: () async {
         //Check Internet Connection
@@ -255,7 +303,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (_userNameController.text.isEmpty ||
             _passwordController.text.isEmpty ||
             _passwordConfirmController.text.isEmpty) {
-          displayDialog('لطفا تمامی فیلد ها را کامل کنید', context);
+          showMessage(MessageSnackBar.compeletFields, context, 2);
           return;
         }
         if (!checkForInvalidCharacters()) {
@@ -263,29 +311,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
           return;
         }
         if (_userNameController.text.length < 3) {
-          displayDialog('نام کاربری باید بیش از 3 حرف باشد', context);
+          showMessage(MessageSnackBar.checkUserName, context, 2);
           return;
         }
         if (_passwordController.text.length < 8 ||
             _passwordConfirmController.text.length < 8) {
-          displayDialog('طول رمز عبور باید بیش از 8 کاراکتر باشد', context);
+          showMessage(MessageSnackBar.checkPassword, context, 2);
           return;
         }
         if (_passwordController.text != _passwordConfirmController.text) {
-          displayDialog('رمز عبور با تکرار رمز عبور یکسان نمی باشند', context);
+          showMessage(MessageSnackBar.checkUserNameWithPassword, context, 2);
           return;
         }
         if (isShowErrorText) {
-          displayDialog('کاراکتر معتبر وارد کنید', context);
+          showMessage(MessageSnackBar.checkInputCharacters, context, 2);
           return;
         }
-        // Trigger registration event
-        BlocProvider.of<AuthAccountBloc>(context).add(
-          AuthRegisterRequest(
-            _userNameController.text,
-            _passwordController.text,
-          ),
-        );
+        if (state is! AuthLoadingState) {
+          // Trigger registration event
+          BlocProvider.of<AuthAccountBloc>(context).add(
+            AuthRegisterRequest(
+              _userNameController.text,
+              _passwordController.text,
+            ),
+          );
+        }
       },
       child: Container(
         height: 40,
@@ -297,20 +347,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
             color: CustomColor.red,
           ),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
-            Text(
-              'ثبت نام',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: CustomColor.grey,
-                fontSize: 16,
-                fontFamily: 'SN',
-                fontWeight: FontWeight.w600,
+            Visibility(
+              visible: state is! AuthLoadingState,
+              replacement: LoadingIndicator(
+                indicatorType: Indicator.ballPulse,
+                strokeWidth: 10,
+                colors: [
+                  CustomColor.white,
+                ],
+              ),
+              child: const Text(
+                'ثبت نام',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: CustomColor.grey,
+                  fontSize: 16,
+                  fontFamily: 'SN',
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],

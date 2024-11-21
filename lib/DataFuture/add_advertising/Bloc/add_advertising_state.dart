@@ -96,7 +96,6 @@ class BoolState {
 }
 
 class RegisterInfoAd {
-  bool? uploadProgress;
   bool? stateRentHome;
   num? metr;
   num? buildingMetr;
@@ -116,7 +115,6 @@ class RegisterInfoAd {
   String city;
 
   RegisterInfoAd({
-    this.uploadProgress,
     this.stateRentHome,
     required this.metr,
     required this.buildingMetr,
@@ -136,7 +134,6 @@ class RegisterInfoAd {
     required this.city,
   });
   RegisterInfoAd copyWith({
-    final bool? uploadProgress,
     final bool? stateRentHome,
     final num? metr,
     final num? buildingMetr,
@@ -156,7 +153,6 @@ class RegisterInfoAd {
     final String? city,
   }) {
     return RegisterInfoAd(
-      uploadProgress: uploadProgress ?? this.uploadProgress,
       stateRentHome: stateRentHome ?? this.stateRentHome,
       metr: metr ?? this.metr,
       buildingMetr: buildingMetr ?? this.buildingMetr,

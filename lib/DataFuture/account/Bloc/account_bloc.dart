@@ -9,6 +9,7 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
   AuthAccountBloc(this._repository) : super(AuthInitiateState()) {
     on<AuthLoginRequest>(
       (event, emit) async {
+        emit(AuthLoadingState());
         var loginRequest =
             await _repository.login(event.username, event.password);
 
@@ -19,6 +20,8 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
     );
     on<AuthRegisterRequest>(
       (event, emit) async {
+        emit(AuthLoadingState());
+
         var registerRequest = await _repository.register(
           event.username,
           event.password,
@@ -40,6 +43,8 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
 
     on<UpdateAvataUserEvent>(
       (event, emit) async {
+        emit(AuthLoadingUpdateAvatarState());
+
         await _repository.getUpdateUserInfo(event.avatar);
         var displayUserInformation = await _repository.getDisplayUserInfo();
 
@@ -65,6 +70,8 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
 
     on<UpdatePhoNumberUserEvent>(
       (event, emit) async {
+        emit(AuthLoadingState());
+
         await _repository.getUpdatePhoneNumberUser(event.phoneNumber);
         var displayUserInformation = await _repository.getDisplayUserInfo();
         emit(DisplayInformationState(displayUserInformation));

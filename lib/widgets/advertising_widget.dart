@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 import '../DataFuture/ad_details/Data/model/ad_facilities.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 
+import '../class/checkconnection.dart';
 import 'price_widget.dart';
 
 // ignore: must_be_immutable
@@ -35,7 +36,10 @@ class _AdvertisingWidgetState extends State<AdvertisingWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (!await checkInternetConnection(context)) {
+          return;
+        }
         Navigator.push(
           context,
           MaterialPageRoute(

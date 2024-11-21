@@ -7,13 +7,13 @@ import 'package:aviz_project/DataFuture/advertising_save/bloc/advertising_save_b
 import 'package:aviz_project/DataFuture/home/Bloc/home_bloc.dart';
 import 'package:aviz_project/DataFuture/home/Bloc/home_event.dart';
 import 'package:aviz_project/DataFuture/province/Bloc/province_bloc.dart';
-import 'package:aviz_project/DataFuture/province/Bloc/province_event.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
 import 'package:aviz_project/Hive/UsersLogin/user_login.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,15 +24,23 @@ import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
 import 'DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 
 import 'DataFuture/add_advertising/Bloc/add_advertising_event.dart';
-import 'screen/register_advertising_screen.dart';
-import 'screen/register_feature_screen.dart';
+import 'class/firebase_messsaging.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyDgQ8h1R_HNR367iZoBzo6q5HLYewMe3-M',
+      appId: '1:807035455736:android:88644b4563303ad687530d',
+      messagingSenderId: '807035455736',
+      projectId: 'aviz-project',
+      storageBucket: 'aviz-project.appspot.com',
+    ),
+  );
+  FirebaseMessagingService.initialize();
   Hive.registerAdapter(UserLoginAdapter());
 
   Hive.registerAdapter(AdvertisingHiveAdapter());
@@ -112,20 +120,18 @@ void main() async {
   );
 }
 
-final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     context.read<HomeBloc>().add(HomeGetInitializeData());
+
     context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
-    context.read<ProvinceBloc>().add(ProvinceInitializedData());
-    BlocProvider.of<AuthAccountBloc>(context).add(DisplayInformationEvent());
+
+    context.read<AuthAccountBloc>().add(DisplayInformationEvent());
 
     return MaterialApp(
-      navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         splashColor: Colors.transparent,
@@ -187,4 +193,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// RegisterHomeFeatureScreen(title: '',)  BottomNavigationScreen()   RegisterAdvertising()
+
+// AccountScreen() BottomNavigationScreen()

@@ -8,6 +8,7 @@ import 'package:aviz_project/DataFuture/advertising_save/bloc/advertising_save_s
 import 'package:aviz_project/DataFuture/search/Bloc/search_event.dart';
 import 'package:aviz_project/DataFuture/search/Bloc/search_state.dart';
 import 'package:aviz_project/Hive/Advertising/register_id.dart';
+import 'package:aviz_project/class/scaffoldmessage.dart';
 import 'package:aviz_project/extension/price_extension.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
@@ -183,13 +184,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
 
   @override
   Widget build(BuildContext context) {
-    void showMessage(String message) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-        duration: const Duration(milliseconds: 700),
-      ));
-    }
-
     return BlocConsumer<AdExistsBloc, SearchState>(
       listener: (context, state) {
         if (state is SearchExistsRequestSuccessState) {
@@ -255,9 +249,10 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                         );
                       } else if (state is PostSaveAdState) {
                         state.postSaveAd.fold(
-                          (l) => showMessage('مجدد تلاش کنید'),
+                          (l) =>
+                              showMessage(MessageSnackBar.tryAgain, context, 1),
                           (r) {
-                            showMessage(r);
+                            showMessage(MessageSnackBar.saveAd, context, 1);
                             setState(() {
                               isSaved = true;
                             });
@@ -265,9 +260,11 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                         );
                       } else if (state is DeleteSaveAdState) {
                         state.deleteSaveAd.fold(
-                          (l) => showMessage('مجدد تلاش کنید'),
+                          (l) =>
+                              showMessage(MessageSnackBar.tryAgain, context, 1),
                           (r) {
-                            showMessage(r);
+                            showMessage(
+                                MessageSnackBar.deleteSaveAd, context, 1);
                             setState(() {
                               isSaved = false;
                             });
@@ -667,7 +664,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
       children: [
         Container(
           height: 100,
-          width: length == 1 ? 200 : double.infinity,
+          width: length == 1 ? 200 : 450,
           decoration: BoxDecoration(
             border: Border.all(
               color: CustomColor.grey350,
@@ -689,9 +686,19 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                     ] else ...[
                       informationBoxItem(
                           'ساخت', widget.advertisingHome.yearBiuld),
-                      informationBoxItem('طبقه', widget.advertisingHome.floor),
                       informationBoxItem(
                           'اتاق', widget.advertisingHome.countRoom),
+                      if (widget.advertisingHome.rentPrice != 0 &&
+                          widget.advertisingHome.categoryId !=
+                              'daxmo7fipbo5xnc' &&
+                          widget.advertisingHome.categoryId !=
+                              '04lqfn5b7bpiwdm') ...[
+                        informationBoxItem(
+                            'متراژ بنا', widget.advertisingHome.buildingMetr),
+                      ] else ...[
+                        informationBoxItem(
+                            'طبقه', widget.advertisingHome.floor),
+                      ],
                       informationBoxItem('متراژ', widget.advertisingHome.metr),
                     ],
                   ],

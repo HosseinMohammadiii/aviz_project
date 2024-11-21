@@ -11,6 +11,7 @@ import 'package:aviz_project/widgets/provinceandcity_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../DataFuture/province/Bloc/province_event.dart';
 import '../class/colors.dart';
 import '../widgets/selectprovincebutton_widget.dart';
 
@@ -20,9 +21,11 @@ class ScreenProvince extends StatefulWidget {
     super.key,
     required this.onChanged,
     this.isCity,
+    this.isShowIcon = true,
     this.onChangedCity,
   });
   bool? isCity;
+  bool? isShowIcon;
   Function() onChanged;
   Function()? onChangedCity;
   @override
@@ -41,6 +44,12 @@ class _ScreenProvinceState extends State<ScreenProvince> {
   List<ProvinceModel> searchProvinces = [];
 
   Timer? _debounce;
+  @override
+  void initState() {
+    context.read<ProvinceBloc>().add(ProvinceInitializedData());
+
+    super.initState();
+  }
 
   void searchListItems(String value) {
     // Filter provinces based on search input
@@ -69,6 +78,7 @@ class _ScreenProvinceState extends State<ScreenProvince> {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: AppProvinceSection(
             province: 'استان',
+            isShowIcon: widget.isShowIcon,
           ),
         ),
       ),

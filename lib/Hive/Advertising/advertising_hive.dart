@@ -16,6 +16,8 @@ class AdvertisingHive {
   String? province;
   @HiveField(4)
   String? city;
+  @HiveField(5)
+  String? phoneNumber;
 
   AdvertisingHive({
     this.idFacilities,

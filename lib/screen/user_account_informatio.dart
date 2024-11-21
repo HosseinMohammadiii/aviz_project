@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:aviz_project/DataFuture/NetworkUtil/authmanager.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_bloc.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
+import 'package:aviz_project/Hive/Advertising/register_id.dart';
+import 'package:aviz_project/class/checkconnection.dart';
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/class/scaffoldmessage.dart';
 import 'package:aviz_project/screen/screen_province.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../DataFuture/account/Data/model/account.dart';
+import '../Bloc/bloc_page_number/page_n_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/display_error.dart';
@@ -44,6 +48,11 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
   String errorText = '';
 
   bool isShowErrorText = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
 // Function to check for invalid characters
   void checkForInvalidCharacters(
@@ -95,25 +104,24 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   setState(() {
                     if (xfilePickCamera != null) {
                       galleryFile = File(xfilePickCamera.path);
+                      //Get the size of the image
+                      final bytes =
+                          galleryFile!.readAsBytesSync().lengthInBytes;
+                      //Convert bytes to megabytes
+                      final mb = bytes / pow(1024, 2);
+                      if (mb > 1) {
+                        //Display Message for image larger than 1 MB
+                        showMessage(MessageSnackBar.checkPostImage, context, 2);
 
-                      context
-                          .read<AuthAccountBloc>()
-                          .add(UpdateAvataUserEvent(galleryFile!));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: CustomColor.grey500,
-                          content: textWidget(
-                            'عکسی انتخاب نشد',
-                            CustomColor.grey,
-                            14,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      );
+                        return;
+                      } else {
+                        context
+                            .read<AuthAccountBloc>()
+                            .add(UpdateAvataUserEvent(galleryFile!));
+                      }
                     }
-                    Navigator.of(context).pop();
                   });
+                  Navigator.of(context).pop();
                 },
               ),
               ListTile(
@@ -131,24 +139,25 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   setState(() {
                     if (xfilePickCamera != null) {
                       galleryFile = File(xfilePickCamera.path);
-                      context
-                          .read<AuthAccountBloc>()
-                          .add(UpdateAvataUserEvent(galleryFile!));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: CustomColor.grey500,
-                          content: textWidget(
-                            'عکسی انتخاب نشد',
-                            CustomColor.grey,
-                            14,
-                            FontWeight.w500,
-                          ),
-                        ),
-                      );
+
+                      //Get the size of the image
+                      final bytes =
+                          galleryFile!.readAsBytesSync().lengthInBytes;
+                      //Convert bytes to megabytes
+                      final mb = bytes / pow(1024, 2);
+                      if (mb > 1) {
+                        //Display Message for image larger than 1 MB
+                        showMessage(MessageSnackBar.checkPostImage, context, 2);
+
+                        return;
+                      } else {
+                        context
+                            .read<AuthAccountBloc>()
+                            .add(UpdateAvataUserEvent(galleryFile!));
+                      }
                     }
-                    Navigator.of(context).pop();
                   });
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -177,7 +186,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
               const SizedBox(
                 width: 15,
               ),
-              const Icon(Icons.email_outlined),
               const Spacer(),
               const Text(
                 'حساب کاربری',
@@ -215,6 +223,30 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                       ),
                     ),
                   ],
+                  if (state is AuthLoadingUpdateAvatarState) ...[
+                    const SliverFillRemaining(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: CircularProgressIndicator(
+                              color: CustomColor.normalRed,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'در حال آپلود...',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 30,
@@ -224,7 +256,8 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                     state.displayUserInformation.fold(
                       (error) => DisplayError(error: error),
                       (userInfo) => SliverToBoxAdapter(
-                        child: showandselectProfileImage(context, userInfo),
+                        child: showandselectProfileImage(
+                            context, userInfo.avatar, state),
                       ),
                     ),
                   ],
@@ -240,6 +273,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                         return SliverToBoxAdapter(
                           child: GestureDetector(
                             onTap: () async {
+                              if (!await checkInternetConnection(context)) {
+                                return;
+                              }
                               // Setting initial text for username and hiding error message
                               usernameController.text = userInfo.name;
                               isShowErrorText = false;
@@ -256,7 +292,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                 focusNode: usernameFocusNode,
                                 inputType: TextInputType.name,
                                 controller: usernameController,
-                                registration: () {
+                                registration: () async {
                                   // Validation for username length
                                   if (usernameController.text.length < 3 ||
                                       usernameController.text.length > 25) {
@@ -314,6 +350,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               info: userInfo.email,
                               title: 'پست الکترونیکی',
                               onChaged: () async {
+                                if (!await checkInternetConnection(context)) {
+                                  return;
+                                }
                                 isShowErrorText = false;
 
                                 // Set initial email and show bottom sheet for email input
@@ -329,7 +368,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   controller: emailController,
                                   focusNode: emailFocusNode,
                                   inputType: TextInputType.emailAddress,
-                                  registration: () {
+                                  registration: () async {
                                     // Email validation function
                                     bool isValidEmail(String email) {
                                       final emailRegex = RegExp(
@@ -363,7 +402,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                             rowEnterInformationBox(
                               info: userInfo.phoneNumber.toString(),
                               title: 'شماره موبایل',
-                              onChaged: () {
+                              onChaged: () async {
+                                if (!await checkInternetConnection(context)) {
+                                  return;
+                                }
                                 // Pre-fill phone number if available
                                 if (userInfo.phoneNumber != 0) {
                                   phoneNumberController.text =
@@ -386,7 +428,9 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                   registration: () {
                                     // Phone number validation for Iranian format
                                     bool isValidPhoneNumber(String text) {
-                                      final RegExp regex = RegExp(r'^09\d{9}$');
+                                      final RegExp regex =
+                                          RegExp(r'^(0?9)\d{9}$');
+
                                       return regex.hasMatch(text);
                                     }
 
@@ -413,7 +457,10 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                             rowEnterInformationBox(
                               info: userInfo.province,
                               title: 'استان',
-                              onChaged: () {
+                              onChaged: () async {
+                                if (!await checkInternetConnection(context)) {
+                                  return;
+                                }
                                 // Navigate to province search screen
                                 Navigator.push(
                                   context,
@@ -480,147 +527,125 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
       barrierColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final isKeyboardVisible =
-                MediaQuery.of(context).viewInsets.bottom > 0;
-            final heightFactor = isKeyboardVisible ? 0.9 : 0.6;
-
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * heightFactor,
-              child: DraggableScrollableSheet(
-                initialChildSize: heightFactor,
-                minChildSize: 0.5,
-                maxChildSize: 0.9,
-                builder: (context, scrollController) {
-                  return Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      controller: scrollController,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 6,
-                            margin: const EdgeInsets.only(bottom: 20, top: 10),
-                            alignment: Alignment.topCenter,
-                            decoration: BoxDecoration(
-                              color: CustomColor.grey300,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: CustomColor.grey500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Divider(
-                            thickness: 1,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: TextField(
-                                cursorColor: CustomColor.pink,
-                                showCursor: true,
-                                controller: controller,
-                                focusNode: focusNode,
-                                keyboardType: inputType,
-                                autofocus: true,
-                                textDirection: TextDirection.rtl,
-                                decoration: InputDecoration(
-                                  labelText: label,
-                                  labelStyle: TextStyle(
-                                    fontSize: 15,
-                                    color: colorShow(focusNode, controller),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: colorShow(focusNode, controller),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: colorShow(focusNode, controller),
-                                    ),
-                                  ),
-                                  prefixIcon: icon,
-                                  // prefixIcon: Image.asset(
-                                  //   'images/user_icon_text.png',
-                                  //   scale: 6,
-                                  // ),
-                                ),
-                                onChanged: (value) {
-                                  onChanged != null ? onChanged(value) : null;
-                                },
-                                onTapOutside: (event) {
-                                  FocusScope.of(context).unfocus();
-                                },
-                              ),
-                            ),
-                          ),
-                          Visibility.maintain(
-                            visible: isShowErrorText,
-                            child: SizedBox(
-                              height: 30,
-                              child: textWidget(
-                                errorText,
-                                CustomColor.pink,
-                                15,
-                                FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => registration(),
-                            child: Container(
-                              width: double.infinity,
-                              alignment: Alignment.center,
-                              height: 50,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.pink,
-                              ),
-                              child: const Text(
-                                'ثبت',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
               ),
-            );
-          },
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 30,
+                  height: 6,
+                  margin: const EdgeInsets.only(bottom: 20, top: 10),
+                  alignment: Alignment.topCenter,
+                  decoration: BoxDecoration(
+                    color: CustomColor.grey300,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: CustomColor.grey500,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Divider(
+                  thickness: 1,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: TextField(
+                      cursorColor: CustomColor.pink,
+                      showCursor: true,
+                      controller: controller,
+                      focusNode: focusNode,
+                      keyboardType: inputType,
+                      autofocus: true,
+                      textDirection: TextDirection.rtl,
+                      decoration: InputDecoration(
+                        labelText: label,
+                        labelStyle: TextStyle(
+                          fontSize: 15,
+                          color: colorShow(focusNode, controller),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: colorShow(focusNode, controller),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: colorShow(focusNode, controller),
+                          ),
+                        ),
+                        prefixIcon: icon,
+                      ),
+                      onChanged: (value) {
+                        onChanged != null ? onChanged(value) : null;
+                      },
+                      onTapOutside: (event) {
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                  ),
+                ),
+                Visibility.maintain(
+                  visible: isShowErrorText,
+                  child: SizedBox(
+                    height: 30,
+                    child: textWidget(
+                      errorText,
+                      CustomColor.pink,
+                      15,
+                      FontWeight.w400,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => registration(),
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    height: 50,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.pink,
+                    ),
+                    child: const Text(
+                      'ثبت',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -629,39 +654,109 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
 //Widget For Slect And Display User Profile Image
   Widget showandselectProfileImage(
     BuildContext context,
-    AccountInformation accountIno,
+    String accountIno,
+    AuthAccountState state,
   ) {
     return Stack(
-      alignment: Alignment.center,
+      alignment: Alignment.bottomCenter,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: SizedBox(
-            height: 100,
-            width: 100,
-            child: CachedNetworkImage(
-              imageUrl: accountIno.avatar,
-              height: 107,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) => Center(
-                child: Image.asset('images/user_profile.png'),
-              ),
-              placeholder: (context, url) => Center(
-                child: Shimmer.fromColors(
-                  baseColor: const Color(0xffE1E1E1),
-                  highlightColor: const Color(0xffF3F3F2),
-                  child: const Center(),
+        GestureDetector(
+          onTap: () {
+            if (accountIno.isNotEmpty) {
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return Stack(
+                    children: [
+                      AlertDialog(
+                        contentPadding: EdgeInsets.zero,
+                        content: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: InteractiveViewer(
+                            child: CachedNetworkImage(
+                              imageUrl: accountIno,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) => Center(
+                                child: Image.asset('images/user_profile.png'),
+                              ),
+                              placeholder: (context, url) => Center(
+                                child: Shimmer.fromColors(
+                                  baseColor: const Color(0xffE1E1E1),
+                                  highlightColor: const Color(0xffF3F3F2),
+                                  child: const Center(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 1,
+                        right: 1,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              color: CustomColor.grey500.withOpacity(0.8),
+                              border:
+                                  Border.all(width: 2, color: CustomColor.pink),
+                            ),
+                            child: Icon(
+                              Icons.close_rounded,
+                              color: CustomColor.white,
+                            ),
+                          ),
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          },
+          child: accountIno.isNotEmpty
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: CachedNetworkImage(
+                      imageUrl: accountIno,
+                      height: 107,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => Center(
+                        child: Image.asset('images/user_profile.png'),
+                      ),
+                      placeholder: (context, url) => Center(
+                        child: Shimmer.fromColors(
+                          baseColor: const Color(0xffE1E1E1),
+                          highlightColor: const Color(0xffF3F3F2),
+                          child: const Center(),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Image.asset(
+                  'images/user_profile.png',
+                  height: 100,
                 ),
-              ),
-            ),
-          ),
         ),
         Positioned(
-          bottom: 0,
-          left: 146,
+          top: 70,
           child: GestureDetector(
             onTap: () async {
+              if (!await checkInternetConnection(context)) {
+                return;
+              }
               showPicker(context: context);
             },
             child: Container(
@@ -729,6 +824,14 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
             TextButton(
               onPressed: () {
                 Authmanager().isLogout();
+                RegisterId().setPhoneNumber('');
+
+                // Reset the information stored in RegisterInfoAdCubit
+                context.read<RegisterInfoAdCubit>().resetInfoAdSet();
+                // Reset the state of BoolStateCubit
+                context.read<BoolStateCubit>().reset();
+                // Navigate back to the first page
+                context.read<NavigationPage>().backFirstPAge();
 
                 Navigator.push(
                   context,

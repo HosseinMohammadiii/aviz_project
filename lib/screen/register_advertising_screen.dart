@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 import '../Bloc/bloc_page_number/page_n_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
@@ -59,6 +60,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
     controllerDescription.text = stateAd.description;
     controllerPrice.text =
         stateAd.price.toString() == 'null' ? '' : stateAd.price.toString();
+
     controllerRentPrice.text = stateAd.rentPrice.toString() == 'null'
         ? ''
         : stateAd.rentPrice.toString();
@@ -169,12 +171,12 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
         if (state is PostImageAdState) {
           state.postImage.fold(
             (l) {
-              showMessage(l, context, 2);
-              stateAd.uploadProgress = true;
+              showMessage(MessageSnackBar.checkPostImage, context, 2);
             },
             (r) {
               // Get the current state of the RegisterInfoAdCubit
-
+              num price = num.tryParse(controllerPrice.text) ?? 0;
+              num rentPrice = num.tryParse(controllerRentPrice.text) ?? 0;
               BlocProvider.of<AddAdvertisingBloc>(context).add(
                 AddInfoAdvertising(
                   stateAd.idCt,
@@ -183,8 +185,8 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   stateAd.city,
                   stateAd.title,
                   stateAd.description,
-                  stateAd.price!,
-                  stateAd.rentPrice!,
+                  price,
+                  rentPrice,
                   stateAd.metr!.toInt(),
                   stateAd.buildingMetr!.toInt(),
                   stateAd.countRoom!.toInt(),
@@ -207,7 +209,103 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
         }
       },
       builder: (context, state) => Scaffold(
+        bottomNavigationBar: GestureDetector(
+          onTap: () async {
+            //Checking Internet Connection Befor Register Information Ad in the Database
+            if (!await checkInternetConnection(context)) {
+              return;
+            }
+
+            //Checking the size of images larger than 1 MB
+            for (var i = 0; i < stateAd.images!.length; i++) {
+              //Get the size of the image
+              final bytes = stateAd.images![i].readAsBytesSync().lengthInBytes;
+              //Convert bytes to megabytes
+              final mb = bytes / pow(1024, 2);
+              if (mb > 1) {
+                //Display Message for image larger than 1 MB
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'حجم تصویر ${i + 1} بیشتر از 1 مگابایت است',
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+                return;
+              }
+            }
+
+            // Checking if no images have been selected
+            if (stateAd.images!.isEmpty) {
+              // Display a dialog prompting the user to select an image
+
+              showMessage(
+                MessageSnackBar.selectImage,
+                context,
+                2,
+              );
+            }
+            // Checking if any of the required text fields are empty
+            else if (stateAd.stateRentHome == true
+                ? controllertitle.text.isEmpty ||
+                    controllerDescription.text.isEmpty ||
+                    controllerPrice.text.isEmpty ||
+                    controllerRentPrice.text.isEmpty
+                : controllertitle.text.isEmpty ||
+                    controllerDescription.text.isEmpty ||
+                    controllerPrice.text.isEmpty) {
+              // Display a dialog prompting the user to fill in all fields
+              showMessage(
+                MessageSnackBar.compeletFields,
+                context,
+                2,
+              );
+            } else {
+              if (state is! AddAdvertisingImageLoading) {
+                BlocProvider.of<AddAdvertisingBloc>(context)
+                    .add(AddImagesToGallery(stateAd.images!));
+              }
+            }
+          },
+          child: Container(
+            height: 40,
+            alignment: Alignment.center,
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            decoration: BoxDecoration(
+              color: CustomColor.red,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: state is! AddAdvertisingImageLoading,
+                  replacement: LoadingIndicator(
+                    indicatorType: Indicator.ballPulse,
+                    strokeWidth: 10,
+                    colors: [
+                      CustomColor.white,
+                    ],
+                  ),
+                  child: Text(
+                    'ثبت آگهی',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: CustomColor.white,
+                      fontSize: 16,
+                      fontFamily: 'SN',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         body: SafeArea(
+          maintainBottomViewPadding: true,
           child: SingleChildScrollView(
             child: Stack(
               alignment: Alignment.center,
@@ -272,8 +370,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       const TextTitleSection(
                           txt: 'قیمت', img: 'images/money_icon.png'),
                       Visibility(
-                        //visible: stateAd.stateRentHome == true ? false : true,
-                        visible: false,
+                        visible: stateAd.stateRentHome ?? true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -299,9 +396,9 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                               },
                             ),
                             Text(
-                              stateAd.price.toString() == 'null'
+                              formattedAmount2 == 'null'
                                   ? ''
-                                  : stateAd.price.toString(),
+                                  : formattedAmount2,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: formattedAmount2 != ''
@@ -313,8 +410,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         ),
                       ),
                       Visibility(
-                        // visible: stateAd.stateRentHome ?? false,
-                        visible: true,
+                        visible: stateAd.stateRentHome ?? false,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -410,135 +506,9 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                           ],
                         ),
                       ),
-                      Visibility(
-                        visible: stateAd.uploadProgress ?? true,
-                        child: GestureDetector(
-                          onTap: () async {
-                            //Checking Internet Connection Befor Register Information Ad in the Database
-                            if (!await checkInternetConnection(context)) {
-                              return;
-                            }
-
-                            //Checking the size of images larger than 1 MB
-                            for (var i = 0; i < stateAd.images!.length; i++) {
-                              //Get the size of the image
-                              final bytes = stateAd.images![i]
-                                  .readAsBytesSync()
-                                  .lengthInBytes;
-                              //Convert bytes to megabytes
-                              final mb = bytes / pow(1024, 2);
-                              if (mb > 1) {
-                                //Display Message for image larger than 1 MB
-                                showMessage(
-                                  'حجم تصویر ${i + 1} بیشتر از 1 مگابایت است',
-                                  context,
-                                  2,
-                                );
-                                return;
-                              }
-                            }
-
-                            // Checking if no images have been selected
-                            if (stateAd.images!.isEmpty) {
-                              // Display a dialog prompting the user to select an image
-
-                              showMessage(
-                                'لطفا عکس مورد نظر را انتخاب کنید',
-                                context,
-                                2,
-                              );
-                            }
-                            // Checking if any of the required text fields are empty
-                            else if (stateAd.stateRentHome == true
-                                ? controllertitle.text.isEmpty ||
-                                    controllerDescription.text.isEmpty ||
-                                    controllerPrice.text.isEmpty ||
-                                    controllerRentPrice.text.isEmpty
-                                : controllertitle.text.isEmpty ||
-                                    controllerDescription.text.isEmpty ||
-                                    controllerPrice.text.isEmpty) {
-                              // Display a dialog prompting the user to fill in all fields
-                              showMessage(
-                                'لطفا تمام فیلد ها را کامل کنید',
-                                context,
-                                2,
-                              );
-                            } else {
-                              BlocProvider.of<AddAdvertisingBloc>(context)
-                                  .add(AddImagesToGallery(stateAd.images!));
-                              setState(() {
-                                stateAd.uploadProgress = false;
-                              });
-                            }
-                          },
-                          child: Container(
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: CustomColor.red,
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: CustomColor.red,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'ثبت آگهی',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: CustomColor.white,
-                                    fontSize: 16,
-                                    fontFamily: 'SN',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
-                if (state is AddAdvertisingImageLoading) ...[
-                  Container(
-                    height: MediaQuery.sizeOf(context).height,
-                    width: MediaQuery.sizeOf(context).width,
-                    color: Colors.transparent,
-                  ),
-                  Container(
-                    height: 150,
-                    width: 190,
-                    decoration: BoxDecoration(
-                      color: CustomColor.black.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: CircularProgressIndicator(
-                            color: CustomColor.normalRed,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          '...در حال ساخت آگهی',
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: CustomColor.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
               ],
             ),
           ),

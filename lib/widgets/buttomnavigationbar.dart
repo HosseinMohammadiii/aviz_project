@@ -1,16 +1,16 @@
+import 'package:aviz_project/class/checkconnection.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/screens.dart';
+import 'package:aviz_project/screen/register_phonenumber.dart';
 import 'package:flutter/material.dart';
 
-// ignore: library_private_types_in_public_api
-final GlobalKey<_BottomNavigationScreenState> bottomNavigationKey =
-    GlobalKey<_BottomNavigationScreenState>();
+import '../Hive/Advertising/register_id.dart';
 
 // ignore: must_be_immutable
 class BottomNavigationScreen extends StatefulWidget {
   BottomNavigationScreen({
-    this.index = 3,
-  }) : super(key: bottomNavigationKey);
+    this.index = 2,
+  }) : super();
   int index;
 
   @override
@@ -18,9 +18,41 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  void setPage(int index) {
+  int _previousIndex = 0;
+
+//Methode for Set Idexed Screens
+  void onItemTapped(int index) async {
+    if (!await checkInternetConnection(context)) {
+      return;
+    }
+    if (index == 1) {
+      //Check Save PhoneNumber
+      final isPhoneSaved = RegisterId().getPhoneNumber().isNotEmpty;
+
+      if (!isPhoneSaved) {
+        //Save Last Index Screen
+        _previousIndex = widget.index;
+
+        //Navigate to RegisterPhonenumber Screen
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const RegisterPhonenumber(),
+          ),
+        );
+
+        // If the User does not Enter the Phonenumber
+        if (result == null) {
+          setState(() {
+            //Back to Last Index Screen
+            widget.index = _previousIndex;
+          });
+          return;
+        }
+      }
+    } //Set widget.index
     setState(() {
-      widget.index = index; // شاخص صفحه را به روز کنید
+      widget.index = index;
     });
   }
 
@@ -57,22 +89,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               label: 'افزودن آویز'),
           BottomNavigationBarItem(
               icon: widget.index == 2
-                  ? Image.asset('images/note_red.png')
-                  : Image.asset('images/note_grey.png'),
-              label: 'آگهی من'),
-          BottomNavigationBarItem(
-              icon: widget.index == 3
                   ? Image.asset('images/icon_home_active.png')
                   : Image.asset('images/icon_home.png'),
-              label: 'آویز آگهی ها'),
+              label: 'آویز ها'),
         ],
         currentIndex: widget.index,
         selectedItemColor: CustomColor.red,
-        onTap: (index) {
-          setState(() {
-            widget.index = index;
-          });
-        },
+        onTap: onItemTapped,
       ),
       body: Center(
         child: screen.elementAt(widget.index),

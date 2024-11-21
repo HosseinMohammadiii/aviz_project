@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../DataFuture/account/Bloc/account_bloc.dart';
 import '../DataFuture/account/Bloc/account_state.dart';
+import '../class/checkconnection.dart';
 import '../screen/user_account_informatio.dart';
 
 class InfoAccountUser extends StatefulWidget {
@@ -50,7 +51,11 @@ class _InfoAccountUserState extends State<InfoAccountUser> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
+                                    if (!await checkInternetConnection(
+                                        context)) {
+                                      return;
+                                    }
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -141,36 +146,44 @@ class _InfoAccountUserState extends State<InfoAccountUser> {
                       ),
                     ),
                   ),
-                  (userInfo) => Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: SizedBox(
-                      height: 70,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: SizedBox(
-                          width: 70,
-                          child: CachedNetworkImage(
-                            imageUrl: userInfo.avatar,
-                            height: 107,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) => Center(
-                              child: Image.asset(
-                                'images/user_profile.png',
-                              ),
-                            ),
-                            placeholder: (context, url) => Center(
-                              child: Shimmer.fromColors(
-                                baseColor: const Color(0xffE1E1E1),
-                                highlightColor: const Color(0xffF3F3F2),
-                                child: const Center(),
+                  (userInfo) => userInfo.avatar.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            height: 70,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: SizedBox(
+                                width: 70,
+                                child: CachedNetworkImage(
+                                  imageUrl: userInfo.avatar,
+                                  height: 107,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) => Center(
+                                    child: Image.asset(
+                                      'images/user_profile.png',
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => Center(
+                                    child: Shimmer.fromColors(
+                                      baseColor: const Color(0xffE1E1E1),
+                                      highlightColor: const Color(0xffF3F3F2),
+                                      child: const Center(),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Image.asset(
+                            'images/user_profile.png',
+                            height: 70,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ],

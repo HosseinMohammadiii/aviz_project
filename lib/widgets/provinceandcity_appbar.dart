@@ -4,10 +4,12 @@ import '../class/colors.dart';
 
 // ignore: must_be_immutable
 class AppProvinceSection extends StatelessWidget {
-   AppProvinceSection({
+  AppProvinceSection({
     super.key,
-   required this.province,
+    required this.province,
+    this.isShowIcon,
   });
+  bool? isShowIcon;
   String province;
 
   @override
@@ -16,9 +18,9 @@ class AppProvinceSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Spacer(),
-         Text(
+        Text(
           province,
-          style:const TextStyle(
+          style: const TextStyle(
             fontSize: 17,
             color: CustomColor.black,
           ),
@@ -26,11 +28,14 @@ class AppProvinceSection extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(Icons.arrow_forward_ios_rounded),
+        Visibility(
+          visible: isShowIcon == true,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_forward_ios_rounded),
+          ),
         ),
       ],
     );

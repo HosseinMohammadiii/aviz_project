@@ -1,12 +1,12 @@
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_state.dart';
 import 'package:aviz_project/screen/display_ad_save_items.dart';
+import 'package:aviz_project/screen/my_advertising_screen.dart';
 import 'package:aviz_project/widgets/information_user_account.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../DataFuture/NetworkUtil/authmanager.dart';
+import '../class/checkconnection.dart';
 import 'recent_user_ad_items.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -70,9 +70,32 @@ class _AccountScreenState extends State<AccountScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   sliver: SliverToBoxAdapter(
                     child: itemsAccountButton(
+                      title: 'آگهی های من',
+                      icon: 'images/note_red.png',
+                      onTap: () async {
+                        if (!await checkInternetConnection(context)) {
+                          return;
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyAdvertisingScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  sliver: SliverToBoxAdapter(
+                    child: itemsAccountButton(
                       title: 'بازدید های اخیر',
                       icon: 'images/eye.png',
-                      onTap: () {
+                      onTap: () async {
+                        if (!await checkInternetConnection(context)) {
+                          return;
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -83,14 +106,16 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                   ),
                 ),
-
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   sliver: SliverToBoxAdapter(
                     child: itemsAccountButton(
                       title: 'ذخیره شده ها',
                       icon: 'images/save-2.png',
-                      onTap: () {
+                      onTap: () async {
+                        if (!await checkInternetConnection(context)) {
+                          return;
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -117,30 +142,10 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: itemsAccountButton(
                       title: 'درباره آویز',
                       icon: 'images/info-circle.png',
-                      onTap: () {
-                        Authmanager().isLogout();
-                      },
+                      onTap: () {},
                     ),
                   ),
                 ),
-                // SliverToBoxAdapter(
-                //   child: Column(
-                //     children: [
-                //       textWidget(
-                //         'نسخه',
-                //         Colors.grey[400]!,
-                //         14,
-                //         FontWeight.w400,
-                //       ),
-                //       textWidget(
-                //         '۱.0.0',
-                //         Colors.grey[400]!,
-                //         14,
-                //         FontWeight.w400,
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
