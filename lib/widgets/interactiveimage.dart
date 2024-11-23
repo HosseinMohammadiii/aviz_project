@@ -132,8 +132,8 @@ class InterActiveImageWidget extends StatelessWidget {
                       height: 32,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
-                        color: CustomColor.grey500.withOpacity(0.8),
-                        border: Border.all(width: 2, color: CustomColor.pink),
+                        color: CustomColor.normalRed,
+                        border: Border.all(width: 2, color: CustomColor.white),
                       ),
                       child: Icon(
                         Icons.close_rounded,

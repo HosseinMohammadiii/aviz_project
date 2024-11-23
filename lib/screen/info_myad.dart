@@ -213,7 +213,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
             automaticallyImplyLeading: false,
             leadingWidth: double.maxFinite,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 children: [
                   BlocConsumer<SaveAdBloc, SaveAdState>(
@@ -382,8 +382,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                       Navigator.pop(context);
                     },
                     child: const Icon(
-                      Icons.chevron_right_rounded,
-                      size: 42,
+                      Icons.arrow_forward_ios_rounded,
                     ),
                   ),
                 ],

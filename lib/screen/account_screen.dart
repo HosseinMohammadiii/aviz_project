@@ -1,5 +1,6 @@
 import 'package:aviz_project/DataFuture/recent/bloc/recent_bloc.dart';
 import 'package:aviz_project/DataFuture/recent/bloc/recent_state.dart';
+import 'package:aviz_project/screen/aboutaviz.dart';
 import 'package:aviz_project/screen/display_ad_save_items.dart';
 import 'package:aviz_project/screen/my_advertising_screen.dart';
 import 'package:aviz_project/widgets/information_user_account.dart';
@@ -142,7 +143,14 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: itemsAccountButton(
                       title: 'درباره آویز',
                       icon: 'images/info-circle.png',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AboutAvizScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
