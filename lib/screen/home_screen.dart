@@ -23,7 +23,7 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../class/checkconnection.dart';
 import '../widgets/container_search.dart';
-import '../widgets/display_error.dart';
+import '../widgets/displayreconnection.dart';
 import '../widgets/price_widget.dart';
 import 'info_myad.dart';
 
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               (ad) {
                 return state.advertisingFacilities.fold(
-                  (error) => DisplayError(screen: ''),
+                  (error) => DisplayReconnection(screen: ''),
                   (facilities) => SafeArea(
                     child: RefreshIndicator(
                       color: CustomColor.normalRed,

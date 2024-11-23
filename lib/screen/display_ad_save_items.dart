@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../DataFuture/advertising_save/bloc/advertising_save_event.dart';
 import '../class/colors.dart';
 import '../widgets/advertising_widget.dart';
-import '../widgets/display_error.dart';
+import '../widgets/displayreconnection.dart';
 
 class DisplayAdSaveItems extends StatefulWidget with RouteAware {
   const DisplayAdSaveItems({super.key});
@@ -73,11 +73,12 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                   ],
                   if (state is GetSaveState) ...[
                     state.getDisplayAd.fold(
-                      (error) => DisplayError(screen: 'ذخیره شده ها'),
+                      (error) => DisplayReconnection(screen: 'ذخیره شده ها'),
                       (ad) => state.advertisingFacilitiesDetails.fold(
-                        (error) => DisplayError(screen: 'ذخیره شده ها'),
+                        (error) => DisplayReconnection(screen: 'ذخیره شده ها'),
                         (facilities) => state.getSaveAd.fold(
-                          (error) => DisplayError(screen: 'ذخیره شده ها'),
+                          (error) =>
+                              DisplayReconnection(screen: 'ذخیره شده ها'),
                           (saveAd) => saveAd.isNotEmpty
                               ? SliverList.builder(
                                   itemCount: saveAd.length,

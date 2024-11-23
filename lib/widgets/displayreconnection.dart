@@ -18,8 +18,8 @@ import '../class/colors.dart';
 import 'text_widget.dart';
 
 // ignore: must_be_immutable
-class DisplayError extends StatelessWidget {
-  DisplayError({
+class DisplayReconnection extends StatelessWidget {
+  DisplayReconnection({
     super.key,
     required this.screen,
   });
@@ -60,33 +60,28 @@ class DisplayError extends StatelessWidget {
               ),
             ),
             onPressed: () {
+              //Use Switch to Reconnect to the Server to Display the Content of the Pages
               switch (screen) {
                 case 'آگهی های من':
-                  print('آگهی های من');
                   context
                       .read<AddAdvertisingBloc>()
                       .add(InitializedDisplayAdvertising());
                   break;
                 case 'بازدید های اخیر':
-                  print('بازدید های اخیر');
                   context.read<RecentBloc>().add(GetInitializedDataEvent());
                   break;
                 case 'ذخیره شده ها':
-                  print('ذخیره شده ها');
                   context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
                   break;
                 case 'شهر ها و استانها':
-                  print('شهر ها و استانها');
                   context.read<ProvinceBloc>().add(ProvinceInitializedData());
                   break;
                 case 'جستوجو':
-                  print('جستوجو');
                   context
                       .read<SearchBloc>()
                       .add(SearchWithQueryData(query: ''));
                   break;
                 case 'حساب کاربری':
-                  print('حساب کاربری');
                   context
                       .read<AuthAccountBloc>()
                       .add(DisplayInformationEvent());

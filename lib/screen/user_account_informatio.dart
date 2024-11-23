@@ -20,7 +20,7 @@ import 'package:shimmer/shimmer.dart';
 import '../Bloc/bloc_page_number/page_n_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../class/checkinvalidcharacters.dart';
-import '../widgets/display_error.dart';
+import '../widgets/displayreconnection.dart';
 import '../widgets/text_widget.dart';
 import 'login_screen.dart';
 
@@ -249,7 +249,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => DisplayError(screen: 'حساب کاربری'),
+                      (error) => DisplayReconnection(screen: 'حساب کاربری'),
                       (userInfo) => SliverToBoxAdapter(
                         child: showandselectProfileImage(
                             context, userInfo.avatar, state),
@@ -263,7 +263,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => DisplayError(screen: 'حساب کاربری'),
+                      (error) => DisplayReconnection(screen: 'حساب کاربری'),
                       (userInfo) {
                         return SliverToBoxAdapter(
                           child: GestureDetector(
@@ -337,7 +337,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => DisplayError(screen: 'حساب کاربری'),
+                      (error) => DisplayReconnection(screen: 'حساب کاربری'),
                       (userInfo) => SliverToBoxAdapter(
                         child: Column(
                           children: [

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../class/colors.dart';
-import '../widgets/display_error.dart';
+import '../widgets/displayreconnection.dart';
 
 class RecentUserAdItems extends StatefulWidget {
   const RecentUserAdItems({super.key});
@@ -72,11 +72,13 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                   ],
                   if (state is GetRecentState) ...[
                     state.getDisplayAd.fold(
-                      (error) => DisplayError(screen: 'بازدید های اخیر'),
+                      (error) => DisplayReconnection(screen: 'بازدید های اخیر'),
                       (advertising) => state.getRecentAd.fold(
-                        (error) => DisplayError(screen: 'بازدید های اخیر'),
+                        (error) =>
+                            DisplayReconnection(screen: 'بازدید های اخیر'),
                         (recent) => state.advertisingFacilitiesDetails.fold(
-                          (error) => DisplayError(screen: 'بازدید های اخیر'),
+                          (error) =>
+                              DisplayReconnection(screen: 'بازدید های اخیر'),
                           (facilities) => recent.isNotEmpty
                               ? SliverList.builder(
                                   itemCount: recent.length,

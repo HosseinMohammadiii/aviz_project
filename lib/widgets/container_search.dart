@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:aviz_project/screen/info_myad.dart';
 import 'package:aviz_project/widgets/advertising_widget.dart';
-import 'package:aviz_project/widgets/display_error.dart';
+import 'package:aviz_project/widgets/displayreconnection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,10 +108,10 @@ class _ContainerSearchState extends State<ContainerSearch> {
                 ],
                 if (state is SearchRequestSuccessState) ...[
                   state.searchResult.fold(
-                    (error) => DisplayError(screen: 'جستوجو'),
+                    (error) => DisplayReconnection(screen: 'جستوجو'),
                     (adHome) {
                       return state.adFacilities.fold(
-                        (error) => DisplayError(screen: 'جستوجو'),
+                        (error) => DisplayReconnection(screen: 'جستوجو'),
                         (facilities) {
                           return Visibility(
                             visible: adHome.isNotEmpty,

@@ -12,7 +12,7 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 
 import '../widgets/buttomnavigationbar.dart';
-import '../widgets/display_error.dart';
+import '../widgets/displayreconnection.dart';
 
 class MyAdvertisingScreen extends StatefulWidget {
   const MyAdvertisingScreen({super.key});
@@ -76,10 +76,10 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   ],
                   if (state is DisplayInfoAdvertisingStateResponse) ...[
                     state.displayAdvertising.fold(
-                      (error) => DisplayError(screen: 'آگهی های من'),
+                      (error) => DisplayReconnection(screen: 'آگهی های من'),
                       (advertising) {
                         return state.displayAdvertisingFacilities.fold(
-                          (error) => DisplayError(screen: 'آگهی های من'),
+                          (error) => DisplayReconnection(screen: 'آگهی های من'),
                           (facilities) {
                             return advertising.isNotEmpty
                                 ? ListMyAdvertising(

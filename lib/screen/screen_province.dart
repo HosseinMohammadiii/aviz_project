@@ -4,7 +4,7 @@ import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_blo
 import 'package:aviz_project/DataFuture/province/Bloc/province_bloc.dart';
 import 'package:aviz_project/DataFuture/province/Bloc/province_state.dart';
 import 'package:aviz_project/DataFuture/province/model/province.dart';
-import 'package:aviz_project/widgets/display_error.dart';
+import 'package:aviz_project/widgets/displayreconnection.dart';
 import 'package:aviz_project/widgets/provinceandcitiesitems_widget.dart';
 import 'package:aviz_project/widgets/provinceandcity_appbar.dart';
 import 'package:aviz_project/widgets/provinceandcity_textfield.dart';
@@ -125,7 +125,8 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                   ],
                   if (state is ProvinceRsultSuccessResponse) ...[
                     state.province.fold(
-                      (error) => DisplayError(screen: 'شهر ها و استانها'),
+                      (error) =>
+                          DisplayReconnection(screen: 'شهر ها و استانها'),
                       (province) {
                         provinces = province;
 

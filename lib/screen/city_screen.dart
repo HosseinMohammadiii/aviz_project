@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:aviz_project/DataFuture/province/Bloc/province_event.dart';
-import 'package:aviz_project/widgets/display_error.dart';
+import 'package:aviz_project/widgets/displayreconnection.dart';
 import 'package:aviz_project/widgets/provinceandcitiesitems_widget.dart';
 import 'package:aviz_project/widgets/provinceandcity_textfield.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +188,8 @@ class _CityScreenState extends State<CityScreen> {
                         ),
                       ),
                       state.city.fold(
-                        (error) => DisplayError(screen: 'شهر ها و استانها'),
+                        (error) =>
+                            DisplayReconnection(screen: 'شهر ها و استانها'),
                         (city) {
                           cities = city;
                           return SliverPadding(
