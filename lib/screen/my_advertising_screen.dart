@@ -32,18 +32,27 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
             scrolledUnderElevation: 0,
             elevation: 0,
             automaticallyImplyLeading: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                textWidget(
-                  'آگهی های من',
-                  CustomColor.red,
-                  16,
-                  FontWeight.w500,
-                ),
-                Image.asset('images/icon_home_active.png'),
-              ],
+            centerTitle: true,
+            title: textWidget(
+              'آگهی های من',
+              CustomColor.red,
+              16,
+              FontWeight.w500,
             ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 25,
+                  ),
+                ),
+              ),
+            ],
           ),
           body: SafeArea(
             child: RefreshIndicator(
@@ -67,10 +76,10 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   ],
                   if (state is DisplayInfoAdvertisingStateResponse) ...[
                     state.displayAdvertising.fold(
-                      (error) => DisplayError(error: error),
+                      (error) => DisplayError(screen: 'آگهی های من'),
                       (advertising) {
                         return state.displayAdvertisingFacilities.fold(
-                          (error) => DisplayError(error: error),
+                          (error) => DisplayError(screen: 'آگهی های من'),
                           (facilities) {
                             return advertising.isNotEmpty
                                 ? ListMyAdvertising(

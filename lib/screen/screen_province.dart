@@ -125,7 +125,7 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                   ],
                   if (state is ProvinceRsultSuccessResponse) ...[
                     state.province.fold(
-                      (error) => DisplayError(error: error),
+                      (error) => DisplayError(screen: 'شهر ها و استانها'),
                       (province) {
                         provinces = province;
 

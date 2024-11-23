@@ -19,7 +19,7 @@ abstract class IAuthRepository {
 
   Future<Either<String, String>> getUpdateEmailUser(String email);
 
-  Future<Either<String, String>> getUpdatePhoneNumberUser(int phoneNumber);
+  Future<Either<String, String>> getUpdatePhoneNumberUser(String phoneNumber);
 
   Future<Either<String, String>> getUpdateProvinceUser(String province);
 }
@@ -94,7 +94,7 @@ class AuthencticationRepository extends IAuthRepository {
 
   @override
   Future<Either<String, String>> getUpdatePhoneNumberUser(
-      int phoneNumber) async {
+      String phoneNumber) async {
     try {
       var response = await _datasource.getUpdatePhoneNumberUser(phoneNumber);
       return right(response);

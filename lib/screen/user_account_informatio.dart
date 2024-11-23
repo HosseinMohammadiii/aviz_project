@@ -49,11 +49,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
 
   bool isShowErrorText = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
 // Function to check for invalid characters
   void checkForInvalidCharacters(
     String text,
@@ -254,7 +249,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => DisplayError(error: error),
+                      (error) => DisplayError(screen: 'حساب کاربری'),
                       (userInfo) => SliverToBoxAdapter(
                         child: showandselectProfileImage(
                             context, userInfo.avatar, state),
@@ -268,7 +263,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => DisplayError(error: error),
+                      (error) => DisplayError(screen: 'حساب کاربری'),
                       (userInfo) {
                         return SliverToBoxAdapter(
                           child: GestureDetector(
@@ -342,7 +337,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   ),
                   if (state is DisplayInformationState) ...[
                     state.displayUserInformation.fold(
-                      (error) => DisplayError(error: error),
+                      (error) => DisplayError(screen: 'حساب کاربری'),
                       (userInfo) => SliverToBoxAdapter(
                         child: Column(
                           children: [
@@ -400,16 +395,16 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                               height: 25,
                             ),
                             rowEnterInformationBox(
-                              info: userInfo.phoneNumber.toString(),
+                              info: RegisterId().getPhoneNumber(),
                               title: 'شماره موبایل',
                               onChaged: () async {
                                 if (!await checkInternetConnection(context)) {
                                   return;
                                 }
                                 // Pre-fill phone number if available
-                                if (userInfo.phoneNumber != 0) {
+                                if (RegisterId().getPhoneNumber().isNotEmpty) {
                                   phoneNumberController.text =
-                                      userInfo.phoneNumber.toString();
+                                      RegisterId().getPhoneNumber();
                                 }
                                 isShowErrorText = false;
 
@@ -441,11 +436,14 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                                       isShowErrorText = true;
                                       return;
                                     }
-
+                                    RegisterId().setPhoneNumber(
+                                        phoneNumberController.text);
                                     // Update phone number using Bloc event
                                     context.read<AuthAccountBloc>().add(
-                                        UpdatePhoNumberUserEvent(int.parse(
-                                            phoneNumberController.text)));
+                                          UpdatePhoNumberUserEvent(
+                                            phoneNumberController.text,
+                                          ),
+                                        );
                                     Navigator.pop(context);
                                   },
                                 );
@@ -786,6 +784,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
 //Future Function For Display Dialog to LogOut Account
   Future<void> showDialogLogOut(BuildContext context) {
     return showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -822,8 +821,11 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
               width: 5,
             ),
             TextButton(
-              onPressed: () {
-                Authmanager().isLogout();
+              onPressed: () async {
+                if (!await checkInternetConnection(context)) {
+                  return;
+                }
+                Authmanager().logOut();
                 RegisterId().setPhoneNumber('');
 
                 // Reset the information stored in RegisterInfoAdCubit

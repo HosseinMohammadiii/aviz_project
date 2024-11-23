@@ -73,11 +73,11 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                   ],
                   if (state is GetSaveState) ...[
                     state.getDisplayAd.fold(
-                      (error) => DisplayError(error: error),
+                      (error) => DisplayError(screen: 'ذخیره شده ها'),
                       (ad) => state.advertisingFacilitiesDetails.fold(
-                        (error) => DisplayError(error: error),
+                        (error) => DisplayError(screen: 'ذخیره شده ها'),
                         (facilities) => state.getSaveAd.fold(
-                          (error) => DisplayError(error: error),
+                          (error) => DisplayError(screen: 'ذخیره شده ها'),
                           (saveAd) => saveAd.isNotEmpty
                               ? SliverList.builder(
                                   itemCount: saveAd.length,

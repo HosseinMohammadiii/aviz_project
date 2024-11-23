@@ -23,6 +23,9 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
     try {
       var recent = await dio.get(
         'advertising_home',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return recent.data['items']
@@ -76,6 +79,9 @@ final class IRecentAdItemsDatasourceRemoot extends IRecentAdItems {
     try {
       var response = await dio.get(
         'facilities',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<AdvertisingFacilities>(

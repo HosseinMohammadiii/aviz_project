@@ -25,7 +25,7 @@ class Authmanager {
     return userLogin.get(2)!.id ?? '';
   }
 
-  void isLogout() {
+  void logOut() {
     user.token = null;
 
     userLogin.put(1, user);

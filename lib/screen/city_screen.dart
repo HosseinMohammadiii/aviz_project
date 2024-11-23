@@ -188,7 +188,7 @@ class _CityScreenState extends State<CityScreen> {
                         ),
                       ),
                       state.city.fold(
-                        (error) => DisplayError(error: error),
+                        (error) => DisplayError(screen: 'شهر ها و استانها'),
                         (city) {
                           cities = city;
                           return SliverPadding(

@@ -16,7 +16,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../DataFuture/account/Bloc/account_bloc.dart';
+import '../DataFuture/account/Bloc/account_event.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
+import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/add_advertising/Data/model/register_future_ad.dart';
 import '../class/checkconnection.dart';
 import '../widgets/container_search.dart';
@@ -49,168 +52,239 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return SafeArea(
-            child: RefreshIndicator(
-              color: CustomColor.normalRed,
-              onRefresh: () async {
-                context.read<HomeBloc>().add(HomeGetInitializeData());
-              },
-              child: CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    sliver: SliverToBoxAdapter(
-                      child: GestureDetector(
-                        onTap: () async {
-                          if (!await checkInternetConnection(context)) {
-                            return;
-                          }
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ContainerSearch(),
-                              ));
-                        },
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          margin: const EdgeInsets.only(bottom: 18),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          height: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                              color: CustomColor.grey350,
-                            ),
+          if (state is HomeLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: CustomColor.normalRed,
+              ),
+            );
+          } else if (state is HomeRequestSuccessState) {
+            return state.getAdvertising.fold(
+              (error) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      textWidget(
+                        'ارتباط برقرار نشد',
+                        CustomColor.black,
+                        18,
+                        FontWeight.w700,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      textWidget(
+                        'لطفا از وصل بودن اینترنت مطمئن شوید.',
+                        CustomColor.grey500,
+                        15,
+                        FontWeight.normal,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                          elevation: WidgetStatePropertyAll(0),
+                          fixedSize: WidgetStatePropertyAll(
+                            Size(150, 45),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
+                          backgroundColor: WidgetStatePropertyAll(
+                            CustomColor.red,
+                          ),
+                        ),
+                        onPressed: () {
+                          context.read<HomeBloc>().add(HomeGetInitializeData());
+                          context
+                              .read<AddAdvertisingBloc>()
+                              .add(InitializedDisplayAdvertising());
+                          context
+                              .read<AuthAccountBloc>()
+                              .add(DisplayInformationEvent());
+                        },
+                        child: Text(
+                          'تلاش دوباره',
+                          style: TextStyle(
+                            color: CustomColor.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              (ad) {
+                return state.advertisingFacilities.fold(
+                  (error) => DisplayError(screen: ''),
+                  (facilities) => SafeArea(
+                    child: RefreshIndicator(
+                      color: CustomColor.normalRed,
+                      onRefresh: () async {
+                        context.read<HomeBloc>().add(HomeGetInitializeData());
+                      },
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverPadding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            sliver: SliverToBoxAdapter(
+                              child: GestureDetector(
                                 onTap: () async {
                                   if (!await checkInternetConnection(context)) {
                                     return;
                                   }
-                                  final provinceAndCity =
-                                      context.read<RegisterInfoAdCubit>().state;
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ScreenProvince(
-                                        isCity: true,
-                                        onChanged: () {},
-                                        onChangedCity: () {
-                                          if (provinceAndCity.province != '') {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CityScreen(
-                                                    onChanged: () {
-                                                      RegisterId().setCity(
-                                                          provinceAndCity.city);
-                                                      context.read<HomeBloc>().add(
-                                                          HomeGetInitializeData());
-                                                      provinceAndCity.city = '';
-                                                      Navigator.pop(context);
-                                                      Navigator.pop(context);
-                                                    },
-                                                    province: RegisterId()
-                                                        .getProvince(),
-                                                  ),
-                                                ));
-                                          }
-                                          RegisterId().setProvince(
-                                              provinceAndCity.province);
-                                          provinceAndCity.province = '';
-                                        },
-                                      ),
+                                      builder: (context) =>
+                                          const ContainerSearch(),
                                     ),
                                   );
                                 },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on_outlined,
-                                      color: CustomColor.grey500,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  margin: const EdgeInsets.only(bottom: 18),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: CustomColor.grey350,
                                     ),
-                                    Text(
-                                      RegisterId().getCity().isNotEmpty
-                                          ? RegisterId().getCity()
-                                          : RegisterId().getProvince(),
-                                      style: const TextStyle(
-                                        fontFamily: 'SN',
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: CustomColor.black,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          if (!await checkInternetConnection(
+                                              context)) {
+                                            return;
+                                          }
+                                          final provinceAndCity = context
+                                              .read<RegisterInfoAdCubit>()
+                                              .state;
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ScreenProvince(
+                                                isCity: true,
+                                                onChanged: () {},
+                                                onChangedCity: () {
+                                                  if (provinceAndCity
+                                                          .province !=
+                                                      '') {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CityScreen(
+                                                            onChanged: () {
+                                                              RegisterId().setCity(
+                                                                  provinceAndCity
+                                                                      .city);
+                                                              context
+                                                                  .read<
+                                                                      HomeBloc>()
+                                                                  .add(
+                                                                      HomeGetInitializeData());
+                                                              provinceAndCity
+                                                                  .city = '';
+                                                              Navigator.pop(
+                                                                  context);
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            province: RegisterId()
+                                                                .getProvince(),
+                                                          ),
+                                                        ));
+                                                  }
+                                                  RegisterId().setProvince(
+                                                      provinceAndCity.province);
+                                                  provinceAndCity.province = '';
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_on_outlined,
+                                              color: CustomColor.grey500,
+                                            ),
+                                            Text(
+                                              RegisterId().getCity().isNotEmpty
+                                                  ? RegisterId().getCity()
+                                                  : RegisterId().getProvince(),
+                                              style: const TextStyle(
+                                                fontFamily: 'SN',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: CustomColor.black,
+                                              ),
+                                              textDirection: TextDirection.rtl,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(
+                                              width: 3,
+                                            ),
+                                            Text(
+                                              '|',
+                                              style: TextStyle(
+                                                fontFamily: 'SN',
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.w400,
+                                                color: CustomColor.grey500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      textDirection: TextDirection.rtl,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(
-                                      width: 3,
-                                    ),
-                                    Text(
-                                      '|',
-                                      style: TextStyle(
-                                        fontFamily: 'SN',
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w400,
-                                        color: CustomColor.grey500,
+                                      const Spacer(),
+                                      Text(
+                                        textDirection: TextDirection.rtl,
+                                        'جستوجو در آگهی ها',
+                                        style: TextStyle(
+                                          fontFamily: 'SN',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: CustomColor.grey500,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Image.asset(
+                                        'images/search_icon.png',
+                                        scale: 2.5,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const Spacer(),
-                              Text(
-                                textDirection: TextDirection.rtl,
-                                'جستوجو در آگهی ها',
-                                style: TextStyle(
-                                  fontFamily: 'SN',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: CustomColor.grey500,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Image.asset(
-                                'images/search_icon.png',
-                                scale: 2.5,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                          recentlyAdvertisingBox(
+                            adHome: ad,
+                            adFacilities: facilities,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  if (state is HomeLoadingState) ...[
-                    const SliverFillRemaining(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: CustomColor.normalRed,
-                        ),
-                      ),
-                    ),
-                  ],
-                  if (state is HomeRequestSuccessState) ...[
-                    state.getAdvertising.fold(
-                      (error) => DisplayError(error: error),
-                      (ad) => state.advertisingFacilities.fold(
-                        (error) => DisplayError(error: error),
-                        (facilities) => recentlyAdvertisingBox(
-                          adHome: ad,
-                          adFacilities: facilities,
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          );
+                );
+              },
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       ),
     );

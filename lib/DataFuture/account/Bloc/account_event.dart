@@ -34,7 +34,7 @@ final class UpdateEmailUserEvent extends AuthAccountEvent {
 }
 
 final class UpdatePhoNumberUserEvent extends AuthAccountEvent {
-  int phoneNumber;
+  String phoneNumber;
   UpdatePhoNumberUserEvent(this.phoneNumber);
 }
 

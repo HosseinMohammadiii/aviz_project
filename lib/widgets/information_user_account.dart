@@ -1,3 +1,4 @@
+import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -77,7 +78,7 @@ class _InfoAccountUserState extends State<InfoAccountUser> {
                           ),
                           const Spacer(),
                           Visibility(
-                            visible: userInfo.phoneNumber != 0,
+                            visible: RegisterId().getPhoneNumber().isNotEmpty,
                             replacement: Container(
                               height: 30,
                               width: 66,

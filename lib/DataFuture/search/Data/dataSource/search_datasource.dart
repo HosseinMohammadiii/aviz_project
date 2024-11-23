@@ -48,6 +48,9 @@ class SearchRemootDataSorce extends ISearchDataSource {
       var response = await dio.get(
         'advertising_home',
         queryParameters: query,
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items'][0]['ad_id'];
     } on DioException catch (ex) {

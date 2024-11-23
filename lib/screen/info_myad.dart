@@ -415,26 +415,28 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                       )
                     : state is SearchExistsRequestSuccessState
                         ? state.getExistAd.fold(
-                            (l) => Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Image.asset(
-                                    'images/bad_result.png',
-                                    scale: 2,
+                            (l) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Image.asset(
+                                      'images/bad_result.png',
+                                      scale: 2,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                textWidget(
-                                  'آگهی مورد نظر پاک شده است',
-                                  CustomColor.black,
-                                  18,
-                                  FontWeight.normal,
-                                ),
-                              ],
-                            ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  textWidget(
+                                    'آگهی مورد نظر پاک شده است',
+                                    CustomColor.black,
+                                    18,
+                                    FontWeight.normal,
+                                  ),
+                                ],
+                              );
+                            },
                             (r) => CustomScrollView(
                               slivers: [
                                 SliverToBoxAdapter(

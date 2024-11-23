@@ -108,10 +108,10 @@ class _ContainerSearchState extends State<ContainerSearch> {
                 ],
                 if (state is SearchRequestSuccessState) ...[
                   state.searchResult.fold(
-                    (error) => DisplayError(error: error),
+                    (error) => DisplayError(screen: 'جستوجو'),
                     (adHome) {
                       return state.adFacilities.fold(
-                        (error) => DisplayError(error: error),
+                        (error) => DisplayError(screen: 'جستوجو'),
                         (facilities) {
                           return Visibility(
                             visible: adHome.isNotEmpty,

@@ -16,7 +16,7 @@ abstract class IAuthenticationDatasource {
   Future<String> getUpdateUserInfo(File? avatar);
   Future<String> getUpdateNameUser(String name);
   Future<String> getUpdateEmailUser(String email);
-  Future<String> getUpdatePhoneNumberUser(int phoneNumber);
+  Future<String> getUpdatePhoneNumberUser(String phoneNumber);
   Future<String> getUpdateProvinceUser(String province);
 }
 
@@ -191,7 +191,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   }
 
   @override
-  Future<String> getUpdatePhoneNumberUser(int phoneNumber) async {
+  Future<String> getUpdatePhoneNumberUser(String phoneNumber) async {
     try {
       var response = await dio.post(
         'userupdate/${Authmanager().getId()}',
@@ -203,7 +203,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
           'phone_number': phoneNumber,
         },
       );
-
+      print(response.data['data']['phone_number']);
       if (response.statusCode == 200) {
         return response.data['data']['phone_number'];
       }

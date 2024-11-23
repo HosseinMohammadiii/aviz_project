@@ -7,6 +7,7 @@ import 'package:aviz_project/widgets/information_user_account.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../class/checkconnection.dart';
 import 'recent_user_ad_items.dart';
 
@@ -18,6 +19,20 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  String appVersion = '';
+  @override
+  void initState() {
+    _loadAppVersion();
+    super.initState();
+  }
+
+  Future<void> _loadAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appVersion = "نسخه ${packageInfo.version}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RecentBloc, RecentState>(
@@ -33,43 +48,39 @@ class _AccountScreenState extends State<AccountScreen> {
             automaticallyImplyLeading: false,
           ),
           body: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(
-                      left: 15, right: 15, bottom: 20, top: 25),
-                  sliver: SliverToBoxAdapter(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        textWidget(
-                          'حساب کاربری',
-                          Colors.black,
-                          16,
-                          FontWeight.w700,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Image.asset('images/profile_logo.png'),
-                      ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.only(bottom: 20, top: 25),
+                    sliver: SliverToBoxAdapter(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          textWidget(
+                            'حساب کاربری',
+                            Colors.black,
+                            16,
+                            FontWeight.w700,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Image.asset('images/profile_logo.png'),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: InfoAccountUser(),
                   ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 50,
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 50,
+                    ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: itemsAccountButton(
                       title: 'آگهی های من',
                       icon: 'images/note_red.png',
@@ -86,10 +97,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       },
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: itemsAccountButton(
                       title: 'بازدید های اخیر',
                       icon: 'images/eye.png',
@@ -106,10 +114,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       },
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: itemsAccountButton(
                       title: 'ذخیره شده ها',
                       icon: 'images/save-2.png',
@@ -126,20 +131,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       },
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverToBoxAdapter(
-                    child: itemsAccountButton(
-                      title: 'پشتیبانی و قوانین',
-                      icon: 'images/message-question.png',
-                      onTap: () {},
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  sliver: SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: itemsAccountButton(
                       title: 'درباره آویز',
                       icon: 'images/info-circle.png',
@@ -153,8 +145,19 @@ class _AccountScreenState extends State<AccountScreen> {
                       },
                     ),
                   ),
-                ),
-              ],
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 120,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Text(
+                      appVersion,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

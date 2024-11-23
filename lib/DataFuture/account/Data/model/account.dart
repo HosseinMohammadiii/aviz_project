@@ -3,7 +3,7 @@ class AccountInformation {
   String name;
   String avatar;
   String email;
-  int phoneNumber;
+  String phoneNumber;
   String province;
 
   AccountInformation({

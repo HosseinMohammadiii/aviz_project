@@ -96,7 +96,7 @@ class _RegisterPhonenumberState extends State<RegisterPhonenumber> {
                 // Update phone number using Bloc event
                 context.read<AuthAccountBloc>().add(
                       UpdatePhoNumberUserEvent(
-                        int.parse(phoneNumberController.text),
+                        phoneNumberController.text,
                       ),
                     );
                 Navigator.pop(context, phoneNumberController.text);
