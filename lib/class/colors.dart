@@ -4,9 +4,10 @@ class CustomColor {
   static const Color red = Color(0xffE60023);
   static const Color pink = Color(0xffff6269);
   static const Color normalRed = Color(0xffe57373);
-  static const Color grey = Color(0xffF9FAFB);
+
   static const Color black = Colors.black;
 
+  static const Color grey = Color(0xffF9FAFB);
   static Color grey200 = Colors.grey[200]!;
   static Color grey300 = Colors.grey[300]!;
   static Color grey350 = Colors.grey[350]!;

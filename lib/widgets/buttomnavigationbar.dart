@@ -59,7 +59,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColor.grey,
       bottomNavigationBar: BottomNavigationBar(
         selectedLabelStyle: const TextStyle(
           fontFamily: 'SN',
