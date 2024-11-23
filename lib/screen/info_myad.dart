@@ -10,6 +10,7 @@ import 'package:aviz_project/DataFuture/search/Bloc/search_state.dart';
 import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/class/scaffoldmessage.dart';
 import 'package:aviz_project/extension/price_extension.dart';
+import 'package:aviz_project/screen/warning.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -510,37 +511,48 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                                   ),
                                 ),
                                 SliverToBoxAdapter(
-                                  child: Container(
-                                    height: 40,
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: CustomColor.grey350),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_back_ios_rounded,
-                                          color: CustomColor.grey350,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WarningScreen(),
                                         ),
-                                        const Spacer(),
-                                        textWidget(
-                                          'هشدار های قبل از معامله!',
-                                          CustomColor.black,
-                                          16,
-                                          FontWeight.w500,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                      ],
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: CustomColor.grey350),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_back_ios_rounded,
+                                            color: CustomColor.grey350,
+                                          ),
+                                          const Spacer(),
+                                          textWidget(
+                                            'هشدار های قبل از معامله!',
+                                            CustomColor.black,
+                                            16,
+                                            FontWeight.w500,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -134,6 +134,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: CustomColor.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: CustomColor.white,
+        ),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         useMaterial3: true,
@@ -143,6 +147,19 @@ class MyApp extends StatelessWidget {
             fontSize: 18,
             fontFamily: 'SN',
             fontWeight: FontWeight.w700,
+          ),
+          displayMedium: const TextStyle(
+            fontFamily: 'SN',
+            color: CustomColor.black,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+          displaySmall: const TextStyle(
+            fontFamily: 'SN',
+            color: CustomColor.black,
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+            height: 2,
           ),
           titleLarge: const TextStyle(
             color: CustomColor.black,
