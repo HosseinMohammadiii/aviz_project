@@ -52,6 +52,7 @@ class _CityScreenState extends State<CityScreen> {
     super.initState();
   }
 
+//Methode for Search Cities
   void searchListItems(String value) {
     // Filter provinces based on search input
     setState(() {
@@ -82,53 +83,61 @@ class _CityScreenState extends State<CityScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: SelectProvinceAndCityButton(
+        isSelectProvinces: isSelectProvinces,
+        onChanges: () {
+          widget.onChanged();
+        },
+      ),
       body: SafeArea(
         child: BlocBuilder<ProvinceBloc, ProvinceState>(
           builder: (context, state) {
-            return Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: ProvinceAndCityTextFeild(
-                        controller: citiesController,
-                        focusNode: citiesFocusNode,
-                        hint: 'نام شهر خود را وارد کنید',
-                        lable: 'شهر',
-                        onChanged: (value) {
-                          if (_debounce?.isActive ?? false) {
-                            _debounce!.cancel();
-                          }
-                          _debounce = Timer(
-                            const Duration(milliseconds: 500),
-                            () {
-                              if (value.endsWith('ی') || value.endsWith('ک')) {
-                                value = value
-                                    .replaceAll('ي', 'ی')
-                                    .replaceAll('ك', 'ک');
-                              } else {
-                                value = value
-                                    .replaceAll('ی', 'ي')
-                                    .replaceAll('ک', 'ك');
-                              }
+            if (state is ProvinceHandleErrorState) {
+              return DisplayReconnection(screen: 'شهر ها و استانها');
+            } else if (state is ProvinceLoadindState) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: CustomColor.normalRed,
+                ),
+              );
+            } else if (state is ProvinceRsultSuccessResponse) {
+              return state.city.fold(
+                (error) => DisplayReconnection(screen: 'شهر ها و استانها'),
+                (city) {
+                  //Add cities form server in the cities List
+                  cities = city;
+                  return CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: ProvinceAndCityTextFeild(
+                          controller: citiesController,
+                          focusNode: citiesFocusNode,
+                          hint: 'نام شهر خود را وارد کنید',
+                          lable: 'شهر',
+                          onChanged: (value) {
+                            if (_debounce?.isActive ?? false) {
+                              _debounce!.cancel();
+                            }
+                            _debounce = Timer(
+                              const Duration(milliseconds: 500),
+                              () {
+                                if (value.endsWith('ی') ||
+                                    value.endsWith('ک')) {
+                                  value = value
+                                      .replaceAll('ي', 'ی')
+                                      .replaceAll('ك', 'ک');
+                                } else {
+                                  value = value
+                                      .replaceAll('ی', 'ي')
+                                      .replaceAll('ک', 'ك');
+                                }
 
-                              searchListItems(value);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    if (state is ProvinceLoadindState) ...[
-                      const SliverFillRemaining(
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: CustomColor.normalRed,
-                          ),
+                                searchListItems(value);
+                              },
+                            );
+                          },
                         ),
                       ),
-                    ],
-                    if (state is ProvinceRsultSuccessResponse) ...[
                       SliverToBoxAdapter(
                         child: Visibility(
                           visible: !isSearch,
@@ -187,50 +196,38 @@ class _CityScreenState extends State<CityScreen> {
                           ),
                         ),
                       ),
-                      state.city.fold(
-                        (error) =>
-                            DisplayReconnection(screen: 'شهر ها و استانها'),
-                        (city) {
-                          cities = city;
-                          return SliverPadding(
-                            padding: const EdgeInsets.only(bottom: 80),
-                            sliver: SliverList.builder(
-                              itemCount:
-                                  isSearch ? searchCities.length : city.length,
-                              itemBuilder: (context, index) {
-                                return ProvinceAndCitiesWidget(
-                                  province: isSearch ? searchCities : city,
-                                  index: index,
-                                  onTap: () {
-                                    setState(() {
-                                      isSelectProvinces = true;
-                                      final cityName = context
-                                          .read<RegisterInfoAdCubit>()
-                                          .state;
+                      SliverPadding(
+                        padding: const EdgeInsets.only(bottom: 80),
+                        sliver: SliverList.builder(
+                          itemCount:
+                              isSearch ? searchCities.length : city.length,
+                          itemBuilder: (context, index) {
+                            return ProvinceAndCitiesWidget(
+                              province: isSearch ? searchCities : city,
+                              index: index,
+                              onTap: () {
+                                setState(() {
+                                  isSelectProvinces = true;
+                                  final cityName =
+                                      context.read<RegisterInfoAdCubit>().state;
 
-                                      citiesController.text = isSearch
-                                          ? searchCities[index].name
-                                          : city[index].name;
-                                      cityName.city = citiesController.text;
-                                    });
-                                  },
-                                );
+                                  citiesController.text = isSearch
+                                      ? searchCities[index].name
+                                      : city[index].name;
+                                  cityName.city = citiesController.text;
+                                });
                               },
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ],
-                  ],
-                ),
-                SelectProvinceAndCityButton(
-                  isSelectProvinces: isSelectProvinces,
-                  onChanges: () {
-                    widget.onChanged();
-                  },
-                ),
-              ],
-            );
+                  );
+                },
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
           },
         ),
       ),

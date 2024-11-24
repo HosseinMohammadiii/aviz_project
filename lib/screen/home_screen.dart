@@ -7,8 +7,8 @@ import 'package:aviz_project/DataFuture/recent/bloc/recent_event.dart';
 import 'package:aviz_project/Hive/Advertising/register_id.dart';
 
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/city_screen.dart';
-import 'package:aviz_project/screen/screen_province.dart';
+import 'package:aviz_project/screen/city.dart';
+import 'package:aviz_project/screen/province.dart';
 
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';

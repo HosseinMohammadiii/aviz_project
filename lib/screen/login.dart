@@ -20,8 +20,8 @@ import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../class/scaffoldmessage.dart';
 import '../widgets/buttomnavigationbar.dart';
-import 'city_screen.dart';
-import 'screen_province.dart';
+import 'city.dart';
+import 'province.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});

@@ -10,7 +10,7 @@ import 'package:aviz_project/Hive/Advertising/register_id.dart';
 import 'package:aviz_project/class/checkconnection.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/scaffoldmessage.dart';
-import 'package:aviz_project/screen/screen_province.dart';
+import 'package:aviz_project/screen/province.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

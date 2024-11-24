@@ -70,7 +70,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
         Authmanager().saveId(response.data?['data']['id']);
         Authmanager().saveToken(response.data?['data']['token']);
         showLocalNotification('آویز',
-            '${dt.year}.${dt.month}.${dt.day} ${dt.hour}:${dt.minute} . ${response.data?['data']['name']} خوش آمدید');
+            '${dt.year}.${dt.month}.${dt.day} ${dt.hour}:${dt.minute} ${response.data?['data']['name']} خوش آمدید');
 
         return response.data?['data']['token'];
       }

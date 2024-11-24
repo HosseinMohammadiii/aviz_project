@@ -5,7 +5,7 @@ import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_eve
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
-import 'package:aviz_project/screen/city_screen.dart';
+import 'package:aviz_project/screen/city.dart';
 import 'package:aviz_project/widgets/items_switchbox.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:flutter/foundation.dart';
@@ -17,7 +17,7 @@ import 'package:shamsi_date/shamsi_date.dart';
 import '../class/checkconnection.dart';
 import '../class/scaffoldmessage.dart';
 import '../widgets/text_title_section.dart';
-import 'screen_province.dart';
+import 'province.dart';
 
 class RegisterHomeFeatureScreen extends StatefulWidget {
   const RegisterHomeFeatureScreen({
