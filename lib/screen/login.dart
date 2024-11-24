@@ -20,19 +20,19 @@ import '../class/checkinvalidcharacters.dart';
 import '../class/scaffoldmessage.dart';
 import '../widgets/buttomnavigationbar.dart';
 
-class InputNumberScreen extends StatefulWidget {
-  const InputNumberScreen({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
 
   @override
-  State<InputNumberScreen> createState() => _InputNumberScreenState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _InputNumberScreenState extends State<InputNumberScreen> {
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class _LogInScreenState extends State<LogInScreen> {
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
 
-  final FocusNode userNameFocus = FocusNode();
-  final FocusNode passwordFocus = FocusNode();
+  final userNameFocus = FocusNode();
+  final passwordFocus = FocusNode();
 
   String errorText = '';
   bool isShowErrorText = false;
@@ -115,9 +115,6 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                 textFieldUserNAme(
                   userNameController,
                   userNameFocus,
-                  () {
-                    // checkForInvalidCharacters();
-                  },
                 ),
                 Visibility(
                   visible: isShowErrorText,
@@ -215,11 +212,15 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
                   builder: (context) => BottomNavigationScreen(),
                 ),
               );
+              //Call HomeGetInitializeData event from HomeBloc
               context.read<HomeBloc>().add(HomeGetInitializeData());
+
+              //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
               context
                   .read<AddAdvertisingBloc>()
                   .add(InitializedDisplayAdvertising());
 
+              //Call DisplayInformationEvent event from AuthAccountBloc
               BlocProvider.of<AuthAccountBloc>(context)
                   .add(DisplayInformationEvent());
             },
@@ -242,19 +243,25 @@ class _InputNumberScreenState extends State<InputNumberScreen> {
 
               return;
             }
+
+            //Check Valid Input Characters
             if (!checkForInvalidCharacters()) {
-              isShowErrorText = true;
               return;
             }
+
+            //Check that the UserName is not less than 3 characters long
             if (userNameController.text.length < 3) {
               showMessage(MessageSnackBar.checkUserName, context, 2);
               return;
             }
+
+            //Check that the Password is not less than 8 characters long
             if (passwordController.text.length < 8) {
               showMessage(MessageSnackBar.checkPassword, context, 2);
               return;
             }
 
+            //This condition is for when the status is not AuthLoading
             if (state is! AuthLoadingState) {
               // Trigger login event
               BlocProvider.of<AuthAccountBloc>(context).add(

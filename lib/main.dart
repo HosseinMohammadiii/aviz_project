@@ -12,7 +12,7 @@ import 'package:aviz_project/DataFuture/search/Bloc/search_bloc.dart';
 import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
 import 'package:aviz_project/Hive/UsersLogin/user_login.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/login_screen.dart';
+import 'package:aviz_project/screen/initial.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -206,7 +206,7 @@ class MyApp extends StatelessWidget {
       },
       home: Authmanager().isLogin()
           ? BottomNavigationScreen()
-          : const LogInScreen(),
+          : const InitialScreen(),
     );
   }
 }

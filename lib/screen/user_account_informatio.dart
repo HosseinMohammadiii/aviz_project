@@ -22,7 +22,7 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../widgets/displayreconnection.dart';
 import '../widgets/text_widget.dart';
-import 'login_screen.dart';
+import 'initial.dart';
 
 class UserAccountInfirmation extends StatefulWidget {
   const UserAccountInfirmation({super.key});
@@ -838,7 +838,7 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LogInScreen(),
+                    builder: (context) => const InitialScreen(),
                   ),
                 );
               },

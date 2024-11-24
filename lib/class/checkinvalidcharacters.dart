@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
+//List Invalid Characters
 List<String> invalidCharacters = [
   "@",
   "#",
@@ -34,6 +35,8 @@ List<String> invalidCharacters = [
   "!",
   "~",
 ];
+
+//List Valid Characters
 List<String> validCharacters = [
   "@",
   ".",
@@ -41,7 +44,7 @@ List<String> validCharacters = [
   "-",
 ];
 
-// تولید لیست کاراکترهای نامعتبر
+// Production invalid characters for validate iput Email characters
 final List<String> invalidCharactersEmail =
     List.generate(65536, (i) => String.fromCharCode(i))
         .where((char) => !RegExp(r'[a-zA-Z0-9]').hasMatch(char))
@@ -60,7 +63,6 @@ final List<String> allCharacters =
 Widget textFieldUserNAme(
   TextEditingController userNamecontroller,
   FocusNode userNameFocusNode,
-  Function onChanges,
 ) {
   return LayoutBuilder(
     builder: (context, constraints) => Container(
@@ -92,9 +94,6 @@ Widget textFieldUserNAme(
         ),
         onTapOutside: (event) {
           userNameFocusNode.unfocus();
-        },
-        onChanged: (value) {
-          onChanges();
         },
       ),
     ),

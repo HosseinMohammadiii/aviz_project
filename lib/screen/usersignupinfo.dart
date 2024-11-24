@@ -3,7 +3,7 @@ import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/DataFuture/account/Bloc/account_state.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/class/scaffoldmessage.dart';
-import 'package:aviz_project/screen/inputnumber_screen.dart';
+import 'package:aviz_project/screen/login.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +31,13 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController =
-      TextEditingController();
+  final _userNameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
 
-  final FocusNode __userNameFocus = FocusNode();
-  final FocusNode __passwordFocus = FocusNode();
-  final FocusNode __passwordConfirmFocus = FocusNode();
+  final __userNameFocus = FocusNode();
+  final __passwordFocus = FocusNode();
+  final __passwordConfirmFocus = FocusNode();
 
   String errorText = '';
   bool isShowErrorText = false;
@@ -60,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // If no invalid characters are found, clear the error text
     setState(() {
-      errorText = ''; // No invalid characters found
+      errorText = '';
       isShowErrorText = false;
     });
     return true;
@@ -73,7 +72,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         preferredSize: const Size(0, 0),
         child: AppBar(
           scrolledUnderElevation: 0,
-          backgroundColor: CustomColor.grey,
         ),
       ),
       body: SafeArea(
@@ -116,11 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textFieldUserNAme(
                   _userNameController,
                   __userNameFocus,
-                  () {
-                    //    checkForInvalidCharacters();
-                  },
                 ),
-
                 Visibility(
                   visible: isShowErrorText,
                   replacement: const SizedBox(
@@ -136,7 +130,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-
                 TextFieldBox(
                   hint: 'رمز عبور',
                   controller: _passwordController,
@@ -160,12 +153,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   focusNode: __passwordConfirmFocus,
                   textInputAction: TextInputAction.done,
                 ),
-                // const Spacer(),
-
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 2.4,
                 ),
-
                 BlocConsumer<AuthAccountBloc, AuthAccountState>(
                   listener: (context, state) {
                     if (state is AuthResponseState) {
@@ -205,10 +195,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           MaterialPageRoute(
                                             builder: (context) => CityScreen(
                                               onChanged: () {
+                                                //Register City in the AdvertisingHive
                                                 RegisterId().setCity(
                                                     provinceAndCity.city);
+
+                                                //Call HomeGetInitializeData event from HomeBloc
                                                 context.read<HomeBloc>().add(
                                                     HomeGetInitializeData());
+
                                                 provinceAndCity.city = '';
                                                 Navigator.pushReplacement(
                                                   context,
@@ -223,6 +217,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             ),
                                           ));
                                     }
+
+                                    //Register Province in the AdvertisingHive
                                     RegisterId()
                                         .setProvince(provinceAndCity.province);
                                     provinceAndCity.province = '';
@@ -230,18 +226,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             );
+
+                            //Call HomeGetInitializeData event from HomeBloc
                             context
                                 .read<HomeBloc>()
                                 .add(HomeGetInitializeData());
+
+                            //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
                             context
                                 .read<AddAdvertisingBloc>()
                                 .add(InitializedDisplayAdvertising());
 
+                            //Call DisplayInformationEvent event from AuthAccountBloc
                             BlocProvider.of<AuthAccountBloc>(context)
                                 .add(DisplayInformationEvent());
                           } else {
                             // Handle error: Token not available
-
                             showMessage(MessageSnackBar.tryAgain, context, 1);
                           }
                         },
@@ -252,7 +252,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return buttonSignUp(state);
                   },
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
@@ -264,7 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const InputNumberScreen(),
+                            builder: (context) => const LogInScreen(),
                           ),
                         );
                       },
@@ -299,6 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (!await checkInternetConnection(context)) {
           return;
         }
+
         // Validate input fields
         if (_userNameController.text.isEmpty ||
             _passwordController.text.isEmpty ||
@@ -306,27 +306,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
           showMessage(MessageSnackBar.compeletFields, context, 2);
           return;
         }
+
+        //Check Valid Input Characters
         if (!checkForInvalidCharacters()) {
-          isShowErrorText = true;
           return;
         }
+
+        //Check that the UserName is not less than 3 characters long
         if (_userNameController.text.length < 3) {
           showMessage(MessageSnackBar.checkUserName, context, 2);
           return;
         }
+
+        //Check that the Password & PasswordConfirm is not less than 8 characters long
         if (_passwordController.text.length < 8 ||
             _passwordConfirmController.text.length < 8) {
           showMessage(MessageSnackBar.checkPassword, context, 2);
           return;
         }
+
+        //Check that the Password & PasswordConfirm repeat are the same
         if (_passwordController.text != _passwordConfirmController.text) {
           showMessage(MessageSnackBar.checkUserNameWithPassword, context, 2);
           return;
         }
-        if (isShowErrorText) {
-          showMessage(MessageSnackBar.checkInputCharacters, context, 2);
-          return;
-        }
+
+        //This condition is for when the status is not AuthLoading
         if (state is! AuthLoadingState) {
           // Trigger registration event
           BlocProvider.of<AuthAccountBloc>(context).add(

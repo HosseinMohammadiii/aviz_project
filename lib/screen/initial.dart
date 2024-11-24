@@ -1,18 +1,17 @@
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/inputnumber_screen.dart';
 import 'package:aviz_project/screen/usersignupinfo.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/text_widget.dart';
 
-class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+class InitialScreen extends StatefulWidget {
+  const InitialScreen({super.key});
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
+  State<InitialScreen> createState() => _InitialScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen> {
+class _InitialScreenState extends State<InitialScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +89,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buttonLogIn(const InputNumberScreen(), 'ورود',
+                      buttonLogIn(const InitialScreen(), 'ورود',
                           CustomColor.white, CustomColor.red),
                       const SizedBox(
                         width: 15,
