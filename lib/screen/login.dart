@@ -1,7 +1,7 @@
 import 'package:aviz_project/DataFuture/account/Bloc/account_event.dart';
 import 'package:aviz_project/class/colors.dart';
 // import 'package:aviz_project/screen/confirmationnumber_screen.dart';
-import 'package:aviz_project/screen/usersignupinfo.dart';
+import 'package:aviz_project/screen/signup.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
 import 'package:aviz_project/widgets/textfield_box.dart';
 import 'package:flutter/material.dart';

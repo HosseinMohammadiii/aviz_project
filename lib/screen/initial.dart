@@ -1,5 +1,5 @@
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/screen/usersignupinfo.dart';
+import 'package:aviz_project/screen/signup.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/text_widget.dart';
