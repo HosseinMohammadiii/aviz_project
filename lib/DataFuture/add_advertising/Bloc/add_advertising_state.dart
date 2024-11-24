@@ -11,6 +11,8 @@ final class AddAdvertisingInitializedData extends AddAdvertisingState {}
 
 final class AddAdvertisingLoading extends AddAdvertisingState {}
 
+final class AddAdvertisingHandleErrorState extends AddAdvertisingState {}
+
 final class AddAdvertisingImageLoading extends AddAdvertisingState {}
 
 final class DisplayInfoAdvertisingStateResponse extends AddAdvertisingState {

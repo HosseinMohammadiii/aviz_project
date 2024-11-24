@@ -12,99 +12,128 @@ class AddAdvertisingBloc
       : super(AddAdvertisingInitializedData()) {
     on<InitializedDisplayAdvertising>(
       (event, emit) async {
-        emit(AddAdvertisingLoading());
-        var displayAdvertising = await infoRepository.getDiplayAdvertising();
-        var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
-        emit(
-          DisplayInfoAdvertisingStateResponse(
-            displayAdvertising,
-            diplayAdFacilities,
-          ),
-        );
+        try {
+          emit(AddAdvertisingLoading());
+          var displayAdvertising = await infoRepository.getDiplayAdvertising();
+          var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
+          emit(
+            DisplayInfoAdvertisingStateResponse(
+              displayAdvertising,
+              diplayAdFacilities,
+            ),
+          );
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
     on<AddInfoAdvertising>(
       (event, emit) async {
-        await infoRepository.postRegisterAd(
-          event.idCt,
-          event.idFeature,
-          event.province,
-          event.city,
-          event.title,
-          event.description,
-          event.price,
-          event.rentPrice,
-          event.metr,
-          event.buildingMetr,
-          event.countRoom,
-          event.floor,
-          event.yearBuild,
-        );
+        try {
+          await infoRepository.postRegisterAd(
+            event.idCt,
+            event.idFeature,
+            event.province,
+            event.city,
+            event.title,
+            event.description,
+            event.price,
+            event.rentPrice,
+            event.metr,
+            event.buildingMetr,
+            event.countRoom,
+            event.floor,
+            event.yearBuild,
+          );
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
     on<AddImagesToGallery>(
       (event, emit) async {
-        emit(AddAdvertisingImageLoading());
-        var postImage = await infoRepository.postImagesToGallery(event.images);
-        emit(PostImageAdState(postImage));
+        try {
+          emit(AddAdvertisingImageLoading());
+          var postImage =
+              await infoRepository.postImagesToGallery(event.images);
+          emit(PostImageAdState(postImage));
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
     on<AddFacilitiesAdvertising>(
       (event, emit) async {
-        await infoRepository.postRegisterFacilities(
-          event.elevator,
-          event.parking,
-          event.storeroom,
-          event.balcony,
-          event.penthouse,
-          event.duplex,
-          event.water,
-          event.electricity,
-          event.gas,
-          event.floorMaterial,
-          event.wc,
-        );
+        try {
+          await infoRepository.postRegisterFacilities(
+            event.elevator,
+            event.parking,
+            event.storeroom,
+            event.balcony,
+            event.penthouse,
+            event.duplex,
+            event.water,
+            event.electricity,
+            event.gas,
+            event.floorMaterial,
+            event.wc,
+          );
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
     on<UpdateFacilitiesData>(
       (event, emit) async {
-        await infoRepository.getUpdateAdFacilities(
-          event.elevator,
-          event.parking,
-          event.storeroom,
-          event.balcony,
-          event.penthouse,
-          event.duplex,
-          event.water,
-          event.electricity,
-          event.gas,
-          event.floorMaterial,
-          event.wc,
-        );
+        try {
+          await infoRepository.getUpdateAdFacilities(
+            event.elevator,
+            event.parking,
+            event.storeroom,
+            event.balcony,
+            event.penthouse,
+            event.duplex,
+            event.water,
+            event.electricity,
+            event.gas,
+            event.floorMaterial,
+            event.wc,
+          );
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
 
     on<DeleteAdvertisingData>(
       (event, emit) async {
-        await infoRepository.getDeleteAd(event.idAd);
+        try {
+          await infoRepository.getDeleteAd(event.idAd);
 
-        await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
+          await infoRepository.getDeleteAdImagesAd(event.idAdGallery);
 
-        await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
-        emit(AddAdvertisingLoading());
-        var displayAdvertising = await infoRepository.getDiplayAdvertising();
-        var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
-        emit(
-          DisplayInfoAdvertisingStateResponse(
-            displayAdvertising,
-            diplayAdFacilities,
-          ),
-        );
+          await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
+          emit(AddAdvertisingLoading());
+          var displayAdvertising = await infoRepository.getDiplayAdvertising();
+          var diplayAdFacilities = await infoRepository.getDiplayAdFacilities();
+          emit(
+            DisplayInfoAdvertisingStateResponse(
+              displayAdvertising,
+              diplayAdFacilities,
+            ),
+          );
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
     on<DeleteFacilitiesData>(
       (event, emit) async {
-        await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
+        try {
+          await infoRepository.getDeleteAdFacilities(event.idAdFacilities);
+        } catch (e) {
+          emit(AddAdvertisingHandleErrorState());
+        }
       },
     );
   }

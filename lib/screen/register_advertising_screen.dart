@@ -273,6 +273,14 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 BlocProvider.of<AddAdvertisingBloc>(context)
                     .add(AddImagesToGallery(stateAd.images!));
               }
+              if (state is AddAdvertisingHandleErrorState) {
+                // Display a dialog prompting the user to try again
+                showMessage(
+                  MessageSnackBar.tryAgain,
+                  context,
+                  2,
+                );
+              }
             }
           },
           child: Container(
