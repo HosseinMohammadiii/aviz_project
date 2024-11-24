@@ -158,7 +158,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 BlocConsumer<AuthAccountBloc, AuthAccountState>(
                   listener: (context, state) {
-                    if (state is AuthResponseState) {
+                    if (state is AuthErrorState) {
+                      showMessage(MessageSnackBar.tryAgain, context, 1);
+                    } else if (state is AuthResponseState) {
                       state.response.fold(
                         (error) {
                           var snackbar = SnackBar(
@@ -198,10 +200,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 //Register City in the AdvertisingHive
                                                 RegisterId().setCity(
                                                     provinceAndCity.city);
-
                                                 //Call HomeGetInitializeData event from HomeBloc
                                                 context.read<HomeBloc>().add(
                                                     HomeGetInitializeData());
+
+                                                //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
+                                                context
+                                                    .read<AddAdvertisingBloc>()
+                                                    .add(
+                                                        InitializedDisplayAdvertising());
+
+                                                //Call DisplayInformationEvent event from AuthAccountBloc
+                                                BlocProvider.of<
+                                                            AuthAccountBloc>(
+                                                        context)
+                                                    .add(
+                                                        DisplayInformationEvent());
 
                                                 provinceAndCity.city = '';
                                                 Navigator.pushReplacement(
@@ -226,20 +240,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             );
-
-                            //Call HomeGetInitializeData event from HomeBloc
-                            context
-                                .read<HomeBloc>()
-                                .add(HomeGetInitializeData());
-
-                            //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
-                            context
-                                .read<AddAdvertisingBloc>()
-                                .add(InitializedDisplayAdvertising());
-
-                            //Call DisplayInformationEvent event from AuthAccountBloc
-                            BlocProvider.of<AuthAccountBloc>(context)
-                                .add(DisplayInformationEvent());
                           } else {
                             // Handle error: Token not available
                             showMessage(MessageSnackBar.tryAgain, context, 1);

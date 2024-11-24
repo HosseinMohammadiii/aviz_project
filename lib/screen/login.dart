@@ -15,10 +15,13 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/home/Bloc/home_bloc.dart';
 import '../DataFuture/home/Bloc/home_event.dart';
 
+import '../Hive/Advertising/register_id.dart';
 import '../class/checkconnection.dart';
 import '../class/checkinvalidcharacters.dart';
 import '../class/scaffoldmessage.dart';
 import '../widgets/buttomnavigationbar.dart';
+import 'city_screen.dart';
+import 'screen_province.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -76,7 +79,6 @@ class _LogInScreenState extends State<LogInScreen> {
         preferredSize: const Size(0, 0),
         child: AppBar(
           scrolledUnderElevation: 0,
-          backgroundColor: CustomColor.grey,
         ),
       ),
       body: SafeArea(
@@ -187,7 +189,9 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget buttonLogIn() {
     return BlocConsumer<AuthAccountBloc, AuthAccountState>(
       listener: (context, state) async {
-        if (state is AuthLoadingState) {
+        if (state is AuthErrorState) {
+          showMessage(MessageSnackBar.tryAgain, context, 1);
+        } else if (state is AuthLoadingState) {
           // Reset error visibility when loading starts
           setState(() {
             isShowErrorText = false;
@@ -206,23 +210,57 @@ class _LogInScreenState extends State<LogInScreen> {
               setState(() {
                 isShowErrorText = false;
               });
+              final provinceAndCity = context.read<RegisterInfoAdCubit>().state;
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BottomNavigationScreen(),
+                  builder: (context) => ScreenProvince(
+                    isShowIcon: false,
+                    isCity: true,
+                    onChanged: () {},
+                    onChangedCity: () {
+                      if (provinceAndCity.province != '') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CityScreen(
+                                onChanged: () {
+                                  //Register City in the AdvertisingHive
+                                  RegisterId().setCity(provinceAndCity.city);
+
+                                  provinceAndCity.city = '';
+                                  //Call HomeGetInitializeData event from HomeBloc
+                                  context
+                                      .read<HomeBloc>()
+                                      .add(HomeGetInitializeData());
+                                  //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
+                                  context
+                                      .read<AddAdvertisingBloc>()
+                                      .add(InitializedDisplayAdvertising());
+
+                                  //Call DisplayInformationEvent event from AuthAccountBloc
+                                  BlocProvider.of<AuthAccountBloc>(context)
+                                      .add(DisplayInformationEvent());
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BottomNavigationScreen(),
+                                    ),
+                                  );
+                                },
+                                province: RegisterId().getProvince(),
+                              ),
+                            ));
+                      }
+
+                      //Register Province in the AdvertisingHive
+                      RegisterId().setProvince(provinceAndCity.province);
+                      provinceAndCity.province = '';
+                    },
+                  ),
                 ),
               );
-              //Call HomeGetInitializeData event from HomeBloc
-              context.read<HomeBloc>().add(HomeGetInitializeData());
-
-              //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
-              context
-                  .read<AddAdvertisingBloc>()
-                  .add(InitializedDisplayAdvertising());
-
-              //Call DisplayInformationEvent event from AuthAccountBloc
-              BlocProvider.of<AuthAccountBloc>(context)
-                  .add(DisplayInformationEvent());
             },
           );
         }

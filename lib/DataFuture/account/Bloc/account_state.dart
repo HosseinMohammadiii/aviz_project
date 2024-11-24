@@ -9,6 +9,8 @@ final class AuthLoadingState extends AuthAccountState {}
 
 final class AuthLoadingUpdateAvatarState extends AuthAccountState {}
 
+final class AuthErrorState extends AuthAccountState {}
+
 final class AuthResponseState extends AuthAccountState {
   Either<String, String> response;
   AuthResponseState(this.response);

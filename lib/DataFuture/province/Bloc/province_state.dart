@@ -7,6 +7,8 @@ final class ProvinceinitializedState extends ProvinceState {}
 
 final class ProvinceLoadindState extends ProvinceState {}
 
+final class ProvinceHandleErrorState extends ProvinceState {}
+
 final class ProvinceRsultSuccessResponse extends ProvinceState {
   Either<String, List<ProvinceModel>> province;
   Either<String, List<ProvinceModel>> city;

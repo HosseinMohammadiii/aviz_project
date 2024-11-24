@@ -11,25 +11,37 @@ class ProvinceBloc extends Bloc<ProvinceEvent, ProvinceState> {
   ProvinceBloc() : super(ProvinceinitializedState()) {
     on<ProvinceInitializedData>(
       (event, emit) async {
-        emit(ProvinceLoadindState());
-        var province = await repository.provices(event.province);
-        var cities = await repository.provicesCities(event.city);
+        try {
+          emit(ProvinceLoadindState());
+          var province = await repository.provices(event.province);
+          var cities = await repository.provicesCities(event.city);
 
-        emit(ProvinceRsultSuccessResponse(province, cities));
+          emit(ProvinceRsultSuccessResponse(province, cities));
+        } catch (e) {
+          emit(ProvinceHandleErrorState());
+        }
       },
     );
     on<ProvinceSearchEvent>(
       (event, emit) async {
-        var province = await repository.provices(event.province);
-        var cities = await repository.provicesCities(event.province);
-        emit(ProvinceSuccessResponse(province, cities));
+        try {
+          var province = await repository.provices(event.province);
+          var cities = await repository.provicesCities(event.province);
+          emit(ProvinceSuccessResponse(province, cities));
+        } catch (e) {
+          emit(ProvinceHandleErrorState());
+        }
       },
     );
     on<ProvinceCitySearchEvent>(
       (event, emit) async {
-        var cities = await repository.provicesCities(event.city);
+        try {
+          var cities = await repository.provicesCities(event.city);
 
-        emit(ProvinceCitiesSuccessResponse(cities));
+          emit(ProvinceCitiesSuccessResponse(cities));
+        } catch (e) {
+          emit(ProvinceHandleErrorState());
+        }
       },
     );
   }

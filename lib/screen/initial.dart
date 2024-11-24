@@ -1,4 +1,5 @@
 import 'package:aviz_project/class/colors.dart';
+import 'package:aviz_project/screen/login.dart';
 import 'package:aviz_project/screen/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -89,7 +90,7 @@ class _InitialScreenState extends State<InitialScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buttonLogIn(const InitialScreen(), 'ورود',
+                      buttonLogIn(const LogInScreen(), 'ورود',
                           CustomColor.white, CustomColor.red),
                       const SizedBox(
                         width: 15,

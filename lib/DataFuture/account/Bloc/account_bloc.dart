@@ -9,80 +9,112 @@ class AuthAccountBloc extends Bloc<AuthAccountEvent, AuthAccountState> {
   AuthAccountBloc(this._repository) : super(AuthInitiateState()) {
     on<AuthLoginRequest>(
       (event, emit) async {
-        emit(AuthLoadingState());
-        var loginRequest =
-            await _repository.login(event.username, event.password);
+        try {
+          emit(AuthLoadingState());
+          var loginRequest =
+              await _repository.login(event.username, event.password);
 
-        emit(
-          AuthResponseState(loginRequest),
-        );
+          emit(
+            AuthResponseState(loginRequest),
+          );
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
     on<AuthRegisterRequest>(
       (event, emit) async {
-        emit(AuthLoadingState());
+        try {
+          emit(AuthLoadingState());
 
-        var registerRequest = await _repository.register(
-          event.username,
-          event.password,
-        );
+          var registerRequest = await _repository.register(
+            event.username,
+            event.password,
+          );
 
-        emit(
-          AuthResponseState(registerRequest),
-        );
+          emit(
+            AuthResponseState(registerRequest),
+          );
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
 
     on<DisplayInformationEvent>(
       (event, emit) async {
-        emit(AuthLoadingState());
-        var displayUserInformation = await _repository.getDisplayUserInfo();
-        emit(DisplayInformationState(displayUserInformation));
+        try {
+          emit(AuthLoadingState());
+          var displayUserInformation = await _repository.getDisplayUserInfo();
+          emit(DisplayInformationState(displayUserInformation));
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
 
     on<UpdateAvataUserEvent>(
       (event, emit) async {
-        emit(AuthLoadingUpdateAvatarState());
+        try {
+          emit(AuthLoadingUpdateAvatarState());
 
-        await _repository.getUpdateUserInfo(event.avatar);
-        var displayUserInformation = await _repository.getDisplayUserInfo();
+          await _repository.getUpdateUserInfo(event.avatar);
+          var displayUserInformation = await _repository.getDisplayUserInfo();
 
-        emit(DisplayInformationState(displayUserInformation));
+          emit(DisplayInformationState(displayUserInformation));
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
 
     on<UpdateNameUserEvent>(
       (event, emit) async {
-        await _repository.getUpdateNameUser(event.name);
-        var displayUserInformation = await _repository.getDisplayUserInfo();
-        emit(DisplayInformationState(displayUserInformation));
+        try {
+          await _repository.getUpdateNameUser(event.name);
+          var displayUserInformation = await _repository.getDisplayUserInfo();
+          emit(DisplayInformationState(displayUserInformation));
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
 
     on<UpdateEmailUserEvent>(
       (event, emit) async {
-        await _repository.getUpdateEmailUser(event.email);
-        var displayUserInformation = await _repository.getDisplayUserInfo();
-        emit(DisplayInformationState(displayUserInformation));
+        try {
+          await _repository.getUpdateEmailUser(event.email);
+          var displayUserInformation = await _repository.getDisplayUserInfo();
+          emit(DisplayInformationState(displayUserInformation));
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
 
     on<UpdatePhoNumberUserEvent>(
       (event, emit) async {
-        emit(AuthLoadingState());
+        try {
+          emit(AuthLoadingState());
 
-        await _repository.getUpdatePhoneNumberUser(event.phoneNumber);
-        var displayUserInformation = await _repository.getDisplayUserInfo();
-        emit(DisplayInformationState(displayUserInformation));
+          await _repository.getUpdatePhoneNumberUser(event.phoneNumber);
+          var displayUserInformation = await _repository.getDisplayUserInfo();
+          emit(DisplayInformationState(displayUserInformation));
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
 
     on<UpdateProvinceUserEvent>(
       (event, emit) async {
-        await _repository.getUpdateProvinceUser(event.province);
-        var displayUserInformation = await _repository.getDisplayUserInfo();
-        emit(DisplayInformationState(displayUserInformation));
+        try {
+          await _repository.getUpdateProvinceUser(event.province);
+          var displayUserInformation = await _repository.getDisplayUserInfo();
+          emit(DisplayInformationState(displayUserInformation));
+        } catch (e) {
+          emit(AuthErrorState());
+        }
       },
     );
   }
