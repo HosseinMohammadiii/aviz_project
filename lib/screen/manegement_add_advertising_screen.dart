@@ -53,10 +53,12 @@ class _ManagementAddAdvertisingScreenState
                 );
 
               case ViewPage.registerHomeAdvertising:
-                return const RegisterAdvertising();
+                return RegisterAdvertising(
+                  title: 'فروش',
+                );
 
               case ViewPage.registerRentHomeAdvertising:
-                return const RegisterAdvertising();
+                return RegisterAdvertising(title: 'اجاره');
 
               default:
                 return const ItemsCategoryType();

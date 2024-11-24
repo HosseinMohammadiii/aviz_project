@@ -155,6 +155,7 @@ class _CityScreenState extends State<CityScreen> {
                                       cityName.city = '';
                                       citiesController.text =
                                           'تمام شهر های ${widget.province}';
+                                      citiesFocusNode.unfocus();
                                     });
                                   },
                                   child: Padding(
@@ -215,6 +216,7 @@ class _CityScreenState extends State<CityScreen> {
                                       ? searchCities[index].name
                                       : city[index].name;
                                   cityName.city = citiesController.text;
+                                  citiesFocusNode.unfocus();
                                 });
                               },
                             );

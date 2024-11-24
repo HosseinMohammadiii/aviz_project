@@ -3,7 +3,6 @@ import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/class/dialog.dart';
 import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/city.dart';
 import 'package:aviz_project/widgets/items_switchbox.dart';
@@ -37,13 +36,13 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   final FocusNode focusNode1 = FocusNode();
 
-  final TextEditingController controllerCounRoom = TextEditingController();
-  final TextEditingController controllerMetr = TextEditingController();
-  final TextEditingController controllerBuildingMetr = TextEditingController();
-  final TextEditingController controllerYearBuild = TextEditingController();
-  final TextEditingController controllerFloor = TextEditingController();
-  final TextEditingController controllerView = TextEditingController();
-  final TextEditingController controllerDocument = TextEditingController();
+  final controllerCounRoom = TextEditingController();
+  final controllerMetr = TextEditingController();
+  final controllerBuildingMetr = TextEditingController();
+  final controllerYearBuild = TextEditingController();
+  final controllerFloor = TextEditingController();
+  final controllerView = TextEditingController();
+  final controllerDocument = TextEditingController();
 
   OverlayEntry? entry;
 
@@ -140,6 +139,211 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         !['اجاره خانه', 'اجاره ویلا', 'فروش خانه', 'فروش ویلا'].contains(title);
 
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding:
+            const EdgeInsets.only(bottom: 20, top: 15, right: 15, left: 15),
+        child: GestureDetector().textButton(
+          () async {
+            //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
+            String idCt() {
+              String idCt = '';
+
+              if (txtTitle == 'اجاره آپارتمان') {
+                idCt = '04lqfn5b7bpiwdm';
+              } else if (txtTitle == 'اجاره خانه') {
+                idCt = 'awbiuhrki02leje';
+              } else if (txtTitle == 'اجاره ویلا') {
+                idCt = '4m44z8mrvvmqmrb';
+              }
+
+              if (txtTitle == 'فروش آپارتمان') {
+                idCt = 'daxmo7fipbo5xnc';
+              } else if (txtTitle == 'فروش خانه') {
+                idCt = 'zlbqbrywl9f0b92';
+              } else if (txtTitle == 'فروش ویلا') {
+                idCt = 'egylfeay2tn1hxn';
+              } else if (txtTitle == 'فروش زمین') {
+                idCt = '7ost8r7msw8lt0c';
+              }
+
+              return idCt;
+            }
+
+            //Function For Set idFeatures
+            String idFeature() {
+              String idFeature = '';
+              if (controllerDocument.text == 'وقفی' &&
+                  controllerView.text == 'شرقی') {
+                idFeature = '6prs9whayez5ndc';
+              } else if (controllerDocument.text == 'شش دانگ' &&
+                  controllerView.text == 'شرقی') {
+                idFeature = 'y4nt0dvixr4xcna';
+              } else if (controllerDocument.text == 'تک برگ' &&
+                  controllerView.text == 'شرقی') {
+                idFeature = 'c756fp5htkh2gno';
+              } else if (controllerDocument.text == 'وقفی' &&
+                  controllerView.text == 'غربی') {
+                idFeature = 'urmnw7g2c4zegf1';
+              } else if (controllerDocument.text == 'شش دانگ' &&
+                  controllerView.text == 'غربی') {
+                idFeature = 'xw0low6fmir8sgo';
+              } else if (controllerDocument.text == 'تک برگ' &&
+                  controllerView.text == 'غربی') {
+                idFeature = 'mj34tvx7hhsm27u';
+              } else if (controllerDocument.text == 'وقفی' &&
+                  controllerView.text == 'جنوبی') {
+                idFeature = 'jvnz5pbmul5s6oi';
+              } else if (controllerDocument.text == 'شش دانگ' &&
+                  controllerView.text == 'جنوبی') {
+                idFeature = 'adgv0zg79giyxni';
+              } else if (controllerDocument.text == 'تک برگ' &&
+                  controllerView.text == 'جنوبی') {
+                idFeature = 'v6ixmhzhqziudho';
+              } else if (controllerDocument.text == 'وقفی' &&
+                  controllerView.text == 'شمالی') {
+                idFeature = 'io5oqwlgulcgehk';
+              } else if (controllerDocument.text == 'شش دانگ' &&
+                  controllerView.text == 'شمالی') {
+                idFeature = 'hnrty8b2u4uu2zo';
+              } else if (controllerDocument.text == 'تک برگ' &&
+                  controllerView.text == 'شمالی') {
+                idFeature = 'nish48ruq5zsisv';
+              } else if (controllerDocument.text == 'ندارد' &&
+                  controllerView.text == 'شمالی') {
+                idFeature = 'gmxzv044ugckigz';
+              } else if (controllerDocument.text == 'ندارد' &&
+                  controllerView.text == 'جنوبی') {
+                idFeature = '65ym07y7mwlmy2a';
+              } else if (controllerDocument.text == 'ندارد' &&
+                  controllerView.text == 'غربی') {
+                idFeature = '01zb7u52n31fi8m';
+              } else if (controllerDocument.text == 'ندارد' &&
+                  controllerView.text == 'شرقی') {
+                idFeature = '761f4u4nm3qpuzp';
+              } else if (controllerDocument.text == 'تک برگ' &&
+                  controllerView.text == '') {
+                idFeature = 'oj9ecj5tleyczx8';
+              } else if (controllerDocument.text == 'شش دانگ' &&
+                  controllerView.text == '') {
+                idFeature = 'oqha6d4la84cy8c';
+              } else if (controllerDocument.text == 'وقفی' &&
+                  controllerView.text == '') {
+                idFeature = 'gdhpz7funqv0rkf';
+              } else if (controllerDocument.text == 'ندارد' &&
+                  controllerView.text == '') {
+                idFeature = 'ti012w7mmoyhmw2';
+              }
+              return idFeature;
+            }
+
+            //Check Internet Connection Befor Register Information Ad in the Database
+            if (!await checkInternetConnection(context)) {
+              return;
+            }
+
+            if (title != 'فروش زمین'
+                ? province.isEmpty ||
+                    city.isEmpty ||
+                    controllerCounRoom.text.isEmpty ||
+                    controllerMetr.text.isEmpty ||
+                    controllerBuildingMetr.text.isEmpty ||
+                    controllerYearBuild.text.isEmpty ||
+                    controllerFloor.text.isEmpty ||
+                    controllerDocument.text.isEmpty ||
+                    controllerView.text.isEmpty
+                : province.isEmpty ||
+                    city.isEmpty ||
+                    controllerMetr.text.isEmpty ||
+                    controllerBuildingMetr.text.isEmpty ||
+                    controllerYearBuild.text.isEmpty ||
+                    controllerDocument.text.isEmpty) {
+              // Display a dialog prompting the user to fill in all fields
+              showMessage(
+                MessageSnackBar.compeletFields,
+                context,
+                2,
+              );
+              return;
+            }
+            try {
+              num metr = num.tryParse(controllerMetr.text) ?? 0;
+              num buildingMetr = num.tryParse(controllerBuildingMetr.text) ?? 0;
+              num countRoom = num.tryParse(controllerCounRoom.text) ?? 0;
+              num floor = num.tryParse(controllerFloor.text) ?? 0;
+              num yearBuild = num.tryParse(controllerYearBuild.text) ?? 0;
+
+              context.read<RegisterInfoAdCubit>().setParametrInfoAd(
+                    metr: metr,
+                    buildingMetr: buildingMetr,
+                    countRoom: countRoom,
+                    floor: floor,
+                    yearBuild: yearBuild,
+                    idCt: idCt(),
+                    province: province,
+                    city: city,
+                    idFeature: idFeature(),
+                    document: controllerDocument.text,
+                    view: controllerView.text,
+                  );
+              final boolState = context.read<BoolStateCubit>().state;
+
+              if (boolState.isUpdate) {
+                BlocProvider.of<AddAdvertisingBloc>(context).add(
+                  UpdateFacilitiesData(
+                    boolState.elevator,
+                    boolState.parking,
+                    boolState.storeroom,
+                    boolState.balcony,
+                    boolState.penthouse,
+                    boolState.duplex,
+                    boolState.water,
+                    boolState.electricity,
+                    boolState.gas,
+                    title != 'فروش زمین' ? boolState.floorMaterial : '',
+                    title != 'فروش زمین' ? boolState.wc : '',
+                  ),
+                );
+              } else {
+                BlocProvider.of<AddAdvertisingBloc>(context).add(
+                  AddFacilitiesAdvertising(
+                    boolState.elevator,
+                    boolState.parking,
+                    boolState.storeroom,
+                    boolState.balcony,
+                    boolState.penthouse,
+                    boolState.duplex,
+                    boolState.water,
+                    boolState.electricity,
+                    boolState.gas,
+                    title != 'فروش زمین' ? boolState.floorMaterial : '',
+                    title != 'فروش زمین' ? boolState.wc : '',
+                  ),
+                );
+              }
+              if (title == 'اجاره آپارتمان' ||
+                  title == 'اجاره خانه' ||
+                  title == 'اجاره ویلا') {
+                BlocProvider.of<NavigationPage>(context)
+                    .getNavItems(ViewPage.registerRentHomeAdvertising);
+              } else {
+                BlocProvider.of<NavigationPage>(context)
+                    .getNavItems(ViewPage.registerHomeAdvertising);
+              }
+            } catch (e) {
+              // Display a dialog prompting the user to if input number invaldi
+              showMessage(
+                MessageSnackBar.validNumber,
+                context,
+                2,
+              );
+            }
+          },
+          'بعدی',
+          CustomColor.red,
+          CustomColor.grey,
+          false,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -763,216 +967,6 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
               ),
               ItemsSwitchbox(
                 title: title,
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20, top: 15),
-                  child: GestureDetector().textButton(
-                    () async {
-                      //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
-                      String idCt() {
-                        String idCt = '';
-
-                        if (txtTitle == 'اجاره آپارتمان') {
-                          idCt = '04lqfn5b7bpiwdm';
-                        } else if (txtTitle == 'اجاره خانه') {
-                          idCt = 'awbiuhrki02leje';
-                        } else if (txtTitle == 'اجاره ویلا') {
-                          idCt = '4m44z8mrvvmqmrb';
-                        }
-
-                        if (txtTitle == 'فروش آپارتمان') {
-                          idCt = 'daxmo7fipbo5xnc';
-                        } else if (txtTitle == 'فروش خانه') {
-                          idCt = 'zlbqbrywl9f0b92';
-                        } else if (txtTitle == 'فروش ویلا') {
-                          idCt = 'egylfeay2tn1hxn';
-                        } else if (txtTitle == 'فروش زمین') {
-                          idCt = '7ost8r7msw8lt0c';
-                        }
-
-                        return idCt;
-                      }
-
-                      //Function For Set idFeatures
-                      String idFeature() {
-                        String idFeature = '';
-                        if (controllerDocument.text == 'وقفی' &&
-                            controllerView.text == 'شرقی') {
-                          idFeature = '6prs9whayez5ndc';
-                        } else if (controllerDocument.text == 'شش دانگ' &&
-                            controllerView.text == 'شرقی') {
-                          idFeature = 'y4nt0dvixr4xcna';
-                        } else if (controllerDocument.text == 'تک برگ' &&
-                            controllerView.text == 'شرقی') {
-                          idFeature = 'c756fp5htkh2gno';
-                        } else if (controllerDocument.text == 'وقفی' &&
-                            controllerView.text == 'غربی') {
-                          idFeature = 'urmnw7g2c4zegf1';
-                        } else if (controllerDocument.text == 'شش دانگ' &&
-                            controllerView.text == 'غربی') {
-                          idFeature = 'xw0low6fmir8sgo';
-                        } else if (controllerDocument.text == 'تک برگ' &&
-                            controllerView.text == 'غربی') {
-                          idFeature = 'mj34tvx7hhsm27u';
-                        } else if (controllerDocument.text == 'وقفی' &&
-                            controllerView.text == 'جنوبی') {
-                          idFeature = 'jvnz5pbmul5s6oi';
-                        } else if (controllerDocument.text == 'شش دانگ' &&
-                            controllerView.text == 'جنوبی') {
-                          idFeature = 'adgv0zg79giyxni';
-                        } else if (controllerDocument.text == 'تک برگ' &&
-                            controllerView.text == 'جنوبی') {
-                          idFeature = 'v6ixmhzhqziudho';
-                        } else if (controllerDocument.text == 'وقفی' &&
-                            controllerView.text == 'شمالی') {
-                          idFeature = 'io5oqwlgulcgehk';
-                        } else if (controllerDocument.text == 'شش دانگ' &&
-                            controllerView.text == 'شمالی') {
-                          idFeature = 'hnrty8b2u4uu2zo';
-                        } else if (controllerDocument.text == 'تک برگ' &&
-                            controllerView.text == 'شمالی') {
-                          idFeature = 'nish48ruq5zsisv';
-                        } else if (controllerDocument.text == 'ندارد' &&
-                            controllerView.text == 'شمالی') {
-                          idFeature = 'gmxzv044ugckigz';
-                        } else if (controllerDocument.text == 'ندارد' &&
-                            controllerView.text == 'جنوبی') {
-                          idFeature = '65ym07y7mwlmy2a';
-                        } else if (controllerDocument.text == 'ندارد' &&
-                            controllerView.text == 'غربی') {
-                          idFeature = '01zb7u52n31fi8m';
-                        } else if (controllerDocument.text == 'ندارد' &&
-                            controllerView.text == 'شرقی') {
-                          idFeature = '761f4u4nm3qpuzp';
-                        } else if (controllerDocument.text == 'تک برگ' &&
-                            controllerView.text == '') {
-                          idFeature = 'oj9ecj5tleyczx8';
-                        } else if (controllerDocument.text == 'شش دانگ' &&
-                            controllerView.text == '') {
-                          idFeature = 'oqha6d4la84cy8c';
-                        } else if (controllerDocument.text == 'وقفی' &&
-                            controllerView.text == '') {
-                          idFeature = 'gdhpz7funqv0rkf';
-                        } else if (controllerDocument.text == 'ندارد' &&
-                            controllerView.text == '') {
-                          idFeature = 'ti012w7mmoyhmw2';
-                        }
-                        return idFeature;
-                      }
-
-                      //Check Internet Connection Befor Register Information Ad in the Database
-                      if (!await checkInternetConnection(context)) {
-                        return;
-                      }
-
-                      if (title != 'فروش زمین'
-                          ? province.isEmpty ||
-                              city.isEmpty ||
-                              controllerCounRoom.text.isEmpty ||
-                              controllerMetr.text.isEmpty ||
-                              controllerBuildingMetr.text.isEmpty ||
-                              controllerYearBuild.text.isEmpty ||
-                              controllerFloor.text.isEmpty ||
-                              controllerDocument.text.isEmpty ||
-                              controllerView.text.isEmpty
-                          : province.isEmpty ||
-                              city.isEmpty ||
-                              controllerMetr.text.isEmpty ||
-                              controllerBuildingMetr.text.isEmpty ||
-                              controllerYearBuild.text.isEmpty ||
-                              controllerDocument.text.isEmpty) {
-                        displayDialog(
-                            'لطفا تمامی فیلد ها را کامل کنید', context);
-                        return;
-                      }
-                      try {
-                        num metr = num.tryParse(controllerMetr.text) ?? 0;
-                        num buildingMetr =
-                            num.tryParse(controllerBuildingMetr.text) ?? 0;
-                        num countRoom =
-                            num.tryParse(controllerCounRoom.text) ?? 0;
-                        num floor = num.tryParse(controllerFloor.text) ?? 0;
-                        num yearBuild =
-                            num.tryParse(controllerYearBuild.text) ?? 0;
-
-                        context.read<RegisterInfoAdCubit>().setParametrInfoAd(
-                              metr: metr,
-                              buildingMetr: buildingMetr,
-                              countRoom: countRoom,
-                              floor: floor,
-                              yearBuild: yearBuild,
-                              idCt: idCt(),
-                              province: province,
-                              city: city,
-                              idFeature: idFeature(),
-                              document: controllerDocument.text,
-                              view: controllerView.text,
-                            );
-                        final boolState = context.read<BoolStateCubit>().state;
-
-                        if (boolState.isUpdate) {
-                          BlocProvider.of<AddAdvertisingBloc>(context).add(
-                            UpdateFacilitiesData(
-                              boolState.elevator,
-                              boolState.parking,
-                              boolState.storeroom,
-                              boolState.balcony,
-                              boolState.penthouse,
-                              boolState.duplex,
-                              boolState.water,
-                              boolState.electricity,
-                              boolState.gas,
-                              title != 'فروش زمین'
-                                  ? boolState.floorMaterial
-                                  : '',
-                              title != 'فروش زمین' ? boolState.wc : '',
-                            ),
-                          );
-                        } else {
-                          BlocProvider.of<AddAdvertisingBloc>(context).add(
-                            AddFacilitiesAdvertising(
-                              boolState.elevator,
-                              boolState.parking,
-                              boolState.storeroom,
-                              boolState.balcony,
-                              boolState.penthouse,
-                              boolState.duplex,
-                              boolState.water,
-                              boolState.electricity,
-                              boolState.gas,
-                              title != 'فروش زمین'
-                                  ? boolState.floorMaterial
-                                  : '',
-                              title != 'فروش زمین' ? boolState.wc : '',
-                            ),
-                          );
-                        }
-                        if (title == 'اجاره آپارتمان' ||
-                            title == 'اجاره خانه' ||
-                            title == 'اجاره ویلا') {
-                          context.read<RegisterInfoAdCubit>().setParametrInfoAd(
-                                stateRentHome: true,
-                              );
-
-                          BlocProvider.of<NavigationPage>(context).getNavItems(
-                              ViewPage.registerRentHomeAdvertising);
-                          print(stateAd.stateRentHome);
-                        } else {
-                          BlocProvider.of<NavigationPage>(context)
-                              .getNavItems(ViewPage.registerHomeAdvertising);
-                        }
-                      } catch (e) {
-                        displayDialog(
-                            'لطفاً مقدار عددی معتبر وارد کنید', context);
-                      }
-                    },
-                    'بعدی',
-                    CustomColor.red,
-                    CustomColor.grey,
-                    false,
-                  ),
-                ),
               ),
             ],
           ),

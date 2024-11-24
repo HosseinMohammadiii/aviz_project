@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
@@ -21,9 +22,13 @@ import '../Bloc/bloc_page_number/page_n_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../class/checkconnection.dart';
 
+// ignore: must_be_immutable
 class RegisterAdvertising extends StatefulWidget {
-  const RegisterAdvertising({super.key});
-
+  RegisterAdvertising({
+    super.key,
+    required this.title,
+  });
+  String title;
   @override
   State<RegisterAdvertising> createState() => _RegisterAdvertisingState();
 }
@@ -32,15 +37,15 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
   //This Variable for Set Number to persian number
   final formatter = NumberFormat('#,###', 'fa');
 
-  final TextEditingController controllertitle = TextEditingController();
-  final TextEditingController controllerDescription = TextEditingController();
-  final TextEditingController controllerPrice = TextEditingController();
-  final TextEditingController controllerRentPrice = TextEditingController();
+  final controllertitle = TextEditingController();
+  final controllerDescription = TextEditingController();
+  final controllerPrice = TextEditingController();
+  final controllerRentPrice = TextEditingController();
 
-  final FocusNode priceFocusNude = FocusNode();
-  final FocusNode rentFocusNude = FocusNode();
-  final FocusNode titleFocusNude = FocusNode();
-  final FocusNode descriptionFocusNude = FocusNode();
+  final priceFocusNude = FocusNode();
+  final rentFocusNude = FocusNode();
+  final titleFocusNude = FocusNode();
+  final descriptionFocusNude = FocusNode();
 
   final picker = ImagePicker();
 
@@ -229,6 +234,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                   SnackBar(
                     content: Text(
                       'حجم تصویر ${i + 1} بیشتر از 1 مگابایت است',
+                      textDirection: ui.TextDirection.rtl,
                     ),
                     duration: const Duration(seconds: 2),
                   ),
@@ -248,7 +254,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
               );
             }
             // Checking if any of the required text fields are empty
-            else if (stateAd.stateRentHome == true
+            else if (widget.title != 'اجاره'
                 ? controllertitle.text.isEmpty ||
                     controllerDescription.text.isEmpty ||
                     controllerPrice.text.isEmpty ||
@@ -370,7 +376,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                       textTitleSections(
                           txt: 'قیمت', img: 'images/money_icon.png'),
                       Visibility(
-                        visible: stateAd.stateRentHome ?? true,
+                        visible: widget.title != 'اجاره',
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -410,7 +416,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         ),
                       ),
                       Visibility(
-                        visible: stateAd.stateRentHome ?? false,
+                        visible: widget.title != 'فروش',
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [

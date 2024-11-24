@@ -214,7 +214,6 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
       : super(
           RegisterInfoAd(
             metr: null,
-            stateRentHome: null,
             buildingMetr: null,
             countRoom: null,
             floor: null,
@@ -234,7 +233,6 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
         );
 
   void setParametrInfoAd({
-    final bool? stateRentHome,
     final num? metr,
     final num? buildingMetr,
     final num? countRoom,
@@ -253,7 +251,6 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     final String? city,
   }) {
     emit(state.copyWith(
-      stateRentHome: stateRentHome,
       metr: metr,
       buildingMetr: buildingMetr,
       countRoom: countRoom,
@@ -277,7 +274,6 @@ class RegisterInfoAdCubit extends Cubit<RegisterInfoAd> {
     emit(
       RegisterInfoAd(
         metr: null,
-        stateRentHome: null,
         buildingMetr: null,
         countRoom: null,
         floor: null,

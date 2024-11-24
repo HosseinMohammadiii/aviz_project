@@ -158,6 +158,7 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                                       : province[index].name;
                                   provinceName.province =
                                       provincesController.text;
+                                  provincesFocusNode.unfocus();
                                 });
                               },
                             );

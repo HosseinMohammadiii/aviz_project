@@ -96,7 +96,6 @@ class BoolState {
 }
 
 class RegisterInfoAd {
-  bool? stateRentHome;
   num? metr;
   num? buildingMetr;
   num? countRoom;
@@ -115,7 +114,6 @@ class RegisterInfoAd {
   String city;
 
   RegisterInfoAd({
-    this.stateRentHome,
     required this.metr,
     required this.buildingMetr,
     required this.countRoom,
@@ -134,7 +132,6 @@ class RegisterInfoAd {
     required this.city,
   });
   RegisterInfoAd copyWith({
-    final bool? stateRentHome,
     final num? metr,
     final num? buildingMetr,
     final num? countRoom,
@@ -153,7 +150,6 @@ class RegisterInfoAd {
     final String? city,
   }) {
     return RegisterInfoAd(
-      stateRentHome: stateRentHome ?? this.stateRentHome,
       metr: metr ?? this.metr,
       buildingMetr: buildingMetr ?? this.buildingMetr,
       countRoom: countRoom ?? this.countRoom,

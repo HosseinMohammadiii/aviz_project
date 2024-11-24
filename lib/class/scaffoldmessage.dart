@@ -18,6 +18,7 @@ enum MessageSnackBar {
   checkPhoneNumber,
   saveAd,
   deleteSaveAd,
+  validNumber,
 }
 
 void showMessage(MessageSnackBar message, BuildContext context, int duration) {
@@ -60,6 +61,9 @@ void showMessage(MessageSnackBar message, BuildContext context, int duration) {
       break;
     case MessageSnackBar.checkInputCharacters:
       messageTitle = 'کاراکتر معتبر وارد کنید';
+      break;
+    case MessageSnackBar.validNumber:
+      messageTitle = 'عدد معتبر وارد کنید';
       break;
     case MessageSnackBar.checkPhoneNumber:
       messageTitle = 'شماره موبایل خود را وارد کنید';
