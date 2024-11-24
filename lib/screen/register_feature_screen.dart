@@ -34,7 +34,7 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   final layerLink = LayerLink();
 
-  final FocusNode focusNode1 = FocusNode();
+  final focusNode1 = FocusNode();
 
   final controllerCounRoom = TextEditingController();
   final controllerMetr = TextEditingController();
