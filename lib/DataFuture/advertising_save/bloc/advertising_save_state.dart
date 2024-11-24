@@ -6,7 +6,11 @@ import '../../ad_details/Data/model/ad_facilities.dart';
 
 abstract class SaveAdState {}
 
+abstract class ExistSaveAdState {}
+
 final class GetInitializedSaveData extends SaveAdState {}
+
+final class SaveHandleErrorState extends SaveAdState {}
 
 final class SaveLoadingState extends SaveAdState {}
 

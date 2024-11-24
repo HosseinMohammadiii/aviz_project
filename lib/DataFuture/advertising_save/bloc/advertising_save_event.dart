@@ -17,5 +17,6 @@ final class DeleteSaveAdEvent extends SaveAdEvent {
 final class ExistsSaveAdEvent extends SaveAdEvent {
   String userId;
   String id;
+
   ExistsSaveAdEvent(this.userId, this.id);
 }

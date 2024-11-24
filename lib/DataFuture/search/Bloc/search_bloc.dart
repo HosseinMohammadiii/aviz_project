@@ -26,11 +26,15 @@ class AdExistsBloc extends Bloc<SearchEvent, SearchState> {
   AdExistsBloc(this.searchRepository) : super(SearchInitialState()) {
     on<SearchWithIdData>(
       (event, emit) async {
-        emit(SearchLoadingState());
-        var getExist = await searchRepository.getExistsAd(event.id);
-        emit(SearchExistsRequestSuccessState(
-          getExist,
-        ));
+        try {
+          emit(SearchLoadingState());
+          var getExist = await searchRepository.getExistsAd(event.id);
+          emit(SearchExistsRequestSuccessState(
+            getExist,
+          ));
+        } catch (e) {
+          emit(SearchHandleErrorState());
+        }
       },
     );
   }

@@ -8,45 +8,65 @@ class SaveAdBloc extends Bloc<SaveAdEvent, SaveAdState> {
   ISaveAdRepository repository;
   SaveAdBloc(this.repository) : super(GetInitializedSaveData()) {
     on<GetInitializedSaveDataEvent>((event, emit) async {
-      emit(SaveLoadingState());
-      var displaySaveAd = await repository.getSaveAd();
-      var displayAdvertising = await repository.getDisplayAd();
-      var advertisingFacilities =
-          await repository.getDiplayAdvertisingFacilities();
+      try {
+        emit(SaveLoadingState());
+        var displaySaveAd = await repository.getSaveAd();
+        var displayAdvertising = await repository.getDisplayAd();
+        var advertisingFacilities =
+            await repository.getDiplayAdvertisingFacilities();
 
-      emit(GetSaveState(
-        displaySaveAd,
-        displayAdvertising,
-        advertisingFacilities,
-      ));
+        emit(GetSaveState(
+          displaySaveAd,
+          displayAdvertising,
+          advertisingFacilities,
+        ));
+      } catch (e) {
+        emit(SaveHandleErrorState());
+      }
     });
     on<GetInitializedExistsSaveDataEvent>(
       (event, emit) async {
-        emit(SaveLoadingState());
-        var existsSaveAd = await repository.getSaveAd();
-        emit(GetExistsSaveState(existsSaveAd));
+        try {
+          emit(SaveLoadingState());
+          var existsSaveAd = await repository.getSaveAd();
+          emit(GetExistsSaveState(existsSaveAd));
+        } catch (e) {
+          emit(SaveHandleErrorState());
+        }
       },
     );
     on<PostSaveAdEvent>(
       (event, emit) async {
-        emit(SaveLoadingState());
-        var postSaveAd = await repository.postSaveAd(event.id);
-        emit(PostSaveAdState(postSaveAd));
+        try {
+          emit(SaveLoadingState());
+          var postSaveAd = await repository.postSaveAd(event.id);
+          emit(PostSaveAdState(postSaveAd));
+        } catch (e) {
+          emit(SaveHandleErrorState());
+        }
       },
     );
     on<DeleteSaveAdEvent>(
       (event, emit) async {
-        emit(SaveLoadingState());
-        var deleteSaveAd = await repository.deleteSaveAd(event.id);
-        emit(DeleteSaveAdState(deleteSaveAd));
+        try {
+          emit(SaveLoadingState());
+          var deleteSaveAd = await repository.deleteSaveAd(event.id);
+          emit(DeleteSaveAdState(deleteSaveAd));
+        } catch (e) {
+          emit(SaveHandleErrorState());
+        }
       },
     );
     on<ExistsSaveAdEvent>(
       (event, emit) async {
-        emit(SaveLoadingState());
-        var existsSaveAd =
-            await repository.existsSaveAd(event.userId, event.id);
-        emit(ExistsSaveAdState(existsSaveAd));
+        try {
+          emit(SaveLoadingState());
+          var existsSaveAd =
+              await repository.existsSaveAd(event.userId, event.id);
+          emit(ExistsSaveAdState(existsSaveAd));
+        } catch (e) {
+          emit(SaveHandleErrorState());
+        }
       },
     );
   }

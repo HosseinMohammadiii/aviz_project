@@ -7,6 +7,10 @@ abstract class SearchState {}
 
 final class SearchInitialState extends SearchState {}
 
+final class SearchLoadingState extends SearchState {}
+
+final class SearchHandleErrorState extends SearchState {}
+
 final class SearchRequestSuccessState extends SearchState {
   Either<String, List<RegisterFutureAd>> searchResult;
   Either<String, List<AdvertisingFacilities>> adFacilities;
@@ -17,5 +21,3 @@ final class SearchExistsRequestSuccessState extends SearchState {
   Either<String, String> getExistAd;
   SearchExistsRequestSuccessState(this.getExistAd);
 }
-
-final class SearchLoadingState extends SearchState {}

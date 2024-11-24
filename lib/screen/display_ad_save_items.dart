@@ -55,32 +55,30 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
       body: SafeArea(
         child: BlocBuilder<SaveAdBloc, SaveAdState>(
           builder: (context, state) {
-            return RefreshIndicator(
-              color: CustomColor.normalRed,
-              onRefresh: () async {
-                context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
-              },
-              child: CustomScrollView(
-                slivers: [
-                  if (state is SaveLoadingState) ...[
-                    const SliverFillRemaining(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: CustomColor.normalRed,
-                        ),
-                      ),
-                    ),
-                  ],
-                  if (state is GetSaveState) ...[
-                    state.getDisplayAd.fold(
+            if (state is SaveHandleErrorState) {
+              return DisplayReconnection(screen: 'ذخیره شده ها');
+            } else if (state is SaveLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: CustomColor.normalRed,
+                ),
+              );
+            } else if (state is GetSaveState) {
+              return RefreshIndicator(
+                color: CustomColor.normalRed,
+                onRefresh: () async {
+                  context.read<SaveAdBloc>().add(GetInitializedSaveDataEvent());
+                },
+                child: state.getDisplayAd.fold(
+                  (error) => DisplayReconnection(screen: 'ذخیره شده ها'),
+                  (ad) => state.advertisingFacilitiesDetails.fold(
+                    (error) => DisplayReconnection(screen: 'ذخیره شده ها'),
+                    (facilities) => state.getSaveAd.fold(
                       (error) => DisplayReconnection(screen: 'ذخیره شده ها'),
-                      (ad) => state.advertisingFacilitiesDetails.fold(
-                        (error) => DisplayReconnection(screen: 'ذخیره شده ها'),
-                        (facilities) => state.getSaveAd.fold(
-                          (error) =>
-                              DisplayReconnection(screen: 'ذخیره شده ها'),
-                          (saveAd) => saveAd.isNotEmpty
-                              ? SliverList.builder(
+                      (saveAd) => saveAd.isNotEmpty
+                          ? CustomScrollView(
+                              slivers: [
+                                SliverList.builder(
                                   itemCount: saveAd.length,
                                   itemBuilder: (context, index) {
                                     var saveAdvertising =
@@ -107,23 +105,23 @@ class _DisplayAdSaveItemsState extends State<DisplayAdSaveItems>
                                     );
                                   },
                                 )
-                              : const SliverFillRemaining(
-                                  child: Center(
-                                    child: Text(
-                                      '!هنوز آگهی ذخیره نکردی که',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
+                              ],
+                            )
+                          : const Center(
+                              child: Text(
+                                '!هنوز آگهی ذخیره نکردی که',
+                                style: TextStyle(
+                                  fontSize: 20,
                                 ),
-                        ),
-                      ),
+                              ),
+                            ),
                     ),
-                  ],
-                ],
-              ),
-            );
+                  ),
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
           },
         ),
       ),

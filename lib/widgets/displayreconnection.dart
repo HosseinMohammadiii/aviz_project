@@ -86,7 +86,11 @@ class DisplayReconnection extends StatelessWidget {
                       .read<AuthAccountBloc>()
                       .add(DisplayInformationEvent());
                   break;
-                default:
+                case 'وجود آگهی':
+                  context.read<AdExistsBloc>().add(
+                        SearchWithIdData(id: ''),
+                      );
+                  break;
               }
             },
             child: Text(
