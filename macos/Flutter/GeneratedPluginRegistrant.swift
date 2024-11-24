@@ -13,7 +13,7 @@ import flutter_local_notifications
 import package_info_plus
 import path_provider_foundation
 import smart_auth
-import sqflite
+import sqflite_darwin
 import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
