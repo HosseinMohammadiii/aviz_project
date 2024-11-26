@@ -911,17 +911,11 @@ class _SpecificationBoxState extends State<SpecificationBox> {
                           'ساخت', widget.advertisingHome.yearBiuld),
                       informationBoxItem(
                           'اتاق', widget.advertisingHome.countRoom),
-                      if (widget.advertisingHome.rentPrice != 0 &&
-                          widget.advertisingHome.categoryId !=
-                              'daxmo7fipbo5xnc' &&
-                          widget.advertisingHome.categoryId !=
-                              '04lqfn5b7bpiwdm') ...[
-                        informationBoxItem(
-                            'متراژ بنا', widget.advertisingHome.buildingMetr),
-                      ] else ...[
-                        informationBoxItem(
-                            'طبقه', widget.advertisingHome.floor),
-                      ],
+                      widget.advertisingHome.floor == 0
+                          ? informationBoxItem(
+                              'متراژ بنا', widget.advertisingHome.buildingMetr)
+                          : informationBoxItem(
+                              'طبقه', widget.advertisingHome.floor),
                       informationBoxItem('متراژ', widget.advertisingHome.metr),
                     ],
                   ],

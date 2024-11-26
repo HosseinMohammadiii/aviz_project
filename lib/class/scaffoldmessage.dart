@@ -14,6 +14,7 @@ enum MessageSnackBar {
   checkPassword,
   checkUserNameWithPassword,
   errorLogIn,
+  existUser,
   checkInputCharacters,
   checkPhoneNumber,
   saveAd,

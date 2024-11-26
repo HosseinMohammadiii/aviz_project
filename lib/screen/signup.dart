@@ -183,7 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (token != null && token.isNotEmpty) {
                             final provinceAndCity =
                                 context.read<RegisterInfoAdCubit>().state;
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ScreenProvince(
@@ -200,6 +200,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 //Register City in the AdvertisingHive
                                                 RegisterId().setCity(
                                                     provinceAndCity.city);
+                                                Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BottomNavigationScreen(),
+                                                  ),
+                                                  (Route<dynamic> route) =>
+                                                      false,
+                                                );
                                                 //Call HomeGetInitializeData event from HomeBloc
                                                 context.read<HomeBloc>().add(
                                                     HomeGetInitializeData());
@@ -218,13 +227,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                         DisplayInformationEvent());
 
                                                 provinceAndCity.city = '';
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BottomNavigationScreen(),
-                                                  ),
-                                                );
                                               },
                                               province:
                                                   RegisterId().getProvince(),
@@ -239,7 +241,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   },
                                 ),
                               ),
+                              (Route<dynamic> route) => false,
                             );
+
+                            // //Call HomeGetInitializeData event from HomeBloc
+                            // context
+                            //     .read<HomeBloc>()
+                            //     .add(HomeGetInitializeData());
+
+                            // //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
+                            // context
+                            //     .read<AddAdvertisingBloc>()
+                            //     .add(InitializedDisplayAdvertising());
+
+                            // //Call DisplayInformationEvent event from AuthAccountBloc
+                            // BlocProvider.of<AuthAccountBloc>(context)
+                            //     .add(DisplayInformationEvent());
+                            // Navigator.pushAndRemoveUntil(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => BottomNavigationScreen(),
+                            //   ),
+                            //   (Route<dynamic> route) => false,
+                            // );
                           } else {
                             // Handle error: Token not available
                             showMessage(MessageSnackBar.tryAgain, context, 1);
@@ -260,7 +284,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const LogInScreen(),

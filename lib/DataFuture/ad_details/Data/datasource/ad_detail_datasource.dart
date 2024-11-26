@@ -2,6 +2,7 @@ import 'package:aviz_project/DataFuture/ad_details/Data/model/ad_detail.dart';
 import 'package:dio/dio.dart';
 
 import '../../../NetworkUtil/api_exeption.dart';
+import '../../../NetworkUtil/authmanager.dart';
 import '../../../add_advertising/Data/model/ad_gallery.dart';
 import '../model/ad_facilities.dart';
 
@@ -21,6 +22,10 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
       var response = await dio.get(
         'features',
         queryParameters: query,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<AdvertisingFeatures>(
@@ -41,6 +46,10 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
       var response = await dio.get(
         'facilities',
         queryParameters: query,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return response.data['items']
@@ -62,6 +71,10 @@ class IAdFeaturesRemoteDataSource extends IAdvertisingFeaturesDataSoure {
       var response = await dio.get(
         'advertising_gallery',
         queryParameters: query,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<RegisterFutureAdGallery>(

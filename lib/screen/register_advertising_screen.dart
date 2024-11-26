@@ -254,7 +254,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
               );
             }
             // Checking if any of the required text fields are empty
-            else if (widget.title != 'اجاره'
+            else if (widget.title == 'اجاره'
                 ? controllertitle.text.isEmpty ||
                     controllerDescription.text.isEmpty ||
                     controllerPrice.text.isEmpty ||

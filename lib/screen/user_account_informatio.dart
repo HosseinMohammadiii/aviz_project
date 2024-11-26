@@ -834,12 +834,12 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                 context.read<BoolStateCubit>().reset();
                 // Navigate back to the first page
                 context.read<NavigationPage>().backFirstPAge();
-
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const InitialScreen(),
                   ),
+                  (Route<dynamic> route) => false, // همه صفحات قبلی را حذف کن
                 );
               },
               style: const ButtonStyle(

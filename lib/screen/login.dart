@@ -155,7 +155,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const SignUpScreen(),
@@ -211,7 +211,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 isShowErrorText = false;
               });
               final provinceAndCity = context.read<RegisterInfoAdCubit>().state;
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ScreenProvince(
@@ -227,7 +227,14 @@ class _LogInScreenState extends State<LogInScreen> {
                                 onChanged: () {
                                   //Register City in the AdvertisingHive
                                   RegisterId().setCity(provinceAndCity.city);
-
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BottomNavigationScreen(),
+                                    ),
+                                    (Route<dynamic> route) => false,
+                                  );
                                   provinceAndCity.city = '';
                                   //Call HomeGetInitializeData event from HomeBloc
                                   context
@@ -241,13 +248,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                   //Call DisplayInformationEvent event from AuthAccountBloc
                                   BlocProvider.of<AuthAccountBloc>(context)
                                       .add(DisplayInformationEvent());
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BottomNavigationScreen(),
-                                    ),
-                                  );
                                 },
                                 province: RegisterId().getProvince(),
                               ),
@@ -260,7 +260,26 @@ class _LogInScreenState extends State<LogInScreen> {
                     },
                   ),
                 ),
+                (Route<dynamic> route) => false,
               );
+
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => BottomNavigationScreen(),
+              //   ),
+              //   (Route<dynamic> route) => false,
+              // );
+              // //Call HomeGetInitializeData event from HomeBloc
+              // context.read<HomeBloc>().add(HomeGetInitializeData());
+              // //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
+              // context
+              //     .read<AddAdvertisingBloc>()
+              //     .add(InitializedDisplayAdvertising());
+
+              // //Call DisplayInformationEvent event from AuthAccountBloc
+              // BlocProvider.of<AuthAccountBloc>(context)
+              //     .add(DisplayInformationEvent());
             },
           );
         }
