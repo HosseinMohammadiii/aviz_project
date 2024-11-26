@@ -243,27 +243,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               (Route<dynamic> route) => false,
                             );
-
-                            // //Call HomeGetInitializeData event from HomeBloc
-                            // context
-                            //     .read<HomeBloc>()
-                            //     .add(HomeGetInitializeData());
-
-                            // //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
-                            // context
-                            //     .read<AddAdvertisingBloc>()
-                            //     .add(InitializedDisplayAdvertising());
-
-                            // //Call DisplayInformationEvent event from AuthAccountBloc
-                            // BlocProvider.of<AuthAccountBloc>(context)
-                            //     .add(DisplayInformationEvent());
-                            // Navigator.pushAndRemoveUntil(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => BottomNavigationScreen(),
-                            //   ),
-                            //   (Route<dynamic> route) => false,
-                            // );
                           } else {
                             // Handle error: Token not available
                             showMessage(MessageSnackBar.tryAgain, context, 1);

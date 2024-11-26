@@ -262,24 +262,6 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 (Route<dynamic> route) => false,
               );
-
-              // Navigator.pushAndRemoveUntil(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => BottomNavigationScreen(),
-              //   ),
-              //   (Route<dynamic> route) => false,
-              // );
-              // //Call HomeGetInitializeData event from HomeBloc
-              // context.read<HomeBloc>().add(HomeGetInitializeData());
-              // //Call InitializedDisplayAdvertising event from AddAdvertisingBloc
-              // context
-              //     .read<AddAdvertisingBloc>()
-              //     .add(InitializedDisplayAdvertising());
-
-              // //Call DisplayInformationEvent event from AuthAccountBloc
-              // BlocProvider.of<AuthAccountBloc>(context)
-              //     .add(DisplayInformationEvent());
             },
           );
         }
