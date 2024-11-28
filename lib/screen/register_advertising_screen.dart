@@ -523,6 +523,14 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                     ],
                   ),
                 ),
+                Visibility(
+                  visible: state is AddAdvertisingImageLoading,
+                  child: Positioned.fill(
+                    child: Container(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
