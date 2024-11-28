@@ -20,16 +20,21 @@ class BottomNavigationScreen extends StatefulWidget {
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _previousIndex = 0;
 
+//Methode for Controll Index of Buttomnavigation Items
   void _onItemTapped(int index) async {
+    //Checking the Internet Connection
     if (!await checkInternetConnection(context)) {
       return;
     }
     if (index == 1) {
       final isPhoneSaved = RegisterId().getPhoneNumber().isNotEmpty;
 
+      //Checking whether the phone number is registered to display index 2 of the bottomnavigation items
       if (!isPhoneSaved) {
+        //Initialization of a _previousIndex variable by a variable widget.index
         _previousIndex = widget.index;
 
+        //If the phone number is not registered, navigate to the RegisterPhonenumber Screen
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
@@ -37,6 +42,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           ),
         );
 
+        //If the result of its value was null, variable widget.index is set with the last value of variable _previousIndex
         if (result == null) {
           setState(() {
             widget.index = _previousIndex;
