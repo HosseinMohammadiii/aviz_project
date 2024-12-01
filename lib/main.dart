@@ -213,5 +213,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// AccountScreen() BottomNavigationScreen()

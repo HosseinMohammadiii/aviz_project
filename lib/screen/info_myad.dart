@@ -27,6 +27,7 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/search/Bloc/search_bloc.dart';
 import '../class/colors.dart';
 
+import '../extension/constraintboxsize.dart';
 import '../main.dart';
 import '../widgets/advertising_facilities_features.dart';
 import '../widgets/interactiveimage.dart';
@@ -63,11 +64,6 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
     routeObserver.unsubscribe(this);
     super.dispose();
   }
-
-  // @override
-  // void didPush() {
-  //   print('صفحه جدید به جلو هل داده شد');
-  // }
 
   @override
   void didPop() {
@@ -185,472 +181,500 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AdExistsBloc, SearchState>(
-        listener: (context, state) {
-          if (state is SearchExistsRequestSuccessState) {
-            state.getExistAd.fold(
-              (l) {
-                setState(() {
-                  isError = true;
-                });
-              },
-              (r) {
-                setState(() {
-                  isError = false;
-                });
-              },
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is SearchHandleErrorState) {
-            return DisplayReconnection(screen: 'وجود آگهی');
-          } else if (state is SearchLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: CustomColor.normalRed,
-                strokeWidth: 3,
-              ),
-            );
-          } else if (state is SearchExistsRequestSuccessState) {
-            return state.getExistAd.fold(
-              (l) {
-                return Scaffold(
-                  appBar: AppBar(
-                    automaticallyImplyLeading: false,
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  body: SafeArea(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Image.asset(
-                            'images/bad_result.png',
-                            scale: 2,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        textWidget(
-                          'آگهی مورد نظر پاک شده است',
-                          CustomColor.black,
-                          18,
-                          FontWeight.normal,
-                        ),
-                      ],
-                    ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints().constrainstSize(),
+          child: BlocConsumer<AdExistsBloc, SearchState>(
+            listener: (context, state) {
+              if (state is SearchExistsRequestSuccessState) {
+                state.getExistAd.fold(
+                  (l) {
+                    setState(() {
+                      isError = true;
+                    });
+                  },
+                  (r) {
+                    setState(() {
+                      isError = false;
+                    });
+                  },
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is SearchHandleErrorState) {
+                return DisplayReconnection(screen: 'وجود آگهی');
+              } else if (state is SearchLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: CustomColor.normalRed,
+                    strokeWidth: 3,
                   ),
                 );
-              },
-              (r) {
-                return Scaffold(
-                  bottomNavigationBar: buttonCallAndSmsUser(
-                    context: context,
-                    advertising: widget.advertisingHome,
-                  ),
-                  appBar: AppBar(
-                    elevation: 0,
-                    scrolledUnderElevation: 0,
-                    automaticallyImplyLeading: false,
-                    leadingWidth: double.maxFinite,
-                    leading: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        children: [
-                          BlocConsumer<SaveAdBloc, SaveAdState>(
-                            listener: (context, state) {
-                              if (state is GetExistsSaveState) {
-                                state.getSaveAd.fold(
-                                  (l) {},
-                                  (r) {
-                                    bool isSavedAd = r.any((item) =>
-                                        item.idAd == widget.advertisingHome.id);
-                                    saveId = isSavedAd
-                                        ? r
-                                            .firstWhere((item) =>
-                                                item.idAd ==
-                                                widget.advertisingHome.id)
-                                            .id
-                                        : null;
-                                  },
-                                );
-                              }
-                              if (state is ExistsSaveAdState) {
-                                state.existsSaveAd.fold(
-                                  (l) {
-                                    setState(() {
-                                      isSaved = false;
-                                    });
-                                  },
-                                  (r) {
-                                    setState(() {
-                                      if (r.isNotEmpty) {
-                                        isSaved = true;
-                                      }
-                                    });
-                                  },
-                                );
-                              } else if (state is PostSaveAdState) {
-                                state.postSaveAd.fold(
-                                  (l) => showMessage(
-                                      MessageSnackBar.tryAgain, context, 1),
-                                  (r) {
-                                    showMessage(
-                                        MessageSnackBar.saveAd, context, 1);
-                                    setState(() {
-                                      isSaved = true;
-                                    });
-                                  },
-                                );
-                              } else if (state is DeleteSaveAdState) {
-                                state.deleteSaveAd.fold(
-                                  (l) => showMessage(
-                                      MessageSnackBar.tryAgain, context, 1),
-                                  (r) {
-                                    showMessage(MessageSnackBar.deleteSaveAd,
-                                        context, 1);
-                                    setState(() {
-                                      isSaved = false;
-                                    });
-                                  },
-                                );
-                              }
-                            },
-                            builder: (context, state) => GestureDetector(
-                              onTap: _toggleSaveStatus,
-                              child: isError
-                                  ? const SizedBox.shrink()
-                                  : state is SaveLoadingState
-                                      ? const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: CustomColor.normalRed,
-                                            strokeWidth: 3,
-                                          ),
-                                        )
-                                      : Image.asset(
-                                          isSaved
-                                              ? 'images/save_full.png'
-                                              : 'images/save_vacant.png',
-                                          scale: 5,
-                                        ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          Visibility(
-                            visible: widget.isDelete,
+              } else if (state is SearchExistsRequestSuccessState) {
+                return state.getExistAd.fold(
+                  (l) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        automaticallyImplyLeading: false,
+                        actions: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: GestureDetector(
-                              onTap: () async {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      alignment: Alignment.center,
-                                      actionsAlignment:
-                                          MainAxisAlignment.center,
-                                      backgroundColor: CustomColor.bluegrey50,
-                                      title: const Text(
-                                        'آیا آگهی مورد نظر حذف شود؟',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: 'SM',
-                                          fontSize: 20,
-                                          color: CustomColor.black,
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context, 'OK');
-                                          },
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                                    CustomColor.grey500),
-                                          ),
-                                          child: Text(
-                                            'خیر',
-                                            style: TextStyle(
-                                              color: CustomColor.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'SM',
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            context
-                                                .read<AddAdvertisingBloc>()
-                                                .add(DeleteAdvertisingData(
-                                                  idAd:
-                                                      widget.advertisingHome.id,
-                                                  idAdFacilities: widget
-                                                      .advertisingHome
-                                                      .idFacilities,
-                                                  idAdGallery: widget
-                                                      .advertisingHome
-                                                      .idGallery,
-                                                ));
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                          },
-                                          style: const ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                                    CustomColor.red),
-                                          ),
-                                          child: Text(
-                                            'بله',
-                                            style: TextStyle(
-                                              color: CustomColor.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'SM',
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onTap: () {
+                                Navigator.pop(context);
                               },
-                              child: Image.asset(
-                                'images/delete.png',
-                                scale: 4.5,
+                              child: const Icon(
+                                Icons.arrow_forward_ios_rounded,
                               ),
-                            ),
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(
-                              Icons.arrow_forward_ios_rounded,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  body: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: AdvertisingGalleryImages(
-                              advertisingHome: widget.advertisingHome,
-                              controller: controller,
+                      body: SafeArea(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                'images/bad_result.png',
+                                scale: 2,
+                              ),
                             ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 30,
+                            const SizedBox(
+                              height: 8,
                             ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                textWidget(
-                                  '${_createADTime(DateTime.parse(widget.advertisingHome.created))} در ${widget.advertisingHome.province}،${widget.advertisingHome.city}',
-                                  CustomColor.grey500,
-                                  14,
-                                  FontWeight.w400,
-                                ),
-                                Container(
-                                  height: 29,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: CustomColor.grey200,
-                                  ),
-                                  child: textWidget(
-                                    categoryType(),
-                                    CustomColor.red,
-                                    14,
-                                    FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 20,
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: textWidget(
-                              widget.advertisingHome.titlehome,
+                            textWidget(
+                              'آگهی مورد نظر پاک شده است',
                               CustomColor.black,
-                              16,
-                              FontWeight.w700,
+                              18,
+                              FontWeight.normal,
                             ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 25,
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: DottedLine(
-                              dashColor: CustomColor.grey200,
-                              lineThickness: 1.5,
-                              dashLength: 6,
-                            ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 25,
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const WarningScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                height: 40,
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: CustomColor.grey350),
-                                  borderRadius: BorderRadius.circular(4),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  (r) {
+                    return Scaffold(
+                      bottomNavigationBar: buttonCallAndSmsUser(
+                        context: context,
+                        advertising: widget.advertisingHome,
+                      ),
+                      appBar: AppBar(
+                        elevation: 0,
+                        scrolledUnderElevation: 0,
+                        automaticallyImplyLeading: false,
+                        leadingWidth: double.maxFinite,
+                        leading: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            children: [
+                              BlocConsumer<SaveAdBloc, SaveAdState>(
+                                listener: (context, state) {
+                                  if (state is GetExistsSaveState) {
+                                    state.getSaveAd.fold(
+                                      (l) {},
+                                      (r) {
+                                        bool isSavedAd = r.any((item) =>
+                                            item.idAd ==
+                                            widget.advertisingHome.id);
+                                        saveId = isSavedAd
+                                            ? r
+                                                .firstWhere((item) =>
+                                                    item.idAd ==
+                                                    widget.advertisingHome.id)
+                                                .id
+                                            : null;
+                                      },
+                                    );
+                                  }
+                                  if (state is ExistsSaveAdState) {
+                                    state.existsSaveAd.fold(
+                                      (l) {
+                                        setState(() {
+                                          isSaved = false;
+                                        });
+                                      },
+                                      (r) {
+                                        setState(() {
+                                          if (r.isNotEmpty) {
+                                            isSaved = true;
+                                          }
+                                        });
+                                      },
+                                    );
+                                  } else if (state is PostSaveAdState) {
+                                    state.postSaveAd.fold(
+                                      (l) => showMessage(
+                                          MessageSnackBar.tryAgain, context, 1),
+                                      (r) {
+                                        showMessage(
+                                            MessageSnackBar.saveAd, context, 1);
+                                        setState(() {
+                                          isSaved = true;
+                                        });
+                                      },
+                                    );
+                                  } else if (state is DeleteSaveAdState) {
+                                    state.deleteSaveAd.fold(
+                                      (l) => showMessage(
+                                          MessageSnackBar.tryAgain, context, 1),
+                                      (r) {
+                                        showMessage(
+                                            MessageSnackBar.deleteSaveAd,
+                                            context,
+                                            1);
+                                        setState(() {
+                                          isSaved = false;
+                                        });
+                                      },
+                                    );
+                                  }
+                                },
+                                builder: (context, state) => GestureDetector(
+                                  onTap: _toggleSaveStatus,
+                                  child: isError
+                                      ? const SizedBox.shrink()
+                                      : state is SaveLoadingState
+                                          ? const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: CustomColor.normalRed,
+                                                strokeWidth: 3,
+                                              ),
+                                            )
+                                          : Image.asset(
+                                              isSaved
+                                                  ? 'images/save_full.png'
+                                                  : 'images/save_vacant.png',
+                                              scale: 5,
+                                            ),
                                 ),
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Visibility(
+                                visible: widget.isDelete,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          alignment: Alignment.center,
+                                          actionsAlignment:
+                                              MainAxisAlignment.center,
+                                          backgroundColor:
+                                              CustomColor.bluegrey50,
+                                          title: const Text(
+                                            'آیا آگهی مورد نظر حذف شود؟',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: 'SM',
+                                              fontSize: 20,
+                                              color: CustomColor.black,
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, 'OK');
+                                              },
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    WidgetStatePropertyAll(
+                                                        CustomColor.grey500),
+                                              ),
+                                              child: Text(
+                                                'خیر',
+                                                style: TextStyle(
+                                                  color: CustomColor.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'SM',
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                context
+                                                    .read<AddAdvertisingBloc>()
+                                                    .add(DeleteAdvertisingData(
+                                                      idAd: widget
+                                                          .advertisingHome.id,
+                                                      idAdFacilities: widget
+                                                          .advertisingHome
+                                                          .idFacilities,
+                                                      idAdGallery: widget
+                                                          .advertisingHome
+                                                          .idGallery,
+                                                    ));
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              },
+                                              style: const ButtonStyle(
+                                                backgroundColor:
+                                                    WidgetStatePropertyAll(
+                                                        CustomColor.red),
+                                              ),
+                                              child: Text(
+                                                'بله',
+                                                style: TextStyle(
+                                                  color: CustomColor.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'SM',
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    'images/delete.png',
+                                    scale: 4.5,
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      body: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverToBoxAdapter(
+                                child: AdvertisingGalleryImages(
+                                  advertisingHome: widget.advertisingHome,
+                                  controller: controller,
+                                ),
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 30,
+                                ),
+                              ),
+                              SliverToBoxAdapter(
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(
-                                      Icons.arrow_back_ios_rounded,
-                                      color: CustomColor.grey350,
-                                    ),
-                                    const Spacer(),
                                     textWidget(
-                                      'هشدار های قبل از معامله!',
-                                      CustomColor.black,
-                                      16,
-                                      FontWeight.w500,
+                                      '${_createADTime(DateTime.parse(widget.advertisingHome.created))} در ${widget.advertisingHome.province}،${widget.advertisingHome.city}',
+                                      CustomColor.grey500,
+                                      14,
+                                      FontWeight.w400,
                                     ),
-                                    const SizedBox(
-                                      width: 10,
+                                    Container(
+                                      height: 29,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: CustomColor.grey200,
+                                      ),
+                                      child: textWidget(
+                                        categoryType(),
+                                        CustomColor.red,
+                                        14,
+                                        FontWeight.w400,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 20,
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 30,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                reverse: true,
-                                itemCount: listText.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 19),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          // Update selected state of each category
-                                          for (int i = 0;
-                                              i < listText.length;
-                                              i++) {
-                                            listText[i].selected = (i == index);
-                                            indexContainer = index;
-                                          }
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 29,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          border: Border.all(
-                                            color: listText[index].selected
-                                                ? Colors.transparent
-                                                : CustomColor.grey350,
-                                          ),
-                                          color: listText[index].selected
-                                              ? CustomColor.red
-                                              : CustomColor.white,
-                                        ),
-                                        child: textWidget(
-                                          listText[index].text,
-                                          listText[index].selected
-                                              ? CustomColor.grey
-                                              : CustomColor.red,
-                                          14,
-                                          FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 20,
+                                ),
                               ),
-                            ),
+                              SliverToBoxAdapter(
+                                child: textWidget(
+                                  widget.advertisingHome.titlehome,
+                                  CustomColor.black,
+                                  16,
+                                  FontWeight.w700,
+                                ),
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 25,
+                                ),
+                              ),
+                              SliverToBoxAdapter(
+                                child: DottedLine(
+                                  dashColor: CustomColor.grey200,
+                                  lineThickness: 1.5,
+                                  dashLength: 6,
+                                ),
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 25,
+                                ),
+                              ),
+                              SliverToBoxAdapter(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WarningScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: CustomColor.grey350),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_back_ios_rounded,
+                                          color: CustomColor.grey350,
+                                        ),
+                                        const Spacer(),
+                                        textWidget(
+                                          'هشدار های قبل از معامله!',
+                                          CustomColor.black,
+                                          16,
+                                          FontWeight.w500,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 20,
+                                ),
+                              ),
+                              SliverToBoxAdapter(
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return SizedBox(
+                                      height: 30,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        reverse: true,
+                                        itemCount: listText.length,
+                                        itemBuilder: (context, index) {
+                                          double horizontalMargin =
+                                              constraints.maxWidth <= 1200
+                                                  ? 8.0
+                                                  : 16.0;
+
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                for (int i = 0;
+                                                    i < listText.length;
+                                                    i++) {
+                                                  listText[i].selected =
+                                                      (i == index);
+                                                  indexContainer = index;
+                                                }
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 29,
+                                              constraints: const BoxConstraints(
+                                                maxWidth: 135,
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12),
+                                              margin: EdgeInsets.only(
+                                                left: index == 0
+                                                    ? horizontalMargin
+                                                    : 8.0,
+                                              ),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                border: Border.all(
+                                                  color:
+                                                      listText[index].selected
+                                                          ? Colors.transparent
+                                                          : CustomColor.grey350,
+                                                ),
+                                                color: listText[index].selected
+                                                    ? CustomColor.red
+                                                    : CustomColor.white,
+                                              ),
+                                              child: textWidget(
+                                                listText[index].text,
+                                                listText[index].selected
+                                                    ? CustomColor.grey
+                                                    : CustomColor.red,
+                                                14,
+                                                FontWeight.w400,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 25,
+                                ),
+                              ),
+                              _changeBoxContainer(
+                                indexContainer,
+                                widget.advertisingHome,
+                                categoryTitle,
+                              ),
+                            ],
                           ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 25,
-                            ),
-                          ),
-                          _changeBoxContainer(
-                            indexContainer,
-                            widget.advertisingHome,
-                            categoryTitle,
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
-              },
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
+        ),
       ),
     );
   }
@@ -849,7 +873,7 @@ _changeBoxContainer(
       );
     case 3:
       return SliverToBoxAdapter(
-          child: DescriptionWidget(advertisingHome: adHome));
+          child: _advertisingDescription(advertisingHome: adHome));
 
     default:
       return SliverToBoxAdapter(
@@ -879,70 +903,86 @@ class SpecificationBox extends StatefulWidget {
 class _SpecificationBoxState extends State<SpecificationBox> {
   @override
   Widget build(BuildContext context) {
-    int length = 0;
+    int length = 1;
     widget.advertisingHome.categoryId == '7ost8r7msw8lt0c'
-        ? length = 1
-        : length = 3;
+        ? length = 2
+        : length = 4;
     return Column(
       children: [
         Container(
           height: 100,
-          width: length == 1 ? 200 : 450,
+          constraints: const BoxConstraints().constrainstSize(),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: CustomColor.grey350,
-            ),
+            border: Border.all(color: CustomColor.grey350),
             borderRadius: BorderRadius.circular(4),
           ),
           alignment: Alignment.center,
-          child: Stack(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (length == 1) ...[
-                      informationBoxItem(
-                          'خرید', widget.advertisingHome.yearBiuld),
-                      informationBoxItem('متراژ', widget.advertisingHome.metr),
-                    ] else ...[
-                      informationBoxItem(
-                          'ساخت', widget.advertisingHome.yearBiuld),
-                      informationBoxItem(
-                          'اتاق', widget.advertisingHome.countRoom),
-                      widget.advertisingHome.floor == 0
-                          ? informationBoxItem(
-                              'متراژ بنا', widget.advertisingHome.buildingMetr)
-                          : informationBoxItem(
-                              'طبقه', widget.advertisingHome.floor),
-                      informationBoxItem('متراژ', widget.advertisingHome.metr),
-                    ],
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  for (var i = 0; i < length; i++) ...[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: DottedLine(
-                        direction: Axis.vertical,
-                        dashColor: CustomColor.grey350,
-                        lineThickness: 1.5,
-                        dashLength: 6,
-                      ),
+              for (int i = 0; i < length; i++) ...[
+                if (i == 1 &&
+                    widget.advertisingHome.categoryId == '7ost8r7msw8lt0c') ...[
+                  Expanded(
+                    child: informationBoxItem(
+                      i == 0
+                          ? 'ساخت'
+                          : i == 1
+                              ? 'متراژ'
+                              : '',
+                      i == 0
+                          ? widget.advertisingHome.yearBiuld
+                          : i == 1
+                              ? widget.advertisingHome.metr
+                              : 0,
                     ),
-                  ],
+                  ),
+                ] else ...[
+                  // نمایش هر متن
+                  Expanded(
+                    child: informationBoxItem(
+                      i == 0
+                          ? 'ساخت'
+                          : i == 1
+                              ? 'اتاق'
+                              : i == 2
+                                  ? (widget.advertisingHome.floor == 0
+                                      ? 'متراژ'
+                                      : 'طبقه')
+                                  : i == 3
+                                      ? 'متراژ زمین'
+                                      : '',
+                      i == 0
+                          ? widget.advertisingHome.yearBiuld
+                          : i == 1
+                              ? widget.advertisingHome.countRoom
+                              : i == 2
+                                  ? (widget.advertisingHome.floor == 0
+                                      ? widget.advertisingHome.buildingMetr
+                                      : widget.advertisingHome.floor)
+                                  : i == 3
+                                      ? widget.advertisingHome.metr
+                                      : 0,
+                    ),
+                  ),
                 ],
-              ),
+                // خطوط بین متن‌ها
+                if (i < length - 1)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: DottedLine(
+                      direction: Axis.vertical,
+                      dashColor: CustomColor.grey350,
+                      lineThickness: 1.5,
+                      dashLength: 6,
+                      lineLength: 50,
+                    ),
+                  ),
+              ],
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -958,11 +998,16 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         const SizedBox(
           height: 14,
         ),
-        textWidget(
-          title,
-          CustomColor.grey500,
-          15,
-          FontWeight.w400,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: FittedBox(
+            child: textWidget(
+              title,
+              CustomColor.grey500,
+              15,
+              FontWeight.w400,
+            ),
+          ),
         ),
         Container(
           width: 40,
@@ -1007,6 +1052,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
         .contains(widget.categoryType);
     return Container(
       height: 96,
+      constraints: const BoxConstraints().constrainstSize(),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         border: Border.all(color: CustomColor.grey350),
@@ -1027,16 +1073,17 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
                     color: CustomColor.black,
                     fontSize: 16,
                     decoration: TextDecoration.none,
-                    fontFamily: 'SN',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              textWidget(
-                result ? 'ودیعه:' : 'قیمت هر متر:',
-                CustomColor.black,
-                16,
-                FontWeight.w700,
+              FittedBox(
+                child: textWidget(
+                  result ? 'ودیعه:' : 'قیمت هر متر:',
+                  CustomColor.black,
+                  16,
+                  FontWeight.w700,
+                ),
               ),
             ],
           ),
@@ -1057,16 +1104,17 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
                     color: CustomColor.black,
                     fontSize: 16,
                     decoration: TextDecoration.none,
-                    fontFamily: 'SN',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              textWidget(
-                result ? 'اجاره ماهانه:' : 'قیمت کل:',
-                CustomColor.black,
-                16,
-                FontWeight.w700,
+              FittedBox(
+                child: textWidget(
+                  result ? 'اجاره ماهانه:' : 'قیمت کل:',
+                  CustomColor.black,
+                  16,
+                  FontWeight.w700,
+                ),
               ),
             ],
           ),
@@ -1089,26 +1137,20 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
   }
 }
 
-// ignore: must_be_immutable
-class DescriptionWidget extends StatelessWidget {
-  DescriptionWidget({
-    super.key,
-    required this.advertisingHome,
-  });
-  RegisterFutureAd advertisingHome;
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      advertisingHome.description,
-      textAlign: TextAlign.justify,
-      textDirection: ui.TextDirection.rtl,
-      style: TextStyle(
-        color: CustomColor.grey500,
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
-      ),
-    );
-  }
+//Methode For display Advertising Description
+Widget _advertisingDescription({
+  required RegisterFutureAd advertisingHome,
+}) {
+  return Text(
+    advertisingHome.description,
+    textAlign: TextAlign.right,
+    textDirection: ui.TextDirection.rtl,
+    style: TextStyle(
+      color: CustomColor.grey500,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    ),
+  );
 }
 
 class AdvertisingGalleryImages extends StatefulWidget {

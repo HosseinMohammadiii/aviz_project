@@ -19,12 +19,13 @@ class AppBarWidget extends StatefulWidget {
 class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppBar(
+    return Scaffold(
+      appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
-        leadingWidth: double.maxFinite,
+        centerTitle: true,
+        leadingWidth: double.infinity,
         leading: BlocBuilder<NavigationPage, NavigationState>(
           builder: (context, state) {
             return Column(

@@ -11,6 +11,8 @@ import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
 import '../DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import '../DataFuture/advertising_save/bloc/advertising_save_event.dart';
 
+import '../DataFuture/home/Bloc/home_bloc.dart';
+import '../DataFuture/home/Bloc/home_event.dart';
 import '../DataFuture/province/Bloc/province_event.dart';
 import '../DataFuture/recent/bloc/recent_event.dart';
 import '../DataFuture/search/Bloc/search_event.dart';
@@ -62,6 +64,15 @@ class DisplayReconnection extends StatelessWidget {
             onPressed: () {
               //Use Switch to Reconnect to the Server to Display the Content of the Pages
               switch (screen) {
+                case 'آگهی ها':
+                  context.read<HomeBloc>().add(HomeGetInitializeData());
+                  context
+                      .read<AddAdvertisingBloc>()
+                      .add(InitializedDisplayAdvertising());
+                  context
+                      .read<AuthAccountBloc>()
+                      .add(DisplayInformationEvent());
+                  break;
                 case 'آگهی های من':
                   context
                       .read<AddAdvertisingBloc>()

@@ -370,6 +370,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                         focusNode: titleFocusNude,
                         controller: controllertitle,
                         textInputAction: TextInputAction.next,
+                        lengthInputText: 100,
                       ),
                       textTitleSections(
                           txt: 'توضیحات', img: 'images/clipboard_icon.png'),

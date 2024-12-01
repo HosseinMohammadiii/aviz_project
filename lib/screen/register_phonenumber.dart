@@ -140,79 +140,81 @@ class _RegisterPhonenumberState extends State<RegisterPhonenumber> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Text(
-                'شماره موبایل خود را وارد کنید',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: CustomColor.black,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                '.برای ساخت آگهی، لطفا شماره موبایل خود را وارد کنید',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: CustomColor.grey500,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: CustomColor.grey300,
-                ),
-                child: TextField(
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.done,
-                  // focusNode: focusNode,
-                  controller: phoneNumberController,
-                  textAlign: TextAlign.end,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Text(
+                  'شماره موبایل خود را وارد کنید',
                   style: TextStyle(
-                    fontFamily: 'SN',
-                    fontSize: 20,
+                    fontSize: 18,
+                    color: CustomColor.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '.برای ساخت آگهی، لطفا شماره موبایل خود را وارد کنید',
+                  style: TextStyle(
+                    fontSize: 15,
                     color: CustomColor.grey500,
                   ),
-                  decoration: InputDecoration(
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    hintText: 'شماره موبایل',
-                    hintStyle: TextStyle(
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: CustomColor.grey300,
+                  ),
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.done,
+                    // focusNode: focusNode,
+                    controller: phoneNumberController,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
                       fontFamily: 'SN',
-                      fontSize: 18,
+                      fontSize: 20,
                       color: CustomColor.grey500,
                     ),
+                    decoration: InputDecoration(
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintText: 'شماره موبایل',
+                      hintStyle: TextStyle(
+                        fontFamily: 'SN',
+                        fontSize: 18,
+                        color: CustomColor.grey500,
+                      ),
+                    ),
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    onChanged: (value) {},
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(11),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                   ),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-                  onChanged: (value) {},
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(11),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
                 ),
-              ),
-              Visibility(
-                visible: isShowErrorText,
-                child: Text(
-                  errorText,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: CustomColor.red,
+                Visibility(
+                  visible: isShowErrorText,
+                  child: Text(
+                    errorText,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: CustomColor.red,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

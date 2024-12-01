@@ -30,6 +30,7 @@ class _InitialScreenState extends State<InitialScreen> {
               SliverToBoxAdapter(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 100,
@@ -44,8 +45,8 @@ class _InitialScreenState extends State<InitialScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      runAlignment: WrapAlignment.center,
                       children: [
                         textWidget(
                           'آگهی شماست ',
@@ -84,26 +85,32 @@ class _InitialScreenState extends State<InitialScreen> {
                   ],
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buttonLogIn(const LogInScreen(), 'ورود',
-                          CustomColor.white, CustomColor.red),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      buttonLogIn(const SignUpScreen(), 'ثبت نام',
-                          CustomColor.red, CustomColor.grey),
-                    ],
-                  ),
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 15,
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Wrap(
+                      runAlignment: WrapAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        buttonLogIn(
+                          const LogInScreen(),
+                          'ورود',
+                          CustomColor.white,
+                          CustomColor.red,
+                        ),
+                        const SizedBox(width: 15),
+                        buttonLogIn(
+                          const SignUpScreen(),
+                          'ثبت نام',
+                          CustomColor.red,
+                          CustomColor.grey,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                  ],
                 ),
               ),
             ],
@@ -113,7 +120,7 @@ class _InitialScreenState extends State<InitialScreen> {
     );
   }
 
-// Button Widget for Login and Sing up
+// Button Widget for Login and Sign up
   GestureDetector buttonLogIn(
     Widget screen,
     String txt,
@@ -133,7 +140,7 @@ class _InitialScreenState extends State<InitialScreen> {
         width: 159,
         height: 40,
         alignment: Alignment.center,
-        margin: const EdgeInsets.only(top: 135),
+        margin: const EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
           color: colorcontain,
           borderRadius: BorderRadius.circular(4),

@@ -26,6 +26,9 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
     try {
       var recent = await dio.get(
         'advertising_home',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return recent.data['items']
@@ -80,6 +83,9 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
     try {
       var response = await dio.get(
         'facilities',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
       return response.data['items']
           .map<AdvertisingFacilities>(
@@ -104,6 +110,9 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
       var response = await dio.get(
         'adsave',
         queryParameters: query,
+        options: Options(
+          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+        ),
       );
 
       return response.data['items']
@@ -146,9 +155,9 @@ final class ISaveAdItemsDatasourceRemoot extends ISaveAdItemsDatasource {
       );
 
       if (response.data['items'].isNotEmpty) {
-        return response.data['items'][0]['id_ad']; // برگرداندن آیدی ذخیره شده
+        return response.data['items'][0]['id_ad'];
       } else {
-        return ''; // اگر آگهی ذخیره نشده باشد
+        return '';
       }
     } on DioException catch (ex) {
       throw ApiException(

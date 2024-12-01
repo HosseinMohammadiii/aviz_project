@@ -4,7 +4,6 @@ import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_blo
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_event.dart';
 import 'package:aviz_project/DataFuture/add_advertising/Bloc/add_advertising_state.dart';
 import 'package:aviz_project/class/colors.dart';
-import 'package:aviz_project/extension/button.dart';
 import 'package:aviz_project/screen/city.dart';
 import 'package:aviz_project/widgets/items_switchbox.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
@@ -141,12 +140,9 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
     return Scaffold(
       bottomNavigationBar: BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
-          builder: (context, state) {
-        return Padding(
-          padding:
-              const EdgeInsets.only(bottom: 20, top: 15, right: 15, left: 15),
-          child: GestureDetector().textButton(
-            () async {
+        builder: (context, state) {
+          return GestureDetector(
+            onTap: () async {
               //Function For Display Id Facilities Item at Collections inforegisteredhomes in DataBase
               String idCt() {
                 String idCt = '';
@@ -350,357 +346,240 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                 );
               }
             },
-            'بعدی',
-            CustomColor.red,
-            CustomColor.grey,
-            false,
-          ),
-        );
-      }),
+            child: Container(
+              height: 40,
+              margin: const EdgeInsets.only(
+                  bottom: 20, top: 15, right: 15, left: 15),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: CustomColor.red,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                'بعدی',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: CustomColor.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    textTitleSections(
-                        txt: 'مشخصات کلی', img: 'images/category-2.png'),
-                    BlocBuilder<StatusModeBloc, StatusModeState>(
-                      builder: (context, state) {
-                        switch (state.statusMode) {
-                          case StatusMode.apartment:
-                            txtTitle = '${widget.title} آپارتمان';
-                            title = '${widget.title} آپارتمان';
-                            break;
-                          case StatusMode.home:
-                            txtTitle = '${widget.title} خانه';
-                            title = '${widget.title} خانه';
-                            break;
-                          case StatusMode.villa:
-                            txtTitle = '${widget.title} ویلا';
-                            title = '${widget.title} ویلا';
-                            break;
-                          case StatusMode.buyLand:
-                            txtTitle = '${widget.title} زمین';
-                            title = '${widget.title} زمین';
-                            break;
-                          default:
-                            txtTitle = '${widget.title} آپارتمان';
-                            break;
-                        }
-                        return GestureDetector(
-                          onTap: () {
-                            // Reset the information stored in RegisterInfoAdCubit
-                            context
-                                .read<RegisterInfoAdCubit>()
-                                .resetInfoAdSet();
-                            // Reset the state of BoolStateCubit
-                            context.read<BoolStateCubit>().reset();
-                            // Navigate back to the first page
-                            context.read<NavigationPage>().backFirstPAge();
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              textWidget(
-                                'دسته بندی',
-                                CustomColor.grey500,
-                                14,
-                                FontWeight.w600,
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 48,
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: CustomColor.grey350),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(4),
-                                    topRight: const Radius.circular(4),
-                                    bottomLeft: changeIcon == false
-                                        ? const Radius.circular(4)
-                                        : const Radius.circular(0),
-                                    bottomRight: changeIcon == false
-                                        ? const Radius.circular(4)
-                                        : const Radius.circular(0),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      size: 28,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6),
-                                      child: textWidget(
-                                        txtTitle ?? '',
-                                        CustomColor.black,
-                                        16,
-                                        FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        textWidget(
-                          title == 'فروش زمین' ? 'محدوده زمین' : 'محدوده ملک',
-                          CustomColor.grey500,
-                          14,
-                          FontWeight.w600,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _selectProvonceAndCity(
-                              city.isEmpty ? 'انتخاب شهر' : city,
-                              () {
-                                if (province.isNotEmpty) {
-                                  final cityName =
-                                      context.read<RegisterInfoAdCubit>().state;
-                                  cityName.city = '';
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CityScreen(
-                                        isAllCities: false,
-                                        province: province,
-                                        onChanged: () {
-                                          setState(() {
-                                            city = cityName.city;
-                                          });
-                                          if (city.isNotEmpty) {
-                                            Navigator.pop(context);
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  showMessage(
-                                    MessageSnackBar.checkInputProvince,
-                                    context,
-                                    1,
-                                  );
-                                }
-                              },
-                              city.isEmpty
-                                  ? CustomColor.grey500
-                                  : CustomColor.black,
-                            ),
-                            _selectProvonceAndCity(
-                                province.isEmpty ? 'انتخاب استان' : province,
-                                () async {
-                              if (!await checkInternetConnection(context)) {
-                                return;
-                              }
-                              stateAd.province = '';
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ScreenProvince(
-                                    onChanged: () {
-                                      setState(() {
-                                        province = stateAd.province;
-                                      });
-                                      if (province.isNotEmpty) {
-                                        Navigator.pop(context);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              );
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      textTitleSections(
+                          txt: 'مشخصات کلی', img: 'images/category-2.png'),
+                      BlocBuilder<StatusModeBloc, StatusModeState>(
+                        builder: (context, state) {
+                          switch (state.statusMode) {
+                            case StatusMode.apartment:
+                              txtTitle = '${widget.title} آپارتمان';
+                              title = '${widget.title} آپارتمان';
+                              break;
+                            case StatusMode.home:
+                              txtTitle = '${widget.title} خانه';
+                              title = '${widget.title} خانه';
+                              break;
+                            case StatusMode.villa:
+                              txtTitle = '${widget.title} ویلا';
+                              title = '${widget.title} ویلا';
+                              break;
+                            case StatusMode.buyLand:
+                              txtTitle = '${widget.title} زمین';
+                              title = '${widget.title} زمین';
+                              break;
+                            default:
+                              txtTitle = '${widget.title} آپارتمان';
+                              break;
+                          }
+                          return GestureDetector(
+                            onTap: () {
+                              // Reset the information stored in RegisterInfoAdCubit
+                              context
+                                  .read<RegisterInfoAdCubit>()
+                                  .resetInfoAdSet();
+                              // Reset the state of BoolStateCubit
+                              context.read<BoolStateCubit>().reset();
+                              // Navigate back to the first page
+                              context.read<NavigationPage>().backFirstPAge();
                             },
-                                province.isEmpty
-                                    ? CustomColor.grey500
-                                    : CustomColor.black),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    const Divider(
-                      thickness: 1.2,
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    textTitleSections(
-                        txt: 'ویژگی ها', img: 'images/clipboard.png'),
-                    Visibility(
-                      visible: title == 'فروش زمین',
-                      replacement: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              selectBox(
-                                title: 'تعداد اتاق',
-                                color: controllerCounRoom.text != 'null' &&
-                                        controllerCounRoom.text != '0'
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                onTap: () {
-                                  countRoomValueNotifier!.value =
-                                      int.tryParse(controllerCounRoom.text) ??
-                                          0;
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        backgroundColor: CustomColor.grey350,
-                                        alignment: Alignment.center,
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(height: 5),
-                                            widgetSliderMeterFeature(
-                                              listenable:
-                                                  countRoomValueNotifier!,
-                                              onchanged: (newValue) {
-                                                countRoomValueNotifier!.value =
-                                                    newValue.toInt();
-                                              },
-                                              max: 8,
-                                            ),
-                                            ValueListenableBuilder<int>(
-                                              valueListenable:
-                                                  countRoomValueNotifier!,
-                                              builder: (context, value, _) {
-                                                return Text(
-                                                  '(${value.toString()})اتاق',
-                                                  textDirection:
-                                                      TextDirection.rtl,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .apply(
-                                                        fontSizeDelta: 4,
-                                                        bodyColor: CustomColor
-                                                            .bluegrey,
-                                                      )
-                                                      .titleMedium,
-                                                );
-                                              },
-                                            ),
-                                            const SizedBox(height: 5),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.pop(context, 'OK');
-                                                controllerCounRoom.text =
-                                                    countRoomValueNotifier!
-                                                        .value
-                                                        .toString();
-                                                stateAd.countRoom =
-                                                    countRoomValueNotifier!
-                                                        .value;
-                                                setState(
-                                                  () {},
-                                                );
-                                              },
-                                              child: Container(
-                                                width: 60,
-                                                height: 35,
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  color: CustomColor.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                child: textWidget(
-                                                  'تایید',
-                                                  CustomColor.bluegrey,
-                                                  18,
-                                                  FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                textWidget(
+                                  'دسته بندی',
+                                  CustomColor.grey500,
+                                  14,
+                                  FontWeight.w600,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 48,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: CustomColor.grey350),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: const Radius.circular(4),
+                                      topRight: const Radius.circular(4),
+                                      bottomLeft: changeIcon == false
+                                          ? const Radius.circular(4)
+                                          : const Radius.circular(0),
+                                      bottomRight: changeIcon == false
+                                          ? const Radius.circular(4)
+                                          : const Radius.circular(0),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.arrow_back_ios_new_rounded,
+                                        size: 28,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 6),
+                                        child: textWidget(
+                                          txtTitle ?? '',
+                                          CustomColor.black,
+                                          16,
+                                          FontWeight.w400,
                                         ),
-                                      );
-                                    },
-                                  );
-                                },
-                                onTapPlus: () {
-                                  int count =
-                                      int.tryParse(controllerCounRoom.text) ??
-                                          0;
-                                  setState(() {
-                                    if (count >= 8) {
-                                      return;
-                                    }
-                                    count++;
-                                    controllerCounRoom.text = count.toString();
-                                    countRoomValueNotifier!.value = count;
-                                    stateAd.countRoom =
-                                        countRoomValueNotifier!.value;
-                                  });
-                                },
-                                onTapMinus: () {
-                                  int count =
-                                      int.tryParse(controllerCounRoom.text) ??
-                                          0;
-
-                                  if (count <= 0) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    count--;
-
-                                    controllerCounRoom.text = count.toString();
-                                    countRoomValueNotifier!.value = count;
-                                    stateAd.countRoom =
-                                        countRoomValueNotifier!.value;
-                                  });
-                                },
-                                valueSelected:
-                                    controllerCounRoom.text != 'null' &&
-                                            controllerCounRoom.text != '0'
-                                        ? controllerCounRoom.text
-                                        : 'تعیین',
-                              ),
-                              selectMetrAndDisplay(),
-                            ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          textWidget(
+                            title == 'فروش زمین' ? 'محدوده زمین' : 'محدوده ملک',
+                            CustomColor.grey500,
+                            14,
+                            FontWeight.w600,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              selectYearBuildAndDisplay(),
-                              Visibility(
-                                visible: result,
-                                replacement: selectBuildingMetrAndDisplay(),
-                                child: selectBox(
-                                  title: 'طبقه',
-                                  color: controllerFloor.text != 'null' &&
-                                          controllerFloor.text != '0'
+                              _selectProvonceAndCity(
+                                city.isEmpty ? 'انتخاب شهر' : city,
+                                () {
+                                  if (province.isNotEmpty) {
+                                    final cityName = context
+                                        .read<RegisterInfoAdCubit>()
+                                        .state;
+                                    cityName.city = '';
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CityScreen(
+                                          isAllCities: false,
+                                          province: province,
+                                          onChanged: () {
+                                            setState(() {
+                                              city = cityName.city;
+                                            });
+                                            if (city.isNotEmpty) {
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    showMessage(
+                                      MessageSnackBar.checkInputProvince,
+                                      context,
+                                      1,
+                                    );
+                                  }
+                                },
+                                city.isEmpty
+                                    ? CustomColor.grey500
+                                    : CustomColor.black,
+                              ),
+                              _selectProvonceAndCity(
+                                  province.isEmpty ? 'انتخاب استان' : province,
+                                  () async {
+                                if (!await checkInternetConnection(context)) {
+                                  return;
+                                }
+                                stateAd.province = '';
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ScreenProvince(
+                                      onChanged: () {
+                                        setState(() {
+                                          province = stateAd.province;
+                                        });
+                                        if (province.isNotEmpty) {
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                                  province.isEmpty
+                                      ? CustomColor.grey500
+                                      : CustomColor.black),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      const Divider(
+                        thickness: 1.2,
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      textTitleSections(
+                          txt: 'ویژگی ها', img: 'images/clipboard.png'),
+                      Visibility(
+                        visible: title == 'فروش زمین',
+                        replacement: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                selectBox(
+                                  title: 'تعداد اتاق',
+                                  color: controllerCounRoom.text != 'null' &&
+                                          controllerCounRoom.text != '0'
                                       ? CustomColor.black
                                       : CustomColor.grey500,
                                   onTap: () {
+                                    countRoomValueNotifier!.value =
+                                        int.tryParse(controllerCounRoom.text) ??
+                                            0;
                                     showDialog(
                                       context: context,
                                       builder: (context) {
-                                        floorValueNotifier!.value =
-                                            int.tryParse(
-                                                    controllerFloor.text) ??
-                                                0;
                                         return AlertDialog(
                                           backgroundColor: CustomColor.grey350,
                                           alignment: Alignment.center,
@@ -711,21 +590,22 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                             children: [
                                               const SizedBox(height: 5),
                                               widgetSliderMeterFeature(
-                                                listenable: floorValueNotifier!,
+                                                listenable:
+                                                    countRoomValueNotifier!,
                                                 onchanged: (newValue) {
-                                                  floorValueNotifier!.value =
-                                                      newValue.toInt();
+                                                  countRoomValueNotifier!
+                                                      .value = newValue.toInt();
                                                 },
-                                                max: 30,
+                                                max: 8,
                                               ),
                                               ValueListenableBuilder<int>(
                                                 valueListenable:
-                                                    floorValueNotifier!,
+                                                    countRoomValueNotifier!,
                                                 builder: (context, value, _) {
                                                   return Text(
-                                                    '(${value.toString()})طبقه',
+                                                    '(${value.toString()})اتاق',
                                                     textDirection:
-                                                        TextDirection.ltr,
+                                                        TextDirection.rtl,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .apply(
@@ -741,9 +621,13 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                               GestureDetector(
                                                 onTap: () {
                                                   Navigator.pop(context, 'OK');
-                                                  controllerFloor.text =
-                                                      floorValueNotifier!.value
+                                                  controllerCounRoom.text =
+                                                      countRoomValueNotifier!
+                                                          .value
                                                           .toString();
+                                                  stateAd.countRoom =
+                                                      countRoomValueNotifier!
+                                                          .value;
                                                   setState(
                                                     () {},
                                                   );
@@ -773,215 +657,362 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
                                     );
                                   },
                                   onTapPlus: () {
-                                    int floor =
-                                        int.tryParse(controllerFloor.text) ?? 0;
+                                    int count =
+                                        int.tryParse(controllerCounRoom.text) ??
+                                            0;
                                     setState(() {
-                                      if (floor >= 30) {
+                                      if (count >= 8) {
                                         return;
                                       }
-                                      floor++;
-                                      controllerFloor.text = floor.toString();
-                                      floorValueNotifier!.value = floor;
+                                      count++;
+                                      controllerCounRoom.text =
+                                          count.toString();
+                                      countRoomValueNotifier!.value = count;
+                                      stateAd.countRoom =
+                                          countRoomValueNotifier!.value;
                                     });
                                   },
                                   onTapMinus: () {
-                                    int floor =
-                                        int.tryParse(controllerFloor.text) ?? 0;
+                                    int count =
+                                        int.tryParse(controllerCounRoom.text) ??
+                                            0;
 
-                                    if (floor <= 0) {
+                                    if (count <= 0) {
                                       return;
                                     }
                                     setState(() {
-                                      floor--;
+                                      count--;
 
-                                      controllerFloor.text = floor.toString();
-                                      floorValueNotifier!.value = floor;
+                                      controllerCounRoom.text =
+                                          count.toString();
+                                      countRoomValueNotifier!.value = count;
+                                      stateAd.countRoom =
+                                          countRoomValueNotifier!.value;
                                     });
                                   },
                                   valueSelected:
-                                      controllerFloor.text != 'null' &&
-                                              controllerFloor.text != '0'
-                                          ? controllerFloor.text
+                                      controllerCounRoom.text != 'null' &&
+                                              controllerCounRoom.text != '0'
+                                          ? controllerCounRoom.text
                                           : 'تعیین',
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              selectBox(
-                                title: 'جهت ساختمان',
-                                color: controllerView.text.isNotEmpty
-                                    ? CustomColor.black
-                                    : CustomColor.grey500,
-                                isIconShow: false,
-                                onTap: () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        backgroundColor: CustomColor.grey350,
-                                        alignment: Alignment.center,
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'جهت ساختمان را انتخاب کنید',
-                                              style: TextStyle(
-                                                color: CustomColor.bluegrey,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              height: 150,
-                                              child: ListWheelScrollView
-                                                  .useDelegate(
-                                                controller:
-                                                    _scrollViewController,
-                                                itemExtent: 50,
-                                                squeeze: 0.7,
-                                                childDelegate:
-                                                    ListWheelChildBuilderDelegate(
-                                                  childCount: view.length,
-                                                  builder: (context, index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          controllerView.text =
-                                                              view[index];
-                                                          stateAd.view =
-                                                              controllerView
-                                                                  .text;
-
-                                                          //Display Scroll Item last Value selected
-                                                          _scrollViewController =
-                                                              FixedExtentScrollController(
-                                                                  initialItem:
-                                                                      index);
-
-                                                          //Navigator Pop For When Selected Item
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        width: 100,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: controllerView
-                                                                      .text ==
-                                                                  view[index]
-                                                              ? CustomColor.red
-                                                              : CustomColor
-                                                                  .white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          view[index],
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .apply(
-                                                                    fontSizeDelta:
-                                                                        10,
-                                                                    bodyColor: controllerView.text ==
-                                                                            view[
-                                                                                index]
-                                                                        ? CustomColor
-                                                                            .white
-                                                                        : CustomColor
-                                                                            .bluegrey,
-                                                                  )
-                                                                  .titleMedium,
-                                                        ),
-                                                      ),
+                                selectMetrAndDisplay(),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                selectYearBuildAndDisplay(),
+                                Visibility(
+                                  visible: result,
+                                  replacement: selectBuildingMetrAndDisplay(),
+                                  child: selectBox(
+                                    title: 'طبقه',
+                                    color: controllerFloor.text != 'null' &&
+                                            controllerFloor.text != '0'
+                                        ? CustomColor.black
+                                        : CustomColor.grey500,
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          floorValueNotifier!.value =
+                                              int.tryParse(
+                                                      controllerFloor.text) ??
+                                                  0;
+                                          return AlertDialog(
+                                            backgroundColor:
+                                                CustomColor.grey350,
+                                            alignment: Alignment.center,
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                const SizedBox(height: 5),
+                                                widgetSliderMeterFeature(
+                                                  listenable:
+                                                      floorValueNotifier!,
+                                                  onchanged: (newValue) {
+                                                    floorValueNotifier!.value =
+                                                        newValue.toInt();
+                                                  },
+                                                  max: 30,
+                                                ),
+                                                ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      floorValueNotifier!,
+                                                  builder: (context, value, _) {
+                                                    return Text(
+                                                      '(${value.toString()})طبقه',
+                                                      textDirection:
+                                                          TextDirection.ltr,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .apply(
+                                                            fontSizeDelta: 4,
+                                                            bodyColor:
+                                                                CustomColor
+                                                                    .bluegrey,
+                                                          )
+                                                          .titleMedium,
                                                     );
                                                   },
                                                 ),
-                                              ),
+                                                const SizedBox(height: 5),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pop(
+                                                        context, 'OK');
+                                                    controllerFloor.text =
+                                                        floorValueNotifier!
+                                                            .value
+                                                            .toString();
+                                                    setState(
+                                                      () {},
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    width: 60,
+                                                    height: 35,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color: CustomColor.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: textWidget(
+                                                      'تایید',
+                                                      CustomColor.bluegrey,
+                                                      18,
+                                                      FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          );
+                                        },
                                       );
                                     },
-                                  ).then(
-                                    (value) {
-                                      setState(() {});
+                                    onTapPlus: () {
+                                      int floor =
+                                          int.tryParse(controllerFloor.text) ??
+                                              0;
+                                      setState(() {
+                                        if (floor >= 30) {
+                                          return;
+                                        }
+                                        floor++;
+                                        controllerFloor.text = floor.toString();
+                                        floorValueNotifier!.value = floor;
+                                      });
                                     },
-                                  );
-                                },
-                                onTapPlus: () {
-                                  setState(() {
-                                    if (indexView != 3) {
-                                      indexView++;
-                                      controllerView.text = view[indexView];
-                                    }
-                                  });
-                                },
-                                onTapMinus: () {
-                                  setState(() {
-                                    if (indexView != 0) {
-                                      indexView--;
-                                      controllerView.text = view[indexView];
-                                    }
-                                  });
-                                },
-                                valueSelected: controllerView.text.isEmpty
-                                    ? 'انتخاب'
-                                    : controllerView.text,
-                              ),
-                              selectDocumnetAndDisplay(),
-                            ],
-                          ),
-                        ],
+                                    onTapMinus: () {
+                                      int floor =
+                                          int.tryParse(controllerFloor.text) ??
+                                              0;
+
+                                      if (floor <= 0) {
+                                        return;
+                                      }
+                                      setState(() {
+                                        floor--;
+
+                                        controllerFloor.text = floor.toString();
+                                        floorValueNotifier!.value = floor;
+                                      });
+                                    },
+                                    valueSelected:
+                                        controllerFloor.text != 'null' &&
+                                                controllerFloor.text != '0'
+                                            ? controllerFloor.text
+                                            : 'تعیین',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                selectBox(
+                                  title: 'جهت ساختمان',
+                                  color: controllerView.text.isNotEmpty
+                                      ? CustomColor.black
+                                      : CustomColor.grey500,
+                                  isIconShow: false,
+                                  onTap: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          backgroundColor: CustomColor.grey350,
+                                          alignment: Alignment.center,
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'جهت ساختمان را انتخاب کنید',
+                                                style: TextStyle(
+                                                  color: CustomColor.bluegrey,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              SizedBox(
+                                                height: 150,
+                                                child: ListWheelScrollView
+                                                    .useDelegate(
+                                                  controller:
+                                                      _scrollViewController,
+                                                  itemExtent: 50,
+                                                  squeeze: 0.7,
+                                                  childDelegate:
+                                                      ListWheelChildBuilderDelegate(
+                                                    childCount: view.length,
+                                                    builder: (context, index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            controllerView
+                                                                    .text =
+                                                                view[index];
+                                                            stateAd.view =
+                                                                controllerView
+                                                                    .text;
+
+                                                            //Display Scroll Item last Value selected
+                                                            _scrollViewController =
+                                                                FixedExtentScrollController(
+                                                                    initialItem:
+                                                                        index);
+
+                                                            //Navigator Pop For When Selected Item
+                                                            Navigator.pop(
+                                                                context);
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          width: 100,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: controllerView
+                                                                        .text ==
+                                                                    view[index]
+                                                                ? CustomColor
+                                                                    .red
+                                                                : CustomColor
+                                                                    .white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                          ),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            view[index],
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .apply(
+                                                                  fontSizeDelta:
+                                                                      10,
+                                                                  bodyColor: controllerView
+                                                                              .text ==
+                                                                          view[
+                                                                              index]
+                                                                      ? CustomColor
+                                                                          .white
+                                                                      : CustomColor
+                                                                          .bluegrey,
+                                                                )
+                                                                .titleMedium,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ).then(
+                                      (value) {
+                                        setState(() {});
+                                      },
+                                    );
+                                  },
+                                  onTapPlus: () {
+                                    setState(() {
+                                      if (indexView != 3) {
+                                        indexView++;
+                                        controllerView.text = view[indexView];
+                                      }
+                                    });
+                                  },
+                                  onTapMinus: () {
+                                    setState(() {
+                                      if (indexView != 0) {
+                                        indexView--;
+                                        controllerView.text = view[indexView];
+                                      }
+                                    });
+                                  },
+                                  valueSelected: controllerView.text.isEmpty
+                                      ? 'انتخاب'
+                                      : controllerView.text,
+                                ),
+                                selectDocumnetAndDisplay(),
+                              ],
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                selectYearBuildAndDisplay(),
+                                selectMetrAndDisplay(),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                selectDocumnetAndDisplay(),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              selectYearBuildAndDisplay(),
-                              selectMetrAndDisplay(),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              selectDocumnetAndDisplay(),
-                            ],
-                          ),
-                        ],
+                      const SizedBox(
+                        height: 15,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Divider(
-                      thickness: 1.2,
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    textTitleSections(
-                        txt: 'امکانات', img: 'images/magicpen.png'),
-                  ],
+                      const Divider(
+                        thickness: 1.2,
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      textTitleSections(
+                          txt: 'امکانات', img: 'images/magicpen.png'),
+                    ],
+                  ),
                 ),
-              ),
-              ItemsSwitchbox(
-                title: title,
-              ),
-            ],
+                ItemsSwitchbox(
+                  title: title,
+                ),
+              ],
+            ),
           ),
         ),
       ),

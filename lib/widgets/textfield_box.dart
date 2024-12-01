@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../DataFuture/add_advertising/Bloc/add_advertising_bloc.dart';
@@ -17,6 +18,7 @@ class TextFieldBox extends StatefulWidget {
     this.enable = false,
     this.isPrice,
     required this.textInputAction,
+    this.lengthInputText,
   });
   String hint;
   TextInputType textInputType;
@@ -27,6 +29,7 @@ class TextFieldBox extends StatefulWidget {
   bool? isShowPassword;
   bool enable = false;
   bool? isPrice;
+  int? lengthInputText;
 
   @override
   State<TextFieldBox> createState() => _TextFieldBoxState();
@@ -58,6 +61,9 @@ class _TextFieldBoxState extends State<TextFieldBox> {
               fontSize: 20,
               color: CustomColor.grey500,
             ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(widget.lengthInputText),
+            ],
             decoration: InputDecoration(
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,

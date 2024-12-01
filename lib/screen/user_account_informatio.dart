@@ -166,9 +166,12 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: double.infinity,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
+        titleSpacing: 0,
+        scrolledUnderElevation: 0,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -177,9 +180,6 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   return showDialogLogOut(context);
                 },
                 child: const Icon(Icons.logout),
-              ),
-              const SizedBox(
-                width: 15,
               ),
               const Spacer(),
               const Text(

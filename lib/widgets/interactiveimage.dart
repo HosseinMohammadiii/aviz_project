@@ -121,7 +121,7 @@ class InterActiveImageWidget extends StatelessWidget {
                 ),
                 Positioned(
                   top: 0,
-                  right: 0,
+                  right: 1,
                   child: IconButton(
                     padding: const EdgeInsets.only(left: 6),
                     onPressed: () {

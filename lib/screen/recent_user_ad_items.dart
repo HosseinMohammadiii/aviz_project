@@ -72,13 +72,18 @@ class _RecentUserAdItemsState extends State<RecentUserAdItems> {
                   ],
                   if (state is GetRecentState) ...[
                     state.getDisplayAd.fold(
-                      (error) => DisplayReconnection(screen: 'بازدید های اخیر'),
+                      (error) => SliverFillRemaining(
+                        child: DisplayReconnection(screen: 'بازدید های اخیر'),
+                      ),
                       (advertising) => state.getRecentAd.fold(
-                        (error) =>
-                            DisplayReconnection(screen: 'بازدید های اخیر'),
+                        (error) => SliverFillRemaining(
+                          child: DisplayReconnection(screen: 'بازدید های اخیر'),
+                        ),
                         (recent) => state.advertisingFacilitiesDetails.fold(
-                          (error) =>
-                              DisplayReconnection(screen: 'بازدید های اخیر'),
+                          (error) => SliverFillRemaining(
+                            child:
+                                DisplayReconnection(screen: 'بازدید های اخیر'),
+                          ),
                           (facilities) => recent.isNotEmpty
                               ? SliverList.builder(
                                   itemCount: recent.length,

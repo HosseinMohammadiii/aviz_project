@@ -1,5 +1,6 @@
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc.dart';
 import 'package:aviz_project/Bloc/bloc_page_number/page_n_bloc_state.dart';
+import 'package:aviz_project/extension/constraintboxsize.dart';
 import 'package:aviz_project/screen/register_feature_screen.dart';
 import 'package:aviz_project/widgets/appbar_widget.dart';
 import 'package:aviz_project/widgets/item_category_type.dart';
@@ -21,51 +22,61 @@ class _ManagementAddAdvertisingScreenState
     extends State<ManagementAddAdvertisingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: double.maxFinite,
-        leading: const AppBarWidget(),
-      ),
-      body: SafeArea(
-        child: BlocBuilder<NavigationPage, NavigationState>(
-          builder: (context, state) {
-            switch (state.viewPage) {
-              case ViewPage.category:
-                return const ItemsCategoryType();
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints().constrainstSize(),
+        child: Scaffold(
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+            leadingWidth: 1200,
+            leading: const AppBarWidget(),
+          ),
+          body: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints().constrainstSize(),
+                child: BlocBuilder<NavigationPage, NavigationState>(
+                  builder: (context, state) {
+                    switch (state.viewPage) {
+                      case ViewPage.category:
+                        return const ItemsCategoryType();
 
-              case ViewPage.itemsRentHome:
-                return const ItemSelectCategory(title: 'اجاره');
+                      case ViewPage.itemsRentHome:
+                        return const ItemSelectCategory(title: 'اجاره');
 
-              case ViewPage.itemsBuyHome:
-                return const ItemSelectCategory(title: 'فروش');
+                      case ViewPage.itemsBuyHome:
+                        return const ItemSelectCategory(title: 'فروش');
 
-              case ViewPage.registerDetialsRentHomeAdvertising:
-                return const RegisterHomeFeatureScreen(
-                  title: 'اجاره',
-                );
+                      case ViewPage.registerDetialsRentHomeAdvertising:
+                        return const RegisterHomeFeatureScreen(
+                          title: 'اجاره',
+                        );
 
-              case ViewPage.registerDetialsBuyHomeAdvertising:
-                return const RegisterHomeFeatureScreen(
-                  title: 'فروش',
-                );
+                      case ViewPage.registerDetialsBuyHomeAdvertising:
+                        return const RegisterHomeFeatureScreen(
+                          title: 'فروش',
+                        );
 
-              case ViewPage.registerHomeAdvertising:
-                return RegisterAdvertising(
-                  title: 'فروش',
-                );
+                      case ViewPage.registerHomeAdvertising:
+                        return RegisterAdvertising(
+                          title: 'فروش',
+                        );
 
-              case ViewPage.registerRentHomeAdvertising:
-                return RegisterAdvertising(title: 'اجاره');
+                      case ViewPage.registerRentHomeAdvertising:
+                        return RegisterAdvertising(title: 'اجاره');
 
-              default:
-                return const ItemsCategoryType();
-            }
-          },
+                      default:
+                        return const ItemsCategoryType();
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
         ),
-        // child: Text('data'),
       ),
     );
   }

@@ -24,8 +24,7 @@ class MyAdvertisingScreen extends StatefulWidget {
 class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddAdvertisingBloc, AddAdvertisingState>(
-      listener: (context, state) {},
+    return BlocBuilder<AddAdvertisingBloc, AddAdvertisingState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -76,10 +75,14 @@ class _MyAdvertisingScreenState extends State<MyAdvertisingScreen> {
                   ],
                   if (state is DisplayInfoAdvertisingStateResponse) ...[
                     state.displayAdvertising.fold(
-                      (error) => DisplayReconnection(screen: 'آگهی های من'),
+                      (error) => SliverFillRemaining(
+                        child: DisplayReconnection(screen: 'آگهی های من'),
+                      ),
                       (advertising) {
                         return state.displayAdvertisingFacilities.fold(
-                          (error) => DisplayReconnection(screen: 'آگهی های من'),
+                          (error) => SliverFillRemaining(
+                            child: DisplayReconnection(screen: 'آگهی های من'),
+                          ),
                           (facilities) {
                             return advertising.isNotEmpty
                                 ? ListMyAdvertising(
