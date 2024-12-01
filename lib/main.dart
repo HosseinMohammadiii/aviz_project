@@ -13,7 +13,6 @@ import 'package:aviz_project/Hive/Advertising/advertising_hive.dart';
 import 'package:aviz_project/Hive/UsersLogin/user_login.dart';
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/screen/initial.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,16 +30,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: 'AIzaSyDgQ8h1R_HNR367iZoBzo6q5HLYewMe3-M',
-      appId: '1:807035455736:android:88644b4563303ad687530d',
-      messagingSenderId: '807035455736',
-      projectId: 'aviz-project',
-      storageBucket: 'aviz-project.appspot.com',
-    ),
-  );
+
   FirebaseMessagingService.initialize();
+
   Hive.registerAdapter(UserLoginAdapter());
 
   Hive.registerAdapter(AdvertisingHiveAdapter());
