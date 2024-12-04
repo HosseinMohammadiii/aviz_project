@@ -17,7 +17,7 @@
 
 <h2>Aviz Features</h2>
 <ul>
-  <li>User Auttentication(LogIn/SighUp)</li>
+  <li>User Auttentication(LogIn/SignUp)</li>
   <li>Display Nottification(Firebase/LocalNottification)</li>
   <li>Display Ad By Province And City</li>
   <li>Search Ad</li>
