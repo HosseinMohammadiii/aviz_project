@@ -6,7 +6,7 @@
 
 <p>
 <img src="https://github.com/user-attachments/assets/c11a37e4-1aa8-4d32-8f03-05822a32ba1a" alt="Login_Screen" width="230" height="400">
-  <img src="https://github.com/user-attachments/assets/a68856ac-b0bf-4d8a-9077-4ec44c5df323" alt="Nottification" width="230" height="400"">
+  <img src="https://github.com/user-attachments/assets/a68856ac-b0bf-4d8a-9077-4ec44c5df323" alt="Notification" width="230" height="400"">
 <img src="https://github.com/user-attachments/assets/c01083af-56c0-4319-94c1-0b794d9ea63e" alt="HomeScreen" width="230" height="400">
 <img src="https://github.com/user-attachments/assets/8df4e90f-2f98-4918-94fd-636f9de1dd7a" alt="Advertising-Information" width="230" height="400">
 <img src="https://github.com/user-attachments/assets/d78276c0-e2b9-4f58-a125-e6ea010cf17c" alt="Register-Features-Advertising" width="230" height="400">
@@ -16,9 +16,9 @@
 </p>
 
 <h2>Aviz Features</h2>
-<ul>
+<ul>notification
   <li>User Auttentication(LogIn/SignUp)</li>
-  <li>Display Nottification(Firebase/LocalNottification)</li>
+  <li>Display Notification(Firebase/LocalNotification)</li>
   <li>Display Ad By Province And City</li>
   <li>Search Ad</li>
   <li>Save Ad</li>
