@@ -266,6 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+//Widget For Display Advertising's
   Widget recentlyAdvertisingBox({
     required List<RegisterFutureAd> adHome,
     required List<AdvertisingFacilities> adFacilities,
