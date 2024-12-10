@@ -19,13 +19,16 @@ import '../account/Data/repository/registe_login_repository.dart';
 import '../ad_details/Data/repository/ad_detail_repository.dart';
 import '../search/Data/repository/search_repository.dart';
 
+// Instance of GetIt for managing dependencies
 var locator = GetIt.instance;
 
+// Function to initialize and register dependencies
 Future<void> getInInit() async {
+  
+  // Registering a singleton instance of Dio for making HTTP requests
   locator.registerSingleton<Dio>(DioProvider.crateDio());
 
   //locator Datasource
-
   locator.registerFactory<IHomeDataSoure>(
     () => HomeRemoteDataSource(
       locator.get(),
@@ -66,8 +69,8 @@ Future<void> getInInit() async {
   locator.registerFactory<IProvinceDatasource>(
     () => ProvinceDatasourceRemoot(),
   );
+  
   //locator Repository
-
   locator.registerFactory<IHomeRepository>(
     () => HomeRepository(
       locator.get(),
