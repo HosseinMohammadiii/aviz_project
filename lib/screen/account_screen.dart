@@ -29,8 +29,10 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _loadAppVersion() async {
+//Initializing packageInfo variable with PackageInfo
     final packageInfo = await PackageInfo.fromPlatform();
     setState(() {
+//Initializing appVersion variable with packageInfo version constructor
       appVersion = "نسخه ${packageInfo.version}";
     });
   }
@@ -97,8 +99,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                   title: 'آگهی های من',
                                   icon: 'images/note_red.png',
                                   onTap: () async {
+                                    //Checking Internet Connection
                                     if (!await checkInternetConnection(context))
                                       return;
+                                    //Navigation to MyAdvertisingScreen Screen
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -114,8 +118,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                   title: 'بازدید های اخیر',
                                   icon: 'images/eye.png',
                                   onTap: () async {
+                                    //Checking Internet Connection
                                     if (!await checkInternetConnection(context))
                                       return;
+
+                                    //Navigation to MyAdvertisingScreen Screen
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -131,8 +138,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                   title: 'ذخیره شده ها',
                                   icon: 'images/save-2.png',
                                   onTap: () async {
+                                    //Checking Internet Connection
                                     if (!await checkInternetConnection(context))
                                       return;
+
+                                    //Navigation to MyAdvertisingScreen Screen
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -148,6 +158,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   title: 'درباره آویز',
                                   icon: 'images/info-circle.png',
                                   onTap: () {
+                                    //Navigation to MyAdvertisingScreen Screen
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
