@@ -276,12 +276,17 @@ class _HomeScreenState extends State<HomeScreen> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () async {
+//Checking The Internet Connection
             if (!await checkInternetConnection(context)) {
               return;
             }
+
+//Adding recently viewed advertising to the database
             BlocProvider.of<RecentBloc>(context)
                 .add(PostRecentEvent(adHome[index].id));
 
+
+//Navigation to InformationMyAdvertising Screen
             Navigator.push(
               context,
               MaterialPageRoute(
