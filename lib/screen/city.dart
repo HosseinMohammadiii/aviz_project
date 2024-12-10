@@ -46,6 +46,7 @@ class _CityScreenState extends State<CityScreen> {
 
   @override
   void initState() {
+//Display Cities From ProvinceInitializedData Constructor Class 
     BlocProvider.of<ProvinceBloc>(context)
         .add(ProvinceInitializedData(city: widget.province));
 
@@ -59,6 +60,7 @@ class _CityScreenState extends State<CityScreen> {
       value.isEmpty ? isSearch = false : isSearch = true;
     });
 
+//Initializing searchCities list variable with the value entered by the user
     searchCities = cities!
         .where((element) =>
             element.name.toLowerCase().contains(value.toLowerCase()))
@@ -115,6 +117,7 @@ class _CityScreenState extends State<CityScreen> {
                           hint: 'نام شهر خود را وارد کنید',
                           lable: 'شهر',
                           onChanged: (value) {
+                            //Checking display the value entered by the user with a delay.
                             if (_debounce?.isActive ?? false) {
                               _debounce!.cancel();
                             }
@@ -131,7 +134,7 @@ class _CityScreenState extends State<CityScreen> {
                                       .replaceAll('ی', 'ي')
                                       .replaceAll('ک', 'ك');
                                 }
-
+                               //Set of value to searcListItems Methode
                                 searchListItems(value);
                               },
                             );
@@ -144,6 +147,7 @@ class _CityScreenState extends State<CityScreen> {
                           child: Column(
                             children: [
                               if (widget.isAllCities!) ...[
+                                /
                                 InkWell(
                                   splashColor: CustomColor.grey350,
                                   onTap: () {
