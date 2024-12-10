@@ -27,22 +27,29 @@ import 'class/firebase_messsaging.dart';
 import 'widgets/buttomnavigationbar.dart';
 
 void main() async {
+  // Ensures that Flutter's widget binding is properly initialized.
   WidgetsFlutterBinding.ensureInitialized();
-
+  
+  // Initializes Hive for local storage.
   await Hive.initFlutter();
-
+  
+  // Sets up Firebase Messaging for handling push notifications.
   FirebaseMessagingService.initialize();
 
+  // Registers Hive adapters for custom data types.
   Hive.registerAdapter(UserLoginAdapter());
 
   Hive.registerAdapter(AdvertisingHiveAdapter());
 
+  // Opens Hive boxes for user login data and advertisements.
   await Hive.openBox<UserLogin>('user_login');
 
   await Hive.openBox<AdvertisingHive>('ad_hive');
 
+  // Registers services and repositories with GetIt dependency injection.
   await getInInit();
 
+  // Runs the Flutter app with multiple Bloc providers.
   runApp(
     MultiBlocProvider(
       providers: [
@@ -112,6 +119,7 @@ void main() async {
   );
 }
 
+// Route observer to monitor navigation between pages.
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class MyApp extends StatelessWidget {
@@ -119,10 +127,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Triggers the event to fetch home page data on app launch.
     context.read<HomeBloc>().add(HomeGetInitializeData());
-
+    
+    // Initializes display settings for advertising.
     context.read<AddAdvertisingBloc>().add(InitializedDisplayAdvertising());
-
+    
+    // Fetches user account information if logged in.
     context.read<AuthAccountBloc>().add(DisplayInformationEvent());
 
     return MaterialApp(
@@ -192,6 +203,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       builder: (context, child) {
+        // Ensures consistent text scaling across devices.
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaler: const TextScaler.linear(1.0),
@@ -199,6 +211,7 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
+      // Determines the initial screen based on user login status.
       home: Authmanager().isLogin()
           ? BottomNavigationScreen()
           : const InitialScreen(),
