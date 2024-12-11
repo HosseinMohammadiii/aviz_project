@@ -86,7 +86,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   void initState() {
+    // Retrieve the current state of the StatusModeBloc
     var state = context.read<StatusModeBloc>().state;
+
+    // Determine the appropriate title based on the current `statusMode`
     switch (state.statusMode) {
       case StatusMode.apartment:
         title = '${widget.title} آپارتمان';
@@ -104,12 +107,16 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
         txtTitle = '${widget.title} آپارتمان';
         break;
     }
+    
+    // Calculate the length of the year range
     yearLength = endYear.year - currentYear.year + 1;
     year = currentYear.year;
     itemYear = List.generate(yearLength, (index) {});
-
+    
+    // Retrieve the state of the RegisterInfoAdCubit
     final stateAd = context.read<RegisterInfoAdCubit>().state;
-
+    
+    // Populate the form fields with values from `stateAd`
     province = stateAd.province;
     city = stateAd.city;
     controllerCounRoom.text = stateAd.countRoom.toString();
@@ -119,6 +126,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
     controllerFloor.text = stateAd.floor.toString();
     controllerDocument.text = stateAd.document;
     controllerView.text = stateAd.view;
+
+    // Initialize value notifiers with parsed integer values
     metrValueNotifier =
         ValueNotifier<int>(int.tryParse(controllerMetr.text) ?? 0);
     buildingMetrValueNotifier =
@@ -133,8 +142,10 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Retrieve the current state of the RegisterInfoAdCubit
     final stateAd = context.read<RegisterInfoAdCubit>().state;
-
+    
+    // Check if the current `title` does not belong to specific categorie
     bool result =
         !['اجاره خانه', 'اجاره ویلا', 'فروش خانه', 'فروش ویلا'].contains(title);
 
@@ -239,7 +250,8 @@ class _RegisterHomeFeatureScreenState extends State<RegisterHomeFeatureScreen> {
               if (!await checkInternetConnection(context)) {
                 return;
               }
-
+              
+              //Checking the completeness of the fields
               if (title != 'فروش زمین'
                   ? province.isEmpty ||
                       city.isEmpty ||
