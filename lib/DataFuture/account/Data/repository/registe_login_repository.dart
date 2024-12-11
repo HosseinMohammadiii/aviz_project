@@ -6,6 +6,7 @@ import '../../../NetworkUtil/api_exeption.dart';
 import '../datasource/register_login_datasource.dart';
 import '../model/account.dart';
 
+//Interface for the authentication repository.
 abstract class IAuthRepository {
   Future<Either<String, String>> register(String username, String password);
 
@@ -24,9 +25,12 @@ abstract class IAuthRepository {
   Future<Either<String, String>> getUpdateProvinceUser(String province);
 }
 
+// Implementation of the authentication repository.
 class AuthencticationRepository extends IAuthRepository {
   final IAuthenticationDatasource _datasource;
+  // Constructor for data source for authentication-related operations.
   AuthencticationRepository(this._datasource);
+  // Implements the register method to handle user registration using the datasource
   @override
   Future<Either<String, String>> register(
       String username, String password) async {
@@ -37,7 +41,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left(ex.message ?? 'خطا محتوای متنی ندارد');
     }
   }
-
+  // Implements the login method to handle user login using the datasource
   @override
   Future<Either<String, String>> login(String username, String password) async {
     try {
@@ -51,7 +55,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left('${ex.message}');
     }
   }
-
+  // Fetches the user account information from the datasource and handles potenti
   @override
   Future<Either<String, AccountInformation>> getDisplayUserInfo() async {
     try {
@@ -61,7 +65,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
-
+  // Updates the user's profile picture.
   @override
   Future<Either<String, String>> getUpdateUserInfo(File? avatar) async {
     try {
@@ -71,7 +75,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
-
+  // Updates the user's name.
   @override
   Future<Either<String, String>> getUpdateNameUser(String name) async {
     try {
@@ -81,7 +85,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
-
+  // Updates the user's email.
   @override
   Future<Either<String, String>> getUpdateEmailUser(String email) async {
     try {
@@ -91,7 +95,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
-
+  // Updates the user's phone number.
   @override
   Future<Either<String, String>> getUpdatePhoneNumberUser(
       String phoneNumber) async {
@@ -102,7 +106,7 @@ class AuthencticationRepository extends IAuthRepository {
       return left(ex.message = 'خطا محتوای متنی ندارد');
     }
   }
-
+  // Updates the user's province information.
   @override
   Future<Either<String, String>> getUpdateProvinceUser(String province) async {
     try {
