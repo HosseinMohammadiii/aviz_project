@@ -5,7 +5,7 @@ class AccountInformation {
   String email;
   String phoneNumber;
   String province;
-
+  //AccountInformatio constructor model
   AccountInformation({
     required this.id,
     required this.name,
@@ -14,7 +14,7 @@ class AccountInformation {
     required this.phoneNumber,
     required this.province,
   });
-
+//AccountInformatio factory constructor model
   factory AccountInformation.fromJson(Map<String, dynamic> jsonObject) {
     return AccountInformation(
       id: jsonObject['id'],
