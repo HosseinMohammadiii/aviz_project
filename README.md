@@ -37,20 +37,20 @@
 
 <h2>Packages Usage</h2>
 <ul>
-  <li><h5><a href="https://pub.dev/packages/bloc">bloc</a></h5></li>
+  <li><h4><a href="https://pub.dev/packages/bloc">bloc</a></h4></li>
   <li><h4><a href="https://pub.dev/packages/flutter_bloc">flutter_bloc</a></h4></li>
-  <li><p><a href="https://pub.dev/packages/dartz">dartz</a></p></li>
-  <li><p><a href="https://pub.dev/packages/dio">dio</a></p></li>
-  <li><p><a href="https://pub.dev/packages/firebase_core">firebase_core</a></p></li>
-  <li><p><a href="https://pub.dev/packages/firebase_messaging">firebase_messaging</a></p></li>
-  <li><p><a href="https://pub.dev/packages/get_it">get_it</a></p></li>
-  <li><p><a href="https://pub.dev/packages/hive">hive</a></p></li>
-  <li><p><a href="https://pub.dev/packages/hive_flutter">hive_flutter</a></p></li>
-  <li><p><a href="https://pub.dev/packages/url_launcher">url_launcher</a></p></li>
-  <li><p><a href="https://pub.dev/packages/flutter_local_notifications">flutter_local_notifications</a></p></li>
-  <li><p><a href="https://pub.dev/packages/cached_network_image">cached_network_image</a></p></li>
-  <li><p><a href="https://pub.dev/packages/shimmer">shimmer</a></p></li>
-  <li><p><a href="https://pub.dev/packages/connectivity_plus">connectivity_plus</a></p></li>
+  <li><h4><a href="https://pub.dev/packages/dartz">dartz</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/dio">dio</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/firebase_core">firebase_core</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/firebase_messaging">firebase_messaging</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/get_it">get_it</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/hive">hive</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/hive_flutter">hive_flutter</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/url_launcher">url_launcher</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/flutter_local_notifications">flutter_local_notifications</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/cached_network_image">cached_network_image</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/shimmer">shimmer</a></h4></li>
+  <li><h4><a href="https://pub.dev/packages/connectivity_plus">connectivity_plus</a></h4></li>
 </ul>
 
 <h2>Links</h2>
