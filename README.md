@@ -37,8 +37,8 @@
 
 <h2>Packages Usage</h2>
 <ul>
-  <li><p><a href="https://pub.dev/packages/bloc">bloc</a></p></li>
-  <li><p><a href="https://pub.dev/packages/flutter_bloc">flutter_bloc</a></p></li>
+  <li><h5><a href="https://pub.dev/packages/bloc">bloc</a></h5></li>
+  <li><h4><a href="https://pub.dev/packages/flutter_bloc">flutter_bloc</a></h4></li>
   <li><p><a href="https://pub.dev/packages/dartz">dartz</a></p></li>
   <li><p><a href="https://pub.dev/packages/dio">dio</a></p></li>
   <li><p><a href="https://pub.dev/packages/firebase_core">firebase_core</a></p></li>
