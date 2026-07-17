@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui' as BorderType;
 
 import 'package:aviz_project/class/colors.dart';
 import 'package:aviz_project/widgets/text_widget.dart';
@@ -38,15 +39,15 @@ class _UploadImageState extends State<UploadImage> {
       alignment: Alignment.center,
       children: [
         DottedBorder(
-          strokeCap: StrokeCap.round,
-          borderType: BorderType.RRect,
-          padding: const EdgeInsets.all(4),
-          radius: const Radius.circular(4),
-          dashPattern: const [8, 4],
-          color: widget.fileImage!.isEmpty
-              ? CustomColor.grey350
-              : Colors.transparent,
-          strokeWidth: 2,
+          options: RectDottedBorderOptions(
+            strokeCap: StrokeCap.round,
+            padding: const EdgeInsets.all(4),
+            dashPattern: const [8, 4],
+            color: widget.fileImage!.isEmpty
+                ? CustomColor.grey350
+                : Colors.transparent,
+            strokeWidth: 2,
+          ),
           child: Container(
             height: 144,
           ),

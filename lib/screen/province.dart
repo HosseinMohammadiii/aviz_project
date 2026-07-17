@@ -122,10 +122,15 @@ class _ScreenProvinceState extends State<ScreenProvince> {
                             _debounce = Timer(
                               const Duration(milliseconds: 500),
                               () {
-                                if (value.endsWith('ی')) {
-                                  value = value.replaceAll('ي', 'ی');
+                                if (value.endsWith('ی') ||
+                                    value.endsWith('ک')) {
+                                  value = value
+                                      .replaceAll('ي', 'ی')
+                                      .replaceAll('ك', 'ک');
                                 } else {
-                                  value = value.replaceAll('ی', 'ي');
+                                  value = value
+                                      .replaceAll('ی', 'ي')
+                                      .replaceAll('ک', 'ك');
                                 }
 
                                 searchListItems(value);

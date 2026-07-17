@@ -174,40 +174,46 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
   }
 
   @override
-  Future<String> postImagesToGallery(
-    List<File> images,
-  ) async {
+  Future<String> postImagesToGallery(List<File> images) async {
     try {
-      List<MultipartFile> imageFiles = [];
-      for (var image in images) {
-        String fileName = image.path.split('/').last;
-        imageFiles
-            .add(await MultipartFile.fromFile(image.path, filename: fileName));
+      final formData = FormData();
+
+      for (final image in images) {
+        formData.files.add(
+          MapEntry(
+            'images[]',
+            await MultipartFile.fromFile(
+              image.path,
+              filename: image.path.split('/').last,
+            ),
+          ),
+        );
       }
 
-      FormData formData = FormData.fromMap({
-        'images[]': imageFiles,
-      });
-      var response = await dio.post(
+      print("Files Count : ${formData.files.length}");
+
+      final response = await dio.post(
         'advertising_gallery',
         data: formData,
         options: Options(
-          contentType: Headers.formUrlEncodedContentType,
-          headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
+          headers: {
+            'Authorization': 'Bearer ${Authmanager().getToken()}',
+          },
         ),
       );
+
+      print(response.data);
 
       if (response.statusCode == 200) {
         RegisterId().saveIdGallery(response.data['data']['id']);
         return response.data['data']['id'];
       }
-    } on DioException catch (ex) {
-      throw ApiException(
-          ex.response?.statusCode ?? 0, ex.response?.statusMessage ?? 'Error');
-    } catch (e) {
-      throw ApiException(0, 'خطای ناشناس');
+
+      return '';
+    } on DioException catch (e) {
+      print(e.response?.data);
+      rethrow;
     }
-    return '';
   }
 
   @override

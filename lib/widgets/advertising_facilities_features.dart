@@ -126,128 +126,131 @@ class _AdvertisingFacilitiesWidgetState
   Widget build(BuildContext context) {
     return BlocBuilder<AdHomeFeaturesBloc, AdFeaturesState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                textWidget(
-                  'ویژگی ها',
-                  CustomColor.black,
-                  16,
-                  FontWeight.w700,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Image.asset('images/clipboard.png'),
-              ],
-            ),
-            if (state is AdDetailLoadingState) ...[
-              const Center(
-                child: CircularProgressIndicator(
-                  color: CustomColor.normalRed,
-                ),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  textWidget(
+                    'ویژگی ها',
+                    CustomColor.black,
+                    16,
+                    FontWeight.w700,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Image.asset('images/clipboard.png'),
+                ],
               ),
-            ],
-            if (state is AdDetailRequestSuccessState) ...[
-              state.advertisingdetails.fold(
-                (error) {
-                  return Center(
+              if (state is AdDetailLoadingState) ...[
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: CustomColor.normalRed,
+                  ),
+                ),
+              ],
+              if (state is AdDetailRequestSuccessState) ...[
+                state.advertisingdetails.fold(
+                  (error) {
+                    return Center(
+                      child: textWidget(
+                        error,
+                        CustomColor.black,
+                        16,
+                        FontWeight.w500,
+                      ),
+                    );
+                  },
+                  (document) {
+                    return Container(
+                      height: 112,
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: CustomColor.grey350),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: document.length,
+                            itemBuilder: (context, index) =>
+                                advertisingDocumentWidget(),
+                          ),
+                          DottedLine(
+                            dashColor: CustomColor.grey350,
+                            lineThickness: 1.5,
+                            dashLength: 6,
+                          ),
+                          state.advertisingdetails.fold(
+                            (error) {
+                              return Center(
+                                child: textWidget(
+                                  error,
+                                  CustomColor.black,
+                                  16,
+                                  FontWeight.w500,
+                                ),
+                              );
+                            },
+                            (direction) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: direction.length,
+                                itemBuilder: (context, index) =>
+                                    advertisingFeatutersDirection(),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  textWidget(
+                    'امکانات',
+                    CustomColor.black,
+                    16,
+                    FontWeight.w700,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Image.asset('images/clipboard.png'),
+                ],
+              ),
+              if (state is AdDetailRequestSuccessState) ...[
+                state.advertisingFacilitiesList.fold(
+                  (error) => Center(
                     child: textWidget(
                       error,
                       CustomColor.black,
                       16,
                       FontWeight.w500,
                     ),
-                  );
-                },
-                (document) {
-                  return Container(
-                    height: 112,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: CustomColor.grey350),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: document.length,
-                          itemBuilder: (context, index) =>
-                              advertisingDocumentWidget(),
-                        ),
-                        DottedLine(
-                          dashColor: CustomColor.grey350,
-                          lineThickness: 1.5,
-                          dashLength: 6,
-                        ),
-                        state.advertisingdetails.fold(
-                          (error) {
-                            return Center(
-                              child: textWidget(
-                                error,
-                                CustomColor.black,
-                                16,
-                                FontWeight.w500,
-                              ),
-                            );
-                          },
-                          (direction) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: direction.length,
-                              itemBuilder: (context, index) =>
-                                  advertisingFeatutersDirection(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                textWidget(
-                  'امکانات',
-                  CustomColor.black,
-                  16,
-                  FontWeight.w700,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Image.asset('images/clipboard.png'),
-              ],
-            ),
-            if (state is AdDetailRequestSuccessState) ...[
-              state.advertisingFacilitiesList.fold(
-                (error) => Center(
-                  child: textWidget(
-                    error,
-                    CustomColor.black,
-                    16,
-                    FontWeight.w500,
                   ),
-                ),
-                (facilities) => ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: facilities.length,
-                  itemBuilder: (context, index) =>
-                      _displayAdFacilitiesItems(facilities: facilities[index]),
-                ),
-              )
+                  (facilities) => ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: facilities.length,
+                    itemBuilder: (context, index) => _displayAdFacilitiesItems(
+                        facilities: facilities[index]),
+                  ),
+                )
+              ],
             ],
-          ],
+          ),
         );
       },
     );

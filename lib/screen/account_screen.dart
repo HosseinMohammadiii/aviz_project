@@ -126,23 +126,23 @@ class _AccountScreenState extends State<AccountScreen> {
                                   },
                                 ),
                               ),
-                              SliverToBoxAdapter(
-                                child: itemsAccountButton(
-                                  title: 'ذخیره شده ها',
-                                  icon: 'images/save-2.png',
-                                  onTap: () async {
-                                    if (!await checkInternetConnection(context))
-                                      return;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DisplayAdSaveItems(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                              // SliverToBoxAdapter(
+                              //   child: itemsAccountButton(
+                              //     title: 'ذخیره شده ها',
+                              //     icon: 'images/save-2.png',
+                              //     onTap: () async {
+                              //       if (!await checkInternetConnection(context))
+                              //         return;
+                              //       Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //           builder: (context) =>
+                              //               const DisplayAdSaveItems(),
+                              //         ),
+                              //       );
+                              //     },
+                              //   ),
+                              // ),
                               SliverToBoxAdapter(
                                 child: itemsAccountButton(
                                   title: 'درباره آویز',

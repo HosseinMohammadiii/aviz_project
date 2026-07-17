@@ -270,89 +270,89 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Row(
                             children: [
-                              BlocConsumer<SaveAdBloc, SaveAdState>(
-                                listener: (context, state) {
-                                  if (state is GetExistsSaveState) {
-                                    state.getSaveAd.fold(
-                                      (l) {},
-                                      (r) {
-                                        bool isSavedAd = r.any((item) =>
-                                            item.idAd ==
-                                            widget.advertisingHome.id);
-                                        saveId = isSavedAd
-                                            ? r
-                                                .firstWhere((item) =>
-                                                    item.idAd ==
-                                                    widget.advertisingHome.id)
-                                                .id
-                                            : null;
-                                      },
-                                    );
-                                  }
-                                  if (state is ExistsSaveAdState) {
-                                    state.existsSaveAd.fold(
-                                      (l) {
-                                        setState(() {
-                                          isSaved = false;
-                                        });
-                                      },
-                                      (r) {
-                                        setState(() {
-                                          if (r.isNotEmpty) {
-                                            isSaved = true;
-                                          }
-                                        });
-                                      },
-                                    );
-                                  } else if (state is PostSaveAdState) {
-                                    state.postSaveAd.fold(
-                                      (l) => showMessage(
-                                          MessageSnackBar.tryAgain, context, 1),
-                                      (r) {
-                                        showMessage(
-                                            MessageSnackBar.saveAd, context, 1);
-                                        setState(() {
-                                          isSaved = true;
-                                        });
-                                      },
-                                    );
-                                  } else if (state is DeleteSaveAdState) {
-                                    state.deleteSaveAd.fold(
-                                      (l) => showMessage(
-                                          MessageSnackBar.tryAgain, context, 1),
-                                      (r) {
-                                        showMessage(
-                                            MessageSnackBar.deleteSaveAd,
-                                            context,
-                                            1);
-                                        setState(() {
-                                          isSaved = false;
-                                        });
-                                      },
-                                    );
-                                  }
-                                },
-                                builder: (context, state) => GestureDetector(
-                                  onTap: _toggleSaveStatus,
-                                  child: isError
-                                      ? const SizedBox.shrink()
-                                      : state is SaveLoadingState
-                                          ? const SizedBox(
-                                              height: 20,
-                                              width: 20,
-                                              child: CircularProgressIndicator(
-                                                color: CustomColor.normalRed,
-                                                strokeWidth: 3,
-                                              ),
-                                            )
-                                          : Image.asset(
-                                              isSaved
-                                                  ? 'images/save_full.png'
-                                                  : 'images/save_vacant.png',
-                                              scale: 5,
-                                            ),
-                                ),
-                              ),
+                              // BlocConsumer<SaveAdBloc, SaveAdState>(
+                              //   listener: (context, state) {
+                              //     if (state is GetExistsSaveState) {
+                              //       state.getSaveAd.fold(
+                              //         (l) {},
+                              //         (r) {
+                              //           bool isSavedAd = r.any((item) =>
+                              //               item.idAd ==
+                              //               widget.advertisingHome.id);
+                              //           saveId = isSavedAd
+                              //               ? r
+                              //                   .firstWhere((item) =>
+                              //                       item.idAd ==
+                              //                       widget.advertisingHome.id)
+                              //                   .id
+                              //               : null;
+                              //         },
+                              //       );
+                              //     }
+                              //     if (state is ExistsSaveAdState) {
+                              //       state.existsSaveAd.fold(
+                              //         (l) {
+                              //           setState(() {
+                              //             isSaved = false;
+                              //           });
+                              //         },
+                              //         (r) {
+                              //           setState(() {
+                              //             if (r.isNotEmpty) {
+                              //               isSaved = true;
+                              //             }
+                              //           });
+                              //         },
+                              //       );
+                              //     } else if (state is PostSaveAdState) {
+                              //       state.postSaveAd.fold(
+                              //         (l) => showMessage(
+                              //             MessageSnackBar.tryAgain, context, 1),
+                              //         (r) {
+                              //           showMessage(
+                              //               MessageSnackBar.saveAd, context, 1);
+                              //           setState(() {
+                              //             isSaved = true;
+                              //           });
+                              //         },
+                              //       );
+                              //     } else if (state is DeleteSaveAdState) {
+                              //       state.deleteSaveAd.fold(
+                              //         (l) => showMessage(
+                              //             MessageSnackBar.tryAgain, context, 1),
+                              //         (r) {
+                              //           showMessage(
+                              //               MessageSnackBar.deleteSaveAd,
+                              //               context,
+                              //               1);
+                              //           setState(() {
+                              //             isSaved = false;
+                              //           });
+                              //         },
+                              //       );
+                              //     }
+                              //   },
+                              //   builder: (context, state) => GestureDetector(
+                              //     onTap: _toggleSaveStatus,
+                              //     child: isError
+                              //         ? const SizedBox.shrink()
+                              //         : state is SaveLoadingState
+                              //             ? const SizedBox(
+                              //                 height: 20,
+                              //                 width: 20,
+                              //                 child: CircularProgressIndicator(
+                              //                   color: CustomColor.normalRed,
+                              //                   strokeWidth: 3,
+                              //                 ),
+                              //               )
+                              //             : Image.asset(
+                              //                 isSaved
+                              //                     ? 'images/save_full.png'
+                              //                     : 'images/save_vacant.png',
+                              //                 scale: 5,
+                              //               ),
+                              //   ),
+                              // ),
                               const SizedBox(
                                 width: 6,
                               ),
@@ -456,22 +456,23 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                         ),
                       ),
                       body: SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: CustomScrollView(
-                            slivers: [
-                              SliverToBoxAdapter(
-                                child: AdvertisingGalleryImages(
-                                  advertisingHome: widget.advertisingHome,
-                                  controller: controller,
-                                ),
+                        child: CustomScrollView(
+                          slivers: [
+                            SliverToBoxAdapter(
+                              child: AdvertisingGalleryImages(
+                                advertisingHome: widget.advertisingHome,
+                                controller: controller,
                               ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 30,
-                                ),
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 30,
                               ),
-                              SliverToBoxAdapter(
+                            ),
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -501,12 +502,16 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                                   ],
                                 ),
                               ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 20,
-                                ),
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 20,
                               ),
-                              SliverToBoxAdapter(
+                            ),
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
                                 child: textWidget(
                                   widget.advertisingHome.titlehome,
                                   CustomColor.black,
@@ -514,156 +519,160 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
                                   FontWeight.w700,
                                 ),
                               ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 25,
-                                ),
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 25,
                               ),
-                              SliverToBoxAdapter(
+                            ),
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
                                 child: DottedLine(
                                   dashColor: CustomColor.grey200,
                                   lineThickness: 1.5,
                                   dashLength: 6,
                                 ),
                               ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 25,
-                                ),
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 25,
                               ),
-                              SliverToBoxAdapter(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const WarningScreen(),
+                            ),
+                            SliverToBoxAdapter(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const WarningScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 40,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 15),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: CustomColor.grey350),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_back_ios_rounded,
+                                        color: CustomColor.grey350,
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: CustomColor.grey350),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_back_ios_rounded,
-                                          color: CustomColor.grey350,
-                                        ),
-                                        const Spacer(),
-                                        textWidget(
-                                          'هشدار های قبل از معامله!',
-                                          CustomColor.black,
-                                          16,
-                                          FontWeight.w500,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                      ],
-                                    ),
+                                      const Spacer(),
+                                      textWidget(
+                                        'هشدار های قبل از معامله!',
+                                        CustomColor.black,
+                                        16,
+                                        FontWeight.w500,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 20,
-                                ),
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 20,
                               ),
-                              SliverToBoxAdapter(
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return SizedBox(
-                                      height: 30,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        reverse: true,
-                                        itemCount: listText.length,
-                                        itemBuilder: (context, index) {
-                                          double horizontalMargin =
-                                              constraints.maxWidth <= 1200
-                                                  ? 8.0
-                                                  : 16.0;
+                            ),
+                            SliverToBoxAdapter(
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return SizedBox(
+                                    height: 30,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      reverse: true,
+                                      padding: const EdgeInsets.only(
+                                          right: 15, left: 7),
+                                      itemCount: listText.length,
+                                      itemBuilder: (context, index) {
+                                        double horizontalMargin =
+                                            constraints.maxWidth <= 1200
+                                                ? 8.0
+                                                : 16.0;
 
-                                          return GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                for (int i = 0;
-                                                    i < listText.length;
-                                                    i++) {
-                                                  listText[i].selected =
-                                                      (i == index);
-                                                  indexContainer = index;
-                                                }
-                                              });
-                                            },
-                                            child: Container(
-                                              height: 29,
-                                              constraints: const BoxConstraints(
-                                                maxWidth: 135,
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12),
-                                              margin: EdgeInsets.only(
-                                                left: index == 0
-                                                    ? horizontalMargin
-                                                    : 8.0,
-                                              ),
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                border: Border.all(
-                                                  color:
-                                                      listText[index].selected
-                                                          ? Colors.transparent
-                                                          : CustomColor.grey350,
-                                                ),
-                                                color: listText[index].selected
-                                                    ? CustomColor.red
-                                                    : CustomColor.white,
-                                              ),
-                                              child: textWidget(
-                                                listText[index].text,
-                                                listText[index].selected
-                                                    ? CustomColor.grey
-                                                    : CustomColor.red,
-                                                14,
-                                                FontWeight.w400,
-                                              ),
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              for (int i = 0;
+                                                  i < listText.length;
+                                                  i++) {
+                                                listText[i].selected =
+                                                    (i == index);
+                                                indexContainer = index;
+                                              }
+                                            });
+                                          },
+                                          child: Container(
+                                            height: 29,
+                                            constraints: const BoxConstraints(
+                                              maxWidth: 135,
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12),
+                                            margin: EdgeInsets.only(
+                                              left: index == 0
+                                                  ? horizontalMargin
+                                                  : 8.0,
+                                            ),
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              border: Border.all(
+                                                color: listText[index].selected
+                                                    ? Colors.transparent
+                                                    : CustomColor.grey350,
+                                              ),
+                                              color: listText[index].selected
+                                                  ? CustomColor.red
+                                                  : CustomColor.white,
+                                            ),
+                                            child: textWidget(
+                                              listText[index].text,
+                                              listText[index].selected
+                                                  ? CustomColor.grey
+                                                  : CustomColor.red,
+                                              14,
+                                              FontWeight.w400,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 25,
-                                ),
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 25,
                               ),
-                              _changeBoxContainer(
-                                indexContainer,
-                                widget.advertisingHome,
-                                categoryTitle,
-                              ),
-                            ],
-                          ),
+                            ),
+                            _changeBoxContainer(
+                              indexContainer,
+                              widget.advertisingHome,
+                              categoryTitle,
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -695,11 +704,11 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
                 ),
                 child: Column(
@@ -821,7 +830,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
         padding: const EdgeInsets.only(right: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: CustomColor.normalRed,
+          color: CustomColor.red,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -849,7 +858,7 @@ class _InformatioMyAdvertisingState extends State<InformatioMyAdvertising>
 }
 
 // Function to switch and display different widgets based on selected category
-_changeBoxContainer(
+SliverToBoxAdapter _changeBoxContainer(
   int index,
   RegisterFutureAd adHome,
   String categoryType,
@@ -912,6 +921,7 @@ class _SpecificationBoxState extends State<SpecificationBox> {
         Container(
           height: 100,
           constraints: const BoxConstraints().constrainstSize(),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
             border: Border.all(color: CustomColor.grey350),
             borderRadius: BorderRadius.circular(4),
@@ -1054,6 +1064,7 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
       height: 96,
       constraints: const BoxConstraints().constrainstSize(),
       padding: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         border: Border.all(color: CustomColor.grey350),
         borderRadius: BorderRadius.circular(4),
@@ -1141,14 +1152,17 @@ class _PriceInfoWidgetState extends State<PriceInfoWidget> {
 Widget _advertisingDescription({
   required RegisterFutureAd advertisingHome,
 }) {
-  return Text(
-    advertisingHome.description,
-    textAlign: TextAlign.right,
-    textDirection: ui.TextDirection.rtl,
-    style: TextStyle(
-      color: CustomColor.grey500,
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: Text(
+      advertisingHome.description,
+      textAlign: TextAlign.right,
+      textDirection: ui.TextDirection.rtl,
+      style: TextStyle(
+        color: CustomColor.grey500,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
     ),
   );
 }

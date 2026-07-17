@@ -32,7 +32,8 @@ Future<void> showLocalNotification(String? title, String? body) async {
   const InitializationSettings initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin.initialize(
+      settings: initializationSettings);
   const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
     '0',
     'Aviz',
@@ -45,9 +46,9 @@ Future<void> showLocalNotification(String? title, String? body) async {
       NotificationDetails(android: androidDetails);
 
   await flutterLocalNotificationsPlugin.show(
-    0,
-    title,
-    body,
-    platformDetails,
+    id: 0,
+    title: title,
+    body: body,
+    notificationDetails: platformDetails,
   );
 }

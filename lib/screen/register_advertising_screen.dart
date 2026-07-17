@@ -229,7 +229,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
               final mb = bytes / pow(1024, 2);
               if (mb > 1) {
                 //Display Message for image larger than 1 MB
-
+                print(mb);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
@@ -242,7 +242,7 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
                 return;
               }
             }
-
+            print('-----');
             // Checking if no images have been selected
             if (stateAd.images!.isEmpty) {
               // Display a dialog prompting the user to select an image
