@@ -216,71 +216,81 @@ class _RegisterAdvertisingState extends State<RegisterAdvertising> {
       builder: (context, state) => Scaffold(
         bottomNavigationBar: GestureDetector(
           onTap: () async {
-            //Checking Internet Connection Befor Register Information Ad in the Database
-            if (!await checkInternetConnection(context)) {
-              return;
-            }
+            // Check internet connection
+            if (!await checkInternetConnection(context)) return;
 
-            //Checking the size of images larger than 1 MB
-            for (var i = 0; i < stateAd.images!.length; i++) {
-              //Get the size of the image
-              final bytes = stateAd.images![i].readAsBytesSync().lengthInBytes;
-              //Convert bytes to megabytes
-              final mb = bytes / pow(1024, 2);
-              if (mb > 1) {
-                //Display Message for image larger than 1 MB
-                print(mb);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'حجم تصویر ${i + 1} بیشتر از 1 مگابایت است',
-                      textDirection: ui.TextDirection.rtl,
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-                return;
-              }
-            }
-            print('-----');
-            // Checking if no images have been selected
+            // Check image selected
             if (stateAd.images!.isEmpty) {
-              // Display a dialog prompting the user to select an image
-
               showMessage(
                 MessageSnackBar.selectImage,
                 context,
                 2,
               );
+              return;
             }
-            // Checking if any of the required text fields are empty
-            else if (widget.title == 'اجاره'
+
+            // Check image format & size
+            for (int i = 0; i < stateAd.images!.length; i++) {
+              final image = stateAd.images![i];
+
+              /// ---------- Check format ----------
+              final extension = image.path.split('.').last.toLowerCase();
+
+              if (!['jpg', 'jpeg', 'png'].contains(extension)) {
+                showMessage(
+                  MessageSnackBar.checkFormatImage,
+                  context,
+                  2,
+                );
+                return;
+              }
+
+              /// ---------- Check size ----------
+              final sizeInMB =
+                  image.readAsBytesSync().lengthInBytes / (1024 * 1024);
+
+              if (sizeInMB > 1) {
+                showMessage(
+                  MessageSnackBar.checkPostImage,
+                  context,
+                  2,
+                );
+                return;
+              }
+            }
+
+            // Check text fields
+            final hasEmptyFields = widget.title == 'اجاره'
                 ? controllertitle.text.isEmpty ||
                     controllerDescription.text.isEmpty ||
                     controllerPrice.text.isEmpty ||
                     controllerRentPrice.text.isEmpty
                 : controllertitle.text.isEmpty ||
                     controllerDescription.text.isEmpty ||
-                    controllerPrice.text.isEmpty) {
-              // Display a dialog prompting the user to fill in all fields
+                    controllerPrice.text.isEmpty;
+
+            if (hasEmptyFields) {
               showMessage(
                 MessageSnackBar.compeletFields,
                 context,
                 2,
               );
-            } else {
-              if (state is! AddAdvertisingImageLoading) {
-                BlocProvider.of<AddAdvertisingBloc>(context)
-                    .add(AddImagesToGallery(stateAd.images!));
-              }
-              if (state is AddAdvertisingHandleErrorState) {
-                // Display a dialog prompting the user to try again
-                showMessage(
-                  MessageSnackBar.tryAgain,
-                  context,
-                  2,
-                );
-              }
+              return;
+            }
+
+            // Upload images
+            if (state is! AddAdvertisingImageLoading) {
+              context.read<AddAdvertisingBloc>().add(
+                    AddImagesToGallery(stateAd.images!),
+                  );
+            }
+
+            if (state is AddAdvertisingHandleErrorState) {
+              showMessage(
+                MessageSnackBar.tryAgain,
+                context,
+                2,
+              );
             }
           },
           child: Container(

@@ -33,8 +33,8 @@ dependencies:
   persian_number_utility: ^1.1.4
   cupertino_icons: ^1.0.2
   shamsi_date: ^1.0.2
-  connectivity_plus: ^7.2.0
-  firebase_core: ^4.11.0
+  connectivity_plus: ^7.3.0
+  firebase_core: ^4.12.1
   firebase_messaging: ^16.4.1
   flutter_local_notifications: ^21.0.0
   loading_indicator: ^3.1.1

@@ -49,7 +49,7 @@ class _UploadImageState extends State<UploadImage> {
             strokeWidth: 2,
           ),
           child: Container(
-            height: 144,
+            height: 160,
           ),
         ),
         Visibility(
@@ -127,7 +127,7 @@ class _UploadImageState extends State<UploadImage> {
                                                   borderRadius:
                                                       BorderRadius.circular(18),
                                                   color: CustomColor.grey500
-                                                      .withOpacity(0.8),
+                                                      .withValues(alpha: 0.8),
                                                   border: Border.all(
                                                       width: 2,
                                                       color: CustomColor.pink),
@@ -206,6 +206,8 @@ class _UploadImageState extends State<UploadImage> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 5,
             children: [
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -217,8 +219,15 @@ class _UploadImageState extends State<UploadImage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 5,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  'PNG، JPG، JPEG :فرمت‌های قابل پشتیبانی',
+                  style: TextStyle(
+                    fontSize: 13,
+                    //fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -236,8 +245,9 @@ class _UploadImageState extends State<UploadImage> {
                   onTap: () => widget.onChange(),
                   child: Container(
                     width: 149,
-                    height: 50,
-                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    // height: 50,
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: CustomColor.red,

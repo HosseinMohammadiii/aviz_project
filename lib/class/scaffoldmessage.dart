@@ -8,6 +8,7 @@ enum MessageSnackBar {
   checkInputProvince,
   checkInputCity,
   checkPostImage,
+  checkFormatImage,
   selectImage,
   tryAgain,
   checkUserName,
@@ -41,6 +42,9 @@ void showMessage(MessageSnackBar message, BuildContext context, int duration) {
       break;
     case MessageSnackBar.checkPostImage:
       messageTitle = 'حجم تصویر بیشتر از 1 مگابایت است!';
+      break;
+    case MessageSnackBar.checkFormatImage:
+      messageTitle = 'فرمت عکس انتخاب شده نادرست است!';
       break;
     case MessageSnackBar.selectImage:
       messageTitle = 'عکس مورد نظر را انتخاب کنید';

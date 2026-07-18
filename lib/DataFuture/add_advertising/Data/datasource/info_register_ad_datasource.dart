@@ -190,8 +190,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         );
       }
 
-      print("Files Count : ${formData.files.length}");
-
       final response = await dio.post(
         'advertising_gallery',
         data: formData,
@@ -202,8 +200,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
         ),
       );
 
-      print(response.data);
-
       if (response.statusCode == 200) {
         RegisterId().saveIdGallery(response.data['data']['id']);
         return response.data['data']['id'];
@@ -211,7 +207,6 @@ final class InfoAdDatasourceRemmot extends IInfoAdDatasource {
 
       return '';
     } on DioException catch (e) {
-      print(e.response?.data);
       rethrow;
     }
   }
