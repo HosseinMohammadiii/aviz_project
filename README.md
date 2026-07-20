@@ -62,9 +62,8 @@ Aviz is a Flutter-based mobile application developed for the real estate market.
   <img src="https://github.com/user-attachments/assets/a68856ac-b0bf-4d8a-9077-4ec44c5df323" alt="Notifications" width="230" height="400">
   <img src="https://github.com/user-attachments/assets/ec25db6c-f1c6-4d8f-9656-13aedcaa414b" alt="Home Screen" width="230" height="400">
   <img src="https://github.com/user-attachments/assets/8df4e90f-2f98-4918-94fd-636f9de1dd7a" alt="Property Details" width="230" height="400">
-</p>
 
-<p align="center">
+
   <img src="https://github.com/user-attachments/assets/d78276c0-e2b9-4f58-a125-e6ea010cf17c" alt="Property Features" width="230" height="400">
   <img src="https://github.com/user-attachments/assets/ea43ccb2-f6aa-4c34-a8b2-283c4afde5c5" alt="Create Property Listing" width="230" height="400">
   <img src="https://github.com/user-attachments/assets/5ff6087a-fa06-4d51-9761-df7f03a4dbd2" alt="Profile" width="230" height="400">
