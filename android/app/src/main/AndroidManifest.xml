@@ -50,6 +50,8 @@
             android:exported="false"
             android:stopWithTask="false"
             android:foregroundServiceType="mediaPlayback" />
+        
+        
 
         <!-- Firebase Instance ID Receiver -->
         <receiver

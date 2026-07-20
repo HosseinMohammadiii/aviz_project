@@ -17,6 +17,7 @@ import 'package:aviz_project/screen/initial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'DataFuture/account/Bloc/account_event.dart';
 import 'DataFuture/ad_details/Bloc/detail_ad_bloc.dart';
@@ -30,7 +31,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request();
+    }
+  });
   FirebaseMessagingService.initialize();
 
   Hive.registerAdapter(UserLoginAdapter());
