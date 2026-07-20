@@ -99,12 +99,25 @@ class _UserAccountInfirmationState extends State<UserAccountInfirmation> {
                   setState(() {
                     if (xfilePickCamera != null) {
                       galleryFile = File(xfilePickCamera.path);
-                      //Get the size of the image
-                      final bytes =
-                          galleryFile!.readAsBytesSync().lengthInBytes;
-                      //Convert bytes to megabytes
-                      final mb = bytes / pow(1024, 2);
-                      if (mb > 1) {
+
+                      /// ---------- Check format ----------
+                      final extension =
+                          galleryFile!.path.split('.').last.toLowerCase();
+
+                      if (!['jpg', 'jpeg', 'png'].contains(extension)) {
+                        showMessage(
+                          MessageSnackBar.checkFormatImage,
+                          context,
+                          2,
+                        );
+                        return;
+                      }
+
+                      /// ---------- Check size ----------
+                      final sizeInMB =
+                          galleryFile!.readAsBytesSync().lengthInBytes /
+                              (1024 * 1024);
+                      if (sizeInMB > 1) {
                         //Display Message for image larger than 1 MB
                         showMessage(MessageSnackBar.checkPostImage, context, 2);
 

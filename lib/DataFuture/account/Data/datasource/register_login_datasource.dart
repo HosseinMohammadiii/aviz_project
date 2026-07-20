@@ -116,7 +116,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
       });
 
       var response = await dio.post(
-        'userupdate/${Authmanager().getId()}',
+        'user/uploadAvatar/${Authmanager().getId()}',
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
           headers: {'Authorization': 'Bearer ${Authmanager().getToken()}'},
