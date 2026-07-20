@@ -1,6 +1,31 @@
-<h1>Aviz Project</h1>
-<h3>Description:</h3>
-<p>Aviz commercial project has been developed with the Flutter framework with the aim of facilitating the publication of ads for buying, selling and renting property online.</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-3.44.4-blue?logo=flutter" />
+  <img src="https://img.shields.io/badge/Dart-3.12.2-0175C2?logo=dart" />
+  <img src="https://img.shields.io/badge/State%20Management-BLoC-blue" />
+</p>
+
+## 📖 Description
+
+### What is Aviz?
+
+Aviz is a Flutter-based mobile application developed for the real estate market. The application provides a simple platform for buying, selling, and renting properties, allowing users to easily create, manage, and search property listings.
+
+### ✨ Features
+
+- 🔐 User authentication (sign up and login)
+- 🔔 Instant and local notifications (Firebase and local notifications)
+- 🏠 Create property listings for sale and rent
+- 📍 Browse property listings by province and city
+- 🔍 Search for property listings
+- 📄 View detailed property information
+- 📞 View contact information and connect with property owners
+- 📝 Create property listings by selecting categories and entering property details
+- 🖼️ Upload images for property listings
+- 🗑️ Delete your property listing
+- 👤 View and manage your published listings
+- 🕒 View recently viewed property listings
+- ✏️ Edit account information
+- 📱 Responsive design for all screen sizes
 
 <h2>Aviz Screens</h1>
 <p>
@@ -13,26 +38,6 @@
 <img src="https://github.com/user-attachments/assets/5ff6087a-fa06-4d51-9761-df7f03a4dbd2" alt="Account_Screen" width="230" height="400">
 <img src="https://github.com/user-attachments/assets/7433cc38-eb00-4bfe-a7e5-f79ed419b07f" alt="Account-Information" width="230" height="400">
 </p>
-
-<h2>Aviz Features</h2>
-<ul>
-  <li>User Auttentication(LogIn/SighUp)</li>
-  <li>Display Nottification(Firebase/LocalNottification)</li>
-  <li>Display Ad By Province And City</li>
-  <li>Search Ad</li>
-  <!-- <li>Save Ad</li> -->
-  <li>Delete Ad</li>
-  <li>Display Ad Information</li>
-  <li>Display Ad Contact Information</li>
-  <li>Register The Ad By Selecting The Category And Entering The Facility Information</li>
-  <li>Choosing An Image For Ad</li>
-  <li>View Ad Created By The User</li>
-  <li>Display Recently Visited And Saved Ad</li>
-  <li>Display User Account Informatio</li>
-  <li>Choose An Image For The User Account</li>
-  <li>Edit User Account Information</li>
-  <li>Responsive On All Devices</li>
-</ul>
 
 <h2>Packages Usage</h2>
 <ul>
@@ -52,8 +57,6 @@
   <li><p><a href="https://pub.dev/packages/connectivity_plus">connectivity_plus</a></p></li>
 </ul>
 
-<h2>Links</h2>
-<ul>
-<li><h4><a href="https://instagram.com/hosseinmohammadi.dev">Instagram</a></h4></li>
-<li><h4><a href="https://t.me/Hossein_M_20">Telegram</a></h4></li>
-</ul>
+## Links
+<a href="https://www.linkedin.com/in/hossein-mohammadi-612683341/"><img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/></a>
+<a href="https://instagram.com/hosseinmohammadi.dev"><img src="https://img.shields.io/badge/Instagram-purple?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram Badge"/></a>
